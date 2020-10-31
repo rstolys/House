@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2020-10-31T23:40:50.805Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Safari/605.1.15" etag="sw2PRgrMfJTSwzpdCeEg" version="13.8.8" type="github">
+<mxfile host="app.diagrams.net" modified="2020-10-31T23:41:47.925Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Safari/605.1.15" etag="mNjuGuaVl6DBIGrmg2xJ" version="13.8.8" type="github">
   <diagram id="IYi8p17pEobE1o9S2YxM" name="Page-1">
     <mxGraphModel dx="976" dy="495" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
@@ -40,8 +40,15 @@
         <mxCell id="qaig5zKq3u2xwKFAPcPl-7" value="User Database (firebase &lt;br&gt;auth)" style="ellipse;shape=umlEntity;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="700" y="90" width="80" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="qaig5zKq3u2xwKFAPcPl-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.038;entryY=0.65;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="qaig5zKq3u2xwKFAPcPl-8" target="qaig5zKq3u2xwKFAPcPl-7">
-          <mxGeometry relative="1" as="geometry" />
+        <mxCell id="qaig5zKq3u2xwKFAPcPl-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="qaig5zKq3u2xwKFAPcPl-8">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="703" y="130" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="650" y="170" />
+              <mxPoint x="650" y="130" />
+              <mxPoint x="703" y="130" />
+            </Array>
+          </mxGeometry>
         </mxCell>
         <mxCell id="qaig5zKq3u2xwKFAPcPl-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="qaig5zKq3u2xwKFAPcPl-8" target="qaig5zKq3u2xwKFAPcPl-9">
           <mxGeometry relative="1" as="geometry" />
