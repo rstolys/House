@@ -1,1 +1,78 @@
-<mxfile host="app.diagrams.net" modified="2020-11-01T01:47:44.367Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Safari/605.1.15" version="13.8.8" etag="Bmf7xh2cuJXQeSRUXQqt" type="github"><diagram id="rEZktgkxVe8WwH69dhVR">UzV2zq1wL0osyPDNT0nNUTV2VTV2LsrPL4GwciucU3NyVI0MMlNUjV1UjYwMgFjVyA2HrCFY1qAgsSg1rwSLBiADYTaQg2Y1AA==</diagram></mxfile>
+<mxfile host="app.diagrams.net" modified="2020-11-01T01:50:40.557Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Safari/605.1.15" etag="WLBFT-GzpkEWikNXFRJ0" version="13.8.8" type="github">
+  <diagram id="rEZktgkxVe8WwH69dhVR" name="Page-1">
+    <mxGraphModel dx="1054" dy="581" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="xhoIz1rtvqg8SmvdX315-12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=-0.04;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="xhoIz1rtvqg8SmvdX315-1" target="xhoIz1rtvqg8SmvdX315-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="xhoIz1rtvqg8SmvdX315-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.513;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="xhoIz1rtvqg8SmvdX315-1" target="xhoIz1rtvqg8SmvdX315-13">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="xhoIz1rtvqg8SmvdX315-21" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.01;entryY=0.575;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="xhoIz1rtvqg8SmvdX315-1" target="xhoIz1rtvqg8SmvdX315-14">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="xhoIz1rtvqg8SmvdX315-1" value="House Administrator" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" vertex="1" parent="1">
+          <mxGeometry x="90" y="120" width="30" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="xhoIz1rtvqg8SmvdX315-11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="xhoIz1rtvqg8SmvdX315-2" target="xhoIz1rtvqg8SmvdX315-3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="xhoIz1rtvqg8SmvdX315-2" value="Invite house member screen" style="shape=umlBoundary;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="220" y="110" width="100" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="xhoIz1rtvqg8SmvdX315-9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=-0.014;entryY=0.538;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="xhoIz1rtvqg8SmvdX315-3" target="xhoIz1rtvqg8SmvdX315-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="xhoIz1rtvqg8SmvdX315-10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=-0.057;entryY=0.563;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="xhoIz1rtvqg8SmvdX315-3" target="xhoIz1rtvqg8SmvdX315-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="xhoIz1rtvqg8SmvdX315-3" value="Validate invitation requests" style="ellipse;shape=umlControl;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="400" y="110" width="70" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="xhoIz1rtvqg8SmvdX315-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1.029;entryY=0.688;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="xhoIz1rtvqg8SmvdX315-4" target="xhoIz1rtvqg8SmvdX315-16">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="680" y="90" />
+              <mxPoint x="680" y="435" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="xhoIz1rtvqg8SmvdX315-4" value="Send invitation to current user" style="ellipse;shape=umlControl;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="540" y="50" width="70" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="xhoIz1rtvqg8SmvdX315-18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="xhoIz1rtvqg8SmvdX315-5" target="xhoIz1rtvqg8SmvdX315-16">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="xhoIz1rtvqg8SmvdX315-5" value="Send invitation email" style="ellipse;shape=umlControl;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="540" y="180" width="70" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="xhoIz1rtvqg8SmvdX315-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1.043;entryY=0.575;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="xhoIz1rtvqg8SmvdX315-6" target="xhoIz1rtvqg8SmvdX315-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="xhoIz1rtvqg8SmvdX315-8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1.043;entryY=0.55;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="xhoIz1rtvqg8SmvdX315-6" target="xhoIz1rtvqg8SmvdX315-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="xhoIz1rtvqg8SmvdX315-6" value="House Database" style="ellipse;shape=umlEntity;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="700" y="110" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="xhoIz1rtvqg8SmvdX315-13" value="Error Message" style="shape=umlBoundary;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="220" y="260" width="100" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="xhoIz1rtvqg8SmvdX315-14" value="Success Message" style="shape=umlBoundary;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="220" y="390" width="100" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="xhoIz1rtvqg8SmvdX315-15" value="Generate Error Message" style="ellipse;shape=umlControl;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="400" y="260" width="70" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="xhoIz1rtvqg8SmvdX315-19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.99;entryY=0.375;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="xhoIz1rtvqg8SmvdX315-16" target="xhoIz1rtvqg8SmvdX315-14">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="xhoIz1rtvqg8SmvdX315-16" value="Generate Success Message" style="ellipse;shape=umlControl;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="540" y="380" width="70" height="80" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
