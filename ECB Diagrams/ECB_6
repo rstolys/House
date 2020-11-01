@@ -1,9 +1,28 @@
-<mxfile host="app.diagrams.net" modified="2020-11-01T00:00:19.676Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Safari/605.1.15" etag="G-FQn5gHQhi0t1Ak7cSC" version="13.8.8" type="github">
+<mxfile host="app.diagrams.net" modified="2020-11-01T00:00:54.139Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Safari/605.1.15" etag="7_iMd9EOWZTsp1fomtEB" version="13.8.8" type="github">
   <diagram id="SHCGNaZHp98qbHAUoNG_" name="Page-1">
-    <mxGraphModel dx="1171" dy="594" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="976" dy="495" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
+        <mxCell id="EliiVOPqwBPD1DUDhm0Z-19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=-0.03;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="EliiVOPqwBPD1DUDhm0Z-1" target="EliiVOPqwBPD1DUDhm0Z-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="EliiVOPqwBPD1DUDhm0Z-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=-0.03;entryY=0.525;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="EliiVOPqwBPD1DUDhm0Z-1" target="EliiVOPqwBPD1DUDhm0Z-3">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="160" y="140" />
+              <mxPoint x="160" y="252" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="EliiVOPqwBPD1DUDhm0Z-21" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=-0.01;entryY=0.425;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="EliiVOPqwBPD1DUDhm0Z-1" target="EliiVOPqwBPD1DUDhm0Z-4">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="160" y="140" />
+              <mxPoint x="160" y="354" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
         <mxCell id="EliiVOPqwBPD1DUDhm0Z-1" value="House Member" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" vertex="1" parent="1">
           <mxGeometry x="80" y="110" width="30" height="60" as="geometry" />
         </mxCell>
