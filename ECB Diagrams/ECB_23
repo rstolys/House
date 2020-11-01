@@ -1,1 +1,31 @@
-<mxfile host="app.diagrams.net" modified="2020-11-01T21:21:05.892Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36" version="13.8.8" etag="0yJgIpH9zyyGT3TgKcjL" type="github"><diagram id="99padhYX30TmDI_yckE8">UzV2zq1wL0osyPDNT0nNUTV2VTV2LsrPL4GwciucU3NyVI0MMlNUjV1UjYwMgFjVyA2HrCFY1qAgsSg1rwSLBiADYTaQg2Y1AA==</diagram></mxfile>
+<mxfile host="app.diagrams.net" modified="2020-11-01T21:23:18.331Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36" etag="9yN5EA3PPLAdJvzm3Yzc" version="13.8.8" type="github">
+  <diagram id="99padhYX30TmDI_yckE8" name="Page-1">
+    <mxGraphModel dx="1422" dy="762" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="Eb-xEx3LuZ9PDYSpwF4J-1" value="House Member" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="130" y="290" width="30" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Eb-xEx3LuZ9PDYSpwF4J-5" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;startArrow=classic;startFill=1;" edge="1" parent="1" source="Eb-xEx3LuZ9PDYSpwF4J-2" target="Eb-xEx3LuZ9PDYSpwF4J-1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Eb-xEx3LuZ9PDYSpwF4J-2" value="House Tasks Screen" style="shape=umlBoundary;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="230" y="280" width="100" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="Eb-xEx3LuZ9PDYSpwF4J-7" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;startArrow=classic;startFill=1;" edge="1" parent="1" source="Eb-xEx3LuZ9PDYSpwF4J-3" target="Eb-xEx3LuZ9PDYSpwF4J-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Eb-xEx3LuZ9PDYSpwF4J-3" value="House Database" style="ellipse;shape=umlEntity;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="520" y="280" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="Eb-xEx3LuZ9PDYSpwF4J-6" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;startArrow=classic;startFill=1;" edge="1" parent="1" source="Eb-xEx3LuZ9PDYSpwF4J-4" target="Eb-xEx3LuZ9PDYSpwF4J-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Eb-xEx3LuZ9PDYSpwF4J-4" value="Generate Random Task Assignments" style="ellipse;shape=umlControl;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="390" y="275" width="80" height="90" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
