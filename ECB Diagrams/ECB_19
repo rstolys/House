@@ -1,1 +1,51 @@
-<mxfile host="app.diagrams.net" modified="2020-11-01T21:05:27.784Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36" version="13.8.8" etag="jcsTtKKA-u_gErEVKl4T" type="github"><diagram id="se59zgf5l1qV3NGXpFnk">UzV2zq1wL0osyPDNT0nNUTV2VTV2LsrPL4GwciucU3NyVI0MMlNUjV1UjYwMgFjVyA2HrCFY1qAgsSg1rwSLBiADYTaQg2Y1AA==</diagram></mxfile>
+<mxfile host="app.diagrams.net" modified="2020-11-01T21:12:09.505Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36" etag="UH1doUMsxLW0Ha2METv5" version="13.8.8" type="github">
+  <diagram id="se59zgf5l1qV3NGXpFnk" name="Page-1">
+    <mxGraphModel dx="1422" dy="762" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="a7lOVpwBWmppBkf2GaIX-4" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;startArrow=classic;startFill=1;" edge="1" parent="1" source="a7lOVpwBWmppBkf2GaIX-1" target="a7lOVpwBWmppBkf2GaIX-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a7lOVpwBWmppBkf2GaIX-1" value="House Member&lt;br&gt;" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="90" y="220" width="30" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="a7lOVpwBWmppBkf2GaIX-5" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;startArrow=classic;startFill=1;" edge="1" parent="1" source="a7lOVpwBWmppBkf2GaIX-2" target="a7lOVpwBWmppBkf2GaIX-3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a7lOVpwBWmppBkf2GaIX-2" value="My Tasks Screen" style="shape=umlBoundary;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="200" y="210" width="100" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="a7lOVpwBWmppBkf2GaIX-7" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;startArrow=classic;startFill=1;" edge="1" parent="1" source="a7lOVpwBWmppBkf2GaIX-3">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="500" y="250" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="a7lOVpwBWmppBkf2GaIX-3" value="Extend Task Due Date Approval" style="ellipse;shape=umlControl;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="355" y="205" width="85" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="a7lOVpwBWmppBkf2GaIX-10" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;startArrow=classic;startFill=1;" edge="1" parent="1" source="a7lOVpwBWmppBkf2GaIX-8" target="a7lOVpwBWmppBkf2GaIX-9">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a7lOVpwBWmppBkf2GaIX-8" value="House Member(s)" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="95" y="380" width="30" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="a7lOVpwBWmppBkf2GaIX-13" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;startArrow=none;startFill=0;" edge="1" parent="1" source="a7lOVpwBWmppBkf2GaIX-9" target="a7lOVpwBWmppBkf2GaIX-12">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a7lOVpwBWmppBkf2GaIX-9" value="Voting Screen" style="shape=umlBoundary;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="205" y="370" width="100" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="a7lOVpwBWmppBkf2GaIX-14" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;startArrow=none;startFill=0;" edge="1" parent="1" source="a7lOVpwBWmppBkf2GaIX-12" target="a7lOVpwBWmppBkf2GaIX-3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a7lOVpwBWmppBkf2GaIX-12" value="Determine Vote" style="ellipse;shape=umlControl;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="355" y="370" width="70" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="a7lOVpwBWmppBkf2GaIX-15" value="House Database" style="ellipse;shape=umlEntity;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="500" y="215" width="80" height="80" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
