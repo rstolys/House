@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1076566263173",
+    "firebase_url": "https://house-ebe3e.firebaseio.com",
+    "project_id": "house-ebe3e",
+    "storage_bucket": "house-ebe3e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1076566263173:android:d8ca38fefa64c8cafa30ec",
+        "android_client_info": {
+          "package_name": "com.cmpt275.house"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1076566263173-bdkm6d6n4niqn7aekirn13sc91mtsfi4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBG1gNnOtVj5V3F3lYALu0ILn89xqyFONQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1076566263173-bdkm6d6n4niqn7aekirn13sc91mtsfi4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
