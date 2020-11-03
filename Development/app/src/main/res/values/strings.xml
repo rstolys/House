@@ -17,4 +17,8 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
+    <!-- Strings related to Home Page -->
+    <string name="welcome_home">Welcome Home!</string>
+    <string name="my_tasks">My Tasks</string>
+    <string name="my_houses">My Houses</string>
 </resources>
