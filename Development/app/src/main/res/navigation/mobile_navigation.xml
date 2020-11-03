@@ -22,4 +22,13 @@
         android:name="com.cmpt275.house.ui.notifications.NotificationsFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
+    <fragment
+        android:id="@+id/signInFragment"
+        android:name="com.cmpt275.house.ui.login.signInFragment"
+        android:label="fragment_sign_in"
+        tools:layout="@layout/fragment_sign_in" />
+    <activity
+        android:id="@+id/mainActivity2"
+        android:name="com.cmpt275.house.MainActivity"
+        android:label="MainActivity" />
 </navigation>
