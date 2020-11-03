@@ -1,16 +1,14 @@
 package com.cmpt275.house;
 
-import com.cmpt275.house.signIn;
+import com.cmpt275.house.classDef.signIn;
+import com.cmpt275.house.interfaceDef.updateUI;
 
+import android.content.Intent;
 import android.os.Bundle;
-
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import android.view.View;
+import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 
 public class MainActivity extends AppCompatActivity implements updateUI {
 
@@ -20,6 +18,8 @@ public class MainActivity extends AppCompatActivity implements updateUI {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        /*
         BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity implements updateUI {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
+         */
     }
 
     @Override
@@ -78,17 +79,33 @@ public class MainActivity extends AppCompatActivity implements updateUI {
         //Usually ensures all the activities resources are released
     }
 
-    public void changeState() {
+    ////////////////////////////////////////////////
+    /// Will be called on click of sign In button to initiate the sign in procedure
+    ////////////////////////////////////////////////
+    public void signInUser(View view) {
+        //get input values
+        EditText email = findViewById(R.id.emailOfUser);
+        EditText password = findViewById(R.id.passwordOfUser);
+
+        auth.setEmail(email.getText().toString());
+        auth.setPassword(password.getText().toString());
+
+        //Call function to signIn the user
+        auth.signInUser();
+    }
+
+    ////////////////////////////////////////////////
+    /// Will be called at end of async functions that need to update the ui
+    ////////////////////////////////////////////////
+    public void stateChanged() {
         //Will be called by functions required to update the ui
 
-        //Check if the user is now signed In and move to a new activity if they are
-
-        /* Call our new activity with the following intent conditions
-        Intent myIntent = new Intent(CurrentActivity.this, NextActivity.class);
-        myIntent.putExtra("key", value); //Optional parameters
-        CurrentActivity.this.startActivity(myIntent);
-         */
-
+        //Check if the user is signed in -- open home page
+        if(auth.isUserSignedIn()) {
+            Intent homeIntent = new Intent(MainActivity.this, HomeActivity.class);
+            homeIntent.putExtra("type", 0); //Specify startup type
+            startActivity(homeIntent);
+        }
     }
 }
 

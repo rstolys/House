@@ -1,19 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/navigation_home"
+        android:id="@+id/navBar_home"
         android:icon="@drawable/ic_home_black_24dp"
-        android:title="@string/title_home" />
+        android:title="@string/navBar_home" />
 
     <item
-        android:id="@+id/navigation_dashboard"
-        android:icon="@drawable/ic_dashboard_black_24dp"
-        android:title="@string/title_dashboard" />
+        android:id="@+id/navBar_tasks"
+        android:icon="@drawable/ic_baseline_add_task_24"
+        android:title="@string/navBar_tasks" />
 
     <item
-        android:id="@+id/navigation_notifications"
-        android:icon="@drawable/ic_notifications_black_24dp"
-        android:title="@string/title_notifications" />
+        android:id="@+id/navBar_houses"
+        android:icon="@drawable/ic_baseline_house_siding_24"
+        android:title="@string/navBar_houses" />
+    <item
+        android:id="@+id/navBar_Settings"
+        android:icon="@drawable/ic_baseline_settings_24"
+        android:title="@string/navBar_settings" />
 
 </menu>

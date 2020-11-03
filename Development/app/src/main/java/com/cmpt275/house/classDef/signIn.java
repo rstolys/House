@@ -1,16 +1,9 @@
-package com.cmpt275.house;
+package com.cmpt275.house.classDef;
 
-import android.util.Log;
-
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
+import com.cmpt275.house.interfaceDef.updateUI;
+import com.cmpt275.house.interfaceDef.updateUI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
-import java.util.concurrent.Executor;
 
 public class signIn {
     ///
@@ -43,8 +36,12 @@ public class signIn {
         this.password = password;
     }
 
-    public boolean signInUser() {
+    public void signInUser() {
 
+        //Call change state function **Used in Prototype**
+        ui.stateChanged();
+
+        /*
         firebaseAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener((Executor) this, new OnCompleteListener<AuthResult>() {
 
@@ -69,13 +66,19 @@ public class signIn {
 
                     }
                 });
-        return true;
+         */
+
+        return;
     }
 
     public FirebaseUser getUserState() {
         //Get the current user state and assign to private variable
         currentUser = firebaseAuth.getCurrentUser();
         return currentUser;
+    }
+
+    public boolean isUserSignedIn() {
+        return true; //(currentUser != null);
     }
 
 }

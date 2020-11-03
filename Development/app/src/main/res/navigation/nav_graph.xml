@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/nav_graph"
+    app:startDestination="@id/taskActivity">
+
+    <activity
+        android:id="@+id/homeActivity"
+        android:name="com.cmpt275.house.HomeActivity"
+        android:label="HomeActivity" />
+    <activity
+        android:id="@+id/taskActivity"
+        android:name="com.cmpt275.house.TaskActivity"
+        android:label="TaskActivity" />
+    <activity
+        android:id="@+id/houseActivity"
+        android:name="com.cmpt275.house.HouseActivity"
+        android:label="HouseActivity" />
+    <activity
+        android:id="@+id/settingsActivity"
+        android:name="com.cmpt275.house.SettingsActivity"
+        android:label="SettingsActivity" />
+</navigation>

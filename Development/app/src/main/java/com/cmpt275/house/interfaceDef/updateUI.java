@@ -1,4 +1,4 @@
-package com.cmpt275.house;
+package com.cmpt275.house.interfaceDef;
 
 ///////////////////////////////////////////////////////
 //
@@ -6,7 +6,7 @@ package com.cmpt275.house;
 //      to interface with in order callback on asynchronous functions
 //
 ///////////////////////////////////////////////////////
-interface updateUI {
+public interface updateUI {
 
-    public void changeState();
+    public void stateChanged();
 }

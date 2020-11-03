@@ -7,11 +7,10 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.cmpt275.house.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-
-
-public class HomeActivity extends android.app.Activity {
+public class TaskActivity extends android.app.Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,13 +23,11 @@ public class HomeActivity extends android.app.Activity {
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navBar_home, R.id.navBar_tasks, R.id.navBar_houses, R.id.navBar_Settings)
                 .build();
-        /*
-
-        NavController navController = Navigation.findNavController(this, R.id.nav_graph);
+         /*
+        NavController navController = Navigation.findNavController(this, R.id.bottom_nav_menu);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
          */
-
 
     }
 
