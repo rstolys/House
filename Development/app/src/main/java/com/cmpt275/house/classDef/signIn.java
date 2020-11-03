@@ -11,8 +11,6 @@ public class signIn {
     ///
     private updateUI ui;            //Interface to update the UI state
 
-    private String email;
-    private String password;
     private FirebaseAuth firebaseAuth;
     private FirebaseUser currentUser;
 
@@ -28,18 +26,10 @@ public class signIn {
         this.ui = ui;       //Set the class implementing our ui updates
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void signInUser() {
+    public void signInUser(String email, String Password) {
 
         //Call change state function **Used in Prototype**
-        ui.stateChanged();
+        ui.stateChanged(0);
 
         /*
         firebaseAuth.signInWithEmailAndPassword(email, password)
@@ -52,7 +42,7 @@ public class signIn {
                             Log.d(TAG, "signInWithEmail:success");
                             currentUser = firebaseAuth.getCurrentUser();
 
-                            ui.changeState();       //Will update a state setting which will cause an update to the UI
+                            ui.stateChanged(0);       //Will update a state setting which will cause an update to the UI
                         }
                         else {
                             //Log the error result
@@ -61,12 +51,13 @@ public class signIn {
                             // Display a message to the user.
                             errorMessage = "Authentication Failed";
 
-                            ui.changeState();
+                            ui.stateChanged(0);
                         }
 
                     }
                 });
          */
+
 
         return;
     }

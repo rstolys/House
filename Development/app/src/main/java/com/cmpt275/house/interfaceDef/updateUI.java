@@ -8,5 +8,5 @@ package com.cmpt275.house.interfaceDef;
 ///////////////////////////////////////////////////////
 public interface updateUI {
 
-    public void stateChanged();
+    public void stateChanged(int typeOfChange);
 }

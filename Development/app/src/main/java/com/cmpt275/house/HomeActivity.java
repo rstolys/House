@@ -25,7 +25,6 @@ public class HomeActivity extends android.app.Activity {
                 R.id.navBar_home, R.id.navBar_tasks, R.id.navBar_houses, R.id.navBar_Settings)
                 .build();
         /*
-
         NavController navController = Navigation.findNavController(this, R.id.nav_graph);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);

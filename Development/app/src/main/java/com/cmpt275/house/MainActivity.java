@@ -87,17 +87,14 @@ public class MainActivity extends AppCompatActivity implements updateUI {
         EditText email = findViewById(R.id.emailOfUser);
         EditText password = findViewById(R.id.passwordOfUser);
 
-        auth.setEmail(email.getText().toString());
-        auth.setPassword(password.getText().toString());
-
         //Call function to signIn the user
-        auth.signInUser();
+        auth.signInUser(email.getText().toString(), password.getText().toString());
     }
 
     ////////////////////////////////////////////////
     /// Will be called at end of async functions that need to update the ui
     ////////////////////////////////////////////////
-    public void stateChanged() {
+    public void stateChanged(int typeOfChange) {
         //Will be called by functions required to update the ui
 
         //Check if the user is signed in -- open home page
