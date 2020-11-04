@@ -1,11 +1,12 @@
 package com.cmpt275.house.classDef;
 
-import com.cmpt275.house.interfaceDef.updateUI;
+import com.cmpt275.house.interfaceDef.signIn;
+
 import com.cmpt275.house.interfaceDef.updateUI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class signIn {
+public class userAuth implements signIn {
     ///
     /// Class Variables
     ///
@@ -22,7 +23,7 @@ public class signIn {
     ///
     /// Class Functions
     ///
-    public signIn(updateUI ui) {
+    public userAuth(updateUI ui) {
         this.ui = ui;       //Set the class implementing our ui updates
     }
 
@@ -62,10 +63,13 @@ public class signIn {
         return;
     }
 
-    public FirebaseUser getUserState() {
-        //Get the current user state and assign to private variable
-        currentUser = firebaseAuth.getCurrentUser();
-        return currentUser;
+    public void createAccount(String email, String displayName, String password) {
+        //Do nothing for now
+        ui.stateChanged(0);
+    }
+
+    public void forgotPassword(String email) {
+        //Do nothing for now -- will call firebase forgot password
     }
 
     public boolean isUserSignedIn() {
