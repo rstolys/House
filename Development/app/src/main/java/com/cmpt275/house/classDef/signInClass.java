@@ -6,10 +6,10 @@ import com.cmpt275.house.interfaceDef.updateUI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class userAuth implements signIn {
-    ///
-    /// Class Variables
-    ///
+public class signInClass implements signIn {
+    //
+    // Class Variables
+    //
     private updateUI ui;            //Interface to update the UI state
 
     private FirebaseAuth firebaseAuth;
@@ -20,10 +20,10 @@ public class userAuth implements signIn {
     private String errorMessage = "";
 
 
-    ///
-    /// Class Functions
-    ///
-    public userAuth(updateUI ui) {
+    //
+    // Class Functions
+    //
+    public signInClass(updateUI ui) {
         this.ui = ui;       //Set the class implementing our ui updates
     }
 

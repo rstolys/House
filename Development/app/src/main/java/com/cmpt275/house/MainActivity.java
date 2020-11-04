@@ -1,6 +1,6 @@
 package com.cmpt275.house;
 
-import com.cmpt275.house.classDef.userAuth;
+import com.cmpt275.house.classDef.signInClass;
 import com.cmpt275.house.interfaceDef.updateUI;
 
 import android.content.Intent;
@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity implements updateUI {
 
-    private userAuth auth = new userAuth(this);
+    private signInClass auth = new signInClass(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

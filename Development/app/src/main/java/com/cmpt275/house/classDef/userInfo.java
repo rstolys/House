@@ -3,7 +3,7 @@ package com.cmpt275.house.classDef;
 import org.json.JSONArray;
 
 public class userInfo {
-    public int id;
+    public String id;
     public String displayName;
     public String email;
     public boolean notificationsAllowed;
