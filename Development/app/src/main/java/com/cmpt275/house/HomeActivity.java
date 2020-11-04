@@ -29,8 +29,6 @@ public class HomeActivity extends android.app.Activity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
          */
-
-
     }
 
     @Override
