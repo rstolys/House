@@ -59,5 +59,7 @@
     <string name="reset_password_button">Reset Password</string>
     <string name="notification_settings_title">Notification Settings</string>
     <string name="toggle_notification_button">ON</string>
+    <string name="save_button">SAVE</string>
+    <string name="give_feedback_button">Give Feedback</string>
 
 </resources>
