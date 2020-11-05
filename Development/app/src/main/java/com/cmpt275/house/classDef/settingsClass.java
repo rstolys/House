@@ -1,8 +1,9 @@
 package com.cmpt275.house.classDef;
 
 import com.cmpt275.house.interfaceDef.settings;
+import com.cmpt275.house.interfaceDef.settingsCallbacks;
 
-class settingsClass implements settings {
+class settingsClass implements settings, settingsCallbacks {
 
     //
     // Class Variables
@@ -12,35 +13,40 @@ class settingsClass implements settings {
     //
     // Class Functions
     //
-    public boolean logout() {
-        return false;
+    public void logout() {
+        return;
     }
 
-    public String viewLegal() {
-        return null;
+    public void viewLegal() {
+        return;
     }
 
-    public userInfo viewSettings(int user_id) {
-        return null;
+    public void viewSettings(int user_id) {
+        return;
     }
 
-    public userInfo changeDisplayName(String displayName) {
-        return null;
+    public void changeDisplayName(String displayName) {
+        return;
     }
 
-    public userInfo changeEmail(String email) {
-        return null;
+    public void changeEmail(String email) {
+        return;
     }
 
-    public userInfo changeNotifications(boolean allowNotifications) {
-        return null;
+    public void changeNotifications(boolean allowNotifications) {
+        return;
     }
 
-    public boolean resetPassword(String email) {
-        return false;
+    public void resetPassword(String email) {
+        return;
     }
 
-    public boolean provideFeedback(String feedback) {
-        return false;
+    public void provideFeedback(String feedback) {
+        return;
     }
+
+
+    public void onSettingsStringInfoReturn(String str, String functionName) {return;}
+    public void onUserInfoReturn(userInfo uInfos, String functionName) {return;}
+    public void onSettingsBooleanReturn(boolean result, String functionName) {return;}
 }

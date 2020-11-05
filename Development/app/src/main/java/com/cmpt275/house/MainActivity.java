@@ -2,6 +2,7 @@ package com.cmpt275.house;
 
 import com.cmpt275.house.classDef.signInClass;
 import com.cmpt275.house.classDef.taskClass;
+import com.cmpt275.house.classDef.taskInfo;
 import com.cmpt275.house.interfaceDef.task;
 import com.cmpt275.house.interfaceDef.updateUI;
 
