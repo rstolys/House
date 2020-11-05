@@ -1,7 +1,13 @@
 package com.cmpt275.house;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -11,7 +17,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
 
-public class HomeActivity extends android.app.Activity {
+public class HomeActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,15 +27,43 @@ public class HomeActivity extends android.app.Activity {
         BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
+
+        /*AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navBar_home, R.id.navBar_tasks, R.id.navBar_houses, R.id.navBar_Settings)
-                .build();
+                .build();*/
+
+
+        navView.setOnNavigationItemSelectedListener(navListener); //so we can implement it outside onCreate
         /*
         NavController navController = Navigation.findNavController(this, R.id.nav_graph);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
          */
     }
+
+    private BottomNavigationView.OnNavigationItemSelectedListener navListener =
+            new BottomNavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                    switch (item.getItemId()){
+                        case R.id.navBar_home:
+                            break;
+                        case R.id.navBar_tasks:
+                            startActivity(new Intent(HomeActivity.this, TaskActivity.class));
+                            break;
+                        case R.id.navBar_houses:
+                            startActivity(new Intent(HomeActivity.this, HouseActivity.class));
+                            overridePendingTransition(0,0);
+                            break;
+                        case R.id.navBar_Settings:
+                            startActivity(new Intent(HomeActivity.this, SettingsActivity.class));
+                            overridePendingTransition(0,0);
+                            break;
+                    }
+
+                    return true;
+                }
+            };
 
     @Override
     protected void onStart() {
