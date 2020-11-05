@@ -9,7 +9,7 @@
         android:id="@+id/screen_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/nav_view"/>
+        android:layout_above="@id/nav_view" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav_view"
@@ -24,182 +24,202 @@
         app:menu="@menu/bottom_nav_menu" />
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/my_houses_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="80dp"
         android:layout_marginEnd="16dp"
         android:text="@string/my_houses_title"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ScrollView
-        android:layout_width="329dp"
-        android:layout_height="545dp"
-        android:layout_marginTop="16dp"
+    <LinearLayout
+        android:id="@+id/my_houses_list"
+        android:layout_width="326dp"
+        android:layout_height="509dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="150dp"
+        android:layout_marginEnd="40dp"
         android:layout_marginBottom="16dp"
+        android:background="@color/white"
+        android:clickable="false"
+        android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/nav_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView6">
+        app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
+        <TableRow
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="35dp">
 
             <TextView
-                android:id="@+id/house1_title"
+                android:id="@+id/house1_name"
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
                 android:background="@android:color/holo_blue_bright"
-                android:text="@string/house1_title" />
+                android:shadowRadius="@dimen/activity_horizontal_margin"
+                android:text="@string/house1_name"
+                android:textIsSelectable="false"
+                android:textSize="18sp" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/house1_task1"
+                android:id="@+id/house1_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/house1_task1" />
+                android:background="@android:color/holo_blue_bright"
+                android:text="@string/house1_description" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/holo_blue_bright">
 
             <TextView
-                android:id="@+id/house1_task2"
+                android:id="@+id/house1_members_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/house1_members_title" />
+
+            <TextView
+                android:id="@+id/house1_members_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/house1_task2" />
+                android:text="@string/house1_members_list" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/holo_blue_bright">
 
             <TextView
-                android:id="@+id/house1_task3"
+                android:id="@+id/house1_task1_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/house1_task1_title" />
+
+            <TextView
+                android:id="@+id/house1_task1_name"
+                android:layout_width="165dp"
+                android:layout_height="match_parent"
+                android:lines="1"
+                android:maxLines="1"
+                android:text="@string/house1_task1_name" />
+
+            <TextView
+                android:id="@+id/house1_due_date_title"
+                android:layout_width="71dp"
+                android:layout_height="wrap_content"
+                android:background="?attr/actionBarItemBackground"
+                android:text="@string/house1_due_date_title" />
+
+            <TextView
+                android:id="@+id/house1_task1_due_date"
+                android:layout_width="48dp"
+                android:layout_height="wrap_content"
+                android:lines="1"
+                android:text="@string/house1_task1_due_date" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/holo_blue_bright">
+
+            <TextView
+                android:id="@+id/house1_task2_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/house1_task2_title" />
+
+            <TextView
+                android:id="@+id/house1_task2_name"
+                android:layout_width="165dp"
+                android:layout_height="match_parent"
+                android:lines="1"
+                android:maxLines="1"
+                android:text="@string/house1_task2_name" />
+
+            <TextView
+                android:id="@+id/house1_due_date_title2"
+                android:layout_width="71dp"
+                android:layout_height="wrap_content"
+                android:background="@color/cardview_shadow_end_color"
+                android:text="@string/house1_due_date_title" />
+
+            <TextView
+                android:id="@+id/house1_task2_due_date2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:lines="1"
+                android:text="@string/house1_task2_due_date" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/holo_blue_bright">
+
+            <TextView
+                android:id="@+id/house1_task3_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/house1_task3_title" />
+
+            <TextView
+                android:id="@+id/house1_task3_name"
+                android:layout_width="165dp"
+                android:layout_height="match_parent"
+                android:lines="1"
+                android:maxLines="1"
+                android:text="@string/house1_task3_name" />
+
+            <TextView
+                android:id="@+id/house1_due_date_title3"
+                android:layout_width="71dp"
+                android:layout_height="wrap_content"
+                android:background="@color/material_on_surface_stroke"
+                android:text="@string/house1_due_date_title" />
+
+            <TextView
+                android:id="@+id/house1_task3_due_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:lines="1"
+                android:text="@string/house1_task3_due_date" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/holo_blue_bright">
+
+            <Button
+                android:id="@+id/leave_house1_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/house1_task3" />
+                android:text="@string/leave_house" />
+        </TableRow>
 
-            <TextView
-                android:id="@+id/house1_task4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/house1_task4" />
+        <TextView
+            android:id="@+id/spacer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
-            <TextView
-                android:id="@+id/house1_task5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/house1_task5" />
-
-            <TextView
-                android:id="@+id/house2_title"
-                android:layout_width="match_parent"
-                android:layout_height="35dp"
-                android:background="@android:color/holo_green_light"
-                android:text="@string/house2_title" />
-
-            <TextView
-                android:id="@+id/house2_task1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/house2_task1" />
-
-            <TextView
-                android:id="@+id/house2_task2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/house2_task2" />
-
-            <TextView
-                android:id="@+id/house2_task3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/house2_task3" />
-
-            <TextView
-                android:id="@+id/house2_task4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/house2_task4" />
-
-            <TextView
-                android:id="@+id/house2_task5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/house2_task5" />
-
-            <TextView
-                android:id="@+id/house3_title"
-                android:layout_width="match_parent"
-                android:layout_height="35dp"
-                android:background="@color/purple_200"
-                android:text="@string/house3_title" />
-
-            <TextView
-                android:id="@+id/house3_task1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/house3_task1" />
-
-            <TextView
-                android:id="@+id/house3_task4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/house3_task2" />
-
-            <TextView
-                android:id="@+id/house3_task5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/house3_task3" />
-
-            <TextView
-                android:id="@+id/house3_task3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/house3_task4" />
-
-            <TextView
-                android:id="@+id/house3_task2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/house3_task5" />
-
-            <TextView
-                android:id="@+id/house4_title"
-                android:layout_width="match_parent"
-                android:layout_height="35dp"
-                android:background="@android:color/holo_orange_light"
-                android:text="@string/house4_title" />
-
-            <TextView
-                android:id="@+id/house4_task1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/house4_task1" />
-
-            <TextView
-                android:id="@+id/house4_task2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/house4_task2" />
-
-            <TextView
-                android:id="@+id/house4_task3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/house4_task3" />
-
-            <TextView
-                android:id="@+id/house4_task4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/house4_task4" />
-
-            <TextView
-                android:id="@+id/house4_task5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/house4_task5" />
-
-        </LinearLayout>
-    </ScrollView>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
