@@ -25,13 +25,13 @@
         app:menu="@menu/bottom_nav_menu" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/my_tasks_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="100dp"
         android:layout_marginEnd="16dp"
-        android:text="This is  the tasks page"
+        android:text="@string/my_tasks_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
