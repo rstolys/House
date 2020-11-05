@@ -31,19 +31,7 @@ public class TaskActivity extends AppCompatActivity {
         //uInfo = (userInfo) getIntent().getSerializableExtra("userInfo");
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        /*AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navBar_home, R.id.navBar_tasks, R.id.navBar_houses, R.id.navBar_Settings)
-                .build();*/
         navView.setOnNavigationItemSelectedListener(navListener); //so we can implement it outside onCreate
-
-         /*
-        NavController navController = Navigation.findNavController(this, R.id.bottom_nav_menu);
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-        NavigationUI.setupWithNavController(navView, navController);
-         */
-
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
