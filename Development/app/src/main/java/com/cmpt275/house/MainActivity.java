@@ -1,18 +1,22 @@
 package com.cmpt275.house;
 
 import com.cmpt275.house.classDef.signInClass;
+import com.cmpt275.house.classDef.taskClass;
+import com.cmpt275.house.interfaceDef.task;
 import com.cmpt275.house.interfaceDef.updateUI;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity implements updateUI {
 
     private signInClass auth = new signInClass(this);
+    private task taskAction = new taskClass();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +92,10 @@ public class MainActivity extends AppCompatActivity implements updateUI {
         EditText password = findViewById(R.id.passwordOfUser);
 
         //Call function to signIn the user
-        auth.signInUser(email.getText().toString(), password.getText().toString());
+        //auth.signInUser(email.getText().toString(), password.getText().toString());
+
+        //Try to create a task -- tInfo will be filled and sent to db
+        taskAction.createTask(null);
     }
 
     ////////////////////////////////////////////////

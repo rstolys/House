@@ -62,6 +62,8 @@ public class taskFirebaseClass implements TaskBE {
     ////////////////////////////////////////////////////////////
     public void createTask(taskInfo tInfo) {
 
+        Log.d("TEST","in createTask function");
+
         //Create custom class to generate a new document fields
         firebaseTaskDocument newTask = new firebaseTaskDocument(tInfo);
 
