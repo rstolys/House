@@ -3,7 +3,7 @@ package com.cmpt275.house.classDef;
 import org.json.JSONArray;
 
 public class votingInfo {
-    public int id;
+    public String id;
     public String name;
     public int task_id;
     public int yesVotes;

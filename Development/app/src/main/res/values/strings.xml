@@ -23,7 +23,8 @@
     <string name="my_houses">My Houses</string>
     <string name="settings_button">Settings</string>
     <string name="logout_button">Logout</string>
-    <string name="my_houses_tutle">My Houses</string>
+    <!-- Strings related to Houses Page -->
+    <string name="my_houses_title">My Houses</string>
     <string name="house1_title">House 1</string>
     <string name="house2_title">House 2</string>
     <string name="house3_title">House 3</string>
@@ -48,5 +49,17 @@
     <string name="house4_task3">Task 3</string>
     <string name="house4_task4">Task 4</string>
     <string name="house4_task5">Task 5</string>
+    <!-- Strings related to Settings Page -->
+    <string name="my_settings_title">My Settings</string>
+    <string name="account_settings_title">Account Settings</string>
+    <string name="display_name_title">Display Name:</string>
+    <string name="display_email_title">Email:</string>
+    <string name="display_name_input">Name</string>
+    <string name="display_email_input">example@gmail.com</string>
+    <string name="reset_password_button">Reset Password</string>
+    <string name="notification_settings_title">Notification Settings</string>
+    <string name="toggle_notification_button">ON</string>
+    <string name="save_button">SAVE</string>
+    <string name="give_feedback_button">Give Feedback</string>
 
 </resources>
