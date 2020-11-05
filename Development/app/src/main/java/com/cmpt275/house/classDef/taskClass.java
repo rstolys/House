@@ -75,8 +75,17 @@ public class taskClass implements task, taskCallbacks {
     }
 
     public void onTaskInfoReturn(taskInfo tInfo, String functionName) {
+
+        Log.d("RETURN:", "Return from " + functionName);
+        Log.d("RETURN:", "is tInfo is null: " + (tInfo == null));
+
+        switch(functionName) {
+            case "createTask":
+                //Call function to deal with this result
+                break;
+        }
         //Deal with callback here
-        Log.d("TEST", "Return from " + functionName);
-        Log.d("TEST", "is tInfo is null: " + (tInfo == null));
+
+
     }
 }

@@ -1,6 +1,8 @@
 package com.cmpt275.house.classDef;
 
-public class feedbackInfo {
+import java.io.Serializable;
+
+public class feedbackInfo implements Serializable {
     public String id;
     public int user_id;
     public String feedback;

@@ -12,14 +12,23 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.cmpt275.house.R;
+import com.cmpt275.house.classDef.taskInfo;
+import com.cmpt275.house.classDef.userInfo;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class TaskActivity extends AppCompatActivity {
+
+    taskInfo tInfo;
+    userInfo uInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tasks);
+
+        //Will get the task info
+        //tInfo = (taskInfo) getIntent().getSerializableExtra("taskInfo");
+        //uInfo = (userInfo) getIntent().getSerializableExtra("userInfo");
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each

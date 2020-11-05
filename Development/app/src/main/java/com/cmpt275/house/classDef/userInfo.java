@@ -2,7 +2,9 @@ package com.cmpt275.house.classDef;
 
 import org.json.JSONArray;
 
-public class userInfo {
+import java.io.Serializable;
+
+public class userInfo implements Serializable {
     public String id;
     public String displayName;
     public String email;

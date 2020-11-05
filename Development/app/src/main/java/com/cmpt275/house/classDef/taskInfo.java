@@ -1,8 +1,9 @@
 package com.cmpt275.house.classDef;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class taskInfo {
+public class taskInfo implements Serializable {
     public String id;
     public String name;
     public String description;

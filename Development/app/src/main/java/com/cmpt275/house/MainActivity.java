@@ -92,10 +92,7 @@ public class MainActivity extends AppCompatActivity implements updateUI {
         EditText password = findViewById(R.id.passwordOfUser);
 
         //Call function to signIn the user
-        //auth.signInUser(email.getText().toString(), password.getText().toString());
-
-        //Try to create a task -- tInfo will be filled and sent to db
-        taskAction.createTask(null);
+        auth.signInUser(email.getText().toString(), password.getText().toString());
     }
 
     ////////////////////////////////////////////////
@@ -107,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements updateUI {
         //Check if the user is signed in -- open home page
         if(auth.isUserSignedIn()) {
             Intent homeIntent = new Intent(MainActivity.this, HomeActivity.class);
-            homeIntent.putExtra("type", 0); //Specify startup type
+            homeIntent.putExtra("userInfo", 0); //Specify startup type
             startActivity(homeIntent);
         }
     }
