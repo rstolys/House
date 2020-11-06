@@ -4,17 +4,19 @@ import com.cmpt275.house.classDef.houseInfo;
 import com.cmpt275.house.classDef.userInfo;
 import com.cmpt275.house.classDef.votingInfo;
 
+import java.util.List;
+
 public interface HouseBE {
-    public int[] getCurrentHouses(userInfo uInfo);
-    public houseInfo getHouseInfo(int house_id);
-    public houseInfo createNewHouse(houseInfo hInfo);
-    public boolean deleteHouse(houseInfo hInfo);
-    public userInfo getUserInfoInHouse(int user_id);
-    public userInfo setUserRole(userInfo uInfo, int house_id);
-    public userInfo addMember(userInfo uInfo, int house_id);
-    public boolean deleteMember(userInfo uInfo, int house_id);
-    public userInfo makeMemberAdmin(userInfo uInfo);
-    public votingInfo getHouseVotes(int[] house_ids);
-    public votingInfo submitVote(votingInfo vInfo, int voteValue);
-    public houseInfo editSettings(houseInfo hInfo);
+    public void getCurrentHouses(userInfo uInfo);
+    public void getHouseInfo(String house_id);
+    public void createNewHouse(houseInfo hInfo);
+    public void deleteHouse(houseInfo hInfo);
+    public void getUserInfoInHouse(String user_id);
+    public void setUserRole(userInfo uInfo, String house_id);
+    public void addMember(userInfo uInfo, String house_id);
+    public void deleteMember(userInfo uInfo, String house_id);
+    public void makeMemberAdmin(userInfo uInfo);
+    public void getHouseVotes(List<String> house_ids);
+    public void submitVote(votingInfo vInfo, String voteValue);
+    public void editSettings(houseInfo hInfo);
 }

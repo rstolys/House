@@ -64,7 +64,7 @@ public class signInClass implements signIn, userCallbacks {
         return;
     }
 
-    public void createAccount(String email, String displayName, String password) {
+    public void createAccount(userInfo uInfo) {
         //Do nothing for now
         ui.stateChanged(0);
     }

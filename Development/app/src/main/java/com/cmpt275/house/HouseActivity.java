@@ -11,6 +11,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.cmpt275.house.classDef.userInfo;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
@@ -34,7 +35,7 @@ public class HouseActivity extends AppCompatActivity {
                     switch (item.getItemId()){
                         case R.id.navBar_home:
                             Intent newIntent = new Intent(HouseActivity.this, HomeActivity.class);
-                            newIntent.putExtra("userInfo", 0);
+                            newIntent.putExtra("userInfo", new userInfo());
                             startActivity(newIntent);
                             break;
                         case R.id.navBar_tasks:

@@ -3,7 +3,7 @@ package com.cmpt275.house.interfaceDef;
 import com.cmpt275.house.classDef.userInfo;
 
 public interface userCallbacks {
-    public void onUserInfoArrayReturn(userInfo uInfo);
-    public void onUserInfoReturn(userInfo uInfo);
-    public void onUserBooleanReturn(userInfo uInfo);
+    public void onUserInfoArrayReturn(userInfo uInfo, String functionName);
+    public void onUserInfoReturn(userInfo uInfo, String functionName);
+    public void onUserBooleanReturn(userInfo uInfo, String functionName);
 }

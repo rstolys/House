@@ -1,28 +1,35 @@
 package com.cmpt275.house.classDef;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import com.cmpt275.house.classDef.taskInfo;
 
 import java.util.Date;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class firebaseTaskDocument {
     //
     // Class Variables
     //
-    private List<String> assignedTo;
-    private double costAssociated;
-    private String createdBy;
+    private Map<String, String> assignedTo;
+    private Map<String, String> createdBy;
     private String description;
     private int difficultyScore;
+    private double costAssociated;
     private Date dueDate;
-    private String house_id;
-    private String houseName;
+    private Map<String, String> house;
     private List<String> itemList;
     private String name;
     private Date notificationTime;
     private int status;
     private List<Integer> tag;
+
+
 
     //
     // Class Functions
@@ -33,7 +40,7 @@ public class firebaseTaskDocument {
     // Firebase constructor
     //
     /////////////////////////////////////////////////////////
-    public firebaseTaskDocument(List<String> assignedTo, double costAssociated, int createdBy, String description, int difficultyScore, Date dueDate, int house_id, String houseName, List<String> itemList, String name, Date notificationTime, int status, List<Integer> tag) {
+    public firebaseTaskDocument() {
         //Do nothing
     }
 
@@ -42,7 +49,7 @@ public class firebaseTaskDocument {
     // Firebase constructor 2
     //
     /////////////////////////////////////////////////////////
-    public firebaseTaskDocument() {
+    public firebaseTaskDocument(Map<String, String> assignedTo, Map<String, String> createdBy, String description, int difficultyScore, double costAssociated, Date dueDate, Map<String, String> house, List<String> itemList, String name, Date notificationTime, int status, List<Integer> tag) {
         //Do nothing
     }
 
@@ -53,42 +60,28 @@ public class firebaseTaskDocument {
     //
     /////////////////////////////////////////////////////////
     public firebaseTaskDocument(taskInfo tInfo) {
+
         //Set the values based on the task info provided
+        assignedTo = tInfo.assignedTo;
 
-        //set assignedTo
-        if(tInfo.assignedTo.length > 0)
-            assignedTo = Arrays.asList(tInfo.assignedTo);
-        else
-            assignedTo = null;
+        createdBy = new HashMap<>();
+        createdBy.put(tInfo.createdBy_id, tInfo.createdBy);
 
-        //Set costAssociated, createdBy, description and difficultyScore
-        costAssociated = tInfo.costAssociated;
-        createdBy = tInfo.createdBy;
         description = tInfo.description;
         difficultyScore = tInfo.difficultyScore;
-
-        //Set the dueDate, house_id
+        costAssociated = tInfo.costAssociated;
         dueDate = tInfo.dueDate;
-        house_id = tInfo.house_id;
-        houseName = tInfo.houseName;
 
-        //Set the item list
-        if(tInfo.itemList.length > 0)
-            itemList = Arrays.asList(tInfo.itemList);
-        else
-            itemList = null;
+        house = new HashMap<>();
+        house.put(tInfo.house_id, tInfo.houseName);
 
-        //Set the name, notificationTime and status
+        itemList = tInfo.itemList;
         name = tInfo.name;
         notificationTime = tInfo.notificationTime;
         status = tInfo.status;
 
-        //Set the tag list
-        if(tInfo.tag.length > 0)
-            tag = Arrays.asList(tInfo.tag);
-        else
-            tag = null;
-
+        tagMapping mapTags = new tagMapping();
+        tag = mapTags.mapList_StringToInt(tInfo.tag);
 
         return;
     }
@@ -96,9 +89,9 @@ public class firebaseTaskDocument {
     /////////////////////////////////////////////////////////
     //
     // Will create a taskInfo class from the contents of this class
-    //      with some other info added
     //
     /////////////////////////////////////////////////////////
+    @RequiresApi(api = Build.VERSION_CODES.N)    //This occurs so that we don't use this without the required API. We will have it
     public taskInfo toTaskInfo(String task_id) {
         //Define new taskInfo class
         taskInfo returnTask = new taskInfo();
@@ -106,44 +99,46 @@ public class firebaseTaskDocument {
         returnTask.id = task_id;
         returnTask.name = name;
         returnTask.description = description;
-        returnTask.createdBy = createdBy;
+
+        //There will only be 1 element in map
+        createdBy.forEach((createdBy_id, createdBy) -> {
+            returnTask.createdBy = createdBy;
+            returnTask.createdBy_id = createdBy_id;
+        });
+
         returnTask.status = status;
+        returnTask.assignedTo = assignedTo;
 
-        returnTask.assignedTo = new String[assignedTo.size()];;
-        assignedTo.toArray(returnTask.assignedTo);
+        //There  will only be 1 house in map
+        house.forEach((house_id, houseName) -> {
+            returnTask.houseName = houseName;
+            returnTask.house_id = house_id;
+        });
 
-        returnTask.houseName = houseName;
-        returnTask.house_id = house_id;
         returnTask.costAssociated = costAssociated;
         returnTask.difficultyScore = difficultyScore;
         returnTask.dueDate = dueDate;
+        returnTask.itemList = itemList;
         returnTask.notificationTime = notificationTime;
-        returnTask.difficultyScore = difficultyScore;
 
-        returnTask.itemList = new String[itemList.size()];;
-        itemList.toArray(returnTask.itemList);
-
-        returnTask.tag = new Integer[tag.size()];;
-        tag.toArray(returnTask.tag);
+        tagMapping mapTags = new tagMapping();
+        returnTask.tag = mapTags.mapList_IntToString(tag);
 
 
         return returnTask;
     }
+
 
     //
     // Getter functions for firebase to access variables
     //
 
 
-    public List<String> getAssignedTo() {
+    public Map<String, String> getAssignedTo() {
         return assignedTo;
     }
 
-    public double getCostAssociated() {
-        return costAssociated;
-    }
-
-    public String getCreatedBy() {
+    public Map<String, String> getCreatedBy() {
         return createdBy;
     }
 
@@ -155,16 +150,16 @@ public class firebaseTaskDocument {
         return difficultyScore;
     }
 
+    public double getCostAssociated() {
+        return costAssociated;
+    }
+
     public Date getDueDate() {
         return dueDate;
     }
 
-    public String getHouse_id() {
-        return house_id;
-    }
-
-    public String getHouseName() {
-        return houseName;
+    public Map<String, String> getHouse() {
+        return house;
     }
 
     public List<String> getItemList() {
