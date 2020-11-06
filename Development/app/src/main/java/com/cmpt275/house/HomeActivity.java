@@ -53,7 +53,6 @@ public class HomeActivity extends AppCompatActivity {
                             break;
                         case R.id.navBar_houses:
                             startActivity(new Intent(HomeActivity.this, HouseActivity.class));
-                            overridePendingTransition(0,0);
                             break;
                         case R.id.navBar_Settings:
                             startActivity(new Intent(HomeActivity.this, SettingsActivity.class));
