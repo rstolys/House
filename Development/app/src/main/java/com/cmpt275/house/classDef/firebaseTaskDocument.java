@@ -17,6 +17,7 @@ public class firebaseTaskDocument {
     private int difficultyScore;
     private Date dueDate;
     private String house_id;
+    private String houseName;
     private List<String> itemList;
     private String name;
     private Date notificationTime;
@@ -32,10 +33,18 @@ public class firebaseTaskDocument {
     // Firebase constructor
     //
     /////////////////////////////////////////////////////////
-    public firebaseTaskDocument(List<String> assignedTo, double costAssociated, int createdBy, String description, int difficultyScore, Date dueDate, int house_id, List<String> itemList, String name, Date notificationTime, int status, List<Integer> tag) {
+    public firebaseTaskDocument(List<String> assignedTo, double costAssociated, int createdBy, String description, int difficultyScore, Date dueDate, int house_id, String houseName, List<String> itemList, String name, Date notificationTime, int status, List<Integer> tag) {
         //Do nothing
     }
 
+    /////////////////////////////////////////////////////////
+    //
+    // Firebase constructor 2
+    //
+    /////////////////////////////////////////////////////////
+    public firebaseTaskDocument() {
+        //Do nothing
+    }
 
 
     /////////////////////////////////////////////////////////
@@ -61,6 +70,7 @@ public class firebaseTaskDocument {
         //Set the dueDate, house_id
         dueDate = tInfo.dueDate;
         house_id = tInfo.house_id;
+        houseName = tInfo.houseName;
 
         //Set the item list
         if(tInfo.itemList.length > 0)
@@ -81,6 +91,43 @@ public class firebaseTaskDocument {
 
 
         return;
+    }
+
+    /////////////////////////////////////////////////////////
+    //
+    // Will create a taskInfo class from the contents of this class
+    //      with some other info added
+    //
+    /////////////////////////////////////////////////////////
+    public taskInfo toTaskInfo(String task_id) {
+        //Define new taskInfo class
+        taskInfo returnTask = new taskInfo();
+
+        returnTask.id = task_id;
+        returnTask.name = name;
+        returnTask.description = description;
+        returnTask.createdBy = createdBy;
+        returnTask.status = status;
+
+        returnTask.assignedTo = new String[assignedTo.size()];;
+        assignedTo.toArray(returnTask.assignedTo);
+
+        returnTask.houseName = houseName;
+        returnTask.house_id = house_id;
+        returnTask.costAssociated = costAssociated;
+        returnTask.difficultyScore = difficultyScore;
+        returnTask.dueDate = dueDate;
+        returnTask.notificationTime = notificationTime;
+        returnTask.difficultyScore = difficultyScore;
+
+        returnTask.itemList = new String[itemList.size()];;
+        itemList.toArray(returnTask.itemList);
+
+        returnTask.tag = new Integer[tag.size()];;
+        tag.toArray(returnTask.tag);
+
+
+        return returnTask;
     }
 
     //
@@ -114,6 +161,10 @@ public class firebaseTaskDocument {
 
     public String getHouse_id() {
         return house_id;
+    }
+
+    public String getHouseName() {
+        return houseName;
     }
 
     public List<String> getItemList() {

@@ -2,6 +2,7 @@ package com.cmpt275.house;
 
 import com.cmpt275.house.classDef.signInClass;
 import com.cmpt275.house.classDef.taskClass;
+import com.cmpt275.house.classDef.taskInfo;
 import com.cmpt275.house.interfaceDef.task;
 import com.cmpt275.house.interfaceDef.updateUI;
 
@@ -22,18 +23,6 @@ public class MainActivity extends AppCompatActivity implements updateUI {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        /*
-        BottomNavigationView navView = findViewById(R.id.nav_view);
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications)
-                .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-        NavigationUI.setupWithNavController(navView, navController);
-         */
     }
 
     @Override
@@ -93,9 +82,6 @@ public class MainActivity extends AppCompatActivity implements updateUI {
 
         //Call function to signIn the user
         auth.signInUser(email.getText().toString(), password.getText().toString());
-
-        //Try to create a task -- tInfo will be filled and sent to db
-        //taskAction.createTask(null);
     }
 
     ////////////////////////////////////////////////
@@ -107,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements updateUI {
         //Check if the user is signed in -- open home page
         if(auth.isUserSignedIn()) {
             Intent homeIntent = new Intent(MainActivity.this, HomeActivity.class);
-            homeIntent.putExtra("type", 0); //Specify startup type
+            homeIntent.putExtra("userInfo", 0); //Specify startup type
             startActivity(homeIntent);
         }
     }

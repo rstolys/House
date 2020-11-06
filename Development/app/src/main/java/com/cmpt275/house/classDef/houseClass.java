@@ -15,55 +15,64 @@ class houseClass extends taskClass implements house{
     //
     // Class Functions
     //
-    public boolean createHouse(houseInfo hInfo) {
-        return false;
+    public void createHouse(houseInfo hInfo) {
+        return;
     }
 
-    public boolean joinHouse(int house_id, userInfo uInfo) {
-        return false;
+    public void joinHouse(int house_id, userInfo uInfo) {
+        return;
     }
 
-    public houseInfo[] viewYourHouses(userInfo uInfo) {
-        return new houseInfo[0];
+    public void viewYourHouses(userInfo uInfo) {
+        return;
     }
 
-    public houseInfo viewHouse(int house_id) {
-        return null;
+    public void viewHouse(int house_id) {
+        return;
     }
 
-    public houseInfo approveMember(int house_id, int user_id) {
-        return null;
+    public void approveMember(int house_id, int user_id) {
+        return;
     }
 
-    public houseInfo addMember(String userEmail) {
-        return null;
+    public void addMember(String userEmail) {
+        return;
     }
 
-    public userInfo viewMember(int user_id) {
-        return null;
+    public void viewMember(int user_id) {
+        return;
     }
 
-    public boolean deleteMember(int user_id) {
-        return false;
+    public void removeMember(int user_id) {
+        return;
     }
 
-    public houseInfo makeMemberAdmin(userInfo uInfo) {
-        return null;
+    public void makeMemberAdmin(userInfo uInfo) {
+        return;
     }
 
-    public votingInfo viewVoting(int voting_id) {
-        return null;
+    public void viewVoting(int voting_id) {
+        return;
     }
 
-    public votingInfo submitVote(int voting_id, int voteType, userInfo uInfo) {
-        return null;
+    public void submitVote(int voting_id, int voteType, userInfo uInfo) {
+        return;
     }
 
-    public houseInfo viewSettings(int house_id) {
-        return null;
+    public void viewSettings(int house_id) {
+        return;
     }
 
-    public houseInfo editSettings(houseInfo hInfo) {
-        return null;
+    public void editSettings(houseInfo hInfo) {
+        return;
     }
+
+    public void deleteHouse(houseInfo hInfo) {
+        return;
+    }
+
+
+    public void onHouseInfoArrayReturn(houseInfo[] hInfos, String functionName) {return;}
+    public void onHouseInfoReturn(houseInfo hInfo, String functionName) {return;}
+    public void onHouseBooleanReturn(boolean result, String functionName) {return;}
 }

@@ -1,8 +1,11 @@
 package com.cmpt275.house.classDef;
 
-public class feedbackInfo {
+import java.io.Serializable;
+import java.util.Date;
+
+public class feedbackInfo implements Serializable {
     public String id;
-    public int user_id;
+    public String user_id;
     public String feedback;
-    public int date;                //Date in ms since epoch -- can use java Date
+    public Date date;
 }

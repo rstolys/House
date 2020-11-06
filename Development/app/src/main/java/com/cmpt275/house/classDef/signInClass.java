@@ -3,10 +3,11 @@ package com.cmpt275.house.classDef;
 import com.cmpt275.house.interfaceDef.signIn;
 
 import com.cmpt275.house.interfaceDef.updateUI;
+import com.cmpt275.house.interfaceDef.userCallbacks;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class signInClass implements signIn {
+public class signInClass implements signIn, userCallbacks {
     //
     // Class Variables
     //
@@ -75,5 +76,11 @@ public class signInClass implements signIn {
     public boolean isUserSignedIn() {
         return true; //(currentUser != null);
     }
+
+
+    //userCallbacks
+    public void onUserInfoArrayReturn(userInfo uInfo) {return;}
+    public void onUserInfoReturn(userInfo uInfo) {return;}
+    public void onUserBooleanReturn(userInfo uInfo) {return;}
 
 }

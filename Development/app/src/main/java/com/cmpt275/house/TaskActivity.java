@@ -12,29 +12,26 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.cmpt275.house.R;
+import com.cmpt275.house.classDef.taskInfo;
+import com.cmpt275.house.classDef.userInfo;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class TaskActivity extends AppCompatActivity {
+
+    taskInfo tInfo;
+    userInfo uInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tasks);
 
+        //Will get the task info
+        //tInfo = (taskInfo) getIntent().getSerializableExtra("taskInfo");
+        //uInfo = (userInfo) getIntent().getSerializableExtra("userInfo");
+
         BottomNavigationView navView = findViewById(R.id.nav_view);
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-       /* AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navBar_home, R.id.navBar_tasks, R.id.navBar_houses, R.id.navBar_Settings)
-                .build();*/
         navView.setOnNavigationItemSelectedListener(navListener); //so we can implement it outside onCreate
-
-         /*
-        NavController navController = Navigation.findNavController(this, R.id.bottom_nav_menu);
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-        NavigationUI.setupWithNavController(navView, navController);
-         */
-
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
@@ -49,9 +46,11 @@ public class TaskActivity extends AppCompatActivity {
                             break;
                         case R.id.navBar_houses:
                             startActivity(new Intent(TaskActivity.this, HouseActivity.class));
+                            overridePendingTransition(0,0);
                             break;
                         case R.id.navBar_Settings:
                             startActivity(new Intent(TaskActivity.this, SettingsActivity.class));
+                            overridePendingTransition(0,0);
                             break;
                     }
 

@@ -2,7 +2,9 @@ package com.cmpt275.house.classDef;
 
 import org.json.JSONArray;
 
-public class votingInfo {
+import java.io.Serializable;
+
+public class votingInfo implements Serializable {
     public String id;
     public String name;
     public int task_id;
