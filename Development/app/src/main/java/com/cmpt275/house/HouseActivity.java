@@ -24,7 +24,7 @@ public class HouseActivity extends AppCompatActivity {
         BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
-        /*AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
+       /* AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navBar_home, R.id.navBar_tasks, R.id.navBar_houses, R.id.navBar_Settings)
                 .build();*/
         navView.setOnNavigationItemSelectedListener(navListener); //so we can implement it outside onCreate
@@ -52,7 +52,6 @@ public class HouseActivity extends AppCompatActivity {
                             break;
                         case R.id.navBar_Settings:
                             startActivity(new Intent(HouseActivity.this, SettingsActivity.class));
-                            overridePendingTransition(0,0);
                             break;
                     }
 
