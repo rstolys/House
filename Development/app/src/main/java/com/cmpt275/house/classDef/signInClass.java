@@ -13,12 +13,11 @@ public class signInClass implements signIn, userCallbacks {
     //
     private updateUI ui;            //Interface to update the UI state
 
-    private FirebaseAuth firebaseAuth;
-    private FirebaseUser currentUser;
+    //private FirebaseAuth firebaseAuth; -- move to backend class
+    //private FirebaseUser currentUser; -- move to backend class
 
-    private static final String TAG = "EmailPassword";
+    private static final String TAG = "SignInClass";
 
-    private String errorMessage = "";
 
 
     //
@@ -33,7 +32,7 @@ public class signInClass implements signIn, userCallbacks {
         //Call change state function **Used in Prototype**
         ui.stateChanged(0);
 
-        /*
+        /* Move to  backend class
         firebaseAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener((Executor) this, new OnCompleteListener<AuthResult>() {
 
@@ -64,7 +63,7 @@ public class signInClass implements signIn, userCallbacks {
         return;
     }
 
-    public void createAccount(String email, String displayName, String password) {
+    public void createAccount(userInfo uInfo) {
         //Do nothing for now
         ui.stateChanged(0);
     }
@@ -79,8 +78,8 @@ public class signInClass implements signIn, userCallbacks {
 
 
     //userCallbacks
-    public void onUserInfoArrayReturn(userInfo uInfo) {return;}
-    public void onUserInfoReturn(userInfo uInfo) {return;}
-    public void onUserBooleanReturn(userInfo uInfo) {return;}
+    public void onUserInfoArrayReturn(userInfo[] uInfos, String functionName) {return;}
+    public void onUserInfoReturn(userInfo uInfo, String functionName) {return;}
+    public void onUserBooleanReturn(userInfo uInfo, String functionName) {return;}
 
 }

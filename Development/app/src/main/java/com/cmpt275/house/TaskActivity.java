@@ -50,7 +50,6 @@ public class TaskActivity extends AppCompatActivity {
                             break;
                         case R.id.navBar_Settings:
                             startActivity(new Intent(TaskActivity.this, SettingsActivity.class));
-                            overridePendingTransition(0,0);
                             break;
                     }
 

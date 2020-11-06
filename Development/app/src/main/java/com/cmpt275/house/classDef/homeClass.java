@@ -17,11 +17,11 @@ class homeClass implements home, houseCallbacks, taskCallbacks {
         return;
     }
 
-    public void viewTasks(int user_id) {
+    public void viewTasks(String user_id) {
         return;
     }
 
-    public void viewHouses(int user_id) {
+    public void viewHouses(String user_id) {
         return;
     }
 

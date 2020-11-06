@@ -19,7 +19,7 @@ class houseClass extends taskClass implements house{
         return;
     }
 
-    public void joinHouse(int house_id, userInfo uInfo) {
+    public void joinHouse(String house_id, userInfo uInfo) {
         return;
     }
 
@@ -27,11 +27,11 @@ class houseClass extends taskClass implements house{
         return;
     }
 
-    public void viewHouse(int house_id) {
+    public void viewHouse(String house_id) {
         return;
     }
 
-    public void approveMember(int house_id, int user_id) {
+    public void approveMember(String house_id, String user_id) {
         return;
     }
 
@@ -39,11 +39,11 @@ class houseClass extends taskClass implements house{
         return;
     }
 
-    public void viewMember(int user_id) {
+    public void viewMember(String user_id) {
         return;
     }
 
-    public void removeMember(int user_id) {
+    public void removeMember(String user_id) {
         return;
     }
 
@@ -51,15 +51,15 @@ class houseClass extends taskClass implements house{
         return;
     }
 
-    public void viewVoting(int voting_id) {
+    public void viewVoting(String voting_id) {
         return;
     }
 
-    public void submitVote(int voting_id, int voteType, userInfo uInfo) {
+    public void submitVote(String voting_id, int voteType, userInfo uInfo) {
         return;
     }
 
-    public void viewSettings(int house_id) {
+    public void viewSettings(String house_id) {
         return;
     }
 

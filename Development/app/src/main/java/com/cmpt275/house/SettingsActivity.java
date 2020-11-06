@@ -22,7 +22,19 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
+        // Passing each menu ID as a set of Ids because each
+        // menu should be considered as top level destinations.
+       /* AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
+                R.id.navBar_home, R.id.navBar_tasks, R.id.navBar_houses, R.id.navBar_Settings)
+                .build();*/
         navView.setOnNavigationItemSelectedListener(navListener); //so we can implement it outside onCreate
+
+        /*
+        NavController navController = Navigation.findNavController(this, R.id.bottom_nav_menu);
+        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+        NavigationUI.setupWithNavController(navView, navController);
+         */
+
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
@@ -38,7 +50,6 @@ public class SettingsActivity extends AppCompatActivity {
                             break;
                         case R.id.navBar_houses:
                             startActivity(new Intent(SettingsActivity.this, HouseActivity.class));
-                            overridePendingTransition(0,0);
                             break;
                         case R.id.navBar_Settings:
                             break;
