@@ -3,6 +3,8 @@ package com.cmpt275.house;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,6 +28,14 @@ public class HouseActivity extends AppCompatActivity {
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
         navView.setOnNavigationItemSelectedListener(navListener); //so we can implement it outside onCreate
+
+        Button addHouseButton = findViewById(R.id.add_house_button);
+        addHouseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addHouseButton.setText("Clicked");
+            }
+        });
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
