@@ -78,7 +78,6 @@
     <string name="toggle_notification_button">ON</string>
     <string name="save_button">SAVE</string>
     <string name="give_feedback_button">Give Feedback</string>
-    <string name="add_house_button_title">Add House</string>
 
     <!-- Strings related to Tasks Page -->
     <string name="my_tasks_title">My Tasks</string>
