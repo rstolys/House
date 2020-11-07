@@ -21,7 +21,7 @@ class settingsClass implements settings, settingsCallbacks {
         return;
     }
 
-    public void viewSettings(String user_id) {
+    public void viewSettings(int user_id) {
         return;
     }
 
@@ -46,7 +46,7 @@ class settingsClass implements settings, settingsCallbacks {
     }
 
 
-    public void onSettingsStringReturn(String str, String functionName) {return;}
-    public void onUserInfoReturn(userInfo uInfo, String functionName) {return;}
+    public void onSettingsStringInfoReturn(String str, String functionName) {return;}
+    public void onUserInfoReturn(userInfo uInfos, String functionName) {return;}
     public void onSettingsBooleanReturn(boolean result, String functionName) {return;}
 }

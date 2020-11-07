@@ -7,7 +7,7 @@ import com.cmpt275.house.classDef.userInfo;
 public interface TaskBE {
     public void getCurrentTasks(userInfo uInfo);
     public void getCurrentTasks(houseInfo hInfo);
-    public void getCurrentTasks(userInfo uInfo, String house_id);
+    public void getCurrentTasks(userInfo uInfo, int house_id);
     public void getTaskInfo(String task_id);
     public void setTaskInfo(taskInfo tInfo);
     public void setTaskInfo(taskInfo tInfo, String parameter);

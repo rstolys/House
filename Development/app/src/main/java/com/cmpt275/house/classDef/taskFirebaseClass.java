@@ -43,7 +43,7 @@ public class taskFirebaseClass implements TaskBE {
 
     public void getCurrentTasks(userInfo uInfo) {return;}
     public void getCurrentTasks(houseInfo hInfo) {return;}
-    public void getCurrentTasks(userInfo uInfo, String house_id) {return;}
+    public void getCurrentTasks(userInfo uInfo, int house_id) {return;}
 
 
     ////////////////////////////////////////////////////////////
@@ -186,18 +186,22 @@ public class taskFirebaseClass implements TaskBE {
     ////////////////////////////////////////////////////////////
     public void deleteTask(taskInfo tInfo) {
 
-        Map<String, Object> removeTask = new HashMap<>();
-        removeTask.put("task_ids", FieldValue.arrayRemove(tInfo.id));
+        Map<String, Object> removeHouseTask = new HashMap<>();
+        removeHouseTask.put("task_ids", FieldValue.arrayRemove(tInfo.id));
 
         //Remove the task from the task list in the task house
-        db.collection("houses").document(tInfo.house_id).update(removeTask);
+        db.collection("houses").document(tInfo.house_id).update(removeHouseTask);
+
+
+        Map<String, Object> removeUserTask = new HashMap<>();
+        removeUserTask.put("tasks", FieldValue.arrayRemove(tInfo.id));
 
         //Remove the task from the task list in the task's creator
-        db.collection("users").document(tInfo.createdBy_id).update(removeTask);
+        db.collection("users").document(tInfo.createdBy).update(removeUserTask);
 
         //Remove the task from the task list in the task's assignees
-        for (Map.Entry<String, String> assignMap : tInfo.assignedTo.entrySet()) {
-            db.collection("users").document(assignMap.getKey()).update(removeTask);
+        for(int i = 0; i < tInfo.assignedTo.length; i++) {
+            db.collection("users").document(tInfo.assignedTo[i]).update(removeUserTask);
         }
 
         //If the task has an ongoing vote
@@ -255,13 +259,13 @@ public class taskFirebaseClass implements TaskBE {
 
         switch(parameter) {
             case "assignedTo":
-                newField.put("assignedTo", tInfo.assignedTo);
+                newField.put("assignedTo", Arrays.asList(tInfo.assignedTo));
                 break;
             case "costAssociated":
                 newField.put("costAssociated", tInfo.costAssociated);
                 break;
-            case "createdBy_id":
-                newField.put("createdBy_id", tInfo.createdBy_id);
+            case "createdBy":
+                newField.put("createdBy", tInfo.createdBy);
                 break;
             case "description":
                 newField.put("description", tInfo.description);
@@ -279,7 +283,7 @@ public class taskFirebaseClass implements TaskBE {
                 newField.put("houseName", tInfo.houseName);
                 break;
             case "itemList":
-                newField.put("itemList", tInfo.itemList);
+                newField.put("itemList", Arrays.asList(tInfo.itemList));
                 break;
             case "name":
                 newField.put("name", tInfo.name);
@@ -291,7 +295,7 @@ public class taskFirebaseClass implements TaskBE {
                 newField.put("status", tInfo.status);
                 break;
             case "tag":
-                newField.put("tag", tInfo.tag);
+                newField.put("tag", Arrays.asList(tInfo.tag));
                 break;
 
             default:

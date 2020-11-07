@@ -5,6 +5,6 @@ import com.cmpt275.house.classDef.taskInfo;
 
 public interface home {
     public void logout();
-    public void viewTasks(String user_id);
-    public void viewHouses(String user_id);
+    public void viewTasks(int user_id);
+    public void viewHouses(int user_id);
 }

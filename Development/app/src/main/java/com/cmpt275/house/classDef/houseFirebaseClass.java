@@ -1,33 +1,24 @@
 package com.cmpt275.house.classDef;
 
-import com.cmpt275.house.interfaceDef.HouseBE;
-
-import com.cmpt275.house.interfaceDef.houseCallbacks;
-import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.util.List;
-
-public class houseFirebaseClass implements HouseBE {
+public class houseFirebaseClass {
     //
     // Class Variables
     //
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private houseCallbacks hCallback;
-    private final String TAG = "FirebaseHouseAction";
+    //NONE
 
     //
     // Class Functions
     //
-    public void getCurrentHouses(userInfo uInfo) {return;}
-    public void getHouseInfo(String house_id) {return;}
-    public void createNewHouse(houseInfo hInfo) {return;}
-    public void deleteHouse(houseInfo hInfo) {return;}
-    public void getUserInfoInHouse(String user_id) {return;}
-    public void setUserRole(userInfo uInfo, String house_id) {return;}
-    public void addMember(userInfo uInfo, String house_id) {return;}
-    public void deleteMember(userInfo uInfo, String house_id) {return;}
-    public void makeMemberAdmin(userInfo uInfo) {return;}
-    public void getHouseVotes(List<String> house_ids) {return;}
-    public void submitVote(votingInfo vInfo, String voteValue) {return;}
-    public void editSettings(houseInfo hInfo) {return;}
+    public int[] getCurrentHouses(userInfo uInfo) {return null;}
+    public houseInfo getHouseInfo(int house_id) {return null;}
+    public houseInfo createNewHouse(houseInfo hInfo) {return null;}
+    public boolean deleteHouse(houseInfo hInfo) {return false;}
+    public userInfo getUserInfoInHouse(int user_id) {return null;}
+    public userInfo setUserRole(userInfo uInfo, int house_id) {return null;}
+    public userInfo addMember(userInfo uInfo, int house_id) {return null;}
+    public boolean deleteMember(userInfo uInfo, int house_id) {return false;}
+    public userInfo makeMemberAdmin(userInfo uInfo) {return null;}
+    public votingInfo getHouseVotes(int[] house_ids) {return null;}
+    public votingInfo submitVote(votingInfo vInfo, int voteValue) {return null;}
+    public houseInfo editSettings(houseInfo hInfo) {return null;}
 }
