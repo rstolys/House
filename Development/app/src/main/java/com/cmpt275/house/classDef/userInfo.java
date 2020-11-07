@@ -11,7 +11,7 @@ public class userInfo implements Serializable {
     public String displayName;
     public String email;
     public boolean notificationsAllowed;
-    public Map<String, String> houses;            //List of {house_id: String, houseRole: String}
-    public List<String> task_ids;                    //List of task ids -- will have to go get the tasks
-    public Map<String, Double> moneyBalance;      //List of {house_id: String, value: double}
+    public Map<String, String> houses;              //List of {house_id: String, houseName: String}
+    public Map<String, String> tasks;               //List of {task_id: String, taskName: String}
+    public Map<String, Double> moneyBalance;        //List of {house_id: String, value: double}
 }
