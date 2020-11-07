@@ -39,28 +39,28 @@
 
     <LinearLayout
         android:id="@+id/my_houses_list"
-        android:layout_width="326dp"
-        android:layout_height="509dp"
+        android:layout_width="330dp"
+        android:layout_height="362dp"
         android:layout_marginStart="40dp"
+        android:layout_marginTop="60dp"
         android:layout_marginEnd="40dp"
-        android:layout_marginBottom="16dp"
         android:background="@color/white"
         android:clickable="false"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/nav_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/my_houses_title">
+        app:layout_constraintTop_toTopOf="@id/my_houses_title">
 
         <TableRow
+            android:id="@+id/house1_row1"
             android:layout_width="match_parent"
-            android:layout_height="35dp">
+            android:layout_height="35dp"
+            android:background="@color/light_blue">
 
             <TextView
                 android:id="@+id/house1_name"
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
-                android:background="@color/light_blue"
                 android:text="@string/house1_name"
                 android:textIsSelectable="false"
                 android:textSize="18sp" />
@@ -68,21 +68,23 @@
         </TableRow>
 
         <TableRow
+            android:id="@+id/house1_row2"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@color/light_blue">
 
             <TextView
                 android:id="@+id/house1_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/light_blue"
                 android:text="@string/house1_description" />
         </TableRow>
 
         <TableRow
+            android:id="@+id/house1_row3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/holo_blue_bright">
+            android:background="@color/light_blue">
 
             <TextView
                 android:id="@+id/house1_members_title"
@@ -98,6 +100,7 @@
         </TableRow>
 
         <TableRow
+            android:id="@+id/house1_row4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/light_blue">
@@ -131,6 +134,7 @@
         </TableRow>
 
         <TableRow
+            android:id="@+id/house1_row5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/light_blue">
@@ -165,6 +169,7 @@
         </TableRow>
 
         <TableRow
+            android:id="@+id/house1_row6"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/light_blue">
@@ -199,6 +204,7 @@
         </TableRow>
 
         <TableRow
+            android:id="@+id/house1_row7"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/light_blue">

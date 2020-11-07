@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TableRow;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,11 +31,61 @@ public class HouseActivity extends AppCompatActivity {
         BottomNavigationView navView = findViewById(R.id.nav_view);
         navView.setOnNavigationItemSelectedListener(navListener); //so we can implement it outside onCreate
 
-        Button addHouseButton = findViewById(R.id.add_house_button);
-        addHouseButton.setOnClickListener(new View.OnClickListener() {
+        Button leaveHouseButton = findViewById(R.id.leave_house1_button);
+        leaveHouseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addHouseButton.setText("Clicked");
+                leaveHouseButton.setText("Left House");
+
+                TableRow house1_row1 = findViewById(R.id.house1_row1);
+                TableRow house1_row2 = findViewById(R.id.house1_row2);
+                TableRow house1_row3 = findViewById(R.id.house1_row3);
+                TableRow house1_row4 = findViewById(R.id.house1_row4);
+                TableRow house1_row5 = findViewById(R.id.house1_row5);
+                TableRow house1_row6 = findViewById(R.id.house1_row6);
+                TableRow house1_row7 = findViewById(R.id.house1_row7);
+
+                house1_row1.setBackgroundColor(0);
+                house1_row2.setBackgroundColor(0);
+                house1_row3.setBackgroundColor(0);
+                house1_row4.setBackgroundColor(0);
+                house1_row5.setBackgroundColor(0);
+                house1_row6.setBackgroundColor(0);
+                house1_row7.setBackgroundColor(0);
+
+                TextView house1_name = findViewById(R.id.house1_name);
+                TextView house1_description = findViewById(R.id.house1_description);
+                TextView house1_members_title = findViewById(R.id.house1_members_title);
+                TextView house1_members_list = findViewById(R.id.house1_members_list);
+                TextView house1_task1_title = findViewById(R.id.house1_task1_title);
+                TextView house1_task1_name = findViewById(R.id.house1_task1_name);
+                TextView house1_due_date_title = findViewById(R.id.house1_due_date_title);
+                TextView house1_task1_due_date = findViewById(R.id.house1_task1_due_date);
+                TextView house1_task2_title = findViewById(R.id.house1_task2_title);
+                TextView house1_task2_name = findViewById(R.id.house1_task2_name);
+                TextView house1_due_date_title2 = findViewById(R.id.house1_due_date_title2);
+                TextView house1_task2_due_date = findViewById(R.id.house1_task2_due_date2);
+                TextView house1_task3_title = findViewById(R.id.house1_task3_title);
+                TextView house1_task3_name = findViewById(R.id.house1_task3_name);
+                TextView house1_due_date_title3 = findViewById(R.id.house1_due_date_title3);
+                TextView house1_task3_due_date = findViewById(R.id.house1_task3_due_date);
+
+                house1_name.setText("");
+                house1_description.setText("");
+                house1_members_title.setText("");
+                house1_members_list.setText("");
+                house1_task1_title.setText("");
+                house1_task1_name.setText("");
+                house1_due_date_title.setText("");
+                house1_task1_due_date.setText("");
+                house1_task2_title.setText("");
+                house1_task2_name.setText("");
+                house1_due_date_title2.setText("");
+                house1_task2_due_date.setText("");
+                house1_task3_title.setText("");
+                house1_task3_name.setText("");
+                house1_due_date_title3.setText("");
+                house1_task3_due_date.setText("");
             }
         });
     }
