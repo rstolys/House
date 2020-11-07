@@ -3,40 +3,29 @@ package com.cmpt275.house;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 
+import com.cmpt275.house.classDef.taskInfo;
+import com.cmpt275.house.classDef.userInfo;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+public class NewTaskActivity extends AppCompatActivity{
 
-public class HouseActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_houses);
-
-        //userInfo uInfo = getIntent().key("userInfo");
+        setContentView(R.layout.activity_newtask);
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
         navView.setOnNavigationItemSelectedListener(navListener); //so we can implement it outside onCreate
-<<<<<<< Updated upstream
-=======
 
-        /*Button addHouseButton = findViewById(R.id .add_house_button);
-        addHouseButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addHouseButton.setText("Clicked");
-            }
-        });*/
->>>>>>> Stashed changes
     }
+
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -44,23 +33,23 @@ public class HouseActivity extends AppCompatActivity {
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                     switch (item.getItemId()){
                         case R.id.navBar_home:
-                            Intent newIntent = new Intent(HouseActivity.this, HomeActivity.class);
-                            newIntent.putExtra("userInfo", 0);
-                            startActivity(newIntent);
+                            startActivity(new Intent(NewTaskActivity.this, HomeActivity.class));
                             break;
                         case R.id.navBar_tasks:
-                            startActivity(new Intent(HouseActivity.this, TaskActivity.class));
+                            startActivity(new Intent(NewTaskActivity.this, TaskActivity.class));
                             break;
                         case R.id.navBar_houses:
+                            startActivity(new Intent(NewTaskActivity.this, HouseActivity.class));
                             break;
                         case R.id.navBar_Settings:
-                            startActivity(new Intent(HouseActivity.this, SettingsActivity.class));
+                            startActivity(new Intent(NewTaskActivity.this, SettingsActivity.class));
                             break;
                     }
 
                     return true;
                 }
             };
+
 
     @Override
     protected void onStart() {

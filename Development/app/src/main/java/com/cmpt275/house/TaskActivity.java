@@ -3,6 +3,8 @@ package com.cmpt275.house;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,7 +34,16 @@ public class TaskActivity extends AppCompatActivity {
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
         navView.setOnNavigationItemSelectedListener(navListener); //so we can implement it outside onCreate
+
+        Button addTask = (Button) findViewById(R.id.addTaskButton);
+        addTask.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(TaskActivity.this, NewTaskActivity.class));
+            }
+        });
     }
+
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -46,7 +57,6 @@ public class TaskActivity extends AppCompatActivity {
                             break;
                         case R.id.navBar_houses:
                             startActivity(new Intent(TaskActivity.this, HouseActivity.class));
-                            overridePendingTransition(0,0);
                             break;
                         case R.id.navBar_Settings:
                             startActivity(new Intent(TaskActivity.this, SettingsActivity.class));
