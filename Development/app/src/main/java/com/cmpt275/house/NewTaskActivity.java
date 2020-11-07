@@ -8,40 +8,22 @@ import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 
-import com.cmpt275.house.R;
 import com.cmpt275.house.classDef.taskInfo;
 import com.cmpt275.house.classDef.userInfo;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class TaskActivity extends AppCompatActivity {
+public class NewTaskActivity extends AppCompatActivity{
 
-    taskInfo tInfo;
-    userInfo uInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tasks);
-
-        //Will get the task info
-        //tInfo = (taskInfo) getIntent().getSerializableExtra("taskInfo");
-        //uInfo = (userInfo) getIntent().getSerializableExtra("userInfo");
+        setContentView(R.layout.activity_newtask);
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
         navView.setOnNavigationItemSelectedListener(navListener); //so we can implement it outside onCreate
 
-        Button addTask = (Button) findViewById(R.id.addTaskButton);
-        addTask.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(TaskActivity.this, NewTaskActivity.class));
-            }
-        });
     }
 
 
@@ -51,15 +33,16 @@ public class TaskActivity extends AppCompatActivity {
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                     switch (item.getItemId()){
                         case R.id.navBar_home:
-                            startActivity(new Intent(TaskActivity.this, HomeActivity.class));
+                            startActivity(new Intent(NewTaskActivity.this, HomeActivity.class));
                             break;
                         case R.id.navBar_tasks:
+                            startActivity(new Intent(NewTaskActivity.this, TaskActivity.class));
                             break;
                         case R.id.navBar_houses:
-                            startActivity(new Intent(TaskActivity.this, HouseActivity.class));
+                            startActivity(new Intent(NewTaskActivity.this, HouseActivity.class));
                             break;
                         case R.id.navBar_Settings:
-                            startActivity(new Intent(TaskActivity.this, SettingsActivity.class));
+                            startActivity(new Intent(NewTaskActivity.this, SettingsActivity.class));
                             break;
                     }
 
