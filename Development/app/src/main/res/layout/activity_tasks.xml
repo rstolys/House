@@ -32,6 +32,7 @@
         android:layout_marginTop="80dp"
         android:layout_marginEnd="16dp"
         android:text="@string/my_tasks_title"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
@@ -46,7 +47,7 @@ android:layout_marginBottom="16dp"
 app:layout_constraintBottom_toTopOf="@+id/nav_view"
 app:layout_constraintEnd_toEndOf="parent"
 app:layout_constraintStart_toStartOf="parent"
-app:layout_constraintTop_toBottomOf="@+id/textView4">
+app:layout_constraintTop_toBottomOf="@id/my_tasks_title">
 
 <LinearLayout
     android:layout_width="match_parent"
@@ -69,7 +70,7 @@ app:layout_constraintTop_toBottomOf="@+id/textView4">
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="200"
-            android:text="@string/house3_task2" />
+            android:text="@string/house1_task3_title" />
 
         <TextView
             android:id="@+id/house3_title"
@@ -77,7 +78,7 @@ app:layout_constraintTop_toBottomOf="@+id/textView4">
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="200"
-            android:text="@string/house3_title" />
+            android:text="@string/house1_name" />
         <TextView
             android:id="@+id/due_date1"
             android:layout_width="match_parent"
@@ -97,7 +98,7 @@ app:layout_constraintTop_toBottomOf="@+id/textView4">
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="200"
-            android:text="@string/house1_task4" />
+            android:text="@string/house2_task3_title" />
 
         <TextView
             android:id="@+id/house1_title"
@@ -105,7 +106,7 @@ app:layout_constraintTop_toBottomOf="@+id/textView4">
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="200"
-            android:text="@string/house1_title" />
+            android:text="@string/house2_name" />
         <TextView
             android:id="@+id/due_date3"
             android:layout_width="match_parent"
@@ -125,7 +126,7 @@ app:layout_constraintTop_toBottomOf="@+id/textView4">
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="200"
-            android:text="@string/house2_task4" />
+            android:text="@string/house1_task1_title" />
 
         <TextView
             android:id="@+id/house2_title"
@@ -133,7 +134,7 @@ app:layout_constraintTop_toBottomOf="@+id/textView4">
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="200"
-            android:text="@string/house2_title" />
+            android:text="@string/house1_name" />
         <TextView
             android:id="@+id/due_date2"
             android:layout_width="match_parent"
@@ -161,14 +162,14 @@ app:layout_constraintTop_toBottomOf="@+id/textView4">
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="200"
-            android:text="@string/house2_task4" />
+            android:text="@string/house1_task2_title" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="200"
-            android:text="@string/house2_title" />
+            android:text="@string/house1_name" />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -192,14 +193,14 @@ app:layout_constraintTop_toBottomOf="@+id/textView4">
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="200"
-            android:text="@string/house1_task4" />
+            android:text="@string/house1_task2_title" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="200"
-            android:text="@string/house1_title" />
+            android:text="@string/house1_name" />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -217,14 +218,14 @@ app:layout_constraintTop_toBottomOf="@+id/textView4">
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="200"
-            android:text="@string/house2_task4" />
+            android:text="@string/house2_task1_title" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="200"
-            android:text="@string/house2_title" />
+            android:text="@string/house3_name" />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -249,14 +250,14 @@ app:layout_constraintTop_toBottomOf="@+id/textView4">
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="200"
-            android:text="@string/house1_task4" />
+            android:text="@string/house1_task3_title" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="200"
-            android:text="@string/house1_title" />
+            android:text="@string/house3_name" />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
