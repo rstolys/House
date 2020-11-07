@@ -45,7 +45,26 @@
     <string name="house1_task3_name">I am the name of task 3</string>
     <string name="house1_task3_due_date">3 Days</string>
 
+    <string name="house2_name"> House 2 Name</string>
+    <string name="house2_description">House 2 Description. What happens if I write a long description does it hold?</string>
+    <string name="house2_members_list">Bob, George, Ralph, Alpha, Beta, Gamma, Zeta, Do, Re, Mi</string>
+    <string name="house2_members_title">Members:</string>
+    <string name="house2_task1_title">Task 1:</string>
+    <string name="house2_task1_name">I am the name of task 1</string>
+    <string name="house2_due_date_title">Due Date</string>
+    <string name="house2_task1_due_date">1 Day</string>
+
+    <string name="house2_task2_title">Task 2:</string>
+    <string name="house2_task2_name">I am the name of task 2</string>
+    <string name="house2_task2_due_date">2 Days</string>
+
+    <string name="house2_task3_title">Task 3:</string>
+    <string name="house2_task3_name">I am the name of task 3</string>
+    <string name="house2_task3_due_date">3 Days</string>
+
     <string name="leave_house">Leave House</string>
+    <string name="house3_name"> House 3 Name</string>
+
 
     <!-- Strings related to Settings Page -->
     <string name="my_settings_title">My Settings</string>
