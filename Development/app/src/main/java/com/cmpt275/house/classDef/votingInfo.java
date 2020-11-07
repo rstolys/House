@@ -3,14 +3,15 @@ package com.cmpt275.house.classDef;
 import org.json.JSONArray;
 
 import java.io.Serializable;
+import java.util.Map;
 
 public class votingInfo implements Serializable {
     public String id;
     public String name;
-    public int task_id;
+    public String task_id;                  //Will have to go get task info
     public int yesVotes;
     public int noVotes;
-    public JSONArray house;             //Will be array of {id: int, name: String}
-    public JSONArray voters;            //Will be array of {id: int, name: String}
-    public String type;                 //Voting type
+    public String house_id;                 //Will have to go get house info
+    public Map<String, String> voters;      //Map of {id, name}
+    public String type;                     //Voting type
 }
