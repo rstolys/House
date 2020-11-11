@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -21,6 +23,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class HouseActivity extends AppCompatActivity {
 
+    FragmentTransaction fragmentTransaction;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,11 +35,29 @@ public class HouseActivity extends AppCompatActivity {
         BottomNavigationView navView = findViewById(R.id.nav_view);
         navView.setOnNavigationItemSelectedListener(navListener); //so we can implement it outside onCreate
 
-        Button leaveHouseButton = findViewById(R.id.leave_house1_button);
-        leaveHouseButton.setOnClickListener(new View.OnClickListener() {
+        Button addHouseButton = findViewById(R.id.add_house_button);
+        addHouseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                leaveHouseButton.setText("Left House");
+                fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                HouseFrag houseFrag = new HouseFrag();
+                fragmentTransaction.add(R.id.my_houses_list, houseFrag);
+                //HouseFrag houseFrag1 = new HouseFrag();
+                //fragmentTransaction.add(R.id.my_houses_list, houseFrag1);
+                fragmentTransaction.commit();
+            }
+        });
+/*
+        HouseFrag houseFrag = new HouseFrag();
+        FragmentManager fm = getSupportFragmentManager();
+
+        fm.beginTransaction().add(R.id.my_houses_list, houseFrag).commit();
+*/
+        /*Button leaveHouse1Button = findViewById(R.id.leave_house1_button);
+        leaveHouse1Button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /*leaveHouse1Button.setText("Left House");
 
                 TableRow house1_row1 = findViewById(R.id.house1_row1);
                 TableRow house1_row2 = findViewById(R.id.house1_row2);
@@ -85,10 +107,11 @@ public class HouseActivity extends AppCompatActivity {
                 house1_task3_title.setText("");
                 house1_task3_name.setText("");
                 house1_due_date_title3.setText("");
-                house1_task3_due_date.setText("");
-            }
-        });
+                house1_task3_due_date.setText("");*/
+        //    }
+        //});
     }
+
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {

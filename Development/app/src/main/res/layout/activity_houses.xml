@@ -5,18 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <FrameLayout
-        android:id="@+id/screen_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/nav_view" />
-
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="0dp"
-        android:layout_marginEnd="0dp"
         android:background="?android:attr/windowBackground"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -37,190 +29,33 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
-        android:id="@+id/my_houses_list"
-        android:layout_width="330dp"
-        android:layout_height="362dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="60dp"
+    <Button
+        android:id="@+id/add_house_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
         android:layout_marginEnd="40dp"
-        android:background="@color/white"
-        android:clickable="false"
-        android:orientation="vertical"
+        android:text="@string/add_house_button_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/my_houses_title"
+        app:layout_constraintTop_toBottomOf="@+id/my_houses_title" />
+
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="339dp"
+        android:layout_height="492dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="180dp"
+        android:layout_marginEnd="40dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/my_houses_title">
+        app:layout_constraintTop_toTopOf="parent">
 
-        <TableRow
-            android:id="@+id/house1_row1"
-            android:layout_width="match_parent"
-            android:layout_height="35dp"
-            android:background="@color/light_blue">
-
-            <TextView
-                android:id="@+id/house1_name"
-                android:layout_width="match_parent"
-                android:layout_height="35dp"
-                android:text="@string/house1_name"
-                android:textIsSelectable="false"
-                android:textSize="18sp" />
-
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/house1_row2"
+        <LinearLayout
+            android:id="@+id/my_houses_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/light_blue">
-
-            <TextView
-                android:id="@+id/house1_description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/house1_description" />
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/house1_row3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/light_blue">
-
-            <TextView
-                android:id="@+id/house1_members_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/house1_members_title" />
-
-            <TextView
-                android:id="@+id/house1_members_list"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/house1_members_list" />
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/house1_row4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/light_blue">
-
-            <TextView
-                android:id="@+id/house1_task1_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/house1_task1_title" />
-
-            <TextView
-                android:id="@+id/house1_task1_name"
-                android:layout_width="165dp"
-                android:layout_height="match_parent"
-                android:lines="1"
-                android:maxLines="1"
-                android:text="@string/house1_task1_name" />
-
-            <TextView
-                android:id="@+id/house1_due_date_title"
-                android:layout_width="71dp"
-                android:layout_height="wrap_content"
-                android:text="@string/house1_due_date_title" />
-
-            <TextView
-                android:id="@+id/house1_task1_due_date"
-                android:layout_width="48dp"
-                android:layout_height="wrap_content"
-                android:lines="1"
-                android:text="@string/house1_task1_due_date" />
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/house1_row5"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/light_blue">
-
-            <TextView
-                android:id="@+id/house1_task2_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/house1_task2_title" />
-
-            <TextView
-                android:id="@+id/house1_task2_name"
-                android:layout_width="165dp"
-                android:layout_height="match_parent"
-                android:lines="1"
-                android:maxLines="1"
-                android:text="@string/house1_task2_name" />
-
-            <TextView
-                android:id="@+id/house1_due_date_title2"
-                android:layout_width="71dp"
-                android:layout_height="wrap_content"
-                android:text="@string/house1_due_date_title" />
-
-            <TextView
-                android:id="@+id/house1_task2_due_date2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:lines="1"
-                android:text="@string/house1_task2_due_date" />
-
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/house1_row6"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/light_blue">
-
-            <TextView
-                android:id="@+id/house1_task3_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/house1_task3_title" />
-
-            <TextView
-                android:id="@+id/house1_task3_name"
-                android:layout_width="165dp"
-                android:layout_height="match_parent"
-                android:lines="1"
-                android:maxLines="1"
-                android:text="@string/house1_task3_name" />
-
-            <TextView
-                android:id="@+id/house1_due_date_title3"
-                android:layout_width="71dp"
-                android:layout_height="wrap_content"
-                android:text="@string/house1_due_date_title" />
-
-            <TextView
-                android:id="@+id/house1_task3_due_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:lines="1"
-                android:text="@string/house1_task3_due_date" />
-
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/house1_row7"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/light_blue">
-
-            <Button
-                android:id="@+id/leave_house1_button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/leave_house" />
-        </TableRow>
-
-        <TextView
-            android:id="@+id/spacer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-    </LinearLayout>
+            android:orientation="vertical" />
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
