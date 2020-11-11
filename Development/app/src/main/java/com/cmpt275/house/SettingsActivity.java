@@ -3,6 +3,7 @@ package com.cmpt275.house;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,10 +12,14 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.cmpt275.house.classDef.taskClass;
+import com.cmpt275.house.interfaceDef.task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
 public class SettingsActivity extends AppCompatActivity {
+
+    private task taskAction = new taskClass();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,4 +111,14 @@ public class SettingsActivity extends AppCompatActivity {
         //System invokes this before the app is destroyed
         //Usually ensures all the activities resources are released
     }
+
+    public void settingButtonClick(View view) {
+        taskAction.deleteTask(null);
+    }
+
+    public void settingButtonClick2(View view) {
+        taskAction.viewTask("YM5SteON5AdGOMMuksc1");
+    }
+
+
 }

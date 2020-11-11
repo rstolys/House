@@ -2,6 +2,7 @@ package com.cmpt275.house;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -17,7 +18,9 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.cmpt275.house.classDef.taskClass;
 import com.cmpt275.house.classDef.userInfo;
+import com.cmpt275.house.interfaceDef.task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
@@ -183,4 +186,10 @@ public class HouseActivity extends AppCompatActivity {
         //System invokes this before the app is destroyed
         //Usually ensures all the activities resources are released
     }
+
+    public void onLeaveHouseClick(View view) {
+        Log.d("onLeaveHouseClick()", "Calling editTask()");
+        taskAction.editTask(null);
+    }
+
 }

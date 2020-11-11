@@ -73,9 +73,30 @@ public class taskClass implements task, taskCallbacks {
     public void editTask(taskInfo tInfo) {
 
         //Do Stuff First
+        //Testing
+        taskInfo myTInfo = new taskInfo();
+
+        //Set parameters for testing
+        myTInfo.id = "YM5SteON5AdGOMMuksc1";
+        myTInfo.name = "Emulator Test Task";
+        myTInfo.description = "I really hope this works";
+        myTInfo.createdBy = "Ryan Stolys";
+        myTInfo.createdBy_id = "NO_IDs_HAVE_BEEN_SET";
+        myTInfo.status = 2;
+        myTInfo.assignedTo = new HashMap<String, String>();
+        myTInfo.assignedTo.put("NO_ID", "Ryan Stolys");
+        myTInfo.houseName = "DevHouse";
+        myTInfo.house_id = "NO_IDs_HAVE_BEEN_SET";
+        myTInfo.costAssociated = 0;
+        myTInfo.difficultyScore = 5;
+        myTInfo.dueDate = new Date();
+        myTInfo.itemList = new ArrayList<String>(Arrays.asList("Test1", "Test2", "Test3"));
+        myTInfo.notificationTime = new Date();
+        myTInfo.tag = new ArrayList<String>(Arrays.asList("Garbage", "Kitchen", "Cleaning"));
+
         //Set Parameter
         String paramToChange = "status";
-        firebaseTask.setTaskInfo(tInfo, paramToChange);
+        firebaseTask.setTaskInfo(myTInfo, paramToChange);
 
         return;
     }
@@ -84,7 +105,7 @@ public class taskClass implements task, taskCallbacks {
         taskInfo myTInfo = new taskInfo();
 
         //Each of these parameters are required to remove a task
-        myTInfo.id = "49DxUwHNYZ4wd3lQ1qd4";                                        //Required
+        myTInfo.id = "YM5SteON5AdGOMMuksc1";                                        //Required
         myTInfo.createdBy_id = "SOME_IDS_ARE_SET";                                  //Required
         myTInfo.status = 2;                                                         //Required
         myTInfo.assignedTo = new HashMap<String, String>();                         //Required

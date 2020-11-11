@@ -14,14 +14,18 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.cmpt275.house.R;
+import com.cmpt275.house.classDef.taskClass;
 import com.cmpt275.house.classDef.taskInfo;
 import com.cmpt275.house.classDef.userInfo;
+import com.cmpt275.house.interfaceDef.task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class TaskActivity extends AppCompatActivity {
 
     taskInfo tInfo;
     userInfo uInfo;
+
+    private task taskAction = new taskClass();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,4 +118,5 @@ public class TaskActivity extends AppCompatActivity {
         //System invokes this before the app is destroyed
         //Usually ensures all the activities resources are released
     }
+
 }
