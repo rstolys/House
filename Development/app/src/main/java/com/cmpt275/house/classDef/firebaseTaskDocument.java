@@ -1,10 +1,6 @@
 package com.cmpt275.house.classDef;
 
-import android.os.Build;
-
-import androidx.annotation.RequiresApi;
-
-import com.cmpt275.house.classDef.taskInfo;
+import com.cmpt275.house.interfaceDef.mapping;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -23,7 +19,7 @@ public class firebaseTaskDocument {
     private Date dueDate;
     private Map<String, String> house;
     private List<String> itemList;
-    private String name;
+    private String displayName;
     private Date notificationTime;
     private int status;
     private List<Integer> tag;
@@ -48,7 +44,7 @@ public class firebaseTaskDocument {
     // Firebase constructor 2
     //
     /////////////////////////////////////////////////////////
-    public firebaseTaskDocument(Map<String, String> assignedTo, Map<String, String> createdBy, String description, int difficultyScore, double costAssociated, Date dueDate, Map<String, String> house, List<String> itemList, String name, Date notificationTime, int status, List<Integer> tag) {
+    public firebaseTaskDocument(Map<String, String> assignedTo, Map<String, String> createdBy, String description, int difficultyScore, double costAssociated, Date dueDate, Map<String, String> house, List<String> itemList, String displayName, Date notificationTime, int status, List<Integer> tag) {
         //Do nothing
     }
 
@@ -75,11 +71,11 @@ public class firebaseTaskDocument {
         house.put(tInfo.house_id, tInfo.houseName);
 
         itemList = tInfo.itemList;
-        name = tInfo.name;
+        displayName = tInfo.name;
         notificationTime = tInfo.notificationTime;
         status = tInfo.status;
 
-        tagMapping mapTags = new tagMapping();
+        mapping mapTags = new tagMapping();
         tag = mapTags.mapList_StringToInt(tInfo.tag);
 
         return;
@@ -95,28 +91,23 @@ public class firebaseTaskDocument {
         taskInfo returnTask = new taskInfo();
 
         returnTask.id = task_id;
-        returnTask.name = name;
+        returnTask.name = displayName;
         returnTask.description = description;
 
         //There will only be 1 element in map
-        /*
-        createdBy.forEach((createdBy_id, createdBy) -> {
-            returnTask.createdBy = createdBy;
-            returnTask.createdBy_id = createdBy_id;
-        });
-        */
-
+        for(Map.Entry<String, String> entry : createdBy.entrySet()) {
+            returnTask.createdBy_id = entry.getKey();
+            returnTask.createdBy = entry.getValue();
+        }
 
         returnTask.status = status;
         returnTask.assignedTo = assignedTo;
 
         //There  will only be 1 house in map
-        /*
-        house.forEach((house_id, houseName) -> {
-            returnTask.houseName = houseName;
-            returnTask.house_id = house_id;
-        });
-        */
+        for(Map.Entry<String, String> entry : house.entrySet()) {
+            returnTask.house_id = entry.getKey();
+            returnTask.houseName = entry.getValue();
+        }
 
         returnTask.costAssociated = costAssociated;
         returnTask.difficultyScore = difficultyScore;
@@ -124,7 +115,7 @@ public class firebaseTaskDocument {
         returnTask.itemList = itemList;
         returnTask.notificationTime = notificationTime;
 
-        tagMapping mapTags = new tagMapping();
+        mapping mapTags = new tagMapping();
         returnTask.tag = mapTags.mapList_IntToString(tag);
 
 
@@ -169,8 +160,8 @@ public class firebaseTaskDocument {
         return itemList;
     }
 
-    public String getName() {
-        return name;
+    public String getDisplayName() {
+        return displayName;
     }
 
     public Date getNotificationTime() {

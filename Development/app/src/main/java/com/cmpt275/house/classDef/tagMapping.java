@@ -1,11 +1,13 @@
 package com.cmpt275.house.classDef;
 
+import com.cmpt275.house.interfaceDef.mapping;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class tagMapping {
+public class tagMapping implements mapping {
     private Map<String, Integer> tagStringToInt;
     private Map<Integer, String> tagIntToString;
 
@@ -85,9 +87,8 @@ public class tagMapping {
         //Create an integer list
         List<Integer> intTags = new ArrayList<Integer>(stringTags.size());
 
-        for(int i = 0; i < stringTags.size(); i++) {
+        for(int i = 0; i < stringTags.size(); i++)
             intTags.add(tagStringToInt.get(stringTags.get(i)));
-        }
 
         return intTags;
     }

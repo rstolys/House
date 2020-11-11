@@ -33,7 +33,11 @@ public class taskClass implements task, taskCallbacks {
 
     public void viewTask(String task_id) {
 
-        firebaseTask.getTaskInfo(task_id);
+        userInfo myUInfo = new userInfo();
+
+        myUInfo.id = "NO_ID";
+
+        firebaseTask.getCurrentTasks(myUInfo, "NO_IDs_HAVE_BEEN_SET");
         return;
     }
 
@@ -134,7 +138,25 @@ public class taskClass implements task, taskCallbacks {
     }
 
 
-    public void onTaskInfoArrayReturn(taskInfo[] tInfo, String functionName) { return; }
+    public void onTaskInfoArrayReturn(taskInfo[] tInfo, String functionName) {
+        Log.d("TaskInfoArrayReturn:", "Return from " + functionName);
+        Log.d("TaskInfoArrayReturn:", "Returned " + tInfo.length + " tInfos ");
+
+        switch(functionName) {
+            case "getCurrentTasks(user)":
+                //Call function to deal with this result
+                break;
+
+            case "getCurrentTasks(house)":
+                //Call function to deal with this result
+                break;
+
+            default:
+                break;
+        }
+
+        return;
+    }
 
     public void onTaskInfoReturn(taskInfo tInfo, String functionName) {
 

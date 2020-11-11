@@ -108,7 +108,7 @@ public class HouseActivity extends AppCompatActivity {
                     switch (item.getItemId()){
                         case R.id.navBar_home:
                             Intent newIntent = new Intent(HouseActivity.this, HomeActivity.class);
-                            newIntent.putExtra("userInfo", new userInfo());
+                            newIntent.putExtra("userInfo", new userInfo()); //userInfo.setSerialziable...??
                             startActivity(newIntent);
                             break;
                         case R.id.navBar_tasks:
