@@ -188,8 +188,6 @@ public class HouseActivity extends AppCompatActivity {
     }
 
     public void onLeaveHouseClick(View view) {
-        Log.d("onLeaveHouseClick()", "Calling editTask()");
-        taskAction.editTask(null);
     }
 
 }

@@ -19,8 +19,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class SettingsActivity extends AppCompatActivity {
 
-    private task taskAction = new taskClass();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,14 +109,5 @@ public class SettingsActivity extends AppCompatActivity {
         //System invokes this before the app is destroyed
         //Usually ensures all the activities resources are released
     }
-
-    public void settingButtonClick(View view) {
-        taskAction.deleteTask(null);
-    }
-
-    public void settingButtonClick2(View view) {
-        taskAction.viewTask("YM5SteON5AdGOMMuksc1");
-    }
-
 
 }
