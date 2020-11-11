@@ -2,7 +2,7 @@ package com.cmpt275.house.classDef;
 
 import com.cmpt275.house.interfaceDef.house;
 
-class houseClass extends taskClass implements house{
+public class houseClass extends taskClass implements house{
 
     //
     // Class Variables

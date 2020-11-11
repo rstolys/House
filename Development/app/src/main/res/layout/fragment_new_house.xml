@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".newHouse">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/teal_200"
+        android:orientation="vertical">
+
+        <TableRow
+            android:id="@+id/new_house_row1"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:background="@color/light_blue">
+
+            <EditText
+                android:id="@+id/new_house_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:importantForAutofill="no"
+                android:inputType="textPersonName"
+                android:text="@string/new_house_name" />
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/new_house_row2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/light_blue">
+
+            <EditText
+                android:id="@+id/new_house_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:importantForAutofill="no"
+                android:inputType="textPersonName"
+                android:text="@string/new_house_description" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/new_house_row3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/light_blue">
+
+            <TextView
+                android:id="@+id/new_house_members_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/house1_members_title" />
+
+            <TextView
+                android:id="@+id/new_house_members_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/newHouse_members" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/new_house_row4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/light_blue">
+
+            <Button
+                android:id="@+id/new_house_save_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/save_new_house_button_title" />
+        </TableRow>
+
+        <TextView
+            android:id="@+id/spacer2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white" />
+
+    </LinearLayout>
+</FrameLayout>
