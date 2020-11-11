@@ -90,7 +90,6 @@ public class firebaseTaskDocument {
     // Will create a taskInfo class from the contents of this class
     //
     /////////////////////////////////////////////////////////
-    @RequiresApi(api = Build.VERSION_CODES.N)    //This occurs so that we don't use this without the required API. We will have it
     public taskInfo toTaskInfo(String task_id) {
         //Define new taskInfo class
         taskInfo returnTask = new taskInfo();
@@ -100,19 +99,24 @@ public class firebaseTaskDocument {
         returnTask.description = description;
 
         //There will only be 1 element in map
+        /*
         createdBy.forEach((createdBy_id, createdBy) -> {
             returnTask.createdBy = createdBy;
             returnTask.createdBy_id = createdBy_id;
         });
+        */
+
 
         returnTask.status = status;
         returnTask.assignedTo = assignedTo;
 
         //There  will only be 1 house in map
+        /*
         house.forEach((house_id, houseName) -> {
             returnTask.houseName = houseName;
             returnTask.house_id = house_id;
         });
+        */
 
         returnTask.costAssociated = costAssociated;
         returnTask.difficultyScore = difficultyScore;

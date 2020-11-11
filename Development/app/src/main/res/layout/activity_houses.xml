@@ -213,6 +213,7 @@
                 android:id="@+id/leave_house1_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:onClick="onLeaveHouseClick"
                 android:text="@string/leave_house" />
         </TableRow>
 

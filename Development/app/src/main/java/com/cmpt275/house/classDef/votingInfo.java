@@ -3,6 +3,7 @@ package com.cmpt275.house.classDef;
 import org.json.JSONArray;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Map;
 
 public class votingInfo implements Serializable {
@@ -14,4 +15,5 @@ public class votingInfo implements Serializable {
     public String house_id;                 //Will have to go get house info
     public Map<String, String> voters;      //Map of {id, name}
     public String type;                     //Voting type
+    public Date endOfVote;
 }
