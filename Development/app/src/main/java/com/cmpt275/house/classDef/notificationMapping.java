@@ -12,14 +12,14 @@ public class notificationMapping implements mapping {
     private Map<Integer, String> notificationIntToString;
 
     //String Tags
-    private final String NONE = "Request To Join";
-    private final String WEEKLY = "Member";
-    private final String MONTHLY = "Administrator";
+    public final String NONE = "None";
+    public final String WEEKLY = "Weekly";
+    public final String MONTHLY = "Monthly";
 
     //Integer Tags
-    private final Integer NONE_NUM = 0;
-    private final Integer WEEKLY_NUM = 1;
-    private final Integer MONTHLY_NUM = 2;
+    public final Integer NONE_NUM = 0;
+    public final Integer WEEKLY_NUM = 1;
+    public final Integer MONTHLY_NUM = 2;
 
 
     ////////////////////////////////////////////////////////////

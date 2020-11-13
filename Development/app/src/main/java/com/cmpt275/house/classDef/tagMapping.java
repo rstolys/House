@@ -12,32 +12,32 @@ public class tagMapping implements mapping {
     private Map<Integer, String> tagIntToString;
 
     //String Tags
-    private final String NO_TAG = "No Tag";
-    private final String CLEANING = "Cleaning";
-    private final String KITCHEN = "Kitchen";
-    private final String COOKING = "Cooking";
-    private final String BATHROOM = "Bathroom";
-    private final String GARBAGE = "Garbage";
-    private final String GROCERIES = "Groceries";
-    private final String SHOPPING = "Shopping";
-    private final String IN_MAINTENANCE = "Indoor Maintenance";
-    private final String OUT_MAINTENANCE = "Outdoor Maintenance";
-    private final String GARAGE = "Garage";
-    private final String OTHER = "Other";
+    public final String NO_TAG = "No Tag";
+    public final String CLEANING = "Cleaning";
+    public final String KITCHEN = "Kitchen";
+    public final String COOKING = "Cooking";
+    public final String BATHROOM = "Bathroom";
+    public final String GARBAGE = "Garbage";
+    public final String GROCERIES = "Groceries";
+    public final String SHOPPING = "Shopping";
+    public final String IN_MAINTENANCE = "Indoor Maintenance";
+    public final String OUT_MAINTENANCE = "Outdoor Maintenance";
+    public final String GARAGE = "Garage";
+    public final String OTHER = "Other";
 
     //Integer Tags
-    private final Integer NO_TAG_NUM = -1;
-    private final Integer CLEANING_NUM = 0;
-    private final Integer KITCHEN_NUM = 1;
-    private final Integer COOKING_NUM = 2;
-    private final Integer BATHROOM_NUM = 3;
-    private final Integer GARBAGE_NUM = 4;
-    private final Integer GROCERIES_NUM = 5;
-    private final Integer SHOPPING_NUM = 6;
-    private final Integer IN_MAINTENANCE_NUM = 7;
-    private final Integer OUT_MAINTENANCE_NUM = 8;
-    private final Integer GARAGE_NUM = 9;
-    private final Integer OTHER_NUM = 10;
+    public final Integer NO_TAG_NUM = -1;
+    public final Integer CLEANING_NUM = 0;
+    public final Integer KITCHEN_NUM = 1;
+    public final Integer COOKING_NUM = 2;
+    public final Integer BATHROOM_NUM = 3;
+    public final Integer GARBAGE_NUM = 4;
+    public final Integer GROCERIES_NUM = 5;
+    public final Integer SHOPPING_NUM = 6;
+    public final Integer IN_MAINTENANCE_NUM = 7;
+    public final Integer OUT_MAINTENANCE_NUM = 8;
+    public final Integer GARAGE_NUM = 9;
+    public final Integer OTHER_NUM = 10;
 
 
     ////////////////////////////////////////////////////////////

@@ -12,22 +12,22 @@ public class statusMapping implements mapping {
     private Map<Integer, String> statusIntToString;
 
     //String Tags
-    private final String NOT_SET = "Not Set";
-    private final String NOT_COMPLETE = "Not Complete";
-    private final String COMPLETED = "Completed";
-    private final String LATE = "Late";
-    private final String DISPUTE = "Disputed";
-    private final String REASSIGNMENT_APPROVAL = "Reassignment Being Approved";
-    private final String SWAP_APPROVAL = "Swap Being Approved";
+    public final String NOT_SET = "Not Set";
+    public final String NOT_COMPLETE = "Not Complete";
+    public final String COMPLETED = "Completed";
+    public final String LATE = "Late";
+    public final String DISPUTE = "Disputed";
+    public final String REASSIGNMENT_APPROVAL = "Reassignment Being Approved";
+    public final String SWAP_APPROVAL = "Swap Being Approved";
 
     //Integer Tags
-    private final Integer NOT_SET_NUM = -1;
-    private final Integer NOT_COMPLETE_NUM = 1;
-    private final Integer COMPLETED_NUM = 2;
-    private final Integer LATE_NUM = 3;
-    private final Integer DISPUTE_NUM = 4;
-    private final Integer REASSIGNMENT_APPROVAL_NUM = 5;
-    private final Integer SWAP_APPROVAL_NUM = 6;
+    public final Integer NOT_SET_NUM = -1;
+    public final Integer NOT_COMPLETE_NUM = 1;
+    public final Integer COMPLETED_NUM = 2;
+    public final Integer LATE_NUM = 3;
+    public final Integer DISPUTE_NUM = 4;
+    public final Integer REASSIGNMENT_APPROVAL_NUM = 5;
+    public final Integer SWAP_APPROVAL_NUM = 6;
 
 
     ////////////////////////////////////////////////////////////

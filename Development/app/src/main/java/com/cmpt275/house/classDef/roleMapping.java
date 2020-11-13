@@ -12,14 +12,14 @@ public class roleMapping implements mapping {
     private Map<Integer, String> roleIntToString;
 
     //String Tags
-    private final String REQUEST = "Request To Join";
-    private final String MEMBER = "Member";
-    private final String ADMIN = "Administrator";
+    public final String REQUEST = "Request To Join";
+    public final String MEMBER = "Member";
+    public final String ADMIN = "Administrator";
 
     //Integer Tags
-    private final Integer REQUEST_NUM = 0;
-    private final Integer MEMBER_NUM = 1;
-    private final Integer ADMIN_NUM = 2;
+    public final Integer REQUEST_NUM = 0;
+    public final Integer MEMBER_NUM = 1;
+    public final Integer ADMIN_NUM = 2;
 
 
     ////////////////////////////////////////////////////////////

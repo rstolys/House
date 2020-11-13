@@ -4,6 +4,8 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.cmpt275.house.classDef.databaseObjects.nameObj;
+import com.cmpt275.house.classDef.databaseObjects.taskAssignObj;
 import com.cmpt275.house.interfaceDef.TaskBE;
 import com.cmpt275.house.interfaceDef.mapping;
 import com.cmpt275.house.interfaceDef.taskCallbacks;
@@ -33,9 +35,15 @@ public class taskFirebaseClass implements TaskBE {
     private taskCallbacks tCallback;
     private final String TAG = "FirebaseTaskAction";
 
+    // TODO: add variables below to documentation
+    mapping statusMap;
+    mapping tagMap;
+
+
     //
     // Class Functions
     //
+
     ////////////////////////////////////////////////////////////
     //
     // Constructor which implements the callback functions
@@ -43,6 +51,8 @@ public class taskFirebaseClass implements TaskBE {
     ////////////////////////////////////////////////////////////
     public taskFirebaseClass(taskCallbacks tCallback) {
         this.tCallback = tCallback;
+        statusMap = new statusMapping();
+        tagMap = new tagMapping();
     }
 
 
@@ -62,7 +72,7 @@ public class taskFirebaseClass implements TaskBE {
         }
         else {
             //Get documents from the collection that have user_id specified
-            db.collection("tasks").whereNotEqualTo("assignedTo." + uInfo.id, null).get()
+            db.collection("tasks").whereEqualTo("assignedTo." + uInfo.id + ".exists", true).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> queryResult) {
@@ -116,7 +126,7 @@ public class taskFirebaseClass implements TaskBE {
         }
         else {
             //Get documents from the collection that have house_id specified
-            db.collection("tasks").whereNotEqualTo("house." + hInfo.id, null).get()
+            db.collection("tasks").whereEqualTo("house_id", hInfo.id).get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> queryResult) {
@@ -169,44 +179,44 @@ public class taskFirebaseClass implements TaskBE {
         }
         else {
             //Get documents from the collection that have user_id specified -- need to check house_id after document collected
-            db.collection("tasks").whereNotEqualTo("assignedTo." + uInfo.id, null).get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> queryResult) {
+            db.collection("tasks").whereEqualTo("assignedTo." + uInfo.id + ".exists", true).get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> queryResult) {
 
-                            if(queryResult.isSuccessful()) {
-                                Log.d(TAG, "Successfully Query in getCurrentTasks(user, house_id)");
+                        if(queryResult.isSuccessful()) {
+                            Log.d(TAG, "Successfully Query in getCurrentTasks(user, house_id)");
 
-                                List<taskInfo> taskInfoList = new ArrayList<taskInfo>();
-                                for(QueryDocumentSnapshot document : queryResult.getResult()) {
+                            List<taskInfo> taskInfoList = new ArrayList<taskInfo>();
+                            for(QueryDocumentSnapshot document : queryResult.getResult()) {
 
-                                    //Convert queried document to taskData class
-                                    firebaseTaskDocument taskData = document.toObject(firebaseTaskDocument.class);
+                                //Convert queried document to taskData class
+                                firebaseTaskDocument taskData = document.toObject(firebaseTaskDocument.class);
 
-                                    if(taskData.getHouse().containsKey(house_id)) {
-                                        taskInfoList.add(taskData.toTaskInfo(document.getId()));
-                                        Log.d(TAG, "Added Task Document: " + document.getId());
-                                    }
-                                    else {
-                                        Log.d(TAG, "Task Document: " + document.getId() + " not from house " + house_id);
-                                    }
+                                if(taskData.getHouse_id().equals(house_id)) {
+                                    taskInfoList.add(taskData.toTaskInfo(document.getId()));
                                 }
-
-                                //Convert list to array and return
-                                taskInfo[] taskInfoArray = new taskInfo[taskInfoList.size()];
-                                taskInfoList.toArray(taskInfoArray);
-                                tCallback.onTaskInfoArrayReturn(taskInfoArray, "getCurrentTasks(user, house_id)");
-
+                                else {
+                                    Log.d(TAG, "Task Document: " + document.getId() + " not from house " + house_id + ". house_id=" + taskData.getHouse_id());
+                                }
                             }
-                            else {
-                                Log.d(TAG, "getCurrentTasks(user, house_id): Error getting tasks for user: ", queryResult.getException());
 
-                                //Call function to return task value
-                                tCallback.onTaskInfoArrayReturn(null, "getCurrentTasks(user, house_id)");
-                            }
+                            //Convert list to array and return
+                            taskInfo[] taskInfoArray = new taskInfo[taskInfoList.size()];
+                            taskInfoList.toArray(taskInfoArray);
+                            tCallback.onTaskInfoArrayReturn(taskInfoArray, "getCurrentTasks(user, house_id)");
+
                         }
-                    });
+                        else {
+                            Log.d(TAG, "getCurrentTasks(user, house_id): Error getting tasks for user: ", queryResult.getException());
+
+                            //Call function to return task value
+                            tCallback.onTaskInfoArrayReturn(null, "getCurrentTasks(user, house_id)");
+                        }
+                    }
+                });
         }
+
 
         return;
     }
@@ -220,22 +230,50 @@ public class taskFirebaseClass implements TaskBE {
     public void approveTaskAssignment(taskInfo tInfo, String user_id, boolean taskApproved) {
 
         if(taskApproved) {
-            tInfo.status = 1;       //Set task to not completed
+            //Set the task to approved
+            tInfo.assignedTo.put(user_id, new taskAssignObj(tInfo.assignedTo.get(user_id).name, true, true));
 
-            //Update the task document
-            db.collection("tasks").document(tInfo.id).update("status", tInfo.status)
-                .addOnSuccessListener(documentReference -> {
-                    Log.d(TAG, "Task Document successfully updated!");
+            //check if all the other assignees have approved the task
+            boolean allAssigneesApprove = true;
+            for(String userID : tInfo.assignedTo.keySet()) {
+                if(!tInfo.assignedTo.get(userID).approved)
+                    allAssigneesApprove = false;
+            }
 
-                    //tInfo updated successfully so we can simply return it
-                    tCallback.onTaskInfoReturn(tInfo, "approveTaskAssignment");
-                })
-                .addOnFailureListener(e -> {
-                    Log.w(TAG, "Error updating document", e);
+            //If every assignee approves of the task assignment change the status
+            if(allAssigneesApprove) {
+                tInfo.status = statusMap.mapIntToString(1);       //Set task to not completed from awaiting approval
+            }
 
-                    //IndicateError
-                    tCallback.onTaskInfoReturn(null, "approveTaskAssignment");
-                });
+            //ensure the task_id is true
+            if(tInfo.id == null) {
+                Log.d(TAG, "Invalid task_id. task_id was null");
+
+                tCallback.onTaskInfoReturn(null, "approveTaskAssignment");
+            }
+            else {
+                //
+                //Update the task in the database
+                //
+
+                //Create a custom class updatedTask to modify the document with
+                firebaseTaskDocument updatedTask = new firebaseTaskDocument(tInfo);
+
+                //Update the task document
+                db.collection("tasks").document(tInfo.id).update("assignedTo", updatedTask.getAssignedTo(), "status", updatedTask.getStatus())
+                    .addOnSuccessListener(documentReference -> {
+                        Log.d(TAG, "Task successfully approved!");
+
+                        //tInfo updated successfully so we can simply return it
+                        tCallback.onTaskInfoReturn(tInfo, "approveTaskAssignment");
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.w(TAG, "Error updating document", e);
+
+                        //IndicateError
+                        tCallback.onTaskInfoReturn(null, "approveTaskAssignment");
+                    });
+            }
         }
         else {
             boolean newAssignee = false;
@@ -245,41 +283,47 @@ public class taskFirebaseClass implements TaskBE {
 
             //Check if there is anyone still assigned to the task
             if(tInfo.assignedTo.size() < 1) {
-                tInfo.assignedTo.put(tInfo.createdBy_id, tInfo.createdBy);      //Add the created by user to the task
+                tInfo.assignedTo.put(tInfo.createdBy_id, new taskAssignObj(tInfo.createdBy, true, true));      //Add the created by user to the task
                 newAssignee = true;
             }
 
-            //
-            //Update the task in the database
-            //
+            if(tInfo.id == null) {
+                Log.d(TAG, "Invalid task_id. task_id was null");
 
-            //Create a custom class updatedTask to modify the document with
-            firebaseTaskDocument updatedTask = new firebaseTaskDocument(tInfo);
+                tCallback.onTaskInfoReturn(null, "approveTaskAssignment");
+            }
+            else {
+                //
+                //Update the task in the database
+                //
 
-            boolean finalNewAssignee = newAssignee;
+                //Create a custom class updatedTask to modify the document with
+                firebaseTaskDocument updatedTask = new firebaseTaskDocument(tInfo);
 
-            //Update the task document
-            db.collection("tasks").document(tInfo.id).set(updatedTask, SetOptions.merge())
-                .addOnSuccessListener(documentReference -> {
-                    Log.d(TAG, "Task Document successfully updated!");
+                boolean finalNewAssignee = newAssignee;
 
-                    if(finalNewAssignee) {
-                        //Add a new task to the user who created the task
-                        for(String taskAssignee_id : updatedTask.getAssignedTo().keySet()) {
-                            db.collection("users").document(taskAssignee_id).update("tasks." + tInfo.id, updatedTask.getDisplayName());
+                //Update the task document
+                db.collection("tasks").document(tInfo.id).update("assignedTo", updatedTask.getAssignedTo())
+                    .addOnSuccessListener(documentReference -> {
+                        Log.d(TAG, "Task Document successfully updated!");
+
+                        if(finalNewAssignee) {
+                            //Add a new task to the user who created the task -- will only be one user in this loop
+                            for(String taskAssignee_id : updatedTask.getAssignedTo().keySet()) {
+                                db.collection("users").document(taskAssignee_id).update("tasks." + tInfo.id, new nameObj(updatedTask.getDisplayName(), true));
+                            }
                         }
-                    }
 
-                    //tInfo updated successfully so we can simply return it
-                    tCallback.onTaskInfoReturn(tInfo, "approveTaskAssignment");
-                })
-                .addOnFailureListener(e -> {
-                    Log.w(TAG, "Error updating task", e);
+                        //tInfo updated successfully so we can simply return it
+                        tCallback.onTaskInfoReturn(tInfo, "approveTaskAssignment");
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.w(TAG, "Error updating task", e);
 
-                    //IndicateError
-                    tCallback.onTaskInfoReturn(null, "approveTaskAssignment");
-                });
-
+                        //IndicateError
+                        tCallback.onTaskInfoReturn(null, "approveTaskAssignment");
+                    });
+            }
         }
 
         return;
@@ -383,7 +427,6 @@ public class taskFirebaseClass implements TaskBE {
                 });
         }
 
-
         return;
     }
 
@@ -397,49 +440,68 @@ public class taskFirebaseClass implements TaskBE {
 
         boolean taskAssignedAway = false;
 
-        //Check if the task was assigned to someone other than the creator
-        for(String assigneeUser_id : tInfo.assignedTo.keySet()) {
-            if(tInfo.createdBy_id != assigneeUser_id)
+        //Make sure the approved state matches what it must be for creating a task
+        for (String assignee_id : tInfo.assignedTo.keySet()) {
+
+            if(tInfo.createdBy_id !=  assignee_id) {
+                tInfo.assignedTo.put(assignee_id, new taskAssignObj(tInfo.assignedTo.get(assignee_id).name, true, false));
                 taskAssignedAway = true;
+            }
+            else {
+                tInfo.assignedTo.put(assignee_id, new taskAssignObj(tInfo.assignedTo.get(assignee_id).name, true, true));
+            }
         }
 
-        if(taskAssignedAway)
-            tInfo.status = 5;       //Reassignment in approval
-        else
-            tInfo.status = 1;       //Task Not completed
+        //Ensure the matches the current state
+        if(taskAssignedAway) {
+            tInfo.status = statusMap.mapIntToString(5);     //Task is being reassigned
+        }
+        else {
+            tInfo.status = statusMap.mapIntToString(1);     //Task is not completed
+        }
 
+        //Make sure the house and created by ids exists so that this task can be found
+        if(tInfo.house_id == null || tInfo.createdBy_id == null) {
+            Log.d(TAG, "Invalid taskInfo class parameters");
 
-        //Create custom class to generate a new document fields
-        firebaseTaskDocument newTask = new firebaseTaskDocument(tInfo);
+            //Return null to indicate error in task creation
+            tCallback.onTaskInfoReturn(null, "createTask");
+        }
+        else {
+            //Create custom class to generate a new document
+            firebaseTaskDocument newTask = new firebaseTaskDocument(tInfo);
 
-        //Copy tInfo to be able to return
-        taskInfo finalTInfo = tInfo;
+            //Copy tInfo to be able to return it
+            taskInfo finalTInfo = tInfo;
 
-        //Add the new task to the tasks collection
-        db.collection("tasks").add(newTask)
-            .addOnSuccessListener( documentReference -> {
-                Log.d(TAG, "Task added with ID: " + documentReference.getId());
+            //Add the new task to the tasks collection
+            db.collection("tasks").add(newTask)
+                .addOnSuccessListener( documentReference -> {
+                    Log.d(TAG, "Task added with ID: " + documentReference.getId());
 
-                //Set the id of the task
-                finalTInfo.id = documentReference.getId();
+                    //Set the id of the task
+                    finalTInfo.id = documentReference.getId();
 
-                //Add task to house
-                db.collection("houses").document(finalTInfo.house_id).update("tasks." + finalTInfo.id, newTask.getDisplayName());
+                    //Add task to house
+                    db.collection("houses").document(finalTInfo.house_id)
+                        .update("tasks." + finalTInfo.id, new nameObj(finalTInfo.displayName, true));
 
-                //Add task to users who the task is assigned to
-                for(String taskAssignee_id : newTask.getAssignedTo().keySet()) {
-                    db.collection("users").document(taskAssignee_id).update("tasks." + finalTInfo.id, newTask.getDisplayName());
-                }
+                    //Add task to users who the task is assigned to
+                    for(String taskAssignee_id : newTask.getAssignedTo().keySet()) {
+                        db.collection("users").document(taskAssignee_id)
+                            .update("tasks." + finalTInfo.id, new nameObj(newTask.getDisplayName(), true));
+                    }
 
-                //Return the task info
-                tCallback.onTaskInfoReturn(finalTInfo, "createTask");
-            })
-            .addOnFailureListener(e -> {
-                Log.w(TAG, "Error adding document", e);
+                    //Return the task info
+                    tCallback.onTaskInfoReturn(finalTInfo, "createTask");
+                })
+                .addOnFailureListener(e -> {
+                    Log.w(TAG, "Error adding document", e);
 
-                //Return null to indicate error in task
-                tCallback.onTaskInfoReturn(null, "createTask");
-            });
+                    //Return null to indicate error in task
+                    tCallback.onTaskInfoReturn(null, "createTask");
+                });
+        }
 
         return;
     }
@@ -452,48 +514,56 @@ public class taskFirebaseClass implements TaskBE {
     ////////////////////////////////////////////////////////////
     public void deleteTask(taskInfo tInfo) {
 
-        Map<String, Object> removeTask = new HashMap<>();
-        removeTask.put("task_ids", FieldValue.arrayRemove(tInfo.id));
+        if(tInfo.id == null) {
+            Log.d(TAG, "Invalid task_id. task_id was null");
 
-        //Remove the task from the task list in the task house
-        db.collection("houses").document(tInfo.house_id).update(removeTask);
-
-        //Remove the task from the task list in the task's assignees
-        for (String taskAssignee_id : tInfo.assignedTo.keySet()) {
-            db.collection("users").document(taskAssignee_id).update(removeTask);
+            tCallback.onTaskBooleanReturn(true, "deleteTask");
         }
+        else {
+            Map<String, Object> removeTask = new HashMap<>();
+            removeTask.put("tasks." + tInfo.id, FieldValue.delete());
 
-        //If the task has an ongoing vote
-        if(tInfo.status == 4 || tInfo.status == 5) {
-            db.collection("voting").whereEqualTo("task_id", tInfo.id).get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                //Delete each vote associated with the task
-                                db.collection("voting").document(document.getId()).delete();
+            //Remove the task from the task list in the task house
+            db.collection("houses").document(tInfo.house_id).update(removeTask);
+
+            //Remove the task from the task list in the task's assignees
+            for(String taskAssignee_id : tInfo.assignedTo.keySet()) {
+                db.collection("users").document(taskAssignee_id).update(removeTask);
+            }
+
+            //If the task has an ongoing vote
+            if(statusMap.mapStringToInt(tInfo.status) == 4 || statusMap.mapStringToInt(tInfo.status) == 5) {
+                db.collection("voting").whereEqualTo("task_id", tInfo.id).get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    //Delete each vote associated with the task
+                                    db.collection("voting").document(document.getId()).delete();
+                                }
                             }
                         }
-                    }
+                    });
+            }
+
+
+            //Delete the task from the page
+            db.collection("tasks").document(tInfo.id).delete()
+                .addOnSuccessListener(documentReference -> {
+                    Log.d(TAG, "Successfully Deleted Task: " + tInfo.id);
+
+                    //Return Successful call
+                    tCallback.onTaskBooleanReturn(true, "deleteTask");
+                })
+                .addOnFailureListener(e -> {
+                    Log.w(TAG, "Error removing task: " + tInfo.id, e);
+
+                    //Indicate Error
+                    tCallback.onTaskBooleanReturn(false, "deleteTask");
                 });
         }
 
-
-        //Delete the task from the page
-        db.collection("tasks").document(tInfo.id).delete()
-            .addOnSuccessListener(documentReference -> {
-                Log.d(TAG, "Successfully Deleted Task: " + tInfo.id);
-
-                //Return Successful call
-                tCallback.onTaskBooleanReturn(true, "deleteTask");
-            })
-            .addOnFailureListener(e -> {
-                Log.w(TAG, "Error removing task: " + tInfo.id, e);
-
-                //Indicate Error
-                tCallback.onTaskBooleanReturn(false, "deleteTask");
-            });
 
         return;
     }
@@ -501,12 +571,13 @@ public class taskFirebaseClass implements TaskBE {
 
     ////////////////////////////////////////////////////////////
     //
+    // TODO:
     // Will generate a swap task request
     //
     ////////////////////////////////////////////////////////////
     public void swapTask(taskInfo tInfoA, taskInfo tInfoB) {
 
-        //This function should change the status of a task
+        //Change the status and who the task is assigned to
 
         return;
     }
@@ -536,11 +607,17 @@ public class taskFirebaseClass implements TaskBE {
             case "createdBy_id":
                 newField.put("createdBy_id", tInfo.createdBy_id);
                 break;
+            case "createdBy":
+                newField.put("createdBy", tInfo.createdBy);
+                break;
             case "description":
                 newField.put("description", tInfo.description);
                 break;
             case "difficultyScore":
                 newField.put("difficultyScore", tInfo.difficultyScore);
+                break;
+            case "displayName":
+                newField.put("displayName", tInfo.displayName);
                 break;
             case "dueDate":
                 newField.put("dueDate", tInfo.dueDate);
@@ -554,18 +631,13 @@ public class taskFirebaseClass implements TaskBE {
             case "itemList":
                 newField.put("itemList", tInfo.itemList);
                 break;
-            case "displayName":
-            case "name":
-                newField.put("displayName", tInfo.name);
-                break;
             case "notificationTime":
                 newField.put("notificationTime", tInfo.notificationTime);
                 break;
             case "status":
-                newField.put("status", tInfo.status);
+                newField.put("status", statusMap.mapStringToInt(tInfo.status));
                 break;
             case "tag":
-                mapping tagMap = new tagMapping();
                 newField.put("tag", tagMap.mapList_StringToInt(tInfo.tag));
                 break;
 

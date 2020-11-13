@@ -2,8 +2,11 @@ package com.cmpt275.house.classDef;
 
 import android.util.Log;
 
+import com.cmpt275.house.classDef.databaseObjects.nameObj;
+import com.cmpt275.house.classDef.databaseObjects.taskAssignObj;
 import com.cmpt275.house.classDef.taskInfo;
 
+import com.cmpt275.house.interfaceDef.mapping;
 import com.cmpt275.house.interfaceDef.task;
 import com.cmpt275.house.interfaceDef.taskCallbacks;
 
@@ -34,10 +37,14 @@ public class taskClass implements task, taskCallbacks {
     public void viewTask(String task_id) {
 
         userInfo myUInfo = new userInfo();
+        houseInfo myHInfo = new houseInfo();
 
         myUInfo.id = "NO_ID";
+        myHInfo.id = "NO_IDs_HAVE_BEEN_SET";
 
-        firebaseTask.getCurrentTasks(myUInfo, "NO_IDs_HAVE_BEEN_SET");
+        firebaseTask.getCurrentTasks(myUInfo);
+        firebaseTask.getCurrentTasks(myHInfo);
+        firebaseTask.getCurrentTasks(myUInfo, myHInfo.id);
         return;
     }
 
@@ -48,21 +55,28 @@ public class taskClass implements task, taskCallbacks {
 
         //Set parameters for testing
         myTInfo.id = null;
-        myTInfo.name = "Emulator Test Task";
+        myTInfo.displayName = "Emulator Test Task";
         myTInfo.description = "I really hope this works";
         myTInfo.createdBy = "Ryan Stolys";
         myTInfo.createdBy_id = "NO_IDs_HAVE_BEEN_SET";
-        myTInfo.status = 1;
-        myTInfo.assignedTo = new HashMap<String, String>();
-        myTInfo.assignedTo.put("NO_ID", "Ryan Stolys");
+
+        //Set status value
+        mapping statusMap = new statusMapping();
+        myTInfo.status = statusMap.mapIntToString(5);
+
+        myTInfo.assignedTo.put("NO_ID", new taskAssignObj("Ryan Stolys", true, false));
         myTInfo.houseName = "DevHouse";
         myTInfo.house_id = "NO_IDs_HAVE_BEEN_SET";
         myTInfo.costAssociated = 0;
         myTInfo.difficultyScore = 5;
         myTInfo.dueDate = new Date();
-        myTInfo.itemList = new ArrayList<String>(Arrays.asList("Test1", "Test2", "Test3"));
+        myTInfo.itemList.add("Test1");
+        myTInfo.itemList.add("Test2");
+        myTInfo.itemList.add("Test3");
         myTInfo.notificationTime = new Date();
-        myTInfo.tag = new ArrayList<String>(Arrays.asList("Garbage", "Kitchen", "Cleaning"));
+        myTInfo.tag.add("Garbage");
+        myTInfo.tag.add("Kitchen");
+        myTInfo.tag.add("Cleaning");
 
 
         firebaseTask.createTask(myTInfo);
@@ -81,22 +95,29 @@ public class taskClass implements task, taskCallbacks {
         taskInfo myTInfo = new taskInfo();
 
         //Set parameters for testing
-        myTInfo.id = "YM5SteON5AdGOMMuksc1";
-        myTInfo.name = "Emulator Test Task";
+        myTInfo.id = "4W9wvRhStX55SKEFYSqJ";
+        myTInfo.displayName = "Emulator Test Task";
         myTInfo.description = "I really hope this works";
         myTInfo.createdBy = "Ryan Stolys";
         myTInfo.createdBy_id = "NO_IDs_HAVE_BEEN_SET";
-        myTInfo.status = 2;
-        myTInfo.assignedTo = new HashMap<String, String>();
-        myTInfo.assignedTo.put("NO_ID", "Ryan Stolys");
+
+        //Set status value
+        mapping statusMap = new statusMapping();
+        myTInfo.status = statusMap.mapIntToString(3);
+
+        myTInfo.assignedTo.put("NO_ID", new taskAssignObj("Ryan Stolys", true, false));
         myTInfo.houseName = "DevHouse";
         myTInfo.house_id = "NO_IDs_HAVE_BEEN_SET";
         myTInfo.costAssociated = 0;
         myTInfo.difficultyScore = 5;
         myTInfo.dueDate = new Date();
-        myTInfo.itemList = new ArrayList<String>(Arrays.asList("Test1", "Test2", "Test3"));
+        myTInfo.itemList.add("Test1");
+        myTInfo.itemList.add("Test2");
+        myTInfo.itemList.add("Test3");
         myTInfo.notificationTime = new Date();
-        myTInfo.tag = new ArrayList<String>(Arrays.asList("Garbage", "Kitchen", "Cleaning"));
+        myTInfo.tag.add("Garbage");
+        myTInfo.tag.add("Kitchen");
+        myTInfo.tag.add("Cleaning");
 
         //Set Parameter
         String paramToChange = "status";
@@ -109,12 +130,15 @@ public class taskClass implements task, taskCallbacks {
         taskInfo myTInfo = new taskInfo();
 
         //Each of these parameters are required to remove a task
-        myTInfo.id = "YM5SteON5AdGOMMuksc1";                                        //Required
-        myTInfo.createdBy_id = "SOME_IDS_ARE_SET";                                  //Required
-        myTInfo.status = 2;                                                         //Required
-        myTInfo.assignedTo = new HashMap<String, String>();                         //Required
-        myTInfo.assignedTo.put("NO_ID_SET", "Ryan Stolys");
-        myTInfo.house_id = "NO_IDs_HAVE_BEEN_SET";                                  //Required
+        myTInfo.id = "4W9wvRhStX55SKEFYSqJ";
+        myTInfo.createdBy_id = "SOME_IDS_ARE_SET";
+
+        //Set status value
+        mapping statusMap = new statusMapping();
+        myTInfo.status = statusMap.mapIntToString(2);
+
+        myTInfo.assignedTo.put("NO_ID", new taskAssignObj("Ryan Stolys", true, false));
+        myTInfo.house_id = "NO_IDs_HAVE_BEEN_SET";
 
         firebaseTask.deleteTask(myTInfo);
 
@@ -130,6 +154,34 @@ public class taskClass implements task, taskCallbacks {
     }
 
     public void approveTask(String task_id, userInfo uInfo) {
+
+        taskInfo myTInfo = new taskInfo();
+
+        myTInfo.id = "4W9wvRhStX55SKEFYSqJ";
+        myTInfo.displayName = "Emulator Test Task";
+        myTInfo.description = "I really hope this works";
+        myTInfo.createdBy = "Ryan Stolys";
+        myTInfo.createdBy_id = "NO_IDs_HAVE_BEEN_SET";
+
+        //Set status value
+        mapping statusMap = new statusMapping();
+        myTInfo.status = statusMap.mapIntToString(3);
+
+        myTInfo.assignedTo.put("NO_ID", new taskAssignObj("Ryan Stolys", true, false));
+        myTInfo.houseName = "DevHouse";
+        myTInfo.house_id = "NO_IDs_HAVE_BEEN_SET";
+        myTInfo.costAssociated = 0;
+        myTInfo.difficultyScore = 5;
+        myTInfo.dueDate = new Date();
+        myTInfo.itemList.add("Test1");
+        myTInfo.itemList.add("Test2");
+        myTInfo.itemList.add("Test3");
+        myTInfo.notificationTime = new Date();
+        myTInfo.tag.add("Garbage");
+        myTInfo.tag.add("Kitchen");
+        myTInfo.tag.add("Cleaning");
+
+        firebaseTask.approveTaskAssignment(myTInfo, "NO_ID", false);
         return;
     }
 
@@ -138,9 +190,10 @@ public class taskClass implements task, taskCallbacks {
     }
 
 
-    public void onTaskInfoArrayReturn(taskInfo[] tInfo, String functionName) {
+    public void onTaskInfoArrayReturn(taskInfo[] tInfos, String functionName) {
         Log.d("TaskInfoArrayReturn:", "Return from " + functionName);
-        Log.d("TaskInfoArrayReturn:", "Returned " + tInfo.length + " tInfos ");
+        if(tInfos != null)
+            Log.d("TaskInfoArrayReturn:", "Returned " + tInfos.length + " tInfos ");
 
         switch(functionName) {
             case "getCurrentTasks(user)":
@@ -161,7 +214,8 @@ public class taskClass implements task, taskCallbacks {
     public void onTaskInfoReturn(taskInfo tInfo, String functionName) {
 
         Log.d("TaskInfoReturn:", "Return from " + functionName);
-        Log.d("TaskInfoReturn:", "tInfo is " + tInfo.id);
+        if(tInfo != null)
+            Log.d("TaskInfoReturn:", "tInfo is " + tInfo.id);
 
         switch(functionName) {
             case "createTask":

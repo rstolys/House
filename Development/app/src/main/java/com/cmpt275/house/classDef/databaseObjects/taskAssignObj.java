@@ -36,6 +36,6 @@ public class taskAssignObj {
     }
 
     public boolean getApproved() {
-        return exists;
+        return approved;
     }
 }

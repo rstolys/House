@@ -1,8 +1,10 @@
 package com.cmpt275.house;
 
+import com.cmpt275.house.classDef.houseClass;
 import com.cmpt275.house.classDef.signInClass;
 import com.cmpt275.house.classDef.taskClass;
 import com.cmpt275.house.classDef.taskInfo;
+import com.cmpt275.house.interfaceDef.house;
 import com.cmpt275.house.interfaceDef.task;
 import com.cmpt275.house.interfaceDef.updateUI;
 
@@ -18,6 +20,7 @@ public class MainActivity extends AppCompatActivity implements updateUI {
 
     private signInClass auth = new signInClass(this);
     private task taskAction = new taskClass();
+    private house houseAction = new houseClass();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,9 +84,9 @@ public class MainActivity extends AppCompatActivity implements updateUI {
         EditText password = findViewById(R.id.passwordOfUser);
 
         //Call function to signIn the user
-        //auth.signInUser(email.getText().toString(), password.getText().toString());
+        auth.signInUser(email.getText().toString(), password.getText().toString());
 
-        taskAction.viewTask(null);
+        //houseAction.viewYourHouses(null);
     }
 
     ////////////////////////////////////////////////
@@ -95,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements updateUI {
         //Check if the user is signed in -- open home page
         if(auth.isUserSignedIn()) {
             Intent homeIntent = new Intent(MainActivity.this, HomeActivity.class);
-            homeIntent.putExtra("userInfo", 0); //Specify startup type
+            homeIntent.putExtra("userInfo", 0); //pass the userInfo class
             startActivity(homeIntent);
         }
     }
