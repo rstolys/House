@@ -90,5 +90,11 @@
     <string name="due_date_2">Nov 16</string>
     <string name="due_date_3">Nov 26</string>
 
+    <!-- Strings related to New Houses -->
+    <string name="save_new_house_button_title">SAVE NEW HOUSE</string>
+    <string name="new_house_name">New House Name</string>
+    <string name="newHouse_members">Members will show up here</string>
+    <string name="new_house_description">House Description</string>
+
 
 </resources>
