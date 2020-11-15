@@ -11,15 +11,21 @@
         android:background="@color/teal_200"
         android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/spacer3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white" />
+
         <TableRow
             android:id="@+id/new_house_row1"
             android:layout_width="match_parent"
-            android:layout_height="35dp"
+            android:layout_height="wrap_content"
             android:background="@color/light_blue">
 
             <EditText
                 android:id="@+id/new_house_name"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:importantForAutofill="no"
@@ -36,7 +42,7 @@
 
             <EditText
                 android:id="@+id/new_house_description"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:importantForAutofill="no"

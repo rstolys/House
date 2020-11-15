@@ -21,9 +21,11 @@ import com.cmpt275.house.classDef.houseInfo;
 public class NewHouseFrag extends Fragment {
 
     public houseInfo newHouseInfo = new houseInfo();
+    houseClass theHouseClass;
 
-    public NewHouseFrag() {
-        // Required empty public constructor
+    public NewHouseFrag(houseClass myHouseClass) {
+        // Attain the house class for this running of the houses activity
+         theHouseClass = myHouseClass;
     }
 
     @Override
@@ -33,15 +35,14 @@ public class NewHouseFrag extends Fragment {
         View view = inflater.inflate(R.layout.fragment_new_house, container, false);
 
         Button saveButton = view.findViewById(R.id.new_house_save_button);
-        saveButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-               EditText houseTitle = view.findViewById(R.id.new_house_name);
-               newHouseInfo.name = String.valueOf(houseTitle.getText());
+        saveButton.setOnClickListener(v -> {
+           EditText houseTitle = view.findViewById(R.id.new_house_name);
+           newHouseInfo.displayName = String.valueOf(houseTitle.getText());
 
-               EditText houseDescription = view.findViewById(R.id.new_house_description);
-               newHouseInfo.description = String.valueOf(houseDescription);
-            }
+           EditText houseDescription = view.findViewById(R.id.new_house_description);
+           newHouseInfo.description = String.valueOf(houseDescription);
+
+           //houseClass
         });
 
         return view;

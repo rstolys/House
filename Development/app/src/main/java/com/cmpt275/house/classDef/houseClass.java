@@ -49,6 +49,7 @@ public class houseClass extends taskClass implements house, houseCallbacks {
 
         myHInfo.id = null;
         myHInfo.displayName = "Cowichan  09";
+        //myHInfo.displayName = hInfo.displayName;
         myHInfo.voting_ids = null;
         myHInfo.tasks = null;
 
@@ -56,6 +57,7 @@ public class houseClass extends taskClass implements house, houseCallbacks {
         //**when creating a house the first member must be role "2" meaning admin
 
         myHInfo.description = "This my SFU townhouse that contains 4 people. We are all on the golf team";
+        //myHInfo.description = hInfo.description;
         myHInfo.punishmentMultiplier = 2;
         myHInfo.maxMembers = 4;
         myHInfo.houseNotifications = notificationMap.mapStringToInt("Weekly");

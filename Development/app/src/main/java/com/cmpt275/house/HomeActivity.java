@@ -3,6 +3,8 @@ package com.cmpt275.house;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Base64;
+import android.util.Log;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
@@ -13,16 +15,47 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.cmpt275.house.classDef.userInfo;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 
 public class HomeActivity extends AppCompatActivity {
+
+    private String passedUserInfo;
+    public userInfo uInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        // Get userInfo from last activity
+        Intent lastIntent = getIntent();
+        String serializedObject = lastIntent.getStringExtra("userInfo");
+
+        if(serializedObject == ""){
+            // If the serialized object is empty, error!
+            Log.e("OnCreate Home", "userInfo not passed from last activity");
+        } else {
+            try {
+                // Decode the string into a byte array
+                byte b[] = Base64.decode( serializedObject, Base64.DEFAULT );
+
+                // Convert byte array into userInfo object
+                ByteArrayInputStream bi = new ByteArrayInputStream(b);
+                ObjectInputStream si = new ObjectInputStream(bi);
+                uInfo = (userInfo) si.readObject();
+                Log.d("HOME_ACTIVITY", "Userinfo.displayName passed: " + uInfo.displayName );
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
@@ -45,17 +78,38 @@ public class HomeActivity extends AppCompatActivity {
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                    // First prepare the userInfo to pass to next activity
+                    String serializedUserInfo = "";
+                    try {
+                        // Convert object data to encoded string
+                        ByteArrayOutputStream bo = new ByteArrayOutputStream();
+                        ObjectOutputStream so = new ObjectOutputStream(bo);
+                        so.writeObject(uInfo);
+                        so.flush();
+                        final byte[] byteArray = bo.toByteArray();
+                        serializedUserInfo = Base64.encodeToString(byteArray, Base64.DEFAULT);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    // Now start appropriate activity
                     switch (item.getItemId()){
                         case R.id.navBar_home:
                             break;
                         case R.id.navBar_tasks:
-                            startActivity(new Intent(HomeActivity.this, TaskActivity.class));
+                            Intent tasksIntent = new Intent(HomeActivity.this, TaskActivity.class);
+                            tasksIntent.putExtra("userInfo", serializedUserInfo);
+                            startActivity(tasksIntent);
                             break;
                         case R.id.navBar_houses:
-                            startActivity(new Intent(HomeActivity.this, HouseActivity.class));
+                            Intent houseIntent = new Intent(HomeActivity.this, HouseActivity.class);
+                            houseIntent.putExtra("userInfo", serializedUserInfo);
+                            startActivity(houseIntent);
                             break;
                         case R.id.navBar_Settings:
-                            startActivity(new Intent(HomeActivity.this, SettingsActivity.class));
+                            Intent settingsIntent = new Intent(HomeActivity.this, SettingsActivity.class);
+                            settingsIntent.putExtra("userInfo", serializedUserInfo);
+                            startActivity(settingsIntent);
                             break;
                     }
 
