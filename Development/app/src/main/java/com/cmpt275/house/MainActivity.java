@@ -1,26 +1,33 @@
 package com.cmpt275.house;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Base64;
+import android.util.Log;
+import android.view.View;
+import android.widget.EditText;
+
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.cmpt275.house.classDef.houseClass;
 import com.cmpt275.house.classDef.signInClass;
 import com.cmpt275.house.classDef.taskClass;
-import com.cmpt275.house.classDef.taskInfo;
 import com.cmpt275.house.interfaceDef.house;
 import com.cmpt275.house.interfaceDef.task;
 import com.cmpt275.house.interfaceDef.updateUI;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.EditText;
-import android.util.Log;
-
-import androidx.appcompat.app.AppCompatActivity;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements updateUI {
 
     private signInClass auth = new signInClass(this);
     private task taskAction = new taskClass();
     private house houseAction = new houseClass();
+
+    private String userInfoString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,12 +100,31 @@ public class MainActivity extends AppCompatActivity implements updateUI {
     /// Will be called at end of async functions that need to update the ui
     ////////////////////////////////////////////////
     public void stateChanged(int typeOfChange) {
-        //Will be called by functions required to update the ui
+        // Will be called by functions required to update the ui
 
-        //Check if the user is signed in -- open home page
+        // Check if the user is signed in -- open home page
         if(auth.isUserSignedIn()) {
+            // Create new intent to go to Home Page
             Intent homeIntent = new Intent(MainActivity.this, HomeActivity.class);
-            homeIntent.putExtra("userInfo", 0); //pass the userInfo class
+
+            // Initialize serialized userInfo
+            String serializedUserInfo = "";
+            try {
+                // Convert object data to encoded string
+                ByteArrayOutputStream bo = new ByteArrayOutputStream();
+                ObjectOutputStream so = new ObjectOutputStream(bo);
+                so.writeObject(auth.uInfo);
+                so.flush();
+                final byte[] byteArray = bo.toByteArray();
+                serializedUserInfo = Base64.encodeToString(byteArray, Base64.DEFAULT);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            // Pass userInfo as extra data with the intent
+            homeIntent.putExtra("userInfo", serializedUserInfo);
+
+            // Start the activity
             startActivity(homeIntent);
         }
     }

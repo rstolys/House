@@ -18,6 +18,7 @@ public class signInClass implements signIn, userCallbacks {
     private userFirebaseClass firebaseTask;
 
     private static final String TAG = "SignInClass";
+    public userInfo uInfo;
 
 
 
@@ -56,6 +57,7 @@ public class signInClass implements signIn, userCallbacks {
     //userCallbacks
     public void onUserInfoArrayReturn(userInfo[] uInfos, String functionName) {return;}
     public void onUserInfoReturn(userInfo uInfo, String functionName) {
+        this.uInfo = uInfo;
         Log.d("UserInfoReturn:", "Return from " + functionName);
         if(uInfo != null)
             Log.d("UserInfoReturn:", "uInfo is " + uInfo.id);
