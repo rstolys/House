@@ -73,6 +73,8 @@ public class houseClass extends taskClass implements house {
         myHInfo.houseNotifications = notificationMap.WEEKLY;
 
 
+        houseClass self = this;
+
         firebaseTask.createNewHouse(myHInfo, new hInfoCallback() {
             @Override
             public void onReturn(houseInfo hInfo, boolean success) {
@@ -94,6 +96,8 @@ public class houseClass extends taskClass implements house {
 
         myUInfo.id = "w4OFKQrvL28T3WlXVP4X";    //Ryan Stolys user_id
 
+        houseClass self = this;
+
         firebaseTask.getCurrentHouses(myUInfo, new hInfoArrayCallback() {
             @Override
             public void onReturn(houseInfo[] hInfos, boolean success) {
@@ -108,6 +112,8 @@ public class houseClass extends taskClass implements house {
     public void viewHouse(String house_id) {
 
         house_id = "TfB0rlNBEuj9dSMzA1OM";        //Cowichan 09 house_id
+
+        houseClass self = this;
 
         firebaseTask.getHouseInfo(house_id, new hInfoCallback() {
             @Override
@@ -130,6 +136,8 @@ public class houseClass extends taskClass implements house {
 
         myHInfo.id = "TfB0rlNBEuj9dSMzA1OM";    //Ryan Stolys user_id
         myHInfo.members.put("w4OFKQrvL28T3WlXVP4X", new houseMemberObj("Ryan Stolys", true, roleMap.mapStringToInt("Administrator")));
+
+        houseClass self = this;
 
         firebaseTask.addMember(myHInfo, "TestAddMember", roleMap.MEMBER, "Jayden Cole", new hInfoCallback() {
             @Override
@@ -158,6 +166,8 @@ public class houseClass extends taskClass implements house {
         //myHInfo.members.put("DummyUser", new houseMemberObj("Jayden Cole", true, roleMap.mapStringToInt("Administrator")));
         myHInfo.members.put("w4OFKQrvL28T3WlXVP4X", new houseMemberObj("Ryan Stolys", true, roleMap.mapStringToInt("Administrator")));
 
+        houseClass self = this;
+
         //Set Ryan Stolys to a regular house member
         firebaseTask.setUserRole(myHInfo, "w4OFKQrvL28T3WlXVP4X", roleMap.mapIntToString(1), new hInfoCallback() {
             @Override
@@ -172,6 +182,7 @@ public class houseClass extends taskClass implements house {
 
     public void viewVoting(String voting_id) {
 
+        houseClass self = this;
         firebaseTask.getHouseVotes("TfB0rlNBEuj9dSMzA1OM", new vInfoArrayCallback() {
             @Override
             public void onReturn(votingInfo[] vInfos, boolean success) {
@@ -190,6 +201,7 @@ public class houseClass extends taskClass implements house {
         myVInfo.id = "gviuevFrurw2DsVdkGuD";
         myVInfo.type = voteMap.DISPUTE_COMPLETION;
 
+        houseClass self = this;
         firebaseTask.submitVote(myVInfo, "Ryan Stolys", "w4OFKQrvL28T3WlXVP4X", true, new vInfoCallback() {
             @Override
             public void onReturn(votingInfo vInfo, boolean success) {
@@ -224,6 +236,7 @@ public class houseClass extends taskClass implements house {
         myHInfo.maxMembers = 5;
         myHInfo.houseNotifications = notificationMap.WEEKLY;
 
+        houseClass self = this;
         firebaseTask.editSettings(myHInfo, new hInfoCallback() {
             @Override
             public void onReturn(houseInfo hInfo, boolean success) {

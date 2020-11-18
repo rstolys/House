@@ -41,6 +41,7 @@ public class taskClass implements task {
         myUInfo.id = "NO_ID";
         myHInfo.id = "NO_IDs_HAVE_BEEN_SET";
 
+        taskClass self = this;
         firebaseTask.getCurrentTasks(myUInfo, new tInfoArrayCallback() {
             @Override
             public void onReturn(taskInfo[] tInfos, boolean success) {
@@ -81,7 +82,7 @@ public class taskClass implements task {
         myTInfo.tag.add("Kitchen");
         myTInfo.tag.add("Cleaning");
 
-
+        taskClass self = this;
         firebaseTask.createTask(myTInfo, new tInfoCallback() {
             @Override
             public void onReturn(taskInfo tInfo, boolean success) {
@@ -130,6 +131,9 @@ public class taskClass implements task {
 
         //Set Parameter
         String paramToChange = "status";
+
+        taskClass self = this;
+
         firebaseTask.setTaskInfo(myTInfo, paramToChange, new tInfoCallback() {
             @Override
             public void onReturn(taskInfo tInfo, boolean success) {
@@ -155,6 +159,8 @@ public class taskClass implements task {
         myTInfo.assignedTo.put("NO_ID", new taskAssignObj("Ryan Stolys", true, false));
         myTInfo.house_id = "NO_IDs_HAVE_BEEN_SET";
 
+        taskClass self = this;
+
         firebaseTask.deleteTask(myTInfo, new booleanCallback() {
             @Override
             public void onReturn(boolean result) {
@@ -167,6 +173,8 @@ public class taskClass implements task {
     }
 
     public void displayTask(String task_id) {
+
+        taskClass self = this;
         //Get the task to display
         firebaseTask.getTaskInfo(task_id, new tInfoCallback() {
             @Override
@@ -208,6 +216,7 @@ public class taskClass implements task {
         myTInfo.tag.add("Kitchen");
         myTInfo.tag.add("Cleaning");
 
+        taskClass self = this;
         firebaseTask.approveTaskAssignment(myTInfo, "NO_ID", false, new tInfoCallback() {
             @Override
             public void onReturn(taskInfo tInfo, boolean success) {
