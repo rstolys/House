@@ -21,11 +21,13 @@ import com.cmpt275.house.interfaceDef.mapping;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
+import com.google.firebase.firestore.WriteBatch;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,12 +40,12 @@ public class taskFirebaseClass implements TaskBE {
     //
     // Class Variables
     //
-    private FirebaseFirestore db;
+    private final FirebaseFirestore db;
     private final String TAG = "FirebaseTaskAction";
 
     // TODO: add variables below to documentation
-    mapping statusMap;
-    mapping tagMap;
+    statusMapping statusMap;
+    tagMapping tagMap;
 
 
     //
@@ -79,40 +81,34 @@ public class taskFirebaseClass implements TaskBE {
         else {
             //Get documents from the collection that have user_id specified
             db.collection("tasks").whereEqualTo("assignedTo." + uInfo.id + ".exists", true).get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> queryResult) {
+                .addOnCompleteListener(queryResult -> {
 
-                        if(queryResult.isSuccessful()) {
-                            Log.d(TAG, "Successfully Query in getCurrentTasks(user)");
+                    if(queryResult.isSuccessful()) {
+                        Log.d(TAG, "Successfully Query in getCurrentTasks(user)");
 
-                            List<taskInfo> taskInfoList = new ArrayList<taskInfo>();
-                            for(QueryDocumentSnapshot document : queryResult.getResult()) {
+                        List<taskInfo> taskInfoList = new ArrayList<taskInfo>();
+                        for(QueryDocumentSnapshot document : Objects.requireNonNull(queryResult.getResult())) {
 
-                                firebaseTaskDocument taskData = document.toObject(firebaseTaskDocument.class);
-                                taskInfoList.add(taskData.toTaskInfo(document.getId()));
+                            firebaseTaskDocument taskData = document.toObject(firebaseTaskDocument.class);
+                            taskInfoList.add(taskData.toTaskInfo(document.getId()));
 
-                                Log.d(TAG, "Collected Task Document: " + document.getId());
-                            }
-
-                            //Convert list to array and return
-                            taskInfo[] taskInfoArray = new taskInfo[taskInfoList.size()];
-                            taskInfoList.toArray(taskInfoArray);
-                            callback.onReturn(taskInfoArray, true);
-
+                            Log.d(TAG, "Collected Task Document: " + document.getId());
                         }
-                        else {
-                            Log.d(TAG, "getCurrentTasks(user): Error getting tasks for user: ", queryResult.getException());
 
-                            //Call function to return task value
-                            callback.onReturn(null, false);
-                        }
+                        //Convert list to array and return
+                        taskInfo[] taskInfoArray = new taskInfo[taskInfoList.size()];
+                        taskInfoList.toArray(taskInfoArray);
+                        callback.onReturn(taskInfoArray, true);
+
+                    }
+                    else {
+                        Log.d(TAG, "getCurrentTasks(user): Error getting tasks for user: ", queryResult.getException());
+
+                        //Call function to return task value
+                        callback.onReturn(null, false);
                     }
                 });
         }
-
-
-        return;
     }
 
 
@@ -133,39 +129,34 @@ public class taskFirebaseClass implements TaskBE {
         else {
             //Get documents from the collection that have house_id specified
             db.collection("tasks").whereEqualTo("house_id", hInfo.id).get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> queryResult) {
+                .addOnCompleteListener(queryResult -> {
 
-                            if(queryResult.isSuccessful()) {
-                                Log.d(TAG, "Successfully Query in getCurrentTasks(house)");
+                    if(queryResult.isSuccessful()) {
+                        Log.d(TAG, "Successfully Query in getCurrentTasks(house)");
 
-                                List<taskInfo> taskInfoList = new ArrayList<taskInfo>();
-                                for(QueryDocumentSnapshot document : queryResult.getResult()) {
+                        List<taskInfo> taskInfoList = new ArrayList<taskInfo>();
+                        for(QueryDocumentSnapshot document : Objects.requireNonNull(queryResult.getResult())) {
 
-                                    firebaseTaskDocument taskData = document.toObject(firebaseTaskDocument.class);
-                                    taskInfoList.add(taskData.toTaskInfo(document.getId()));
+                            firebaseTaskDocument taskData = document.toObject(firebaseTaskDocument.class);
+                            taskInfoList.add(taskData.toTaskInfo(document.getId()));
 
-                                    Log.d(TAG, "Collected Task Document: " + document.getId());
-                                }
-
-                                //Convert list to array and return
-                                taskInfo[] taskInfoArray = new taskInfo[taskInfoList.size()];
-                                taskInfoList.toArray(taskInfoArray);
-                                callback.onReturn(taskInfoArray, false);
-
-                            }
-                            else {
-                                Log.d(TAG, "getCurrentTasks(house): Error getting tasks for user: ", queryResult.getException());
-
-                                //Call function to return task value
-                                callback.onReturn(null, false);
-                            }
+                            Log.d(TAG, "Collected Task Document: " + document.getId());
                         }
-                    });
-        }
 
-        return;
+                        //Convert list to array and return
+                        taskInfo[] taskInfoArray = new taskInfo[taskInfoList.size()];
+                        taskInfoList.toArray(taskInfoArray);
+                        callback.onReturn(taskInfoArray, false);
+
+                    }
+                    else {
+                        Log.d(TAG, "getCurrentTasks(house): Error getting tasks for user: ", queryResult.getException());
+
+                        //Call function to return task value
+                        callback.onReturn(null, false);
+                    }
+                });
+        }
     }
 
 
@@ -186,45 +177,39 @@ public class taskFirebaseClass implements TaskBE {
         else {
             //Get documents from the collection that have user_id specified -- need to check house_id after document collected
             db.collection("tasks").whereEqualTo("assignedTo." + uInfo.id + ".exists", true).get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> queryResult) {
+                .addOnCompleteListener(queryResult -> {
 
-                        if(queryResult.isSuccessful()) {
-                            Log.d(TAG, "Successfully Query in getCurrentTasks(user, house_id)");
+                    if(queryResult.isSuccessful()) {
+                        Log.d(TAG, "Successfully Query in getCurrentTasks(user, house_id)");
 
-                            List<taskInfo> taskInfoList = new ArrayList<taskInfo>();
-                            for(QueryDocumentSnapshot document : queryResult.getResult()) {
+                        List<taskInfo> taskInfoList = new ArrayList<taskInfo>();
+                        for(QueryDocumentSnapshot document : Objects.requireNonNull(queryResult.getResult())) {
 
-                                //Convert queried document to taskData class
-                                firebaseTaskDocument taskData = document.toObject(firebaseTaskDocument.class);
+                            //Convert queried document to taskData class
+                            firebaseTaskDocument taskData = document.toObject(firebaseTaskDocument.class);
 
-                                if(taskData.getHouse_id().equals(house_id)) {
-                                    taskInfoList.add(taskData.toTaskInfo(document.getId()));
-                                }
-                                else {
-                                    Log.d(TAG, "Task Document: " + document.getId() + " not from house " + house_id + ". house_id=" + taskData.getHouse_id());
-                                }
+                            if(taskData.getHouse_id().equals(house_id)) {
+                                taskInfoList.add(taskData.toTaskInfo(document.getId()));
                             }
-
-                            //Convert list to array and return
-                            taskInfo[] taskInfoArray = new taskInfo[taskInfoList.size()];
-                            taskInfoList.toArray(taskInfoArray);
-                            callback.onReturn(taskInfoArray, false);
-
+                            else {
+                                Log.d(TAG, "Task Document: " + document.getId() + " not from house " + house_id + ". house_id=" + taskData.getHouse_id());
+                            }
                         }
-                        else {
-                            Log.d(TAG, "getCurrentTasks(user, house_id): Error getting tasks for user: ", queryResult.getException());
 
-                            //Call function to return task value
-                            callback.onReturn(null, false);
-                        }
+                        //Convert list to array and return
+                        taskInfo[] taskInfoArray = new taskInfo[taskInfoList.size()];
+                        taskInfoList.toArray(taskInfoArray);
+                        callback.onReturn(taskInfoArray, false);
+
+                    }
+                    else {
+                        Log.d(TAG, "getCurrentTasks(user, house_id): Error getting tasks for user: ", queryResult.getException());
+
+                        //Call function to return task value
+                        callback.onReturn(null, false);
                     }
                 });
         }
-
-
-        return;
     }
 
 
@@ -237,12 +222,12 @@ public class taskFirebaseClass implements TaskBE {
 
         if(taskApproved) {
             //Set the task to approved
-            tInfo.assignedTo.put(user_id, new taskAssignObj(tInfo.assignedTo.get(user_id).name, true, true));
+            tInfo.assignedTo.put(user_id, new taskAssignObj(Objects.requireNonNull(tInfo.assignedTo.get(user_id)).name, true, true));
 
             //check if all the other assignees have approved the task
             boolean allAssigneesApprove = true;
             for(String userID : tInfo.assignedTo.keySet()) {
-                if(!tInfo.assignedTo.get(userID).approved)
+                if(!Objects.requireNonNull(tInfo.assignedTo.get(userID)).approved)
                     allAssigneesApprove = false;
             }
 
@@ -331,8 +316,6 @@ public class taskFirebaseClass implements TaskBE {
                     });
             }
         }
-
-        return;
     }
 
 
@@ -350,6 +333,7 @@ public class taskFirebaseClass implements TaskBE {
 
                 //Convert Task to taskInfo class
                 firebaseTaskDocument taskData = documentReference.toObject(firebaseTaskDocument.class);
+                assert taskData != null;
                 taskInfo tInfo = taskData.toTaskInfo(task_id);
 
                 //Call function to return task value
@@ -361,8 +345,6 @@ public class taskFirebaseClass implements TaskBE {
                 //Return null to indicate error in task
                 callback.onReturn(null, false);
             });
-
-        return;
     }
 
 
@@ -396,8 +378,6 @@ public class taskFirebaseClass implements TaskBE {
                     callback.onReturn(null, false);
                 });
         }
-
-        return;
     }
 
 
@@ -432,8 +412,6 @@ public class taskFirebaseClass implements TaskBE {
                     callback.onReturn(null, false);
                 });
         }
-
-        return;
     }
 
 
@@ -485,28 +463,47 @@ public class taskFirebaseClass implements TaskBE {
                     //Set the id of the task
                     tInfo.id = documentReference.getId();
 
+                    WriteBatch batch = db.batch();
+
                     //Add task to house
-                    db.collection("houses").document(tInfo.house_id)
-                        .update("tasks." + tInfo.id, new nameObj(tInfo.displayName, true));
+                    Map<String, Object> houseUpdate = new HashMap<>();
+                    houseUpdate.put("tasks." + tInfo.id, new nameObj(tInfo.displayName, true));
+
+                    DocumentReference houseRef = db.collection("houses").document(tInfo.house_id);
+                    batch.update(houseRef, houseUpdate);
+
 
                     //Add task to users who the task is assigned to
                     for(String taskAssignee_id : newTask.getAssignedTo().keySet()) {
-                        db.collection("users").document(taskAssignee_id)
-                            .update("tasks." + tInfo.id, new nameObj(newTask.getDisplayName(), true));
+                        Map<String, Object> userUpdate = new HashMap<>();
+                        userUpdate.put("tasks." + tInfo.id, new nameObj(tInfo.displayName, true));
+
+                        DocumentReference userRef = db.collection("users").document(taskAssignee_id);
+                        batch.update(houseRef, userUpdate);
                     }
 
-                    //Return the task info
-                    callback.onReturn(tInfo, false);
+                    //Commit the writes to the databse and wait for completion
+                    batch.commit().addOnCompleteListener(task -> {
+                        if(task.isSuccessful()) {
+                            Log.d(TAG, "Task: " + tInfo.id + " Successfully added");
+
+                            //Return the task info
+                            callback.onReturn(tInfo, true);
+                        }
+                        else {
+                            Log.d(TAG, "Error adding Task: " + tInfo.id + " to house and users");
+
+                            callback.onReturn(tInfo, false);
+                        }
+                    });
                 })
                 .addOnFailureListener(e -> {
-                    Log.w(TAG, "Error adding document", e);
+                    Log.d(TAG, "Error adding Task");
 
                     //Return null to indicate error in task
                     callback.onReturn(null, false);
                 });
         }
-
-        return;
     }
 
 
@@ -523,52 +520,74 @@ public class taskFirebaseClass implements TaskBE {
             callback.onReturn(false);
         }
         else {
+
+            WriteBatch batch = db.batch();
+
             Map<String, Object> removeTask = new HashMap<>();
             removeTask.put("tasks." + tInfo.id, FieldValue.delete());
 
             //Remove the task from the task list in the task house
-            db.collection("houses").document(tInfo.house_id).update(removeTask);
+            DocumentReference houseRef = db.collection("houses").document(tInfo.house_id);
+            batch.update(houseRef, removeTask);
 
             //Remove the task from the task list in the task's assignees
             for(String taskAssignee_id : tInfo.assignedTo.keySet()) {
-                db.collection("users").document(taskAssignee_id).update(removeTask);
+                DocumentReference userRef = db.collection("users").document(taskAssignee_id);
+                batch.update(houseRef, removeTask);
             }
 
             //If the task has an ongoing vote
-            if(statusMap.mapStringToInt(tInfo.status) == 4 || statusMap.mapStringToInt(tInfo.status) == 5) {
+            if(tInfo.status.equals(statusMap.DISPUTE) || tInfo.status.equals(statusMap.REASSIGNMENT_APPROVAL)) {
                 db.collection("voting").whereEqualTo("task_id", tInfo.id).get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    //Delete each vote associated with the task
-                                    db.collection("voting").document(document.getId()).delete();
-                                }
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                                DocumentReference voteRef = db.collection("voting").document(document.getId());
+                                batch.delete(voteRef);
                             }
                         }
+
+                        //Delete the task from the page
+                        DocumentReference taskRef = db.collection("tasks").document(tInfo.id);
+                        batch.delete(taskRef);
+
+                        //Commit the writes to the database and wait for completion
+                        batch.commit().addOnCompleteListener(commitTask -> {
+                            if(commitTask.isSuccessful()) {
+                                Log.d(TAG, "Task: " + tInfo.id + " Successfully deleted");
+
+                                //Return the task info
+                                callback.onReturn(true);
+                            }
+                            else {
+                                Log.d(TAG, "Error removing Task: " + tInfo.id);
+
+                                callback.onReturn(false);
+                            }
+                        });
                     });
             }
+            else {
+                //Delete the task from the page
+                DocumentReference taskRef = db.collection("tasks").document(tInfo.id);
+                batch.delete(taskRef);
 
+                //Commit the writes to the database and wait for completion
+                batch.commit().addOnCompleteListener(task -> {
+                    if(task.isSuccessful()) {
+                        Log.d(TAG, "Task: " + tInfo.id + " Successfully deleted");
 
-            //Delete the task from the page
-            db.collection("tasks").document(tInfo.id).delete()
-                .addOnSuccessListener(documentReference -> {
-                    Log.d(TAG, "Successfully Deleted Task: " + tInfo.id);
+                        //Return the task info
+                        callback.onReturn(true);
+                    }
+                    else {
+                        Log.d(TAG, "Error removing Task: " + tInfo.id);
 
-                    //Return Successful call
-                    callback.onReturn(true);
-                })
-                .addOnFailureListener(e -> {
-                    Log.w(TAG, "Error removing task: " + tInfo.id, e);
-
-                    //Indicate Error
-                    callback.onReturn(false);
+                        callback.onReturn(false);
+                    }
                 });
+            }
         }
-
-
-        return;
     }
 
 

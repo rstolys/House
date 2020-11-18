@@ -6,6 +6,7 @@ import com.cmpt275.house.interfaceDef.Callbacks.booleanCallback;
 import com.cmpt275.house.interfaceDef.Callbacks.fInfoCallback;
 import com.cmpt275.house.interfaceDef.Callbacks.uInfoCallback;
 
+//TODO: Update documentation to match new interface
 public interface UsersBE {
     public void createAccount(String name, String email, String password, uInfoCallback callback);
     public void resetPassword(String email, booleanCallback callback);

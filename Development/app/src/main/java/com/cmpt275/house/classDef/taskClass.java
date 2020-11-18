@@ -23,7 +23,7 @@ public class taskClass implements task {
     //
     private taskInfo[] tInfos;
 
-    private taskFirebaseClass firebaseTask;
+    private final taskFirebaseClass firebaseTask;
 
     //
     // Class Functions
@@ -41,15 +41,10 @@ public class taskClass implements task {
         myUInfo.id = "NO_ID";
         myHInfo.id = "NO_IDs_HAVE_BEEN_SET";
 
-        taskClass self = this;
-        firebaseTask.getCurrentTasks(myUInfo, new tInfoArrayCallback() {
-            @Override
-            public void onReturn(taskInfo[] tInfos, boolean success) {
-                Log.d("getCurrentTasks:", "Returned with success " + success);
-                //Do stuff here...
-            }
+        firebaseTask.getCurrentTasks(myUInfo, (tInfos, success) -> {
+            Log.d("getCurrentTasks:", "Returned with success " + success);
+            //Do stuff here...
         });
-        return;
     }
 
     public void createTask(taskInfo tInfo) {
@@ -82,21 +77,13 @@ public class taskClass implements task {
         myTInfo.tag.add("Kitchen");
         myTInfo.tag.add("Cleaning");
 
-        taskClass self = this;
-        firebaseTask.createTask(myTInfo, new tInfoCallback() {
-            @Override
-            public void onReturn(taskInfo tInfo, boolean success) {
-                Log.d("createTask:", "Returned with success " + success);
-                //Do stuff here ...
-            }
+        firebaseTask.createTask(myTInfo, (tInfo1, success) -> {
+            Log.d("createTask:", "Returned with success " + success);
+            //Do stuff here ...
         });
-
-        return;
     }
 
-    public void assignTask(taskInfo tInfo) {
-        return;
-    }
+    public void assignTask(taskInfo tInfo) {}
 
     public void editTask(taskInfo tInfo) {
 
@@ -132,17 +119,10 @@ public class taskClass implements task {
         //Set Parameter
         String paramToChange = "status";
 
-        taskClass self = this;
-
-        firebaseTask.setTaskInfo(myTInfo, paramToChange, new tInfoCallback() {
-            @Override
-            public void onReturn(taskInfo tInfo, boolean success) {
-                Log.d("setTaskInfo:", "Returned with success " + success);
-                //Do stuff here ...
-            }
+        firebaseTask.setTaskInfo(myTInfo, paramToChange, (tInfo1, success) -> {
+            Log.d("setTaskInfo:", "Returned with success " + success);
+            //Do stuff here ...
         });
-
-        return;
     }
 
     public void deleteTask(taskInfo tInfo) {
@@ -159,33 +139,19 @@ public class taskClass implements task {
         myTInfo.assignedTo.put("NO_ID", new taskAssignObj("Ryan Stolys", true, false));
         myTInfo.house_id = "NO_IDs_HAVE_BEEN_SET";
 
-        taskClass self = this;
-
-        firebaseTask.deleteTask(myTInfo, new booleanCallback() {
-            @Override
-            public void onReturn(boolean result) {
-                Log.d("deleteTask:", "Returned with result " + result);
-                //Do stuff here...
-            }
+        firebaseTask.deleteTask(myTInfo, result -> {
+            Log.d("deleteTask:", "Returned with result " + result);
+            //Do stuff here...
         });
-
-        return;
     }
 
     public void displayTask(String task_id) {
 
-        taskClass self = this;
         //Get the task to display
-        firebaseTask.getTaskInfo(task_id, new tInfoCallback() {
-            @Override
-            public void onReturn(taskInfo tInfo, boolean success) {
-                Log.d("getTaskInfo:", "Returned with success " + success);
-                //Do Stuff here...
-            }
+        firebaseTask.getTaskInfo(task_id, (tInfo, success) -> {
+            Log.d("getTaskInfo:", "Returned with success " + success);
+            //Do Stuff here...
         });
-
-        //Will handle return in callback function
-        return;
     }
 
     public void approveTask(String task_id, userInfo uInfo) {
@@ -216,21 +182,13 @@ public class taskClass implements task {
         myTInfo.tag.add("Kitchen");
         myTInfo.tag.add("Cleaning");
 
-        taskClass self = this;
-        firebaseTask.approveTaskAssignment(myTInfo, "NO_ID", false, new tInfoCallback() {
-            @Override
-            public void onReturn(taskInfo tInfo, boolean success) {
-                Log.d("approveTaskAssignment:", "Returned with success " + success);
-                //Do stuff here ...
-            }
+        firebaseTask.approveTaskAssignment(myTInfo, "NO_ID", false, (tInfo, success) -> {
+            Log.d("approveTaskAssignment:", "Returned with success " + success);
+            //Do stuff here ...
         });
-        return;
     }
 
-    public void sortTasks(int sortType) {
-        return;
-    }
-
+    public void sortTasks(int sortType) {}
 
 
 }

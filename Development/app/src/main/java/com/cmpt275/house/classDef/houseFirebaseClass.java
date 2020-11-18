@@ -21,12 +21,17 @@ import com.cmpt275.house.interfaceDef.HouseBE;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.WriteBatch;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class houseFirebaseClass implements HouseBE {
@@ -76,34 +81,30 @@ public class houseFirebaseClass implements HouseBE {
         else {
             //Get documents from the collection that have house_id specified
             db.collection("houses").whereEqualTo("members." + uInfo.id + ".exists", true).get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> queryResult) {
+                .addOnCompleteListener(queryResult -> {
+                    if(queryResult.isSuccessful()) {
+                        Log.d(TAG, "Successfully Query in getCurrentHouses(user)");
 
-                        if(queryResult.isSuccessful()) {
-                            Log.d(TAG, "Successfully Query in getCurrentHouses(user)");
+                        List<houseInfo> houseInfoList = new ArrayList<houseInfo>();
+                        for(QueryDocumentSnapshot document : Objects.requireNonNull(queryResult.getResult())) {
 
-                            List<houseInfo> houseInfoList = new ArrayList<houseInfo>();
-                            for(QueryDocumentSnapshot document : Objects.requireNonNull(queryResult.getResult())) {
+                            firebaseHouseDocument houseData = document.toObject(firebaseHouseDocument.class);
+                            houseInfoList.add(houseData.toHouseInfo(document.getId()));
 
-                                firebaseHouseDocument houseData = document.toObject(firebaseHouseDocument.class);
-                                houseInfoList.add(houseData.toHouseInfo(document.getId()));
-
-                                Log.d(TAG, "Collected Task Document: " + document.getId());
-                            }
-
-                            //Convert list to array and return
-                            houseInfo[] houseInfoArray = new houseInfo[houseInfoList.size()];
-                            houseInfoList.toArray(houseInfoArray);
-                            callback.onReturn(houseInfoArray, true);
-
+                            Log.d(TAG, "Collected Task Document: " + document.getId());
                         }
-                        else {
-                            Log.d(TAG, "getCurrentHouses(user): Error getting houses for user: ", queryResult.getException());
 
-                            //Call function to return task value
-                            callback.onReturn(null, false);
-                        }
+                        //Convert list to array and return
+                        houseInfo[] houseInfoArray = new houseInfo[houseInfoList.size()];
+                        houseInfoList.toArray(houseInfoArray);
+                        callback.onReturn(houseInfoArray, true);
+
+                    }
+                    else {
+                        Log.d(TAG, "getCurrentHouses(user): Error getting houses for user: ", queryResult.getException());
+
+                        //Call function to return task value
+                        callback.onReturn(null, false);
                     }
                 });
         }
@@ -191,7 +192,67 @@ public class houseFirebaseClass implements HouseBE {
     // Deletes the house and references to the house
     //
     ////////////////////////////////////////////////////////////
-    public void deleteHouse(houseInfo hInfo, booleanCallback bCallback) {}
+    public void deleteHouse(houseInfo hInfo, String user_id, booleanCallback callback) {
+
+        if(hInfo.id != null && user_id != null){
+            Log.d(TAG, "deleteHouse called for house: " + hInfo.id);
+
+            //Make sure the user trying to delete the task is an admin
+            if(!Objects.requireNonNull(hInfo.members.get(user_id)).role.equals(roleMap.ADMIN)) {
+                Log.d(TAG, "deleteHouse cannot be done by a non-admin member");
+
+                callback.onReturn(false);
+            }
+            else {
+                WriteBatch batch = db.batch();
+
+                //Add all tasks to delete to the batch
+                for(String task_id : hInfo.tasks.keySet()) {
+                    DocumentReference deleteTask = db.collection("tasks").document(task_id);
+                    batch.delete(deleteTask);
+                }
+
+                //Add all the votes to delete to the batch
+                for(int i = 0; i < hInfo.voting_ids.size(); i++) {
+                    DocumentReference deleteVote = db.collection("voting").document(hInfo.voting_ids.get(i));
+                    batch.delete(deleteVote);
+                }
+
+                //Add all the users to remove this house from their account
+                for(String userID : hInfo.members.keySet()) {
+                    Map<String,Object> updates = new HashMap<>();
+                    updates.put("houses." + hInfo.id, FieldValue.delete());
+
+                    DocumentReference userToUpdate = db.collection("users").document(userID);
+                    batch.update(userToUpdate, updates);
+                }
+
+                //Add the house to the batch to delete
+                DocumentReference deleteHouse = db.collection("houses").document(hInfo.id);
+                batch.delete(deleteHouse);
+
+
+                //Commit all the writes and await completion
+                batch.commit().addOnCompleteListener(task -> {
+                    if(task.isSuccessful()) {
+                        Log.d(TAG, "House " + hInfo.id  + " successfully deleted");
+
+                        callback.onReturn(true);
+                    }
+                    else {
+                        Log.d(TAG, "Delete of House " + hInfo.id  + " unsuccessful");
+
+                        callback.onReturn(false);
+                    }
+                });
+            }
+        }
+        else {
+            Log.d(TAG, "deleteHouse called with null house ID or callerID");
+
+            callback.onReturn(false);
+        }
+    }
 
 
 
@@ -310,7 +371,68 @@ public class houseFirebaseClass implements HouseBE {
     // Will remove a house from the
     //
     ////////////////////////////////////////////////////////////
-    public void deleteMember(houseInfo hInfo, String user_id, booleanCallback callback){}
+    public void removeMember(houseInfo hInfo, String callerID, String user_id, booleanCallback callback) {
+
+        Log.d(TAG, "removeMember called for memeber " + user_id);
+
+        if(hInfo.id == null) {
+            Log.d(TAG, "removeMember: House id passed is null");
+
+            callback.onReturn(false);
+        }
+        else {
+            //Verify that the caller is either the user to be removed or an admin of the house and the user is not an admin
+            if(user_id.equals(callerID) || Objects.requireNonNull(hInfo.members.get(callerID)).role.equals(roleMap.ADMIN)) {
+                //Make sure the user being removed is not an admin as well
+                if(user_id.equals(callerID) || !Objects.requireNonNull(hInfo.members.get(user_id)).role.equals(roleMap.ADMIN)) {
+
+                    WriteBatch batch = db.batch();
+
+                    //** Tasks that were assigned to that user will remain in exsistance in the task collection
+                    //** We probably want to remove them but it is a complex operation to do so. Will leave them for now
+
+                    //Remove the house from the user
+                    Map<String,Object> updateUser = new HashMap<>();
+                    updateUser.put("houses." + hInfo.id, FieldValue.delete());
+
+                    DocumentReference userRef = db.collection("users").document(user_id);
+                    batch.update(userRef, updateUser);
+
+
+                    //remove the member from the house
+                    Map<String,Object> updateHouse = new HashMap<>();
+                    updateHouse.put("members." + user_id, FieldValue.delete());
+
+
+                    DocumentReference houseRef = db.collection("houses").document(hInfo.id);
+                    batch.update(houseRef, updateHouse);
+
+                    batch.commit().addOnCompleteListener(task -> {
+                        if(task.isSuccessful()) {
+                            Log.d(TAG, "House member " + user_id + " successfully removed");
+
+                            callback.onReturn(true);
+                        }
+                        else {
+                            Log.d(TAG, "Removal of house member " + user_id + " unsuccessful");
+
+                            callback.onReturn(false);
+                        }
+                    });
+                }
+                else {
+                    Log.d(TAG, "removeMember: Cannot remove another admin member. They must remove themselves");
+
+                    callback.onReturn(false);
+                }
+            }
+            else {
+                Log.d(TAG, "removeMember: This caller: " + callerID + " does not have permission to remove the house member");
+
+                callback.onReturn(false);
+            }
+        }
+    }
 
 
     ////////////////////////////////////////////////////////////
@@ -330,34 +452,31 @@ public class houseFirebaseClass implements HouseBE {
         else {
             //Get the documents matching the voting_ids
             db.collection("voting").whereEqualTo("house_id", house_id).get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> queryResult) {
+                .addOnCompleteListener(queryResult -> {
 
-                        if(queryResult.isSuccessful()) {
-                            Log.d(TAG, "Successfully Query in getHouseVotes");
+                    if(queryResult.isSuccessful()) {
+                        Log.d(TAG, "Successfully Query in getHouseVotes");
 
-                            List<votingInfo> votingInfoList = new ArrayList<votingInfo>();
-                            for(QueryDocumentSnapshot document : Objects.requireNonNull(queryResult.getResult())) {
+                        List<votingInfo> votingInfoList = new ArrayList<votingInfo>();
+                        for(QueryDocumentSnapshot document : Objects.requireNonNull(queryResult.getResult())) {
 
-                                //Convert queried document to taskData class
-                                firebaseVotingDocument votingData = document.toObject(firebaseVotingDocument.class);
+                            //Convert queried document to taskData class
+                            firebaseVotingDocument votingData = document.toObject(firebaseVotingDocument.class);
 
-                                votingInfoList.add(votingData.toVotingInfo(document.getId()));
-                            }
-
-                            //Convert list to array and return
-                            votingInfo[] votingInfoArray = new votingInfo[votingInfoList.size()];
-                            votingInfoList.toArray(votingInfoArray);
-                            callback.onReturn(votingInfoArray, true);
-
+                            votingInfoList.add(votingData.toVotingInfo(document.getId()));
                         }
-                        else {
-                            Log.d(TAG, "getHouseVotes: Error getting voting for house: " + house_id, queryResult.getException());
 
-                            //Call function to return task value
-                            callback.onReturn(null, false);
-                        }
+                        //Convert list to array and return
+                        votingInfo[] votingInfoArray = new votingInfo[votingInfoList.size()];
+                        votingInfoList.toArray(votingInfoArray);
+                        callback.onReturn(votingInfoArray, true);
+
+                    }
+                    else {
+                        Log.d(TAG, "getHouseVotes: Error getting voting for house: " + house_id, queryResult.getException());
+
+                        //Call function to return task value
+                        callback.onReturn(null, false);
                     }
                 });
         }
@@ -418,7 +537,7 @@ public class houseFirebaseClass implements HouseBE {
     // Will edit the house settings
     //
     ////////////////////////////////////////////////////////////
-    public void editSettings(houseInfo hInfo, hInfoCallback callback){
+    public void editSettings(houseInfo hInfo, boolean displayNameChanged, hInfoCallback callback){
 
         Log.d(TAG, "editSettings called for house: " + hInfo.id);
 
@@ -431,25 +550,63 @@ public class houseFirebaseClass implements HouseBE {
             //Convert the houseInfo to a firebase document
             firebaseHouseDocument houseData = new firebaseHouseDocument(hInfo);
 
-            //Add voteData to the database
-            db.collection("houses").document(hInfo.id)
-                .update("description" , houseData.getDescription(),
+            //Create batch to make updates to name
+            WriteBatch batch = db.batch();
+
+            if(displayNameChanged){     //We need to update all of the tasks, votes and users with references
+
+                //Add all the users to update the display name
+                for(String user_id : hInfo.members.keySet()) {
+                    Map<String,Object> updates = new HashMap<>();
+                    updates.put("houses." + hInfo.id + ".name", hInfo.displayName);
+
+                    DocumentReference userToUpdate = db.collection("users").document(user_id);
+                    batch.update(userToUpdate, updates);
+                }
+
+                //Add all the tasks to update the display name
+                for(String task_id : hInfo.tasks.keySet()) {
+                    Map<String,Object> updates = new HashMap<>();
+                    updates.put("houseName", hInfo.displayName);
+
+                    DocumentReference taskToUpdate = db.collection("tasks").document(task_id);
+                    batch.update(taskToUpdate, updates);
+                }
+
+                //Add all the votes to update the display name
+                for(int i = 0; i < hInfo.voting_ids.size(); i++) {
+                    Map<String,Object> updates = new HashMap<>();
+                    updates.put("houseName", hInfo.displayName);
+
+                    DocumentReference voteToUpdate = db.collection("voting").document(hInfo.voting_ids.get(i));
+                    batch.update(voteToUpdate, updates);
+                }
+
+
+            }
+
+            //Add the updates settings to the batch
+            DocumentReference houseUpdates = db.collection("houses").document(hInfo.id);
+            batch.update(houseUpdates, "description" , houseData.getDescription(),
                         "displayName", houseData.getDisplayName(),
-                        "houseNotifications", houseData.getHouseNotifications(),
-                        "maxMembers", houseData.getMaxMembers(),
-                        "punishmentMultiplier", houseData.getPunishmentMultiplier())
-                .addOnSuccessListener(documentReference -> {
-                    Log.d(TAG, "Vote successfully added to vote: " + hInfo.id);
+                                            "houseNotifications", houseData.getHouseNotifications(),
+                                            "maxMembers", houseData.getMaxMembers(),
+                                            "punishmentMultiplier", houseData.getPunishmentMultiplier());
 
-                    //hInfo updated successfully, return updated hInfo
+
+            //Commit the writes to the database and wait for completion
+            batch.commit().addOnCompleteListener(task -> {
+                if(task.isSuccessful()) {
+                    Log.d(TAG, "House Settings of " + hInfo.id  + " successfully updated");
+
                     callback.onReturn(hInfo, true);
-                })
-                .addOnFailureListener(e -> {
-                    Log.w(TAG, "Error updating document", e);
+                }
+                else {
+                    Log.d(TAG, "Update of house settings for House " + hInfo.id  + " unsuccessful");
 
-                    //IndicateError
                     callback.onReturn(null, false);
-                });
+                }
+            });
         }
     }
 }

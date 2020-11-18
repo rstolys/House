@@ -25,11 +25,11 @@ public class houseClass extends taskClass implements house {
     private votingInfo[] vInfos;
 
     //TODO: Add member attributes to documentation
-    private houseFirebaseClass firebaseTask;
+    private final houseFirebaseClass firebaseTask;
 
-    private roleMapping roleMap;
-    private notificationMapping notificationMap;
-    private voteTypeMapping voteMap;
+    private final roleMapping roleMap;
+    private final notificationMapping notificationMap;
+    private final voteTypeMapping voteMap;
 
 
     //
@@ -72,23 +72,13 @@ public class houseClass extends taskClass implements house {
         myHInfo.maxMembers = 4;
         myHInfo.houseNotifications = notificationMap.WEEKLY;
 
-
-        houseClass self = this;
-
-        firebaseTask.createNewHouse(myHInfo, new hInfoCallback() {
-            @Override
-            public void onReturn(houseInfo hInfo, boolean success) {
-                Log.d("createNewHouse:", "Returned with success: " + success);
-                //Do stuff here ...
-            }
+        firebaseTask.createNewHouse(myHInfo, (hInfo1, success) -> {
+            Log.d("createNewHouse:", "Returned with success: " + success);
+            //Do stuff here ...
         });
-
-        return;
     }
 
-    public void joinHouse(String house_id, userInfo uInfo) {
-        return;
-    }
+    public void joinHouse(String house_id, userInfo uInfo) {}
 
     public void viewYourHouses(userInfo uInfo) {
 
@@ -96,39 +86,23 @@ public class houseClass extends taskClass implements house {
 
         myUInfo.id = "w4OFKQrvL28T3WlXVP4X";    //Ryan Stolys user_id
 
-        houseClass self = this;
-
-        firebaseTask.getCurrentHouses(myUInfo, new hInfoArrayCallback() {
-            @Override
-            public void onReturn(houseInfo[] hInfos, boolean success) {
-                Log.d("getCurrentHouses:", "Returned with success: " + success);
-                //Do stuff here ...
-            }
+        firebaseTask.getCurrentHouses(myUInfo, (hInfos, success) -> {
+            Log.d("getCurrentHouses:", "Returned with success: " + success);
+            //Do stuff here ...
         });
-
-        return;
     }
 
     public void viewHouse(String house_id) {
 
         house_id = "TfB0rlNBEuj9dSMzA1OM";        //Cowichan 09 house_id
 
-        houseClass self = this;
-
-        firebaseTask.getHouseInfo(house_id, new hInfoCallback() {
-            @Override
-            public void onReturn(houseInfo hInfo, boolean success) {
-                Log.d("getHouseInfo:", "Returned with success: " + success);
-                //Do stuff here ...
-            }
+        firebaseTask.getHouseInfo(house_id, (hInfo, success) -> {
+            Log.d("getHouseInfo:", "Returned with success: " + success);
+            //Do stuff here ...
         });
-
-        return;
     }
 
-    public void approveMember(String house_id, String user_id) {
-        return;
-    }
+    public void approveMember(String house_id, String user_id) {}
 
     public void addMember(String userEmail) {
 
@@ -137,26 +111,15 @@ public class houseClass extends taskClass implements house {
         myHInfo.id = "TfB0rlNBEuj9dSMzA1OM";    //Ryan Stolys user_id
         myHInfo.members.put("w4OFKQrvL28T3WlXVP4X", new houseMemberObj("Ryan Stolys", true, roleMap.mapStringToInt("Administrator")));
 
-        houseClass self = this;
-
-        firebaseTask.addMember(myHInfo, "TestAddMember", roleMap.MEMBER, "Jayden Cole", new hInfoCallback() {
-            @Override
-            public void onReturn(houseInfo hInfo, boolean success) {
-                Log.d("addMember:", "Returned with success: " + success);
-                //Do stuff here ...
-            }
+        firebaseTask.addMember(myHInfo, "TestAddMember", roleMap.MEMBER, "Jayden Cole", (hInfo, success) -> {
+            Log.d("addMember:", "Returned with success: " + success);
+            //Do stuff here ...
         });
-
-        return;
     }
 
-    public void viewMember(String user_id) {
-        return;
-    }
+    public void viewMember(String user_id) {}
 
-    public void removeMember(String user_id) {
-        return;
-    }
+    public void removeMember(String user_id) {}
 
     public void makeMemberAdmin(userInfo uInfo) {
 
@@ -166,32 +129,20 @@ public class houseClass extends taskClass implements house {
         //myHInfo.members.put("DummyUser", new houseMemberObj("Jayden Cole", true, roleMap.mapStringToInt("Administrator")));
         myHInfo.members.put("w4OFKQrvL28T3WlXVP4X", new houseMemberObj("Ryan Stolys", true, roleMap.mapStringToInt("Administrator")));
 
-        houseClass self = this;
 
         //Set Ryan Stolys to a regular house member
-        firebaseTask.setUserRole(myHInfo, "w4OFKQrvL28T3WlXVP4X", roleMap.mapIntToString(1), new hInfoCallback() {
-            @Override
-            public void onReturn(houseInfo hInfo, boolean success) {
-                Log.d("setUserRole:", "Returned with success: " + success);
-                //Do Stuff here ...
-            }
+        firebaseTask.setUserRole(myHInfo, "w4OFKQrvL28T3WlXVP4X", roleMap.mapIntToString(1), (hInfo, success) -> {
+            Log.d("setUserRole:", "Returned with success: " + success);
+            //Do Stuff here ...
         });
-
-        return;
     }
 
     public void viewVoting(String voting_id) {
 
-        houseClass self = this;
-        firebaseTask.getHouseVotes("TfB0rlNBEuj9dSMzA1OM", new vInfoArrayCallback() {
-            @Override
-            public void onReturn(votingInfo[] vInfos, boolean success) {
-                Log.d("getHouseVotes:", "Returned with success: " + success);
-                //Do stuff here ...
-            }
+        firebaseTask.getHouseVotes("TfB0rlNBEuj9dSMzA1OM", (vInfos, success) -> {
+            Log.d("getHouseVotes:", "Returned with success: " + success);
+            //Do stuff here ...
         });
-
-        return;
     }
 
     public void submitVote(String voting_id, int voteType, userInfo uInfo) {
@@ -201,21 +152,13 @@ public class houseClass extends taskClass implements house {
         myVInfo.id = "gviuevFrurw2DsVdkGuD";
         myVInfo.type = voteMap.DISPUTE_COMPLETION;
 
-        houseClass self = this;
-        firebaseTask.submitVote(myVInfo, "Ryan Stolys", "w4OFKQrvL28T3WlXVP4X", true, new vInfoCallback() {
-            @Override
-            public void onReturn(votingInfo vInfo, boolean success) {
-                Log.d("submitVote:", "Returned with success: " + success);
-                //Do stuff  here ...
-            }
+        firebaseTask.submitVote(myVInfo, "Ryan Stolys", "w4OFKQrvL28T3WlXVP4X", true, (vInfo, success) -> {
+            Log.d("submitVote:", "Returned with success: " + success);
+            //Do stuff  here ...
         });
-
-        return;
     }
 
-    public void viewSettings(String house_id) {
-        return;
-    }
+    public void viewSettings(String house_id) {}
 
     public void editSettings(houseInfo hInfo) {
 
@@ -236,17 +179,10 @@ public class houseClass extends taskClass implements house {
         myHInfo.maxMembers = 5;
         myHInfo.houseNotifications = notificationMap.WEEKLY;
 
-        houseClass self = this;
-        firebaseTask.editSettings(myHInfo, new hInfoCallback() {
-            @Override
-            public void onReturn(houseInfo hInfo, boolean success) {
-                Log.d("editSettings:", "Returned with success: " + success);
-                //Do stuff here ...
-            }
+        firebaseTask.editSettings(myHInfo, true, (hInfo1, success) -> {
+            Log.d("editSettings:", "Returned with success: " + success);
+            //Do stuff here ...
         });
-
-
-        return;
     }
 
     public void deleteHouse(houseInfo hInfo) {}
