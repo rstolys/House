@@ -11,7 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.cmpt275.house.classDef.houseClass;
-import com.cmpt275.house.classDef.houseInfo;
+import com.cmpt275.house.classDef.infoClass.houseInfo;
 
 /**
  * A simple {@link Fragment} subclass.

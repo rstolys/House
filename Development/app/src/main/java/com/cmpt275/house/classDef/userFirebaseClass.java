@@ -4,8 +4,13 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.cmpt275.house.classDef.documentClass.firebaseUserDocument;
+import com.cmpt275.house.classDef.infoClass.feedbackInfo;
+import com.cmpt275.house.classDef.infoClass.userInfo;
+import com.cmpt275.house.interfaceDef.Callbacks.booleanCallback;
+import com.cmpt275.house.interfaceDef.Callbacks.fInfoCallback;
+import com.cmpt275.house.interfaceDef.Callbacks.uInfoCallback;
 import com.cmpt275.house.interfaceDef.UsersBE;
-import com.cmpt275.house.interfaceDef.userCallbacks;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -15,36 +20,39 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.Executor;
+import java.util.Objects;
 
 public class userFirebaseClass implements UsersBE {
 
     //
     // Class Variables
     //
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private userCallbacks uCallback;
+    private final FirebaseFirestore db;
     private final String TAG = "FirebaseUserAction";
 
     //TODO: Add attributes to documentation
-    private FirebaseAuth firebaseAuth;
+    private final FirebaseAuth firebaseAuth;
     private FirebaseUser currentUser;
 
     //
     // Class Functions
     //
-    public userFirebaseClass(userCallbacks uCallback) {
-        this.uCallback = uCallback;
+
+    ////////////////////////////////////////////////////////////
+    //
+    // Constructor
+    //
+    ////////////////////////////////////////////////////////////
+    public userFirebaseClass() {
+        db = FirebaseFirestore.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
     }
 
-    public void createAccount(String name, String email, String password) {return;}
-    public void resetPassword(String email) {return;}
-    public void modifyDisplayName(userInfo uInfo) {return;}
-    public void modifyEmail(String newEmail, userInfo uInfo) {return;}
-    public void updateNotificationSettings(userInfo uInfo) {return;}
+    public void createAccount(String name, String email, String password, uInfoCallback callback) {}
+    public void resetPassword(String email, booleanCallback callback) {}
+    public void modifyDisplayName(userInfo uInfo, uInfoCallback callback) {}
+    public void modifyEmail(String newEmail, userInfo uInfo, uInfoCallback callback) {}
+    public void updateNotificationSettings(userInfo uInfo, uInfoCallback callback) {}
 
 
     ////////////////////////////////////////////////////////////
@@ -52,7 +60,7 @@ public class userFirebaseClass implements UsersBE {
     // Will sign in the user using firebase authentication
     //
     ////////////////////////////////////////////////////////////
-    public void signInUser(String email, String password) {
+    public void signInUser(String email, String password, uInfoCallback callback) {
 
         Log.d(TAG, "Attempting sign in with email: " + email + " and password: " + password);
 
@@ -75,7 +83,7 @@ public class userFirebaseClass implements UsersBE {
                                     if(queryResult.isSuccessful()) {
                                         userInfo uInfo = null;
 
-                                        for(QueryDocumentSnapshot document : queryResult.getResult()) {
+                                        for(QueryDocumentSnapshot document : Objects.requireNonNull(queryResult.getResult())) {
                                             //Convert queried document to userData class
                                             firebaseUserDocument userData = document.toObject(firebaseUserDocument.class);
                                             uInfo = userData.toUserInfo(document.getId(), currentUser.getEmail());
@@ -83,12 +91,12 @@ public class userFirebaseClass implements UsersBE {
                                             Log.d(TAG, "User: " + document.getId() + " Successfully Logged In and info collected");
                                         }
 
-                                        uCallback.onUserInfoReturn(uInfo, "signInUser");
+                                        callback.onReturn(uInfo, true);
                                     }
                                     else {
                                         Log.d(TAG, "Error accessing the userInformation ", queryResult.getException());
 
-                                        uCallback.onUserInfoReturn(null, "signInUser");
+                                        callback.onReturn(null, false);
                                     }
                                 }
                             });
@@ -97,16 +105,14 @@ public class userFirebaseClass implements UsersBE {
                         //Log the error result
                         Log.w(TAG, "signInWithEmail:failure", task.getException());
 
-                        uCallback.onUserInfoReturn(null, "signInUser");
+                        callback.onReturn(null, false);
                     }
                 }
             });
-
-        return;
     }
 
 
-    public void getUserInfo(String user_id) {return;}
-    public void submitFeedback(feedbackInfo fInfo) {return;}
-    public void logout(userInfo uInfo) {return;}
+    public void getUserInfo(String user_id, uInfoCallback callback) {}
+    public void submitFeedback(feedbackInfo fInfo, fInfoCallback callback) {}
+    public void logout(userInfo uInfo, booleanCallback callback) {}
 }

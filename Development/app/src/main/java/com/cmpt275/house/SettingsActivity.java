@@ -5,18 +5,11 @@ import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 
-import com.cmpt275.house.classDef.taskClass;
-import com.cmpt275.house.classDef.userInfo;
-import com.cmpt275.house.interfaceDef.task;
+import com.cmpt275.house.classDef.infoClass.userInfo;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.ByteArrayInputStream;

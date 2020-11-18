@@ -1,4 +1,4 @@
-package com.cmpt275.house.classDef;
+package com.cmpt275.house.classDef.mappingClass;
 
 import com.cmpt275.house.interfaceDef.mapping;
 
@@ -7,19 +7,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class roleMapping implements mapping {
-    private Map<String, Integer> roleStringToInt;
-    private Map<Integer, String> roleIntToString;
+public class voteTypeMapping implements mapping {
+    private Map<String, Integer> voteTypeStringToInt;
+    private Map<Integer, String> voteTypeIntToString;
 
     //String Tags
-    public final String REQUEST = "Request To Join";
-    public final String MEMBER = "Member";
-    public final String ADMIN = "Administrator";
+    public final String DISPUTE_COMPLETION = "Disputing Task Completion";
+    public final String DEADLINE_EXTENSION = "Requesting Deadline Extension";
 
     //Integer Tags
-    public final Integer REQUEST_NUM = 0;
-    public final Integer MEMBER_NUM = 1;
-    public final Integer ADMIN_NUM = 2;
+    public final Integer DISPUTE_COMPLETION_NUM = 0;
+    public final Integer DEADLINE_EXTENSION_NUM = 1;
 
 
     ////////////////////////////////////////////////////////////
@@ -27,18 +25,16 @@ public class roleMapping implements mapping {
     // Constructor will initialize maps for easy lookups
     //
     ////////////////////////////////////////////////////////////
-    public roleMapping() {
+    public voteTypeMapping() {
         //Setup the String to Int Map
-        roleStringToInt = new HashMap<String, Integer>();
-        roleStringToInt.put(REQUEST, REQUEST_NUM);
-        roleStringToInt.put(MEMBER, MEMBER_NUM);
-        roleStringToInt.put(ADMIN, ADMIN_NUM);
+        voteTypeStringToInt = new HashMap<String, Integer>();
+        voteTypeStringToInt.put(DISPUTE_COMPLETION, DISPUTE_COMPLETION_NUM);
+        voteTypeStringToInt.put(DEADLINE_EXTENSION, DEADLINE_EXTENSION_NUM);
 
         //Setup the Int to String Map
-        roleIntToString = new HashMap<Integer, String>();
-        roleIntToString.put(REQUEST_NUM, REQUEST);
-        roleIntToString.put(MEMBER_NUM, MEMBER);
-        roleIntToString.put(ADMIN_NUM, ADMIN);
+        voteTypeIntToString = new HashMap<Integer, String>();
+        voteTypeIntToString.put(DISPUTE_COMPLETION_NUM, DISPUTE_COMPLETION);
+        voteTypeIntToString.put(DEADLINE_EXTENSION_NUM, DEADLINE_EXTENSION);
     }
 
 
@@ -52,7 +48,7 @@ public class roleMapping implements mapping {
         List<Integer> intTags = new ArrayList<Integer>(stringTags.size());
 
         for(int i = 0; i < stringTags.size(); i++)
-            intTags.add(roleStringToInt.get(stringTags.get(i)));
+            intTags.add(voteTypeStringToInt.get(stringTags.get(i)));
 
         return intTags;
     }
@@ -68,7 +64,7 @@ public class roleMapping implements mapping {
         List<String> stringTags = new ArrayList<String>(intTags.size());
 
         for(int i = 0; i < intTags.size(); i++) {
-            stringTags.add(roleIntToString.get(intTags.get(i)));
+            stringTags.add(voteTypeIntToString.get(intTags.get(i)));
         }
 
         return stringTags;
@@ -80,7 +76,7 @@ public class roleMapping implements mapping {
     //
     ////////////////////////////////////////////////////////////
     public Integer mapStringToInt(String stringTag) {
-        return roleStringToInt.get(stringTag);
+        return voteTypeStringToInt.get(stringTag);
     }
 
     ////////////////////////////////////////////////////////////
@@ -89,6 +85,6 @@ public class roleMapping implements mapping {
     //
     ////////////////////////////////////////////////////////////
     public String mapIntToString(Integer intTag) {
-        return roleIntToString.get(intTag);
+        return voteTypeIntToString.get(intTag);
     }
 }

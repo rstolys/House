@@ -2,14 +2,13 @@ package com.cmpt275.house.classDef;
 
 import android.util.Log;
 
+import com.cmpt275.house.classDef.infoClass.userInfo;
+import com.cmpt275.house.interfaceDef.Callbacks.uInfoCallback;
 import com.cmpt275.house.interfaceDef.signIn;
 
 import com.cmpt275.house.interfaceDef.updateUI;
-import com.cmpt275.house.interfaceDef.userCallbacks;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
-public class signInClass implements signIn, userCallbacks {
+public class signInClass implements signIn {
     //
     // Class Variables
     //
@@ -25,8 +24,14 @@ public class signInClass implements signIn, userCallbacks {
     //
     // Class Functions
     //
+
+    ////////////////////////////////////////////////////////////
+    //
+    // Constructor
+    //
+    ////////////////////////////////////////////////////////////
     public signInClass(updateUI ui) {
-        firebaseTask = new userFirebaseClass(this);
+        firebaseTask = new userFirebaseClass();
 
         this.ui = ui;       //Set the class implementing our ui updates
         userLoggedIn = false;
@@ -34,8 +39,23 @@ public class signInClass implements signIn, userCallbacks {
 
     public void signInUser(String email, String Password) {
 
+        signInClass self = this;
+
         //Call change state function **Used in Prototype**
-        firebaseTask.signInUser("ryanstolys@gmail.com", "123456");
+        firebaseTask.signInUser("ryanstolys@gmail.com", "123456", new uInfoCallback() {
+            @Override
+            public void onReturn(userInfo uInfo, boolean success) {
+                Log.d("signInUser:", "Returned with success: " + success);;
+                //If the signIn was successful then set logged in to true
+                if(success) {
+                    userLoggedIn = true;
+                    self.uInfo = uInfo;
+                }
+
+                //Tell ui to check if it needs to be updated
+                ui.stateChanged(0);
+            }
+        });
 
         return;
     }
@@ -52,27 +72,4 @@ public class signInClass implements signIn, userCallbacks {
     public boolean isUserSignedIn() {
         return userLoggedIn;
     }
-
-
-    //userCallbacks
-    public void onUserInfoArrayReturn(userInfo[] uInfos, String functionName) {return;}
-    public void onUserInfoReturn(userInfo uInfo, String functionName) {
-        this.uInfo = uInfo;
-        Log.d("UserInfoReturn:", "Return from " + functionName);
-        if(uInfo != null)
-            Log.d("UserInfoReturn:", "uInfo is " + uInfo.id);
-
-        switch(functionName) {
-            case "signInUser":
-                if(uInfo != null)
-                    userLoggedIn = true;
-
-                ui.stateChanged(0);     //Tell ui to check if it needs to be updated
-                break;
-        }
-
-        return;
-    }
-    public void onUserBooleanReturn(userInfo uInfo, String functionName) {return;}
-
 }

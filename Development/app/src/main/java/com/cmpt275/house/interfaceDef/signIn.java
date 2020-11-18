@@ -1,6 +1,6 @@
 package com.cmpt275.house.interfaceDef;
 
-import com.cmpt275.house.classDef.userInfo;
+import com.cmpt275.house.classDef.infoClass.userInfo;
 
 public interface signIn {
     public void createAccount(userInfo uInfo);

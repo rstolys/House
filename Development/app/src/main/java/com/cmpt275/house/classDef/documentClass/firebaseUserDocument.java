@@ -1,10 +1,8 @@
-package com.cmpt275.house.classDef;
+package com.cmpt275.house.classDef.documentClass;
 
 import com.cmpt275.house.classDef.databaseObjects.nameObj;
+import com.cmpt275.house.classDef.infoClass.userInfo;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class firebaseUserDocument {

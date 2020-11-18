@@ -1,7 +1,10 @@
-package com.cmpt275.house.classDef;
+package com.cmpt275.house.classDef.documentClass;
 
 import com.cmpt275.house.classDef.databaseObjects.houseMemberObj;
 import com.cmpt275.house.classDef.databaseObjects.nameObj;
+import com.cmpt275.house.classDef.infoClass.houseInfo;
+import com.cmpt275.house.classDef.mappingClass.notificationMapping;
+import com.cmpt275.house.interfaceDef.mapping;
 
 import java.util.List;
 import java.util.Map;
@@ -73,8 +76,11 @@ public class firebaseHouseDocument {
         this.description = hInfo.description;
         this.punishmentMultiplier = hInfo.punishmentMultiplier;
         this.maxMembers = hInfo.maxMembers;
-        this.houseNotifications = hInfo.houseNotifications;
 
+        if(hInfo.houseNotifications != null) {
+            mapping houseNotificationMap = new notificationMapping();
+            this.houseNotifications = houseNotificationMap.mapStringToInt(hInfo.houseNotifications);
+        }
 
         return;
     }
@@ -109,7 +115,9 @@ public class firebaseHouseDocument {
         returnHouse.description = description;
         returnHouse.punishmentMultiplier = punishmentMultiplier;
         returnHouse.maxMembers = maxMembers;
-        returnHouse.houseNotifications = houseNotifications;
+
+        mapping houseNotificationMap = new notificationMapping();
+        returnHouse.houseNotifications = houseNotificationMap.mapIntToString(houseNotifications);
 
         return returnHouse;
     }

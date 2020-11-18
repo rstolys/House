@@ -1,4 +1,6 @@
-package com.cmpt275.house.classDef;
+package com.cmpt275.house.classDef.documentClass;
+
+import com.cmpt275.house.classDef.infoClass.feedbackInfo;
 
 import java.util.Date;
 

@@ -10,15 +10,10 @@ import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 
-import com.cmpt275.house.R;
 import com.cmpt275.house.classDef.taskClass;
-import com.cmpt275.house.classDef.taskInfo;
-import com.cmpt275.house.classDef.userInfo;
+import com.cmpt275.house.classDef.infoClass.taskInfo;
+import com.cmpt275.house.classDef.infoClass.userInfo;
 import com.cmpt275.house.interfaceDef.task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 

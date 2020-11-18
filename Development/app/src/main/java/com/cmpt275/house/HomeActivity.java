@@ -1,6 +1,5 @@
 package com.cmpt275.house;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Base64;
@@ -9,13 +8,8 @@ import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 
-import com.cmpt275.house.classDef.userInfo;
+import com.cmpt275.house.classDef.infoClass.userInfo;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.ByteArrayInputStream;

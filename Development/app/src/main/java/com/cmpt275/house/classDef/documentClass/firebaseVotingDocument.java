@@ -1,6 +1,8 @@
-package com.cmpt275.house.classDef;
+package com.cmpt275.house.classDef.documentClass;
 
 import com.cmpt275.house.classDef.databaseObjects.voterObj;
+import com.cmpt275.house.classDef.infoClass.votingInfo;
+import com.cmpt275.house.classDef.mappingClass.voteTypeMapping;
 import com.cmpt275.house.interfaceDef.mapping;
 
 import java.util.Date;
@@ -60,8 +62,10 @@ public class firebaseVotingDocument {
         this.endOfVote = vInfo.endOfVote;
 
         //Map type from string to int
-        mapping typeMapping = new voteTypeMapping();
-        this.type = typeMapping.mapStringToInt(vInfo.type);
+        if(vInfo.type != null) {
+            mapping typeMapping = new voteTypeMapping();
+            this.type = typeMapping.mapStringToInt(vInfo.type);
+        }
 
         return;
     }

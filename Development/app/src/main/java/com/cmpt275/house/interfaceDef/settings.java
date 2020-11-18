@@ -1,7 +1,5 @@
 package com.cmpt275.house.interfaceDef;
 
-import com.cmpt275.house.classDef.userInfo;
-
 public interface settings {
     public void logout();
     public void viewLegal();

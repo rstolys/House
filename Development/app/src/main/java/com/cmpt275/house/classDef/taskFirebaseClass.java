@@ -6,9 +6,17 @@ import androidx.annotation.NonNull;
 
 import com.cmpt275.house.classDef.databaseObjects.nameObj;
 import com.cmpt275.house.classDef.databaseObjects.taskAssignObj;
+import com.cmpt275.house.classDef.documentClass.firebaseTaskDocument;
+import com.cmpt275.house.classDef.infoClass.houseInfo;
+import com.cmpt275.house.classDef.infoClass.taskInfo;
+import com.cmpt275.house.classDef.infoClass.userInfo;
+import com.cmpt275.house.classDef.mappingClass.statusMapping;
+import com.cmpt275.house.classDef.mappingClass.tagMapping;
+import com.cmpt275.house.interfaceDef.Callbacks.booleanCallback;
+import com.cmpt275.house.interfaceDef.Callbacks.tInfoArrayCallback;
+import com.cmpt275.house.interfaceDef.Callbacks.tInfoCallback;
 import com.cmpt275.house.interfaceDef.TaskBE;
 import com.cmpt275.house.interfaceDef.mapping;
-import com.cmpt275.house.interfaceDef.taskCallbacks;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -20,19 +28,17 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class taskFirebaseClass implements TaskBE {
 
     //
     // Class Variables
     //
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private taskCallbacks tCallback;
+    private FirebaseFirestore db;
     private final String TAG = "FirebaseTaskAction";
 
     // TODO: add variables below to documentation
@@ -46,11 +52,11 @@ public class taskFirebaseClass implements TaskBE {
 
     ////////////////////////////////////////////////////////////
     //
-    // Constructor which implements the callback functions
+    // Constructor
     //
     ////////////////////////////////////////////////////////////
-    public taskFirebaseClass(taskCallbacks tCallback) {
-        this.tCallback = tCallback;
+    public taskFirebaseClass() {
+        db = FirebaseFirestore.getInstance();
         statusMap = new statusMapping();
         tagMap = new tagMapping();
     }
@@ -61,14 +67,14 @@ public class taskFirebaseClass implements TaskBE {
     // Will get the current tasks for the user and return them in an array of tasks
     //
     ////////////////////////////////////////////////////////////
-    public void getCurrentTasks(userInfo uInfo) {
+    public void getCurrentTasks(userInfo uInfo, tInfoArrayCallback callback) {
 
         Log.d(TAG, "getCurrentTasks(user) where tasks are assignedTo " + uInfo.id);
 
         //Ensure the uInfo has a valid id
         if(uInfo.id == null) {
             //We cannot access db without valid id for user. Return failure.
-            tCallback.onTaskInfoArrayReturn(null, "getCurrentTasks(user)");
+            callback.onReturn(null, false);
         }
         else {
             //Get documents from the collection that have user_id specified
@@ -92,14 +98,14 @@ public class taskFirebaseClass implements TaskBE {
                             //Convert list to array and return
                             taskInfo[] taskInfoArray = new taskInfo[taskInfoList.size()];
                             taskInfoList.toArray(taskInfoArray);
-                            tCallback.onTaskInfoArrayReturn(taskInfoArray, "getCurrentTasks(user)");
+                            callback.onReturn(taskInfoArray, true);
 
                         }
                         else {
                             Log.d(TAG, "getCurrentTasks(user): Error getting tasks for user: ", queryResult.getException());
 
                             //Call function to return task value
-                            tCallback.onTaskInfoArrayReturn(null, "getCurrentTasks(user)");
+                            callback.onReturn(null, false);
                         }
                     }
                 });
@@ -115,14 +121,14 @@ public class taskFirebaseClass implements TaskBE {
     // Will get the current tasks for the house specified
     //
     ////////////////////////////////////////////////////////////
-    public void getCurrentTasks(houseInfo hInfo) {
+    public void getCurrentTasks(houseInfo hInfo, tInfoArrayCallback callback) {
 
         Log.d(TAG, "getCurrentTasks(house) where tasks are apart of house " + hInfo.id);
 
         //Ensure the uInfo has a valid id
         if(hInfo.id == null) {
             //We cannot access db without valid id for user. Return failure.
-            tCallback.onTaskInfoArrayReturn(null, "getCurrentTasks(house)");
+            callback.onReturn(null, false);
         }
         else {
             //Get documents from the collection that have house_id specified
@@ -146,14 +152,14 @@ public class taskFirebaseClass implements TaskBE {
                                 //Convert list to array and return
                                 taskInfo[] taskInfoArray = new taskInfo[taskInfoList.size()];
                                 taskInfoList.toArray(taskInfoArray);
-                                tCallback.onTaskInfoArrayReturn(taskInfoArray, "getCurrentTasks(house)");
+                                callback.onReturn(taskInfoArray, false);
 
                             }
                             else {
                                 Log.d(TAG, "getCurrentTasks(house): Error getting tasks for user: ", queryResult.getException());
 
                                 //Call function to return task value
-                                tCallback.onTaskInfoArrayReturn(null, "getCurrentTasks(house)");
+                                callback.onReturn(null, false);
                             }
                         }
                     });
@@ -168,14 +174,14 @@ public class taskFirebaseClass implements TaskBE {
     // Will get the current tasks for the user and house specified
     //
     ////////////////////////////////////////////////////////////
-    public void getCurrentTasks(userInfo uInfo, String house_id) {
+    public void getCurrentTasks(userInfo uInfo, String house_id, tInfoArrayCallback callback) {
 
         Log.d(TAG, "getCurrentTasks(user, house_id) for user: " + uInfo.id + " and house_id " + house_id);
 
         //Ensure the uInfo has a valid id
         if(uInfo.id == null || house_id == null) {
             //We cannot access db without valid id for user. Return failure.
-            tCallback.onTaskInfoArrayReturn(null, "getCurrentTasks(user, house_id)");
+            callback.onReturn(null, false);
         }
         else {
             //Get documents from the collection that have user_id specified -- need to check house_id after document collected
@@ -204,14 +210,14 @@ public class taskFirebaseClass implements TaskBE {
                             //Convert list to array and return
                             taskInfo[] taskInfoArray = new taskInfo[taskInfoList.size()];
                             taskInfoList.toArray(taskInfoArray);
-                            tCallback.onTaskInfoArrayReturn(taskInfoArray, "getCurrentTasks(user, house_id)");
+                            callback.onReturn(taskInfoArray, false);
 
                         }
                         else {
                             Log.d(TAG, "getCurrentTasks(user, house_id): Error getting tasks for user: ", queryResult.getException());
 
                             //Call function to return task value
-                            tCallback.onTaskInfoArrayReturn(null, "getCurrentTasks(user, house_id)");
+                            callback.onReturn(null, false);
                         }
                     }
                 });
@@ -227,7 +233,7 @@ public class taskFirebaseClass implements TaskBE {
     // Will determine the approval status and update the task to reflect that
     //
     ////////////////////////////////////////////////////////////
-    public void approveTaskAssignment(taskInfo tInfo, String user_id, boolean taskApproved) {
+    public void approveTaskAssignment(taskInfo tInfo, String user_id, boolean taskApproved, tInfoCallback callback) {
 
         if(taskApproved) {
             //Set the task to approved
@@ -249,7 +255,7 @@ public class taskFirebaseClass implements TaskBE {
             if(tInfo.id == null) {
                 Log.d(TAG, "Invalid task_id. task_id was null");
 
-                tCallback.onTaskInfoReturn(null, "approveTaskAssignment");
+                callback.onReturn(null, false);
             }
             else {
                 //
@@ -265,13 +271,13 @@ public class taskFirebaseClass implements TaskBE {
                         Log.d(TAG, "Task successfully approved!");
 
                         //tInfo updated successfully so we can simply return it
-                        tCallback.onTaskInfoReturn(tInfo, "approveTaskAssignment");
+                        callback.onReturn(tInfo, false);
                     })
                     .addOnFailureListener(e -> {
                         Log.w(TAG, "Error updating document", e);
 
                         //IndicateError
-                        tCallback.onTaskInfoReturn(null, "approveTaskAssignment");
+                        callback.onReturn(null, false);
                     });
             }
         }
@@ -290,7 +296,7 @@ public class taskFirebaseClass implements TaskBE {
             if(tInfo.id == null) {
                 Log.d(TAG, "Invalid task_id. task_id was null");
 
-                tCallback.onTaskInfoReturn(null, "approveTaskAssignment");
+                callback.onReturn(null, false);
             }
             else {
                 //
@@ -315,13 +321,13 @@ public class taskFirebaseClass implements TaskBE {
                         }
 
                         //tInfo updated successfully so we can simply return it
-                        tCallback.onTaskInfoReturn(tInfo, "approveTaskAssignment");
+                        callback.onReturn(tInfo, false);
                     })
                     .addOnFailureListener(e -> {
                         Log.w(TAG, "Error updating task", e);
 
                         //IndicateError
-                        tCallback.onTaskInfoReturn(null, "approveTaskAssignment");
+                        callback.onReturn(null, false);
                     });
             }
         }
@@ -335,7 +341,7 @@ public class taskFirebaseClass implements TaskBE {
     // Will get the task data from the document and convert to taskInfo class
     //
     ////////////////////////////////////////////////////////////
-    public void getTaskInfo(String task_id) {
+    public void getTaskInfo(String task_id, tInfoCallback callback) {
 
         //Get document from the collection
         db.collection("tasks").document(task_id).get()
@@ -347,13 +353,13 @@ public class taskFirebaseClass implements TaskBE {
                 taskInfo tInfo = taskData.toTaskInfo(task_id);
 
                 //Call function to return task value
-                tCallback.onTaskInfoReturn(tInfo, "getTaskInfo");
+                callback.onReturn(tInfo, false);
             })
             .addOnFailureListener(e -> {
-                Log.w(TAG, "Error getting document info document", e);
+                Log.w(TAG, "Error getting task info document", e);
 
                 //Return null to indicate error in task
-                tCallback.onTaskInfoReturn(null, "getTaskInfo");
+                callback.onReturn(null, false);
             });
 
         return;
@@ -362,17 +368,17 @@ public class taskFirebaseClass implements TaskBE {
 
     ////////////////////////////////////////////////////////////
     //
-    // Will update multiple fields of the task document
+    // Will update all fields of the document
     //
     ////////////////////////////////////////////////////////////
-    public void setTaskInfo(taskInfo tInfo) {
+    public void setTaskInfo(taskInfo tInfo, tInfoCallback callback) {
 
         //Create a custom class updatedTask to modify the document with
         firebaseTaskDocument updatedTask = new firebaseTaskDocument(tInfo);
 
         if(tInfo.id == null) {
             //Indicate an error
-            tCallback.onTaskInfoReturn(null, "setTaskInfo");
+            callback.onReturn(null, false);
         }
         else {
             //Update the task document
@@ -381,13 +387,13 @@ public class taskFirebaseClass implements TaskBE {
                     Log.d(TAG, "Task Document successfully updated!");
 
                     //tInfo updated successfully so we can simply return it
-                    tCallback.onTaskInfoReturn(tInfo, "setTaskInfo(1)");     //(1) means 1 input indicating it is this function
+                    callback.onReturn(tInfo, false);
                 })
                 .addOnFailureListener(e -> {
                     Log.w(TAG, "Error updating document", e);
 
                     //IndicateError
-                    tCallback.onTaskInfoReturn(null, "setTaskInfo(1)");
+                    callback.onReturn(null, false);
                 });
         }
 
@@ -401,14 +407,14 @@ public class taskFirebaseClass implements TaskBE {
     // as specified by the input
     //
     ////////////////////////////////////////////////////////////
-    public void setTaskInfo(taskInfo tInfo, String parameter) {
+    public void setTaskInfo(taskInfo tInfo, String parameter, tInfoCallback callback) {
 
         //Get the field to be updated
         Map<String, Object> updateField = getUpdatedTaskField(tInfo, parameter);
 
         if(updateField == null) {
             //Return error
-            tCallback.onTaskInfoReturn(null, "setTaskInfo(2)");
+            callback.onReturn(null, false);
         }
         else {
             //Update the task document
@@ -417,13 +423,13 @@ public class taskFirebaseClass implements TaskBE {
                     Log.d(TAG, "Task Document successfully updated!");
 
                     //tInfo updated successfully so we can simply return it
-                    tCallback.onTaskInfoReturn(tInfo, "setTaskInfo(2)");     //(1) means 1 input indicating it is this function
+                    callback.onReturn(tInfo, false);
                 })
                 .addOnFailureListener(e -> {
                     Log.w(TAG, "Error updating document", e);
 
                     //IndicateError
-                    tCallback.onTaskInfoReturn(null, "setTaskInfo(2)");
+                    callback.onReturn(null, false);
                 });
         }
 
@@ -436,19 +442,19 @@ public class taskFirebaseClass implements TaskBE {
     // Will create the task in the database
     //
     ////////////////////////////////////////////////////////////
-    public void createTask(taskInfo tInfo) {
+    public void createTask(taskInfo tInfo, tInfoCallback callback) {
 
         boolean taskAssignedAway = false;
 
         //Make sure the approved state matches what it must be for creating a task
         for (String assignee_id : tInfo.assignedTo.keySet()) {
 
-            if(tInfo.createdBy_id !=  assignee_id) {
-                tInfo.assignedTo.put(assignee_id, new taskAssignObj(tInfo.assignedTo.get(assignee_id).name, true, false));
+            if(!tInfo.createdBy_id.equals(assignee_id)) {
+                tInfo.assignedTo.put(assignee_id, new taskAssignObj(Objects.requireNonNull(tInfo.assignedTo.get(assignee_id)).name, true, false));
                 taskAssignedAway = true;
             }
             else {
-                tInfo.assignedTo.put(assignee_id, new taskAssignObj(tInfo.assignedTo.get(assignee_id).name, true, true));
+                tInfo.assignedTo.put(assignee_id, new taskAssignObj(Objects.requireNonNull(tInfo.assignedTo.get(assignee_id)).name, true, true));
             }
         }
 
@@ -465,14 +471,11 @@ public class taskFirebaseClass implements TaskBE {
             Log.d(TAG, "Invalid taskInfo class parameters");
 
             //Return null to indicate error in task creation
-            tCallback.onTaskInfoReturn(null, "createTask");
+            callback.onReturn(null, false);
         }
         else {
             //Create custom class to generate a new document
             firebaseTaskDocument newTask = new firebaseTaskDocument(tInfo);
-
-            //Copy tInfo to be able to return it
-            taskInfo finalTInfo = tInfo;
 
             //Add the new task to the tasks collection
             db.collection("tasks").add(newTask)
@@ -480,26 +483,26 @@ public class taskFirebaseClass implements TaskBE {
                     Log.d(TAG, "Task added with ID: " + documentReference.getId());
 
                     //Set the id of the task
-                    finalTInfo.id = documentReference.getId();
+                    tInfo.id = documentReference.getId();
 
                     //Add task to house
-                    db.collection("houses").document(finalTInfo.house_id)
-                        .update("tasks." + finalTInfo.id, new nameObj(finalTInfo.displayName, true));
+                    db.collection("houses").document(tInfo.house_id)
+                        .update("tasks." + tInfo.id, new nameObj(tInfo.displayName, true));
 
                     //Add task to users who the task is assigned to
                     for(String taskAssignee_id : newTask.getAssignedTo().keySet()) {
                         db.collection("users").document(taskAssignee_id)
-                            .update("tasks." + finalTInfo.id, new nameObj(newTask.getDisplayName(), true));
+                            .update("tasks." + tInfo.id, new nameObj(newTask.getDisplayName(), true));
                     }
 
                     //Return the task info
-                    tCallback.onTaskInfoReturn(finalTInfo, "createTask");
+                    callback.onReturn(tInfo, false);
                 })
                 .addOnFailureListener(e -> {
                     Log.w(TAG, "Error adding document", e);
 
                     //Return null to indicate error in task
-                    tCallback.onTaskInfoReturn(null, "createTask");
+                    callback.onReturn(null, false);
                 });
         }
 
@@ -512,12 +515,12 @@ public class taskFirebaseClass implements TaskBE {
     // Will delete the task and all references to the task in the system
     //
     ////////////////////////////////////////////////////////////
-    public void deleteTask(taskInfo tInfo) {
+    public void deleteTask(taskInfo tInfo, booleanCallback callback) {
 
         if(tInfo.id == null) {
             Log.d(TAG, "Invalid task_id. task_id was null");
 
-            tCallback.onTaskBooleanReturn(true, "deleteTask");
+            callback.onReturn(false);
         }
         else {
             Map<String, Object> removeTask = new HashMap<>();
@@ -554,13 +557,13 @@ public class taskFirebaseClass implements TaskBE {
                     Log.d(TAG, "Successfully Deleted Task: " + tInfo.id);
 
                     //Return Successful call
-                    tCallback.onTaskBooleanReturn(true, "deleteTask");
+                    callback.onReturn(true);
                 })
                 .addOnFailureListener(e -> {
                     Log.w(TAG, "Error removing task: " + tInfo.id, e);
 
                     //Indicate Error
-                    tCallback.onTaskBooleanReturn(false, "deleteTask");
+                    callback.onReturn(false);
                 });
         }
 
@@ -575,7 +578,7 @@ public class taskFirebaseClass implements TaskBE {
     // Will generate a swap task request
     //
     ////////////////////////////////////////////////////////////
-    public void swapTask(taskInfo tInfoA, taskInfo tInfoB) {
+    public void swapTask(taskInfo tInfoA, taskInfo tInfoB, booleanCallback callback) {
 
         //Change the status and who the task is assigned to
 
