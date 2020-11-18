@@ -91,9 +91,7 @@ public class MainActivity extends AppCompatActivity implements updateUI {
         EditText password = findViewById(R.id.passwordOfUser);
 
         //Call function to signIn the user
-        //auth.signInUser(email.getText().toString(), password.getText().toString());
-
-        houseAction.editSettings(null);
+        auth.signInUser(email.getText().toString(), password.getText().toString());
     }
 
     ////////////////////////////////////////////////
