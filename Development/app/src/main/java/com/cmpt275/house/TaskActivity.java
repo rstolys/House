@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import androidx.fragment.app.FragmentTransaction;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,6 +31,7 @@ public class TaskActivity extends AppCompatActivity {
 
     private task taskAction = new taskClass();
     private Intent newIntent;
+    FragmentTransaction fragmentTransaction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +67,10 @@ public class TaskActivity extends AppCompatActivity {
         addTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(TaskActivity.this, NewTaskActivity.class));
+                fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                NewTaskFrag taskFrag = new NewTaskFrag(myTaskClass);
+                fragmentTransaction.add(R.id.my_houses_list, taskFrag);
+                fragmentTransaction.commit();
             }
         });
     }
