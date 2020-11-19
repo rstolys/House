@@ -8,6 +8,7 @@ import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -23,6 +24,13 @@ public class TaskActivity extends AppCompatActivity {
     taskInfo tInfo;
     userInfo uInfo;
 
+<<<<<<< Updated upstream
+=======
+    FragmentTransaction fragmentTransaction;
+    private task taskAction = new taskClass();
+    private Intent newIntent;
+
+>>>>>>> Stashed changes
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,7 +47,10 @@ public class TaskActivity extends AppCompatActivity {
         addTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(TaskActivity.this, NewTaskActivity.class));
+                fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                NewTaskFrag taskFrag = new NewTaskFrag(myTaskClass);
+                fragmentTransaction.add(R.id.my_houses_list, taskFrag);
+                fragmentTransaction.commit();
             }
         });
     }
