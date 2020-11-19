@@ -11,7 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.cmpt275.house.classDef.taskClass;
-import com.cmpt275.house.classDef.taskInfo;
+import com.cmpt275.house.classDef.infoClass.taskInfo;
 
 /*
  * A simple {@link Fragment} subclass.
@@ -24,7 +24,6 @@ public class NewTaskFrag extends Fragment {
     taskClass theTaskClass;
 
     public NewTaskFrag(taskClass myTaskClass) {
-        // Attain the house class for this running of the houses activity
         theTaskClass = myTaskClass;
     }
 

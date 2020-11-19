@@ -95,7 +95,14 @@
                 android:id="@+id/new_task_assignee"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/new_task_assignee" />
+                android:textColor="@color/black"
+                android:text="@string/new_task_assignee"/>
+                <Spinner
+                    android:id="@+id/assignee_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:drawable/btn_dropdown"
+                    android:spinnerMode="dropdown"/>
         </TableRow>
 
         <TableRow

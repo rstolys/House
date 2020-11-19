@@ -12,6 +12,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.cmpt275.house.classDef.houseClass;
 import com.cmpt275.house.classDef.taskClass;
 import com.cmpt275.house.classDef.infoClass.taskInfo;
 import com.cmpt275.house.classDef.infoClass.userInfo;
@@ -29,7 +30,7 @@ public class TaskActivity extends AppCompatActivity {
     taskInfo tInfo;
     userInfo uInfo;
 
-    private task taskAction = new taskClass();
+    private taskClass myTaskClass = new taskClass();
     private Intent newIntent;
     FragmentTransaction fragmentTransaction;
 
@@ -69,7 +70,7 @@ public class TaskActivity extends AppCompatActivity {
             public void onClick(View v) {
                 fragmentTransaction = getSupportFragmentManager().beginTransaction();
                 NewTaskFrag taskFrag = new NewTaskFrag(myTaskClass);
-                fragmentTransaction.add(R.id.my_houses_list, taskFrag);
+                fragmentTransaction.add(R.id.my_tasks_list, taskFrag);
                 fragmentTransaction.commit();
             }
         });
