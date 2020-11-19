@@ -1,9 +1,9 @@
 package com.cmpt275.house.classDef;
 
+import com.cmpt275.house.classDef.infoClass.userInfo;
 import com.cmpt275.house.interfaceDef.settings;
-import com.cmpt275.house.interfaceDef.settingsCallbacks;
 
-class settingsClass implements settings, settingsCallbacks {
+class settingsClass implements settings {
 
     //
     // Class Variables
@@ -44,9 +44,4 @@ class settingsClass implements settings, settingsCallbacks {
     public void provideFeedback(String feedback) {
         return;
     }
-
-
-    public void onSettingsStringReturn(String str, String functionName) {return;}
-    public void onUserInfoReturn(userInfo uInfo, String functionName) {return;}
-    public void onSettingsBooleanReturn(boolean result, String functionName) {return;}
 }

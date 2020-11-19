@@ -1,4 +1,4 @@
-package com.cmpt275.house.classDef;
+package com.cmpt275.house.classDef.infoClass;
 
 import java.io.Serializable;
 import java.util.Date;

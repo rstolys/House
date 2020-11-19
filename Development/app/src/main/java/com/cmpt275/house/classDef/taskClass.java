@@ -2,35 +2,34 @@ package com.cmpt275.house.classDef;
 
 import android.util.Log;
 
-import com.cmpt275.house.classDef.databaseObjects.nameObj;
 import com.cmpt275.house.classDef.databaseObjects.taskAssignObj;
-import com.cmpt275.house.classDef.taskInfo;
 
+import com.cmpt275.house.classDef.infoClass.houseInfo;
+import com.cmpt275.house.classDef.infoClass.taskInfo;
+import com.cmpt275.house.classDef.infoClass.userInfo;
+import com.cmpt275.house.classDef.mappingClass.statusMapping;
+import com.cmpt275.house.interfaceDef.Callbacks.booleanCallback;
+import com.cmpt275.house.interfaceDef.Callbacks.tInfoArrayCallback;
+import com.cmpt275.house.interfaceDef.Callbacks.tInfoCallback;
 import com.cmpt275.house.interfaceDef.mapping;
 import com.cmpt275.house.interfaceDef.task;
-import com.cmpt275.house.interfaceDef.taskCallbacks;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-public class taskClass implements task, taskCallbacks {
+public class taskClass implements task {
 
     //
     // Class Variables
     //
     private taskInfo[] tInfos;
 
-    private taskFirebaseClass firebaseTask;
+    private final taskFirebaseClass firebaseTask;
 
     //
     // Class Functions
     //
     public taskClass() {
-        firebaseTask = new taskFirebaseClass(this);
+        firebaseTask = new taskFirebaseClass();
     }
 
 
@@ -42,11 +41,14 @@ public class taskClass implements task, taskCallbacks {
         myUInfo.id = "NO_ID";
         myHInfo.id = "NO_IDs_HAVE_BEEN_SET";
 
-        firebaseTask.getCurrentTasks(myUInfo);
-        firebaseTask.getCurrentTasks(myHInfo);
-        firebaseTask.getCurrentTasks(myUInfo, myHInfo.id);
-        return;
+        firebaseTask.getCurrentTasks(myUInfo, (tInfos, success) -> {
+            Log.d("getCurrentTasks:", "Returned with success " + success);
+            //Do stuff here...
+
+        });
     }
+
+
 
     public void createTask(taskInfo tInfo) {
 
@@ -78,15 +80,13 @@ public class taskClass implements task, taskCallbacks {
         myTInfo.tag.add("Kitchen");
         myTInfo.tag.add("Cleaning");
 
-
-        firebaseTask.createTask(myTInfo);
-
-        return;
+        firebaseTask.createTask(myTInfo, (tInfo1, success) -> {
+            Log.d("createTask:", "Returned with success " + success);
+            //Do stuff here ...
+        });
     }
 
-    public void assignTask(taskInfo tInfo) {
-        return;
-    }
+    public void assignTask(taskInfo tInfo) {}
 
     public void editTask(taskInfo tInfo) {
 
@@ -121,9 +121,11 @@ public class taskClass implements task, taskCallbacks {
 
         //Set Parameter
         String paramToChange = "status";
-        firebaseTask.setTaskInfo(myTInfo, paramToChange);
 
-        return;
+        firebaseTask.setTaskInfo(myTInfo, paramToChange, (tInfo1, success) -> {
+            Log.d("setTaskInfo:", "Returned with success " + success);
+            //Do stuff here ...
+        });
     }
 
     public void deleteTask(taskInfo tInfo) {
@@ -140,17 +142,19 @@ public class taskClass implements task, taskCallbacks {
         myTInfo.assignedTo.put("NO_ID", new taskAssignObj("Ryan Stolys", true, false));
         myTInfo.house_id = "NO_IDs_HAVE_BEEN_SET";
 
-        firebaseTask.deleteTask(myTInfo);
-
-        return;
+        firebaseTask.deleteTask(myTInfo, result -> {
+            Log.d("deleteTask:", "Returned with result " + result);
+            //Do stuff here...
+        });
     }
 
     public void displayTask(String task_id) {
-        //Get the task to display
-        firebaseTask.getTaskInfo(task_id);
 
-        //Will handle return in callback function
-        return;
+        //Get the task to display
+        firebaseTask.getTaskInfo(task_id, (tInfo, success) -> {
+            Log.d("getTaskInfo:", "Returned with success " + success);
+            //Do Stuff here...
+        });
     }
 
     public void approveTask(String task_id, userInfo uInfo) {
@@ -181,75 +185,13 @@ public class taskClass implements task, taskCallbacks {
         myTInfo.tag.add("Kitchen");
         myTInfo.tag.add("Cleaning");
 
-        firebaseTask.approveTaskAssignment(myTInfo, "NO_ID", false);
-        return;
+        firebaseTask.approveTaskAssignment(myTInfo, "NO_ID", false, (tInfo, success) -> {
+            Log.d("approveTaskAssignment:", "Returned with success " + success);
+            //Do stuff here ...
+        });
     }
 
-    public void sortTasks(int sortType) {
-        return;
-    }
+    public void sortTasks(int sortType) {}
 
 
-    public void onTaskInfoArrayReturn(taskInfo[] tInfos, String functionName) {
-        Log.d("TaskInfoArrayReturn:", "Return from " + functionName);
-        if(tInfos != null)
-            Log.d("TaskInfoArrayReturn:", "Returned " + tInfos.length + " tInfos ");
-
-        switch(functionName) {
-            case "getCurrentTasks(user)":
-                //Call function to deal with this result
-                break;
-
-            case "getCurrentTasks(house)":
-                //Call function to deal with this result
-                break;
-
-            default:
-                break;
-        }
-
-        return;
-    }
-
-    public void onTaskInfoReturn(taskInfo tInfo, String functionName) {
-
-        Log.d("TaskInfoReturn:", "Return from " + functionName);
-        if(tInfo != null)
-            Log.d("TaskInfoReturn:", "tInfo is " + tInfo.id);
-
-        switch(functionName) {
-            case "createTask":
-                //Call function to deal with this result
-                break;
-
-            case "getTaskInfo":
-                //Call function to deal with this result
-                break;
-
-            case "setTaskInfo(1)":
-                //Call function to deal with this result
-                break;
-
-            default:
-                break;
-        }
-
-        return;
-    }
-
-    public void onTaskBooleanReturn(boolean result, String functionName) {
-
-        Log.d("TaskBooleanReturn:", "Return from " + functionName + " is " + result);
-
-        switch(functionName) {
-            case "deleteTask":
-                //Call function to deal with this result
-                break;
-
-            default:
-                break;
-        }
-
-        return;
-    }
 }

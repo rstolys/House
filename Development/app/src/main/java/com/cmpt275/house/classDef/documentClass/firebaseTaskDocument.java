@@ -1,10 +1,12 @@
-package com.cmpt275.house.classDef;
+package com.cmpt275.house.classDef.documentClass;
 
 import com.cmpt275.house.classDef.databaseObjects.taskAssignObj;
+import com.cmpt275.house.classDef.infoClass.taskInfo;
+import com.cmpt275.house.classDef.mappingClass.statusMapping;
+import com.cmpt275.house.classDef.mappingClass.tagMapping;
 import com.cmpt275.house.interfaceDef.mapping;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 

@@ -1,4 +1,4 @@
-package com.cmpt275.house.classDef;
+package com.cmpt275.house.classDef.mappingClass;
 
 import com.cmpt275.house.interfaceDef.mapping;
 
@@ -7,17 +7,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class voteTypeMapping implements mapping {
-    private Map<String, Integer> voteTypeStringToInt;
-    private Map<Integer, String> voteTypeIntToString;
+public class notificationMapping implements mapping {
+    private Map<String, Integer> notificationStringToInt;
+    private Map<Integer, String> notificationIntToString;
 
     //String Tags
-    public final String DISPUTE_COMPLETION = "Disputing Task Completion";
-    public final String DEADLINE_EXTENSION = "Requesting Deadline Extension";
+    public final String NONE = "None";
+    public final String WEEKLY = "Weekly";
+    public final String MONTHLY = "Monthly";
 
     //Integer Tags
-    public final Integer DISPUTE_COMPLETION_NUM = 0;
-    public final Integer DEADLINE_EXTENSION_NUM = 1;
+    public final Integer NONE_NUM = 0;
+    public final Integer WEEKLY_NUM = 1;
+    public final Integer MONTHLY_NUM = 2;
 
 
     ////////////////////////////////////////////////////////////
@@ -25,16 +27,18 @@ public class voteTypeMapping implements mapping {
     // Constructor will initialize maps for easy lookups
     //
     ////////////////////////////////////////////////////////////
-    public voteTypeMapping() {
+    public notificationMapping() {
         //Setup the String to Int Map
-        voteTypeStringToInt = new HashMap<String, Integer>();
-        voteTypeStringToInt.put(DISPUTE_COMPLETION, DISPUTE_COMPLETION_NUM);
-        voteTypeStringToInt.put(DEADLINE_EXTENSION, DEADLINE_EXTENSION_NUM);
+        notificationStringToInt = new HashMap<String, Integer>();
+        notificationStringToInt.put(NONE, NONE_NUM);
+        notificationStringToInt.put(WEEKLY, WEEKLY_NUM);
+        notificationStringToInt.put(MONTHLY, MONTHLY_NUM);
 
         //Setup the Int to String Map
-        voteTypeIntToString = new HashMap<Integer, String>();
-        voteTypeIntToString.put(DISPUTE_COMPLETION_NUM, DISPUTE_COMPLETION);
-        voteTypeIntToString.put(DEADLINE_EXTENSION_NUM, DEADLINE_EXTENSION);
+        notificationIntToString = new HashMap<Integer, String>();
+        notificationIntToString.put(NONE_NUM, NONE);
+        notificationIntToString.put(WEEKLY_NUM, WEEKLY);
+        notificationIntToString.put(MONTHLY_NUM, MONTHLY);
     }
 
 
@@ -48,7 +52,7 @@ public class voteTypeMapping implements mapping {
         List<Integer> intTags = new ArrayList<Integer>(stringTags.size());
 
         for(int i = 0; i < stringTags.size(); i++)
-            intTags.add(voteTypeStringToInt.get(stringTags.get(i)));
+            intTags.add(notificationStringToInt.get(stringTags.get(i)));
 
         return intTags;
     }
@@ -64,7 +68,7 @@ public class voteTypeMapping implements mapping {
         List<String> stringTags = new ArrayList<String>(intTags.size());
 
         for(int i = 0; i < intTags.size(); i++) {
-            stringTags.add(voteTypeIntToString.get(intTags.get(i)));
+            stringTags.add(notificationIntToString.get(intTags.get(i)));
         }
 
         return stringTags;
@@ -76,7 +80,7 @@ public class voteTypeMapping implements mapping {
     //
     ////////////////////////////////////////////////////////////
     public Integer mapStringToInt(String stringTag) {
-        return voteTypeStringToInt.get(stringTag);
+        return notificationStringToInt.get(stringTag);
     }
 
     ////////////////////////////////////////////////////////////
@@ -85,6 +89,6 @@ public class voteTypeMapping implements mapping {
     //
     ////////////////////////////////////////////////////////////
     public String mapIntToString(Integer intTag) {
-        return voteTypeIntToString.get(intTag);
+        return notificationIntToString.get(intTag);
     }
 }

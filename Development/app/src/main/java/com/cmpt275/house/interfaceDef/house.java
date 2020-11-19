@@ -1,8 +1,7 @@
 package com.cmpt275.house.interfaceDef;
 
-import com.cmpt275.house.classDef.userInfo;
-import com.cmpt275.house.classDef.houseInfo;
-import com.cmpt275.house.classDef.votingInfo;
+import com.cmpt275.house.classDef.infoClass.userInfo;
+import com.cmpt275.house.classDef.infoClass.houseInfo;
 
 public interface house extends task {
     public void createHouse(houseInfo hInfo);

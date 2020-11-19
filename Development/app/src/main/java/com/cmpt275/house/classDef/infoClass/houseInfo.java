@@ -1,4 +1,4 @@
-package com.cmpt275.house.classDef;
+package com.cmpt275.house.classDef.infoClass;
 
 import com.cmpt275.house.classDef.databaseObjects.houseMemberObj;
 
@@ -19,5 +19,5 @@ public class houseInfo implements Serializable {
     public String description;
     public int punishmentMultiplier;
     public int maxMembers;
-    public int houseNotifications;                  //Notification type -- kept as int to allow modification of display on front end
+    public String houseNotifications;                  //Notification type -- kept as int to allow modification of display on front end
 }

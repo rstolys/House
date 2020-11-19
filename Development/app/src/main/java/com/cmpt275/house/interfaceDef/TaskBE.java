@@ -1,17 +1,21 @@
 package com.cmpt275.house.interfaceDef;
 
-import com.cmpt275.house.classDef.houseInfo;
-import com.cmpt275.house.classDef.taskInfo;
-import com.cmpt275.house.classDef.userInfo;
+import com.cmpt275.house.classDef.infoClass.houseInfo;
+import com.cmpt275.house.classDef.infoClass.taskInfo;
+import com.cmpt275.house.classDef.infoClass.userInfo;
+import com.cmpt275.house.interfaceDef.Callbacks.booleanCallback;
+import com.cmpt275.house.interfaceDef.Callbacks.tInfoArrayCallback;
+import com.cmpt275.house.interfaceDef.Callbacks.tInfoCallback;
 
+//TODO: Update documentation to match new interface
 public interface TaskBE {
-    public void getCurrentTasks(userInfo uInfo);
-    public void getCurrentTasks(houseInfo hInfo);
-    public void getCurrentTasks(userInfo uInfo, String house_id);
-    public void getTaskInfo(String task_id);
-    public void setTaskInfo(taskInfo tInfo);
-    public void setTaskInfo(taskInfo tInfo, String parameter);
-    public void createTask(taskInfo tInfo);
-    public void deleteTask(taskInfo tInfo);
-    public void swapTask(taskInfo tInfoA, taskInfo tInfoB);
+    public void getCurrentTasks(userInfo uInfo, tInfoArrayCallback callback);
+    public void getCurrentTasks(houseInfo hInfo, tInfoArrayCallback callback);
+    public void getCurrentTasks(userInfo uInfo, String house_id, tInfoArrayCallback callback);
+    public void getTaskInfo(String task_id, tInfoCallback callback);
+    public void setTaskInfo(taskInfo tInfo, tInfoCallback callback);
+    public void setTaskInfo(taskInfo tInfo, String parameter, tInfoCallback callback);
+    public void createTask(taskInfo tInfo, tInfoCallback callback);
+    public void deleteTask(taskInfo tInfo, booleanCallback callback);
+    public void swapTask(taskInfo tInfoA, taskInfo tInfoB, booleanCallback callback);
 }

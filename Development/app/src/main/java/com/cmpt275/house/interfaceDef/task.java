@@ -1,7 +1,7 @@
 package com.cmpt275.house.interfaceDef;
 
-import com.cmpt275.house.classDef.taskInfo;
-import com.cmpt275.house.classDef.userInfo;
+import com.cmpt275.house.classDef.infoClass.taskInfo;
+import com.cmpt275.house.classDef.infoClass.userInfo;
 
 public interface task {
     public void viewTask(String task_id);

@@ -1,4 +1,4 @@
-package com.cmpt275.house.classDef;
+package com.cmpt275.house.classDef.mappingClass;
 
 import com.cmpt275.house.interfaceDef.mapping;
 

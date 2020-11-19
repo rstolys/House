@@ -1,4 +1,4 @@
-package com.cmpt275.house.classDef;
+package com.cmpt275.house.classDef.mappingClass;
 
 import com.cmpt275.house.interfaceDef.mapping;
 
@@ -7,19 +7,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class notificationMapping implements mapping {
-    private Map<String, Integer> notificationStringToInt;
-    private Map<Integer, String> notificationIntToString;
+public class roleMapping implements mapping {
+    private Map<String, Integer> roleStringToInt;
+    private Map<Integer, String> roleIntToString;
 
     //String Tags
-    public final String NONE = "None";
-    public final String WEEKLY = "Weekly";
-    public final String MONTHLY = "Monthly";
+    public final String REQUEST = "Request To Join";
+    public final String MEMBER = "Member";
+    public final String ADMIN = "Administrator";
 
     //Integer Tags
-    public final Integer NONE_NUM = 0;
-    public final Integer WEEKLY_NUM = 1;
-    public final Integer MONTHLY_NUM = 2;
+    public final Integer REQUEST_NUM = 0;
+    public final Integer MEMBER_NUM = 1;
+    public final Integer ADMIN_NUM = 2;
 
 
     ////////////////////////////////////////////////////////////
@@ -27,18 +27,18 @@ public class notificationMapping implements mapping {
     // Constructor will initialize maps for easy lookups
     //
     ////////////////////////////////////////////////////////////
-    public notificationMapping() {
+    public roleMapping() {
         //Setup the String to Int Map
-        notificationStringToInt = new HashMap<String, Integer>();
-        notificationStringToInt.put(NONE, NONE_NUM);
-        notificationStringToInt.put(WEEKLY, WEEKLY_NUM);
-        notificationStringToInt.put(MONTHLY, MONTHLY_NUM);
+        roleStringToInt = new HashMap<String, Integer>();
+        roleStringToInt.put(REQUEST, REQUEST_NUM);
+        roleStringToInt.put(MEMBER, MEMBER_NUM);
+        roleStringToInt.put(ADMIN, ADMIN_NUM);
 
         //Setup the Int to String Map
-        notificationIntToString = new HashMap<Integer, String>();
-        notificationIntToString.put(NONE_NUM, NONE);
-        notificationIntToString.put(WEEKLY_NUM, WEEKLY);
-        notificationIntToString.put(MONTHLY_NUM, MONTHLY);
+        roleIntToString = new HashMap<Integer, String>();
+        roleIntToString.put(REQUEST_NUM, REQUEST);
+        roleIntToString.put(MEMBER_NUM, MEMBER);
+        roleIntToString.put(ADMIN_NUM, ADMIN);
     }
 
 
@@ -52,7 +52,7 @@ public class notificationMapping implements mapping {
         List<Integer> intTags = new ArrayList<Integer>(stringTags.size());
 
         for(int i = 0; i < stringTags.size(); i++)
-            intTags.add(notificationStringToInt.get(stringTags.get(i)));
+            intTags.add(roleStringToInt.get(stringTags.get(i)));
 
         return intTags;
     }
@@ -68,7 +68,7 @@ public class notificationMapping implements mapping {
         List<String> stringTags = new ArrayList<String>(intTags.size());
 
         for(int i = 0; i < intTags.size(); i++) {
-            stringTags.add(notificationIntToString.get(intTags.get(i)));
+            stringTags.add(roleIntToString.get(intTags.get(i)));
         }
 
         return stringTags;
@@ -80,7 +80,7 @@ public class notificationMapping implements mapping {
     //
     ////////////////////////////////////////////////////////////
     public Integer mapStringToInt(String stringTag) {
-        return notificationStringToInt.get(stringTag);
+        return roleStringToInt.get(stringTag);
     }
 
     ////////////////////////////////////////////////////////////
@@ -89,6 +89,6 @@ public class notificationMapping implements mapping {
     //
     ////////////////////////////////////////////////////////////
     public String mapIntToString(Integer intTag) {
-        return notificationIntToString.get(intTag);
+        return roleIntToString.get(intTag);
     }
 }
