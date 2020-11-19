@@ -44,8 +44,11 @@ public class taskClass implements task {
         firebaseTask.getCurrentTasks(myUInfo, (tInfos, success) -> {
             Log.d("getCurrentTasks:", "Returned with success " + success);
             //Do stuff here...
+
         });
     }
+
+
 
     public void createTask(taskInfo tInfo) {
 
