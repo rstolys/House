@@ -114,6 +114,7 @@
                 android:id="@+id/button"
                 android:layout_width="123dp"
                 android:layout_height="wrap_content"
+                android:onClick="settingButtonClick2"
                 android:text="@string/reset_password_button" />
         </TableRow>
 
@@ -145,6 +146,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="60dp"
         android:layout_marginBottom="21dp"
+        android:onClick="settingButtonClick"
         android:text="@string/save_button"
         app:layout_constraintBottom_toTopOf="@+id/nav_view"
         app:layout_constraintEnd_toEndOf="@+id/nav_view" />

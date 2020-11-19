@@ -1,5 +1,7 @@
 package com.cmpt275.house.classDef;
 
+import android.util.Log;
+
 import com.cmpt275.house.interfaceDef.signIn;
 
 import com.cmpt275.house.interfaceDef.updateUI;
@@ -12,59 +14,33 @@ public class signInClass implements signIn, userCallbacks {
     // Class Variables
     //
     private updateUI ui;            //Interface to update the UI state
+    private boolean userLoggedIn;
+    private userFirebaseClass firebaseTask;
 
-    private FirebaseAuth firebaseAuth;
-    private FirebaseUser currentUser;
+    private static final String TAG = "SignInClass";
+    public userInfo uInfo;
 
-    private static final String TAG = "EmailPassword";
-
-    private String errorMessage = "";
 
 
     //
     // Class Functions
     //
     public signInClass(updateUI ui) {
+        firebaseTask = new userFirebaseClass(this);
+
         this.ui = ui;       //Set the class implementing our ui updates
+        userLoggedIn = false;
     }
 
     public void signInUser(String email, String Password) {
 
         //Call change state function **Used in Prototype**
-        ui.stateChanged(0);
-
-        /*
-        firebaseAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener((Executor) this, new OnCompleteListener<AuthResult>() {
-
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "signInWithEmail:success");
-                            currentUser = firebaseAuth.getCurrentUser();
-
-                            ui.stateChanged(0);       //Will update a state setting which will cause an update to the UI
-                        }
-                        else {
-                            //Log the error result
-                            Log.w(TAG, "signInWithEmail:failure", task.getException());
-
-                            // Display a message to the user.
-                            errorMessage = "Authentication Failed";
-
-                            ui.stateChanged(0);
-                        }
-
-                    }
-                });
-         */
-
+        firebaseTask.signInUser("ryanstolys@gmail.com", "123456");
 
         return;
     }
 
-    public void createAccount(String email, String displayName, String password) {
+    public void createAccount(userInfo uInfo) {
         //Do nothing for now
         ui.stateChanged(0);
     }
@@ -74,13 +50,29 @@ public class signInClass implements signIn, userCallbacks {
     }
 
     public boolean isUserSignedIn() {
-        return true; //(currentUser != null);
+        return userLoggedIn;
     }
 
 
     //userCallbacks
-    public void onUserInfoArrayReturn(userInfo uInfo) {return;}
-    public void onUserInfoReturn(userInfo uInfo) {return;}
-    public void onUserBooleanReturn(userInfo uInfo) {return;}
+    public void onUserInfoArrayReturn(userInfo[] uInfos, String functionName) {return;}
+    public void onUserInfoReturn(userInfo uInfo, String functionName) {
+        this.uInfo = uInfo;
+        Log.d("UserInfoReturn:", "Return from " + functionName);
+        if(uInfo != null)
+            Log.d("UserInfoReturn:", "uInfo is " + uInfo.id);
+
+        switch(functionName) {
+            case "signInUser":
+                if(uInfo != null)
+                    userLoggedIn = true;
+
+                ui.stateChanged(0);     //Tell ui to check if it needs to be updated
+                break;
+        }
+
+        return;
+    }
+    public void onUserBooleanReturn(userInfo uInfo, String functionName) {return;}
 
 }

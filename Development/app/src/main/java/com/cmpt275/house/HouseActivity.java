@@ -2,59 +2,122 @@ package com.cmpt275.house;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Base64;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TableRow;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.cmpt275.house.classDef.houseClass;
+import com.cmpt275.house.classDef.taskClass;
+import com.cmpt275.house.classDef.userInfo;
+import com.cmpt275.house.interfaceDef.task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 
 public class HouseActivity extends AppCompatActivity {
+
+    FragmentTransaction fragmentTransaction;
+    private houseClass myHouseClass = new houseClass();
+    public Intent newIntent;
+    private userInfo uInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_houses);
 
-        //userInfo uInfo = getIntent().key("userInfo");
+        // Get userInfo from last activity
+        Intent lastIntent = getIntent();
+        String serializedObject = lastIntent.getStringExtra("userInfo");
+
+        if(serializedObject == ""){
+            // If the serialized object is empty, error!
+            Log.e("OnCreate Home", "userInfo not passed from last activity");
+        } else {
+            try {
+                // Decode the string into a byte array
+                byte b[] = Base64.decode( serializedObject, Base64.DEFAULT );
+
+                // Convert byte array into userInfo object
+                ByteArrayInputStream bi = new ByteArrayInputStream(b);
+                ObjectInputStream si = new ObjectInputStream(bi);
+                uInfo = (userInfo) si.readObject();
+                Log.d("HOUSE_ACTIVITY", "Userinfo.displayName passed: " + uInfo.displayName );
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
         navView.setOnNavigationItemSelectedListener(navListener); //so we can implement it outside onCreate
-<<<<<<< Updated upstream
-=======
 
-        /*Button addHouseButton = findViewById(R.id .add_house_button);
+        Button addHouseButton = findViewById(R.id.add_house_button);
         addHouseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addHouseButton.setText("Clicked");
+                fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                NewHouseFrag houseFrag = new NewHouseFrag(myHouseClass);
+                fragmentTransaction.add(R.id.my_houses_list, houseFrag);
+                fragmentTransaction.commit();
             }
-        });*/
->>>>>>> Stashed changes
+        });
     }
+
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                    // First prepare the userInfo to pass to next activity
+                    String serializedUserInfo = "";
+                    try {
+                        // Convert object data to encoded string
+                        ByteArrayOutputStream bo = new ByteArrayOutputStream();
+                        ObjectOutputStream so = new ObjectOutputStream(bo);
+                        so.writeObject(uInfo);
+                        so.flush();
+                        final byte[] byteArray = bo.toByteArray();
+                        serializedUserInfo = Base64.encodeToString(byteArray, Base64.DEFAULT);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    // Now go to which activity was requested
                     switch (item.getItemId()){
                         case R.id.navBar_home:
-                            Intent newIntent = new Intent(HouseActivity.this, HomeActivity.class);
-                            newIntent.putExtra("userInfo", 0);
+                            newIntent = new Intent(HouseActivity.this, HomeActivity.class);
+                            newIntent.putExtra("userInfo",serializedUserInfo);
                             startActivity(newIntent);
                             break;
                         case R.id.navBar_tasks:
-                            startActivity(new Intent(HouseActivity.this, TaskActivity.class));
+                            newIntent = new Intent(HouseActivity.this, TaskActivity.class);
+                            newIntent.putExtra("userInfo", serializedUserInfo);
+                            startActivity(newIntent);
                             break;
                         case R.id.navBar_houses:
                             break;
                         case R.id.navBar_Settings:
-                            startActivity(new Intent(HouseActivity.this, SettingsActivity.class));
+                            newIntent = new Intent(HouseActivity.this, SettingsActivity.class);
+                            newIntent.putExtra("userInfo", serializedUserInfo);
+                            startActivity(newIntent);
                             break;
                     }
 
@@ -108,4 +171,8 @@ public class HouseActivity extends AppCompatActivity {
         //System invokes this before the app is destroyed
         //Usually ensures all the activities resources are released
     }
+
+    public void onLeaveHouseClick(View view) {
+    }
+
 }

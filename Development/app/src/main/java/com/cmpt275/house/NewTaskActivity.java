@@ -15,6 +15,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class NewTaskActivity extends AppCompatActivity{
 
+    public Intent newIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,16 +34,25 @@ public class NewTaskActivity extends AppCompatActivity{
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                     switch (item.getItemId()){
                         case R.id.navBar_home:
-                            startActivity(new Intent(NewTaskActivity.this, HomeActivity.class));
+                            newIntent = new Intent(NewTaskActivity.this, HomeActivity.class);
+                            newIntent.putExtra("userInfo", 0);
+                            startActivity( newIntent );
                             break;
                         case R.id.navBar_tasks:
-                            startActivity(new Intent(NewTaskActivity.this, TaskActivity.class));
+                            // Do we really want to go back to tasks page here?
+                            newIntent = new Intent(NewTaskActivity.this, TaskActivity.class);
+                            newIntent.putExtra("userInfo", 0);
+                            startActivity( newIntent );
                             break;
                         case R.id.navBar_houses:
-                            startActivity(new Intent(NewTaskActivity.this, HouseActivity.class));
+                            newIntent = new Intent(NewTaskActivity.this, HouseActivity.class);
+                            newIntent.putExtra("userInfo", 0);
+                            startActivity( newIntent );
                             break;
                         case R.id.navBar_Settings:
-                            startActivity(new Intent(NewTaskActivity.this, SettingsActivity.class));
+                            newIntent = new Intent(NewTaskActivity.this, SettingsActivity.class);
+                            newIntent.putExtra("userInfo", 0);
+                            startActivity( newIntent );
                             break;
                     }
 

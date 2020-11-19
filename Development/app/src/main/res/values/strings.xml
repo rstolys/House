@@ -45,7 +45,26 @@
     <string name="house1_task3_name">I am the name of task 3</string>
     <string name="house1_task3_due_date">3 Days</string>
 
+    <string name="house2_name"> House 2 Name</string>
+    <string name="house2_description">House 2 Description. What happens if I write a long description does it hold?</string>
+    <string name="house2_members_list">Bob, George, Ralph, Alpha, Beta, Gamma, Zeta, Do, Re, Mi</string>
+    <string name="house2_members_title">Members:</string>
+    <string name="house2_task1_title">Task 1:</string>
+    <string name="house2_task1_name">I am the name of task 1</string>
+    <string name="house2_due_date_title">Due Date</string>
+    <string name="house2_task1_due_date">1 Day</string>
+
+    <string name="house2_task2_title">Task 2:</string>
+    <string name="house2_task2_name">I am the name of task 2</string>
+    <string name="house2_task2_due_date">2 Days</string>
+
+    <string name="house2_task3_title">Task 3:</string>
+    <string name="house2_task3_name">I am the name of task 3</string>
+    <string name="house2_task3_due_date">3 Days</string>
+
     <string name="leave_house">Leave House</string>
+    <string name="house3_name"> House 3 Name</string>
+
 
     <!-- Strings related to Settings Page -->
     <string name="my_settings_title">My Settings</string>
@@ -59,6 +78,7 @@
     <string name="toggle_notification_button">ON</string>
     <string name="save_button">SAVE</string>
     <string name="give_feedback_button">Give Feedback</string>
+    <string name="add_house_button_title">Add House</string>
 
     <!-- Strings related to Tasks Page -->
     <string name="my_tasks_title">My Tasks</string>
@@ -70,23 +90,11 @@
     <string name="due_date_2">Nov 16</string>
     <string name="due_date_3">Nov 26</string>
 
-<<<<<<< Updated upstream
-=======
     <!-- Strings related to New Houses -->
     <string name="save_new_house_button_title">SAVE NEW HOUSE</string>
     <string name="new_house_name">New House Name</string>
     <string name="newHouse_members">Members will show up here</string>
     <string name="new_house_description">House Description</string>
 
-    <!-- Strings related to New Task -->
-    <string name="save_new_task_button_title">CREATE</string>
-    <string name="new_task_name">New Task Title</string>
-    <string name="new_task_description">Description</string>
-    <string name="new_task_due_date">Task Due Date</string>
-    <string name="new_task_assignee">Task Assignee</string>
-    <string name="house_name">House Name</string>
-
-
->>>>>>> Stashed changes
 
 </resources>
