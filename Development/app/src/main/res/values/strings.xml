@@ -82,6 +82,7 @@
 
     <!-- Strings related to Tasks Page -->
     <string name="my_tasks_title">My Tasks</string>
+    <string name="new_task_title">New Task</string>
     <string name="due_today_title">Due today</string>
     <string name="due_this_week_title">Due this week</string>
     <string name="due_this_month_title">Due this month</string>

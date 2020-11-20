@@ -68,10 +68,7 @@ public class TaskActivity extends AppCompatActivity {
         addTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                NewTaskFrag taskFrag = new NewTaskFrag(myTaskClass);
-                fragmentTransaction.add(R.id.my_tasks_list, taskFrag);
-                fragmentTransaction.commit();
+                startActivity(new Intent(TaskActivity.this, NewTaskActivity.class));
             }
         });
     }
