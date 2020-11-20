@@ -45,7 +45,7 @@
         </TableRow>
 
         <TableRow
-            android:id="@+id/new_house_row3"
+            android:id="@+id/new_house_row7"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/light_blue">
@@ -168,7 +168,7 @@
         </TableRow>
 
         <TableRow
-            android:id="@+id/new_house_row4"
+            android:id="@+id/new_house_row7"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/light_blue">

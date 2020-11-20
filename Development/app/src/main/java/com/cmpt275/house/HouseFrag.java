@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -15,9 +16,10 @@ import android.widget.Button;
  * create an instance of this fragment.
  */
 public class HouseFrag extends Fragment {
+    private String creatorName;
 
-    public void HouseFrag(){
-        // Empty constructor
+    public void HouseFrag(String houseCreatorName){
+        this.creatorName = houseCreatorName;
     }
 
     @Override

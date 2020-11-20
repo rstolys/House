@@ -65,7 +65,7 @@ public class HouseActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                NewHouseFrag houseFrag = new NewHouseFrag(myHouseClass);
+                NewHouseFrag houseFrag = new NewHouseFrag(myHouseClass, uInfo);
                 fragmentTransaction.add(R.id.my_houses_list, houseFrag);
                 fragmentTransaction.commit();
             }

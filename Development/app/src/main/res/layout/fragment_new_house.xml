@@ -30,7 +30,8 @@
                 android:ems="10"
                 android:importantForAutofill="no"
                 android:inputType="textPersonName"
-                android:text="@string/new_house_name" />
+                android:text="@string/new_house_name"
+                android:textSize="18sp" />
 
         </TableRow>
 
@@ -47,7 +48,8 @@
                 android:ems="10"
                 android:importantForAutofill="no"
                 android:inputType="textPersonName"
-                android:text="@string/new_house_description" />
+                android:text="@string/new_house_description"
+                android:textSize="14sp" />
         </TableRow>
 
         <TableRow
@@ -71,6 +73,52 @@
 
         <TableRow
             android:id="@+id/new_house_row4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/light_blue">
+
+            <TextView
+                android:id="@+id/new_house_punish_mult_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/new_house_punish_mult_title" />
+
+            <EditText
+                android:id="@+id/new_house_punish_mult"
+                android:layout_width="231dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:importantForAutofill="no"
+                android:inputType="textPersonName"
+                android:text="@string/new_house_punish_mult"
+                android:textSize="14sp" />
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/new_house_row5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/light_blue">
+
+            <TextView
+                android:id="@+id/new_house_notification_sched_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/new_house_notification_schedule_title" />
+
+            <EditText
+                android:id="@+id/new_house_notification_sched"
+                android:layout_width="272dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:text="@string/new_house_notification_sched"
+                android:textSize="14sp" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/new_house_row7"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/light_blue">
