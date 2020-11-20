@@ -58,20 +58,24 @@ public class houseClass extends taskClass implements house {
         houseInfo myHInfo = new houseInfo();
 
         myHInfo.id = null;
-        myHInfo.displayName = "Cowichan  09";
-        //myHInfo.displayName = hInfo.displayName;
+        //myHInfo.displayName = "Cowichan  09";
+        myHInfo.displayName = hInfo.displayName;
         myHInfo.voting_ids = null;
         myHInfo.tasks = null;
 
-        myHInfo.members.put("w4OFKQrvL28T3WlXVP4X", new houseMemberObj("Ryan Stolys", true, roleMap.mapStringToInt("Administrator")));
-        //**when creating a house the first member must be role "2" meaning admin
+        //myHInfo.members.put("w4OFKQrvL28T3WlXVP4X", new houseMemberObj("Ryan Stolys", true, roleMap.mapStringToInt("Administrator")));
+        myHInfo.members = hInfo.members;
+        //**when creating a house the first member must be role "2" meaning admin --> Taken care of in NewHouseFrag class
 
-        myHInfo.description = "This my SFU townhouse that contains 4 people. We are all on the golf team";
-        //myHInfo.description = hInfo.description;
-        myHInfo.punishmentMultiplier = 2;
+        //myHInfo.description = "This my SFU townhouse that contains 4 people. We are all on the golf team";
+        myHInfo.description = hInfo.description;
+        // myHInfo.punishmentMultiplier = 2;
+        myHInfo.punishmentMultiplier = hInfo.punishmentMultiplier;
         myHInfo.maxMembers = 4;
-        myHInfo.houseNotifications = notificationMap.WEEKLY;
+        // myHInfo.houseNotifications = notificationMap.WEEKLY;
+        myHInfo.houseNotifications = hInfo.houseNotifications;
 
+        //TODO Somehow tell that the backend added the house successfully.
         firebaseTask.createNewHouse(myHInfo, (hInfo1, success) -> {
             Log.d("createNewHouse:", "Returned with success: " + success);
             //Do stuff here ...

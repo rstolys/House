@@ -89,10 +89,9 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:importantForAutofill="no"
-                android:inputType="textPersonName"
+                android:inputType="number"
                 android:text="@string/new_house_punish_mult"
                 android:textSize="14sp" />
-
         </TableRow>
 
         <TableRow

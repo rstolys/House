@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,8 @@ import com.cmpt275.house.classDef.databaseObjects.houseMemberObj;
 import com.cmpt275.house.classDef.houseClass;
 import com.cmpt275.house.classDef.infoClass.houseInfo;
 import com.cmpt275.house.classDef.infoClass.userInfo;
+import com.cmpt275.house.classDef.mappingClass.notificationMapping;
+import com.cmpt275.house.classDef.mappingClass.roleMapping;
 import com.google.firebase.auth.UserInfo;
 
 /**
@@ -47,19 +50,54 @@ public class NewHouseFrag extends Fragment {
 
         Button saveButton = view.findViewById(R.id.new_house_save_button);
         saveButton.setOnClickListener(v -> {
-           EditText houseTitle = view.findViewById(R.id.new_house_name);
-           newHouseInfo.displayName = String.valueOf(houseTitle.getText());
 
-           EditText houseDescription = view.findViewById(R.id.new_house_description);
-           newHouseInfo.description = String.valueOf(houseDescription);
+            Log.d("CreateHouseButton", "Starting Scrpaing INfo");
 
-           newHouseInfo.members.put(uInfo.id, new houseMemberObj(uInfo.displayName, true, 2));
+            // Scrape data off UI
+            EditText houseTitle = view.findViewById(R.id.new_house_name);
+            newHouseInfo.displayName = String.valueOf(houseTitle.getText());
 
-           //EditText punsihMult = view.
-           //newHouseInfo.punishmentMultiplier =
+            Log.d("CreateHouseButton", "House titl read");
 
+            EditText houseDescription = view.findViewById(R.id.new_house_description);
+            newHouseInfo.description = String.valueOf(houseDescription.getText());
 
-           //houseClass
+            Log.d("CreateHouseButton", "House description read, starting members");
+
+            final roleMapping roleMap = new roleMapping();
+            newHouseInfo.members.put(uInfo.id, new houseMemberObj(uInfo.displayName, true, roleMap.ADMIN_NUM));
+
+            Log.d("CreateHouseButton", "House members read, starting punishment mult");
+            EditText punishMult;
+
+            try{
+                punishMult = view.findViewById(R.id.new_house_punish_mult);
+                String newString = String.valueOf(punishMult.getText());
+                newHouseInfo.punishmentMultiplier = (int) Double.parseDouble(newString);
+            } catch( Exception e){
+                Log.e("Catch Error", e.toString());
+            }
+
+            Log.d("CreateHouseButton", "House punishment Multiplier read, starting notification schedule");
+
+            EditText notifSchedInput = view.findViewById((R.id.new_house_notification_sched));
+            String notifSched = String.valueOf(notifSchedInput);
+            final notificationMapping notificationMap = new notificationMapping();
+            if( notifSched.equals("Weekly") || notifSched.equals("weekly") ){
+                newHouseInfo.houseNotifications = notificationMap.WEEKLY;
+            } else if( notifSched.equals("Monthly") || notifSched.equals("monthly") ){
+               newHouseInfo.houseNotifications = notificationMap.MONTHLY;
+            } else {
+                newHouseInfo.houseNotifications = notificationMap.NONE;
+            }
+
+            Log.d("CreateHouseButton", "Read notification schedule");
+
+            saveButton.setText("Creating House");
+
+            Log.d("CreateHouseButton", "Calling createHouse in houseClass");
+
+            theHouseClass.createHouse(newHouseInfo);
         });
 
         return view;
