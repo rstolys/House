@@ -41,7 +41,7 @@ public class taskClass implements task {
         myUInfo.id = "NO_ID";
         myHInfo.id = "NO_IDs_HAVE_BEEN_SET";
 
-        firebaseTask.getCurrentTasks(myUInfo, (tInfos, success) -> {
+        firebaseTask.getCurrentTasks(myUInfo, (tInfos, success, errorMessage) -> {
             Log.d("getCurrentTasks:", "Returned with success " + success);
             //Do stuff here...
 
@@ -80,7 +80,7 @@ public class taskClass implements task {
         myTInfo.tag.add("Kitchen");
         myTInfo.tag.add("Cleaning");
 
-        firebaseTask.createTask(myTInfo, (tInfo1, success) -> {
+        firebaseTask.createTask(myTInfo, (tInfo1, success, errorMessage) -> {
             Log.d("createTask:", "Returned with success " + success);
             //Do stuff here ...
         });
@@ -122,7 +122,7 @@ public class taskClass implements task {
         //Set Parameter
         String paramToChange = "status";
 
-        firebaseTask.setTaskInfo(myTInfo, paramToChange, (tInfo1, success) -> {
+        firebaseTask.setTaskInfo(myTInfo, paramToChange, (tInfo1, success, errorMessage) -> {
             Log.d("setTaskInfo:", "Returned with success " + success);
             //Do stuff here ...
         });
@@ -142,7 +142,7 @@ public class taskClass implements task {
         myTInfo.assignedTo.put("NO_ID", new taskAssignObj("Ryan Stolys", true, false));
         myTInfo.house_id = "NO_IDs_HAVE_BEEN_SET";
 
-        firebaseTask.deleteTask(myTInfo, result -> {
+        firebaseTask.deleteTask(myTInfo, (result, errorMessage) -> {
             Log.d("deleteTask:", "Returned with result " + result);
             //Do stuff here...
         });
@@ -151,7 +151,7 @@ public class taskClass implements task {
     public void displayTask(String task_id) {
 
         //Get the task to display
-        firebaseTask.getTaskInfo(task_id, (tInfo, success) -> {
+        firebaseTask.getTaskInfo(task_id, (tInfo, success, errorMessage) -> {
             Log.d("getTaskInfo:", "Returned with success " + success);
             //Do Stuff here...
         });
@@ -185,7 +185,7 @@ public class taskClass implements task {
         myTInfo.tag.add("Kitchen");
         myTInfo.tag.add("Cleaning");
 
-        firebaseTask.approveTaskAssignment(myTInfo, "NO_ID", false, (tInfo, success) -> {
+        firebaseTask.approveTaskAssignment(myTInfo, "NO_ID", false, (tInfo, success, errorMessage) -> {
             Log.d("approveTaskAssignment:", "Returned with success " + success);
             //Do stuff here ...
         });

@@ -11,6 +11,7 @@ import java.util.Map;
 
 public class userInfo implements Serializable {
     public String id;
+    public String firebase_id;
     public String displayName;
     public String email;
     public boolean notificationsAllowed;

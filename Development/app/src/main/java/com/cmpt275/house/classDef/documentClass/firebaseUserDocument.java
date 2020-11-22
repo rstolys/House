@@ -22,8 +22,7 @@ public class firebaseUserDocument {
     // Firebase constructor
     //
     /////////////////////////////////////////////////////////
-    public firebaseUserDocument() {
-    }
+    public firebaseUserDocument() {}
 
     /////////////////////////////////////////////////////////
     //
@@ -48,6 +47,7 @@ public class firebaseUserDocument {
     /////////////////////////////////////////////////////////
     public firebaseUserDocument(userInfo uInfo) {
 
+        this.firebase_id = uInfo.firebase_id;
         this.displayName = uInfo.displayName;
         this.notificationsAllowed = uInfo.notificationsAllowed;
 
@@ -75,9 +75,6 @@ public class firebaseUserDocument {
         }
 
         this.moneyBalance = uInfo.moneyBalance;
-
-
-        return;
     }
 
 
@@ -92,6 +89,7 @@ public class firebaseUserDocument {
         userInfo returnUser = new userInfo();
 
         returnUser.id = user_id;
+        returnUser.firebase_id = firebase_id;
         returnUser.email = email;
         returnUser.displayName = displayName;
         returnUser.notificationsAllowed = notificationsAllowed;
@@ -136,7 +134,7 @@ public class firebaseUserDocument {
         return displayName;
     }
 
-    public boolean isNotificationsAllowed() {
+    public boolean getNotificationsAllowed() {
         return notificationsAllowed;
     }
 

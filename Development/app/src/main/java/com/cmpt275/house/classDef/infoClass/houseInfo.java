@@ -15,7 +15,7 @@ public class houseInfo implements Serializable {
     public String displayName;
     public List<String> voting_ids = new ArrayList<String>();
     public Map<String, String> tasks = new HashMap<String, String>();
-    public Map<String, houseMemberObj> members = new HashMap<String, houseMemberObj>();
+    public Map<String, houseMemberInfoObj> members = new HashMap<String, houseMemberInfoObj>();
     public String description;
     public int punishmentMultiplier;
     public int maxMembers;
