@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.cmpt275.house.classDef.infoClass.houseInfo;
 import com.cmpt275.house.classDef.databaseObjects.houseMemberObj;
+import com.cmpt275.house.classDef.infoClass.houseMemberInfoObj;
 
 import java.util.Map;
 
@@ -42,8 +43,8 @@ public class HouseFrag extends Fragment {
 
         StringBuilder membersListString = new StringBuilder(" ");
         boolean firstMember = true;
-        for (Map.Entry<String, houseMemberObj> entry : hInfo.members.entrySet()){
-            houseMemberObj hMemberObj = entry.getValue();
+        for (Map.Entry<String, houseMemberInfoObj> entry : hInfo.members.entrySet()){
+            houseMemberInfoObj hMemberObj = entry.getValue();
             if(firstMember){
                 membersListString.append(hMemberObj.name);
                 firstMember = false;
@@ -55,15 +56,6 @@ public class HouseFrag extends Fragment {
         }
         TextView membersList = view.findViewById(R.id.house1_members_list);
         membersList.setText(membersListString.toString());
-
-        // Show preview of the first three tasks of the house
-        /*int[] listOfTaskTitleIds = new int[]{R.id.house1_task1_title, R.id.house1_task2_title, R.id.house1_task3_title};
-        for(int taskNum = 0; taskNum < NUM_DISPLAYED_TASKS; taskNum++){
-            for(Map.Entry<String, String> entry : hInfo.tasks.entrySet()) {
-                TextView taskTitle = view.findViewById( listOfTaskTitleIds[taskNum] );
-                taskTitle.setText( entry.getValue() );
-            }
-        }*/
 
         Button leaveHouseButton = view.findViewById(R.id.house1_leave_house_button);
         leaveHouseButton.setOnClickListener(v -> leaveHouseButton.setText("Leaving house"));

@@ -2,11 +2,7 @@ package com.cmpt275.house.classDef;
 
 import android.util.Log;
 
-import androidx.fragment.app.FragmentTransaction;
-
 import com.cmpt275.house.HouseActivity;
-import com.cmpt275.house.HouseFrag;
-import com.cmpt275.house.classDef.databaseObjects.houseMemberObj;
 import com.cmpt275.house.classDef.infoClass.houseInfo;
 import com.cmpt275.house.classDef.infoClass.houseMemberInfoObj;
 import com.cmpt275.house.classDef.infoClass.userInfo;
@@ -14,19 +10,11 @@ import com.cmpt275.house.classDef.infoClass.votingInfo;
 import com.cmpt275.house.classDef.mappingClass.notificationMapping;
 import com.cmpt275.house.classDef.mappingClass.roleMapping;
 import com.cmpt275.house.classDef.mappingClass.voteTypeMapping;
-import com.cmpt275.house.interfaceDef.Callbacks.hInfoArrayCallback;
-import com.cmpt275.house.interfaceDef.Callbacks.hInfoCallback;
-import com.cmpt275.house.interfaceDef.Callbacks.vInfoArrayCallback;
-import com.cmpt275.house.interfaceDef.Callbacks.vInfoCallback;
-import androidx.fragment.app.FragmentTransaction;
 import com.cmpt275.house.interfaceDef.house;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-import java.util.Observable;
 import java.util.Set;
 
 public class houseClass extends taskClass implements house {

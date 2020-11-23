@@ -1,5 +1,7 @@
 package com.cmpt275.house.classDef.documentClass;
 
+import android.util.Log;
+
 import com.cmpt275.house.classDef.databaseObjects.houseMemberObj;
 import com.cmpt275.house.classDef.databaseObjects.nameObj;
 import com.cmpt275.house.classDef.infoClass.houseInfo;
@@ -8,6 +10,9 @@ import com.cmpt275.house.classDef.mappingClass.notificationMapping;
 import com.cmpt275.house.classDef.mappingClass.roleMapping;
 import com.cmpt275.house.interfaceDef.mapping;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -17,8 +22,8 @@ public class firebaseHouseDocument {
     //
     private String displayName;
     private List<String> voting_ids;
-    private Map<String, nameObj> tasks;              //Map of {task_id, taskName}
-    private Map<String, houseMemberObj> members;
+    private Map<String, nameObj> tasks = new HashMap<String, nameObj>();;              //Map of {task_id, taskName}
+    private Map<String, houseMemberObj> members = new HashMap<String, houseMemberObj>();
     private String description;
     private int punishmentMultiplier;
     private int maxMembers;
@@ -73,6 +78,7 @@ public class firebaseHouseDocument {
             }
         }
 
+        Log.d("IN_FIREBASE_HOUSE_DOC", "Before Members");
         if(hInfo.members != null) {
             mapping roleMap = new roleMapping();
             for(String member_id : hInfo.members.keySet()) {
@@ -82,7 +88,7 @@ public class firebaseHouseDocument {
         else {
             this.members = null;
         }
-
+        Log.d("IN_FIREBASE_HOUSE_DOC", "After Members");
 
         this.description = hInfo.description;
         this.punishmentMultiplier = hInfo.punishmentMultiplier;
