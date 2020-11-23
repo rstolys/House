@@ -3,7 +3,9 @@ package com.cmpt275.house.classDef.documentClass;
 import com.cmpt275.house.classDef.databaseObjects.houseMemberObj;
 import com.cmpt275.house.classDef.databaseObjects.nameObj;
 import com.cmpt275.house.classDef.infoClass.houseInfo;
+import com.cmpt275.house.classDef.infoClass.houseMemberInfoObj;
 import com.cmpt275.house.classDef.mappingClass.notificationMapping;
+import com.cmpt275.house.classDef.mappingClass.roleMapping;
 import com.cmpt275.house.interfaceDef.mapping;
 
 import java.util.List;
@@ -71,8 +73,17 @@ public class firebaseHouseDocument {
             }
         }
 
+        if(hInfo.members != null) {
+            mapping roleMap = new roleMapping();
+            for(String member_id : hInfo.members.keySet()) {
+                this.members.put(member_id, new houseMemberObj(hInfo.members.get(member_id).name, true, roleMap.mapStringToInt(hInfo.members.get(member_id).role)));
+            }
+        }
+        else {
+            this.members = null;
+        }
 
-        this.members = hInfo.members;
+
         this.description = hInfo.description;
         this.punishmentMultiplier = hInfo.punishmentMultiplier;
         this.maxMembers = hInfo.maxMembers;
@@ -111,7 +122,16 @@ public class firebaseHouseDocument {
         }
 
 
-        returnHouse.members = members;
+        if(members != null) {
+            mapping roleMap = new roleMapping();
+            for(String member_id : members.keySet()) {
+                returnHouse.members.put(member_id, new houseMemberInfoObj(members.get(member_id).name, roleMap.mapIntToString(members.get(member_id).role)));
+            }
+        }
+        else {
+            returnHouse.members = null;
+        }
+
         returnHouse.description = description;
         returnHouse.punishmentMultiplier = punishmentMultiplier;
         returnHouse.maxMembers = maxMembers;

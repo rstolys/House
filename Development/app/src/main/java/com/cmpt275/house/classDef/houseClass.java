@@ -8,6 +8,7 @@ import com.cmpt275.house.HouseActivity;
 import com.cmpt275.house.HouseFrag;
 import com.cmpt275.house.classDef.databaseObjects.houseMemberObj;
 import com.cmpt275.house.classDef.infoClass.houseInfo;
+import com.cmpt275.house.classDef.infoClass.houseMemberInfoObj;
 import com.cmpt275.house.classDef.infoClass.userInfo;
 import com.cmpt275.house.classDef.infoClass.votingInfo;
 import com.cmpt275.house.classDef.mappingClass.notificationMapping;
@@ -100,7 +101,7 @@ public class houseClass extends taskClass implements house {
 
         Set<String> uInfoKeys = myHInfo.members.keySet();
 
-        firebaseTask.createNewHouse(myHInfo, (hInfo1, success) -> {
+        firebaseTask.createNewHouse(myHInfo, (hInfo1, success, errorMessage) -> {
             Log.d("createNewHouse:", "Returned with success: " + success);
             //Do stuff here ...
             if( success ){
@@ -120,7 +121,7 @@ public class houseClass extends taskClass implements house {
 
         myUInfo.id = "w4OFKQrvL28T3WlXVP4X";    //Ryan Stolys user_id
 
-        firebaseTask.getCurrentHouses(myUInfo, (hInfos, success) -> {
+        firebaseTask.getCurrentHouses(myUInfo, (hInfos, success, errorMessage) -> {
             Log.d("getCurrentHouses:", "Returned with success: " + success);
             ArrayList<houseInfo> houseInfoList = new ArrayList<houseInfo>();
             Collections.addAll(houseInfoList, hInfos);
@@ -136,7 +137,7 @@ public class houseClass extends taskClass implements house {
 
         house_id = "TfB0rlNBEuj9dSMzA1OM";        //Cowichan 09 house_id
 
-        firebaseTask.getHouseInfo(house_id, (hInfo, success) -> {
+        firebaseTask.getHouseInfo(house_id, (hInfo, success, errorMessage) -> {
             Log.d("getHouseInfo:", "Returned with success: " + success);
             //Do stuff here ...
         });
@@ -149,9 +150,9 @@ public class houseClass extends taskClass implements house {
         houseInfo myHInfo = new houseInfo();
 
         myHInfo.id = "TfB0rlNBEuj9dSMzA1OM";    //Ryan Stolys user_id
-        myHInfo.members.put("w4OFKQrvL28T3WlXVP4X", new houseMemberObj("Ryan Stolys", true, roleMap.mapStringToInt("Administrator")));
+        myHInfo.members.put("w4OFKQrvL28T3WlXVP4X", new houseMemberInfoObj("Ryan Stolys", roleMap.ADMIN));
 
-        firebaseTask.addMember(myHInfo, "TestAddMember", roleMap.MEMBER, "Jayden Cole", (hInfo, success) -> {
+        firebaseTask.addMember(myHInfo, "TestAddMember", roleMap.MEMBER, "Jayden Cole", (hInfo, success, errorMessage) -> {
             Log.d("addMember:", "Returned with success: " + success);
             //Do stuff here ...
         });
@@ -167,11 +168,11 @@ public class houseClass extends taskClass implements house {
 
         myHInfo.id = "TfB0rlNBEuj9dSMzA1OM";    //Ryan Stolys user_id
         //myHInfo.members.put("DummyUser", new houseMemberObj("Jayden Cole", true, roleMap.mapStringToInt("Administrator")));
-        myHInfo.members.put("w4OFKQrvL28T3WlXVP4X", new houseMemberObj("Ryan Stolys", true, roleMap.mapStringToInt("Administrator")));
+        myHInfo.members.put("w4OFKQrvL28T3WlXVP4X", new houseMemberInfoObj("Ryan Stolys", roleMap.ADMIN));
 
 
         //Set Ryan Stolys to a regular house member
-        firebaseTask.setUserRole(myHInfo, "w4OFKQrvL28T3WlXVP4X", roleMap.mapIntToString(1), (hInfo, success) -> {
+        firebaseTask.setUserRole(myHInfo, "w4OFKQrvL28T3WlXVP4X", roleMap.mapIntToString(1), (hInfo, success, errorMessage) -> {
             Log.d("setUserRole:", "Returned with success: " + success);
             //Do Stuff here ...
         });
@@ -179,7 +180,7 @@ public class houseClass extends taskClass implements house {
 
     public void viewVoting(String voting_id) {
 
-        firebaseTask.getHouseVotes("TfB0rlNBEuj9dSMzA1OM", (vInfos, success) -> {
+        firebaseTask.getHouseVotes("TfB0rlNBEuj9dSMzA1OM", (vInfos, success, errorMessage) -> {
             Log.d("getHouseVotes:", "Returned with success: " + success);
             //Do stuff here ...
         });
@@ -192,7 +193,7 @@ public class houseClass extends taskClass implements house {
         myVInfo.id = "gviuevFrurw2DsVdkGuD";
         myVInfo.type = voteMap.DISPUTE_COMPLETION;
 
-        firebaseTask.submitVote(myVInfo, "Ryan Stolys", "w4OFKQrvL28T3WlXVP4X", true, (vInfo, success) -> {
+        firebaseTask.submitVote(myVInfo, "Ryan Stolys", "w4OFKQrvL28T3WlXVP4X", true, (vInfo, success, errorMessage) -> {
             Log.d("submitVote:", "Returned with success: " + success);
             //Do stuff  here ...
         });
@@ -210,7 +211,7 @@ public class houseClass extends taskClass implements house {
         myHInfo.voting_ids = null;
         myHInfo.tasks = null;
 
-        myHInfo.members.put("w4OFKQrvL28T3WlXVP4X", new houseMemberObj("Ryan Stolys", true, roleMap.mapStringToInt("Administrator")));
+        myHInfo.members.put("w4OFKQrvL28T3WlXVP4X", new houseMemberInfoObj("Ryan Stolys", roleMap.ADMIN));
         //**when creating a house the first member must be role "2" meaning admin
 
         myHInfo.description = "This the SFU Golf townhouse. It contains 4 people. We are all on the golf team";
@@ -219,7 +220,7 @@ public class houseClass extends taskClass implements house {
         myHInfo.maxMembers = 5;
         myHInfo.houseNotifications = notificationMap.WEEKLY;
 
-        firebaseTask.editSettings(myHInfo, true, (hInfo1, success) -> {
+        firebaseTask.editSettings(myHInfo, true, (hInfo1, success, errorMessage) -> {
             Log.d("editSettings:", "Returned with success: " + success);
             //Do stuff here ...
         });

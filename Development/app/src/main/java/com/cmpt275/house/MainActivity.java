@@ -10,9 +10,11 @@ import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.cmpt275.house.classDef.houseClass;
+import com.cmpt275.house.classDef.settingsClass;
 import com.cmpt275.house.classDef.signInClass;
 import com.cmpt275.house.classDef.taskClass;
 import com.cmpt275.house.interfaceDef.house;
+import com.cmpt275.house.interfaceDef.settings;
 import com.cmpt275.house.interfaceDef.task;
 import com.cmpt275.house.interfaceDef.updateUI;
 
@@ -26,6 +28,7 @@ public class MainActivity extends AppCompatActivity implements updateUI {
     private signInClass auth = new signInClass(this);
     private task taskAction = new taskClass();
     private house houseAction = new houseClass();
+    private settings settingsAction = new settingsClass();
 
     private String userInfoString;
 
