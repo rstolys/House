@@ -99,6 +99,7 @@
     <string name="new_house_punish_mult"> 1 </string>
     <string name="new_house_notification_schedule_title">Notifications: </string>
     <string name="new_house_notification_sched">None, Weekly, or Monthly. Default: None</string>
+    <string name="view_house_button">View House</string>
 
 
 </resources>

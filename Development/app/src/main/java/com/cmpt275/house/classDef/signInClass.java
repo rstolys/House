@@ -38,7 +38,7 @@ public class signInClass implements signIn {
     public void signInUser(String email, String Password) {
 
         //Call change state function **Used in Prototype**
-        firebaseTask.signInUser("ryanstolys@gmail.com", "123456", (uInfo, success) -> {
+        firebaseTask.signInUser("rstolys@sfu.ca", "066923384", (uInfo, success) -> {
             Log.d("signInUser:", "Returned with success: " + success);
             //If the signIn was successful then set logged in to true
             if(success) {
