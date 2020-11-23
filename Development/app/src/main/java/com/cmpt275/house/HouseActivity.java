@@ -10,12 +10,14 @@ import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.cmpt275.house.classDef.houseClass;
 import com.cmpt275.house.classDef.infoClass.houseInfo;
 import com.cmpt275.house.classDef.infoClass.userInfo;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firestore.v1.Value;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -77,6 +79,7 @@ public class HouseActivity extends AppCompatActivity implements Observer {
             fragmentTransaction = getSupportFragmentManager().beginTransaction();
             NewHouseFrag houseFrag = new NewHouseFrag(myHouseClass, uInfo);
             fragmentTransaction.add(R.id.my_houses_list, houseFrag);
+            fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
         });
     }
@@ -180,12 +183,28 @@ public class HouseActivity extends AppCompatActivity implements Observer {
     }
 
     public void updateHouses(){
+        // First check if there are any houses on the screen
+        FragmentManager fm = getSupportFragmentManager();
+        fragmentTransaction = fm.beginTransaction();
+        Log.d("UPDATE_HOUSES", "I am removing old houses from the screen");
+
+        try {
+            Log.d("UPDATE_HOUSES", "There are " + fm.getBackStackEntryCount() + " backEntry");
+            int numBackStack = fm.getBackStackEntryCount();
+            for(; numBackStack>0; numBackStack--) {
+                fm.popBackStack();
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
         Log.d("UPDATE_HOUSES", "I am putting my houses to screen");
         for(int i = 0; i < myHouseClass.hInfos.size(); i++ ){
-            fragmentTransaction = getSupportFragmentManager().beginTransaction();
             HouseFrag houseFrag = new HouseFrag(myHouseClass.hInfos.get(i));
             fragmentTransaction.add(R.id.my_houses_list, houseFrag);
-            fragmentTransaction.commit();
+            fragmentTransaction.addToBackStack(null);
         }
+
+        fragmentTransaction.commit();
     }
 }

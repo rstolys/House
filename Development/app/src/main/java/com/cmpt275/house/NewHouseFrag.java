@@ -3,6 +3,8 @@ package com.cmpt275.house;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cmpt275.house.classDef.databaseObjects.houseMemberObj;
 import com.cmpt275.house.classDef.houseClass;
@@ -80,9 +83,26 @@ public class NewHouseFrag extends Fragment {
 
             saveButton.setText("Creating House");
 
+//            Log.d("createHouseButton", "Removing fragments start" + newHouseInfo.displayName);
+
+//            // Remove the fragment for the new House
+//            FragmentManager fm = getSupportFragmentManager();
+//            FragmentTransaction ft = fm.beginTransaction();
+//            int numHouses = fm.getBackStackEntryCount();
+//
+//            Log.d("createHouseButton", "Removing fragments middle" + newHouseInfo.displayName);
+//
+//            // Delete all fragments on fragment transaction
+//
+//
+//            ft.commit();
+
+//            Log.d("createHouseButton", "Removing fragments end" + newHouseInfo.displayName);
+
             Log.d("createHouseButton", "Creating house in db with name: " + newHouseInfo.displayName);
 
             theHouseClass.createHouse(newHouseInfo);
+
         });
 
         return view;
