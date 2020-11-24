@@ -3,7 +3,7 @@ package com.cmpt275.house.classDef;
 import android.content.Context;
 import android.util.Log;
 
-import com.cmpt275.house.classDef.databaseObjects.houseMemberObj;
+import com.cmpt275.house.HouseActivity;
 import com.cmpt275.house.classDef.infoClass.houseInfo;
 import com.cmpt275.house.classDef.infoClass.houseMemberInfoObj;
 import com.cmpt275.house.classDef.infoClass.userInfo;
@@ -11,20 +11,25 @@ import com.cmpt275.house.classDef.infoClass.votingInfo;
 import com.cmpt275.house.classDef.mappingClass.notificationMapping;
 import com.cmpt275.house.classDef.mappingClass.roleMapping;
 import com.cmpt275.house.classDef.mappingClass.voteTypeMapping;
-import com.cmpt275.house.interfaceDef.Callbacks.hInfoArrayCallback;
-import com.cmpt275.house.interfaceDef.Callbacks.hInfoCallback;
-import com.cmpt275.house.interfaceDef.Callbacks.vInfoArrayCallback;
-import com.cmpt275.house.interfaceDef.Callbacks.vInfoCallback;
 import com.cmpt275.house.interfaceDef.house;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 public class houseClass extends taskClass implements house {
 
     //
     // Class Variables
     //
-    private houseInfo[] hInfos;
+    public ArrayList<houseInfo> hInfos;
+    //public houseInfo[] hInfos;
     private userInfo uInfo;
-    private votingInfo[] vInfos;
+    public votingInfo[] vInfos;
+
+    // Implement observer list
+    private List<HouseActivity> hActivityObs = new ArrayList<>();
 
     //TODO: Add member attributes to documentation
     private final houseFirebaseClass firebaseTask;
@@ -33,6 +38,19 @@ public class houseClass extends taskClass implements house {
     private final notificationMapping notificationMap;
     private final voteTypeMapping voteMap;
 
+    //
+    // Observable pattern update hInfo
+    //
+    public void sethInfos(ArrayList<houseInfo> hInfos){
+        Log.d("SET_HINFOS", "In SET_HINFOS");
+        // For every observer in observer list, notify them
+        this.hInfos = hInfos;
+        Log.d("SET_HINFOS", "About to set changed");
+        setChanged();
+        Log.d("SET_HINFOS", "setChanged, about to notify observers");
+        notifyObservers();
+        Log.d("SET_HINFOS", "Notified observers");
+    }
 
     //
     // Class Functions
@@ -57,33 +75,37 @@ public class houseClass extends taskClass implements house {
     //
     ////////////////////////////////////////////////////////////
     public void createHouse(houseInfo hInfo) {
-
         houseInfo myHInfo = new houseInfo();
 
         myHInfo.id = null;
-        myHInfo.displayName = "Cowichan  09";
-        //myHInfo.displayName = hInfo.displayName;
+        myHInfo.displayName = hInfo.displayName;
         myHInfo.voting_ids = null;
         myHInfo.tasks = null;
 
-        myHInfo.members.put("w4OFKQrvL28T3WlXVP4X", new houseMemberInfoObj("Ryan Stolys",  roleMap.ADMIN));
-        //**when creating a house the first member must be role "2" meaning admin
+        myHInfo.members = hInfo.members;
 
-        myHInfo.description = "This my SFU townhouse that contains 4 people. We are all on the golf team";
-        //myHInfo.description = hInfo.description;
-        myHInfo.punishmentMultiplier = 2;
+        myHInfo.description = hInfo.description;
+        myHInfo.punishmentMultiplier = hInfo.punishmentMultiplier;
         myHInfo.maxMembers = 4;
-        myHInfo.houseNotifications = notificationMap.WEEKLY;
+        myHInfo.houseNotifications = hInfo.houseNotifications;
+
+        Set<String> uInfoKeys = myHInfo.members.keySet();
 
         firebaseTask.createNewHouse(myHInfo, (hInfo1, success, errorMessage) -> {
             Log.d("createNewHouse:", "Returned with success: " + success);
             //Do stuff here ...
+            if( success ){
+                this.hInfos.add(hInfo1);
+                Log.d("SET_HINFOS", "About to call SET_HINFOS");
+                sethInfos(this.hInfos);
+            }
         });
     }
 
     public void joinHouse(String house_id, userInfo uInfo) {}
 
     public void viewYourHouses(userInfo uInfo) {
+        Log.d("viewCurrentHouses:", "In viewYourHouses");
 
         userInfo myUInfo = new userInfo();
 
@@ -91,8 +113,14 @@ public class houseClass extends taskClass implements house {
 
         firebaseTask.getCurrentHouses(myUInfo, (hInfos, success, errorMessage) -> {
             Log.d("getCurrentHouses:", "Returned with success: " + success);
-            //Do stuff here ...
+            ArrayList<houseInfo> houseInfoList = new ArrayList<houseInfo>();
+            Collections.addAll(houseInfoList, hInfos);
+
+            this.sethInfos( houseInfoList );
+            Log.d("viewYourHouses", "Done getting houses set up");
         });
+
+        Log.d("viewCurrentHouses", "After call to viewYourHouses should be before asyncronous call");
     }
 
     public void viewHouse(String house_id) {

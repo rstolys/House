@@ -16,8 +16,9 @@ import com.cmpt275.house.interfaceDef.mapping;
 import com.cmpt275.house.interfaceDef.task;
 
 import java.util.Date;
+import java.util.Observable;
 
-public class taskClass implements task {
+public class taskClass extends Observable implements task {
 
     //
     // Class Variables
@@ -50,10 +51,14 @@ public class taskClass implements task {
             Log.d("getCurrentTasks:", "Returned with success " + success);
             //Do stuff here...
 
+            if( success ) {
+
+            }
+
+            //
+
         });
     }
-
-
 
     public void createTask(taskInfo tInfo) {
 

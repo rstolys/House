@@ -10,20 +10,26 @@ import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.cmpt275.house.classDef.houseClass;
+import com.cmpt275.house.classDef.infoClass.houseInfo;
 import com.cmpt275.house.classDef.infoClass.userInfo;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firestore.v1.Value;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
 
 
-public class HouseActivity extends AppCompatActivity {
+public class HouseActivity extends AppCompatActivity implements Observer {
 
     FragmentTransaction fragmentTransaction;
     private houseClass myHouseClass = new houseClass(this);
@@ -57,18 +63,24 @@ public class HouseActivity extends AppCompatActivity {
             }
         }
 
+        // Observe the instance of the houseClass
+        myHouseClass.addObserver(this);
+
+        // Update the tasks in the houseClass from the database
+        Log.d("OnCreate House Activity", "Before call to view your houses" );
+        myHouseClass.viewYourHouses(uInfo);
+        Log.d("OnCreate House Activity", "After call to view your houses" );
+
         BottomNavigationView navView = findViewById(R.id.nav_view);
         navView.setOnNavigationItemSelectedListener(navListener); //so we can implement it outside onCreate
 
         Button addHouseButton = findViewById(R.id.add_house_button);
-        addHouseButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                NewHouseFrag houseFrag = new NewHouseFrag(myHouseClass);
-                fragmentTransaction.add(R.id.my_houses_list, houseFrag);
-                fragmentTransaction.commit();
-            }
+        addHouseButton.setOnClickListener(v -> {
+            fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            NewHouseFrag houseFrag = new NewHouseFrag(myHouseClass, uInfo);
+            fragmentTransaction.add(R.id.my_houses_list, houseFrag);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
         });
     }
 
@@ -163,7 +175,36 @@ public class HouseActivity extends AppCompatActivity {
         //Usually ensures all the activities resources are released
     }
 
-    public void onLeaveHouseClick(View view) {
+    @Override
+    public void update(Observable o, Object obj) {
+        // Update screen with new houses
+        Log.d("UPDATE", "In update to update houses");
+        this.updateHouses();
     }
 
+    public void updateHouses(){
+        // First check if there are any houses on the screen
+        FragmentManager fm = getSupportFragmentManager();
+        fragmentTransaction = fm.beginTransaction();
+        Log.d("UPDATE_HOUSES", "I am removing old houses from the screen");
+
+        try {
+            Log.d("UPDATE_HOUSES", "There are " + fm.getBackStackEntryCount() + " backEntry");
+            int numBackStack = fm.getBackStackEntryCount();
+            for(; numBackStack>0; numBackStack--) {
+                fm.popBackStack();
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+        Log.d("UPDATE_HOUSES", "I am putting my houses to screen");
+        for(int i = 0; i < myHouseClass.hInfos.size(); i++ ){
+            HouseFrag houseFrag = new HouseFrag(myHouseClass.hInfos.get(i));
+            fragmentTransaction.add(R.id.my_houses_list, houseFrag);
+            fragmentTransaction.addToBackStack(null);
+        }
+
+        fragmentTransaction.commit();
+    }
 }
