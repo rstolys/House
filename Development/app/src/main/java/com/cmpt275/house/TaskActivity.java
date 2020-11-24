@@ -68,7 +68,23 @@ public class TaskActivity extends AppCompatActivity {
         addTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(TaskActivity.this, NewTaskActivity.class));
+                // First prepare the userInfo to pass to next activity
+                String serializedUserInfo = "";
+                try {
+                    // Convert object data to encoded string
+                    ByteArrayOutputStream bo = new ByteArrayOutputStream();
+                    ObjectOutputStream so = new ObjectOutputStream(bo);
+                    so.writeObject(uInfo);
+                    so.flush();
+                    final byte[] byteArray = bo.toByteArray();
+                    serializedUserInfo = Base64.encodeToString(byteArray, Base64.DEFAULT);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                newIntent = new Intent(TaskActivity.this, NewTaskActivity.class);
+                newIntent.putExtra("userInfo", serializedUserInfo);
+                startActivity( newIntent );
             }
         });
     }
