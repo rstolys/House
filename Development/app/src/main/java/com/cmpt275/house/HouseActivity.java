@@ -26,7 +26,7 @@ import java.io.ObjectOutputStream;
 public class HouseActivity extends AppCompatActivity {
 
     FragmentTransaction fragmentTransaction;
-    private houseClass myHouseClass = new houseClass();
+    private houseClass myHouseClass = new houseClass(this);
     public Intent newIntent;
     private userInfo uInfo;
 
@@ -52,7 +52,7 @@ public class HouseActivity extends AppCompatActivity {
                 ObjectInputStream si = new ObjectInputStream(bi);
                 uInfo = (userInfo) si.readObject();
                 Log.d("HOUSE_ACTIVITY", "Userinfo.displayName passed: " + uInfo.displayName );
-            } catch (IOException | ClassNotFoundException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

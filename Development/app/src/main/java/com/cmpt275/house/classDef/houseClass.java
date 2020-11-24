@@ -1,5 +1,6 @@
 package com.cmpt275.house.classDef;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.cmpt275.house.classDef.databaseObjects.houseMemberObj;
@@ -27,7 +28,7 @@ public class houseClass extends taskClass implements house {
 
     //TODO: Add member attributes to documentation
     private final houseFirebaseClass firebaseTask;
-
+    private final Context mContext;
     private final roleMapping roleMap;
     private final notificationMapping notificationMap;
     private final voteTypeMapping voteMap;
@@ -41,8 +42,9 @@ public class houseClass extends taskClass implements house {
     // Constructor
     //
     ////////////////////////////////////////////////////////////
-    public houseClass() {
+    public houseClass(Context mContext) {
         firebaseTask = new houseFirebaseClass();
+        this.mContext = mContext;
         roleMap = new roleMapping();
         notificationMap = new notificationMapping();
         voteMap = new voteTypeMapping();

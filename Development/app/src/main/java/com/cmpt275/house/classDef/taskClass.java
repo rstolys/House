@@ -1,5 +1,6 @@
 package com.cmpt275.house.classDef;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.cmpt275.house.classDef.databaseObjects.taskAssignObj;
@@ -23,13 +24,17 @@ public class taskClass implements task {
     //
     private taskInfo[] tInfos;
 
-    private final taskFirebaseClass firebaseTask;
+    private Context mContext;
+    private taskFirebaseClass firebaseTask;
 
     //
     // Class Functions
     //
-    public taskClass() {
+    public taskClass() {}
+
+    public taskClass(Context mContext) {
         firebaseTask = new taskFirebaseClass();
+        this.mContext = mContext;
     }
 
 

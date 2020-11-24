@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.cmpt275.house.classDef.homeClass;
 import com.cmpt275.house.classDef.infoClass.userInfo;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -20,6 +21,8 @@ import java.io.ObjectOutputStream;
 
 
 public class HomeActivity extends AppCompatActivity {
+
+    private homeClass homeClass = new homeClass(this);
 
     private String passedUserInfo;
     public userInfo uInfo;
@@ -33,7 +36,7 @@ public class HomeActivity extends AppCompatActivity {
         Intent lastIntent = getIntent();
         String serializedObject = lastIntent.getStringExtra("userInfo");
 
-        if(serializedObject == ""){
+        if(serializedObject.equals("")){
             // If the serialized object is empty, error!
             Log.e("OnCreate Home", "userInfo not passed from last activity");
         } else {
@@ -44,9 +47,9 @@ public class HomeActivity extends AppCompatActivity {
                 // Convert byte array into userInfo object
                 ByteArrayInputStream bi = new ByteArrayInputStream(b);
                 ObjectInputStream si = new ObjectInputStream(bi);
-                uInfo = (userInfo) si.readObject();
-                Log.d("HOME_ACTIVITY", "Userinfo.displayName passed: " + uInfo.displayName );
-            } catch (IOException | ClassNotFoundException e) {
+                homeClass.uInfo = (userInfo) si.readObject();
+                Log.d("HOME_ACTIVITY", "UserInfo.displayName passed: " + homeClass.uInfo.displayName );
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

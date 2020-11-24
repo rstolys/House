@@ -53,7 +53,7 @@ public class TaskActivity extends AppCompatActivity {
                 ObjectInputStream si = new ObjectInputStream(bi);
                 uInfo = (userInfo) si.readObject();
                 Log.d("TASK_ACTIVITY", "Userinfo.displayName passed: " + uInfo.displayName );
-            } catch (IOException | ClassNotFoundException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

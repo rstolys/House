@@ -2,38 +2,20 @@ package com.cmpt275.house.classDef;
 
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-
-import com.cmpt275.house.classDef.myFirebaseAuth;
-import com.cmpt275.house.classDef.databaseObjects.nameObj;
 import com.cmpt275.house.classDef.documentClass.firebaseFeedbackDocument;
-import com.cmpt275.house.classDef.documentClass.firebaseTaskDocument;
 import com.cmpt275.house.classDef.documentClass.firebaseUserDocument;
 import com.cmpt275.house.classDef.infoClass.feedbackInfo;
-import com.cmpt275.house.classDef.infoClass.taskInfo;
 import com.cmpt275.house.classDef.infoClass.userInfo;
 import com.cmpt275.house.interfaceDef.Callbacks.booleanCallback;
-import com.cmpt275.house.interfaceDef.Callbacks.fInfoCallback;
+import com.cmpt275.house.interfaceDef.Callbacks.stringCallback;
 import com.cmpt275.house.interfaceDef.Callbacks.uInfoCallback;
 import com.cmpt275.house.interfaceDef.UsersBE;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.WriteBatch;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 public class userFirebaseClass implements UsersBE {
@@ -65,6 +47,32 @@ public class userFirebaseClass implements UsersBE {
         db = FirebaseFirestore.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
     }
+
+    ////////////////////////////////////////////////////////////
+    //
+    // Check the user authentication status
+    //
+    ////////////////////////////////////////////////////////////
+    public void getUserAuthStatus(stringCallback callback) {
+
+        try{
+            FirebaseUser cUser = firebaseAuth.getCurrentUser();
+            if(cUser != null) {
+                myFirebaseAuth.Auth.setCurrentUser(cUser);
+                callback.onReturn(cUser.getUid(), true, NO_ERROR);
+            }
+            else {
+                myFirebaseAuth.Auth.setCurrentUser(null);
+                callback.onReturn(null, false, NO_ERROR);
+            }
+        }
+        catch(Exception e) {
+            Log.e(TAG, "ERROR: Exception caught: " + e.getMessage());
+            callback.onReturn( null, false, UNKNOWN_ERROR_MESSAGE);
+        }
+    }
+
+
 
     ////////////////////////////////////////////////////////////
     //
@@ -393,7 +401,7 @@ public class userFirebaseClass implements UsersBE {
 
     ////////////////////////////////////////////////////////////
     //
-    // Will access this specified users information
+    // Will access this specified users information based on user_id
     //
     ////////////////////////////////////////////////////////////
     public void getUserInfo(String user_id, uInfoCallback callback) {
@@ -412,7 +420,7 @@ public class userFirebaseClass implements UsersBE {
                 //Get documents from the collection that have user_id specified
                 db.collection("users").document(user_id).get()
                     .addOnSuccessListener(documentReference -> {
-                        Log.d(TAG, "get() userr document successful for user: " + user_id);
+                        Log.d(TAG, "get() user document successful for user: " + user_id);
 
                         //Convert user to userInfo class
                         firebaseUserDocument userData = documentReference.toObject(firebaseUserDocument.class);
@@ -436,25 +444,77 @@ public class userFirebaseClass implements UsersBE {
         }
     }
 
+    ////////////////////////////////////////////////////////////
+    //
+    // Will access this specified users information
+    //
+    ////////////////////////////////////////////////////////////
+    public void getUserInfo_firebaseID(String firebase_id, uInfoCallback callback) {
+
+        try{
+            //Ensure the uInfo has a valid id
+            if(firebase_id == null) {
+                Log.w(TAG, "getUserInfo called with null firebase_id");
+
+                //We cannot access db without valid id for user. Return failure.
+                callback.onReturn(null, false, INVALID_PARAMETER_MESSAGE);
+            }
+            else {
+                Log.d(TAG, "getUserInfo called for firebase user: " + firebase_id);
+
+                //Get documents from the collection that have user_id specified
+                db.collection("users").whereEqualTo("firebase_id", firebase_id).limit(1).get()
+                    .addOnCompleteListener(queryResult -> {
+
+                        if (queryResult.isSuccessful()) {
+                            userInfo uInfo = null;
+
+                            for (QueryDocumentSnapshot document : Objects.requireNonNull(queryResult.getResult())) {
+                                //Convert queried document to userData class
+                                firebaseUserDocument userData = document.toObject(firebaseUserDocument.class);
+                                uInfo = userData.toUserInfo(document.getId(), myFirebaseAuth.Auth.getCurrentUser().getEmail());
+
+                                Log.d(TAG, "User: " + document.getId() + " Successfully Logged In and info collected");
+                            }
+
+                            callback.onReturn(uInfo, true, NO_ERROR);
+                        }
+                        else {
+                            Log.d(TAG, "Error accessing the userInformation ", queryResult.getException());
+
+                            //Set current user to null to try again from scratch
+                            myFirebaseAuth.Auth.setCurrentUser(null);
+
+                            callback.onReturn(null, false, "We could not access your user information.\n Please try to sign in again");
+                        }
+                    });
+            }
+        }
+        catch(Exception e) {
+            Log.e(TAG, "ERROR: Exception caught: " + e.getMessage());
+            callback.onReturn(null, false, UNKNOWN_ERROR_MESSAGE);
+        }
+    }
+
 
     ////////////////////////////////////////////////////////////
     //
     // Will submit feedback to help improve the app functionality
     //
     ////////////////////////////////////////////////////////////
-    public void submitFeedback(feedbackInfo fInfo, fInfoCallback callback) {
+    public void submitFeedback(feedbackInfo fInfo, booleanCallback callback) {
 
         try{
             if(fInfo == null || fInfo.user_id == null) {
                 Log.w(TAG, "submitFeedback called with null parameters");
 
-                callback.onReturn(null, false, "Looks like there was an error with submitting the feedback. Please try again");
+                callback.onReturn(false, "Looks like there was an error with submitting the feedback. Please try again");
 
             }
             else if(fInfo.feedback.equals("")) {
                 Log.w(TAG, "submitFeedback called with empty feedback. No point in submitting");
 
-                callback.onReturn(null, false, "We appreciate your feedback but we want to hear more before we submit it.");
+                callback.onReturn(false, "We appreciate your feedback but we want to hear more before we submit it.");
             }
             else {
                 //Set the date the feedback was submitted
@@ -470,19 +530,19 @@ public class userFirebaseClass implements UsersBE {
                         //Set the id of the task
                         fInfo.id = documentReference.getId();
 
-                        callback.onReturn(fInfo, true, NO_ERROR);
+                        callback.onReturn(true, NO_ERROR);
                     })
                     .addOnFailureListener(e -> {
                         Log.d(TAG, "Error adding feedback");
 
                         //Return null to indicate error in task
-                        callback.onReturn(null, false, DATABASE_ERROR_MESSAGE);
+                        callback.onReturn(false, DATABASE_ERROR_MESSAGE);
                     });
             }
         }
         catch(Exception e) {
             Log.e(TAG, "ERROR: Exception caught: " + e.getMessage());
-            callback.onReturn(null, false, UNKNOWN_ERROR_MESSAGE);
+            callback.onReturn( false, UNKNOWN_ERROR_MESSAGE);
         }
     }
 
