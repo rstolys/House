@@ -95,7 +95,12 @@
     <string name="save_new_house_button_title">SAVE NEW HOUSE</string>
     <string name="new_house_name">New House Name</string>
     <string name="newHouse_members">Members will show up here</string>
-    <string name="new_house_description">House Description</string>
+    <string name="new_house_description">House Description: </string>
+    <string name="new_house_punish_mult_title">House Punishment per task: </string>
+    <string name="new_house_punish_mult"> 1 </string>
+    <string name="new_house_notification_schedule_title">Notifications: </string>
+    <string name="new_house_notification_sched">None, Weekly, or Monthly. Default: None</string>
+    <string name="view_house_button">View House</string>
 
 
     <!-- Strings related to New Task -->

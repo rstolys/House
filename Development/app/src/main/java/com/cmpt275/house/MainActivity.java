@@ -1,6 +1,10 @@
 package com.cmpt275.house;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
@@ -8,11 +12,16 @@ import android.view.View;
 import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationManagerCompat;
 
+import com.cmpt275.house.classDef.displayMessage;
 import com.cmpt275.house.classDef.houseClass;
+import com.cmpt275.house.classDef.notifications;
+import com.cmpt275.house.classDef.settingsClass;
 import com.cmpt275.house.classDef.signInClass;
 import com.cmpt275.house.classDef.taskClass;
 import com.cmpt275.house.interfaceDef.house;
+import com.cmpt275.house.interfaceDef.settings;
 import com.cmpt275.house.interfaceDef.task;
 import com.cmpt275.house.interfaceDef.updateUI;
 
@@ -23,9 +32,12 @@ import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements updateUI {
 
-    private signInClass auth = new signInClass(this);
-    private task taskAction = new taskClass();
-    private house houseAction = new houseClass();
+    private signInClass auth = new signInClass(this, this);
+    private task taskAction = new taskClass(this);
+    private house houseAction = new houseClass(this);
+    private settings settingsAction = new settingsClass(this);
+    private displayMessage display = new displayMessage();
+    private notifications notify = new notifications();
 
     private String userInfoString;
 
@@ -33,6 +45,12 @@ public class MainActivity extends AppCompatActivity implements updateUI {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //Create notification channel
+        notify.createNotificationChannel(this);
+
+        //Check if the user is already signed in
+        auth.checkAuthStatus();
     }
 
     @Override
@@ -90,6 +108,9 @@ public class MainActivity extends AppCompatActivity implements updateUI {
         EditText email = findViewById(R.id.emailOfUser);
         EditText password = findViewById(R.id.passwordOfUser);
 
+        //Show a message to the user
+        display.showMessage(this, "Signing In", display.LONG);
+
         //Call function to signIn the user
         auth.signInUser(email.getText().toString(), password.getText().toString());
     }
@@ -102,6 +123,7 @@ public class MainActivity extends AppCompatActivity implements updateUI {
 
         // Check if the user is signed in -- open home page
         if(auth.isUserSignedIn()) {
+
             // Create new intent to go to Home Page
             Intent homeIntent = new Intent(MainActivity.this, HomeActivity.class);
 
@@ -126,5 +148,6 @@ public class MainActivity extends AppCompatActivity implements updateUI {
             startActivity(homeIntent);
         }
     }
+
 }
 

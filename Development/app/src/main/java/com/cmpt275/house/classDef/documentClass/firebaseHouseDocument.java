@@ -1,11 +1,18 @@
 package com.cmpt275.house.classDef.documentClass;
 
+import android.util.Log;
+
 import com.cmpt275.house.classDef.databaseObjects.houseMemberObj;
 import com.cmpt275.house.classDef.databaseObjects.nameObj;
 import com.cmpt275.house.classDef.infoClass.houseInfo;
+import com.cmpt275.house.classDef.infoClass.houseMemberInfoObj;
 import com.cmpt275.house.classDef.mappingClass.notificationMapping;
+import com.cmpt275.house.classDef.mappingClass.roleMapping;
 import com.cmpt275.house.interfaceDef.mapping;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -15,8 +22,8 @@ public class firebaseHouseDocument {
     //
     private String displayName;
     private List<String> voting_ids;
-    private Map<String, nameObj> tasks;              //Map of {task_id, taskName}
-    private Map<String, houseMemberObj> members;
+    private Map<String, nameObj> tasks = new HashMap<String, nameObj>();;              //Map of {task_id, taskName}
+    private Map<String, houseMemberObj> members = new HashMap<String, houseMemberObj>();
     private String description;
     private int punishmentMultiplier;
     private int maxMembers;
@@ -71,8 +78,18 @@ public class firebaseHouseDocument {
             }
         }
 
+        Log.d("IN_FIREBASE_HOUSE_DOC", "Before Members");
+        if(hInfo.members != null) {
+            mapping roleMap = new roleMapping();
+            for(String member_id : hInfo.members.keySet()) {
+                this.members.put(member_id, new houseMemberObj(hInfo.members.get(member_id).name, true, roleMap.mapStringToInt(hInfo.members.get(member_id).role)));
+            }
+        }
+        else {
+            this.members = null;
+        }
+        Log.d("IN_FIREBASE_HOUSE_DOC", "After Members");
 
-        this.members = hInfo.members;
         this.description = hInfo.description;
         this.punishmentMultiplier = hInfo.punishmentMultiplier;
         this.maxMembers = hInfo.maxMembers;
@@ -111,7 +128,16 @@ public class firebaseHouseDocument {
         }
 
 
-        returnHouse.members = members;
+        if(members != null) {
+            mapping roleMap = new roleMapping();
+            for(String member_id : members.keySet()) {
+                returnHouse.members.put(member_id, new houseMemberInfoObj(members.get(member_id).name, roleMap.mapIntToString(members.get(member_id).role)));
+            }
+        }
+        else {
+            returnHouse.members = null;
+        }
+
         returnHouse.description = description;
         returnHouse.punishmentMultiplier = punishmentMultiplier;
         returnHouse.maxMembers = maxMembers;

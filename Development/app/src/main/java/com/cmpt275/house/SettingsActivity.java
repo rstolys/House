@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.cmpt275.house.classDef.infoClass.userInfo;
+import com.cmpt275.house.classDef.settingsClass;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.ByteArrayInputStream;
@@ -22,6 +23,7 @@ import java.io.ObjectOutputStream;
 public class SettingsActivity extends AppCompatActivity {
 
     private Intent newIntent;
+    private settingsClass setting = new settingsClass(this);
     private userInfo uInfo;
 
     @Override
@@ -44,9 +46,9 @@ public class SettingsActivity extends AppCompatActivity {
                 // Convert byte array into userInfo object
                 ByteArrayInputStream bi = new ByteArrayInputStream(b);
                 ObjectInputStream si = new ObjectInputStream(bi);
-                uInfo = (userInfo) si.readObject();
-                Log.d("SETTINGS_ACTIVITY", "Userinfo.displayName passed: " + uInfo.displayName );
-            } catch (IOException | ClassNotFoundException e) {
+                setting.uInfo = (userInfo) si.readObject();
+                Log.d("SETTINGS_ACTIVITY", "UserInfo.displayName passed: " + setting.uInfo.displayName );
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
