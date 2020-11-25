@@ -11,6 +11,7 @@ public interface task {
     public void deleteTask(taskInfo tInfo);
     public void displayTask(String task_id);
     public void approveTask(String task_id, userInfo uInfo);
+    public void disputeTask(String task_id);
     public void sortTasks(int sortType);
 
 }

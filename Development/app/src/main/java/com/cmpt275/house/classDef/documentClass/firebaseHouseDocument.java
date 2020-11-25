@@ -22,7 +22,7 @@ public class firebaseHouseDocument {
     //
     private String displayName;
     private List<String> voting_ids;
-    private Map<String, nameObj> tasks = new HashMap<String, nameObj>();;              //Map of {task_id, taskName}
+    private Map<String, nameObj> tasks = new HashMap<String, nameObj>();              //Map of {task_id, taskName}
     private Map<String, houseMemberObj> members = new HashMap<String, houseMemberObj>();
     private String description;
     private int punishmentMultiplier;
@@ -78,7 +78,6 @@ public class firebaseHouseDocument {
             }
         }
 
-        Log.d("IN_FIREBASE_HOUSE_DOC", "Before Members");
         if(hInfo.members != null) {
             mapping roleMap = new roleMapping();
             for(String member_id : hInfo.members.keySet()) {
@@ -88,7 +87,6 @@ public class firebaseHouseDocument {
         else {
             this.members = null;
         }
-        Log.d("IN_FIREBASE_HOUSE_DOC", "After Members");
 
         this.description = hInfo.description;
         this.punishmentMultiplier = hInfo.punishmentMultiplier;
@@ -98,8 +96,6 @@ public class firebaseHouseDocument {
             mapping houseNotificationMap = new notificationMapping();
             this.houseNotifications = houseNotificationMap.mapStringToInt(hInfo.houseNotifications);
         }
-
-        return;
     }
 
 

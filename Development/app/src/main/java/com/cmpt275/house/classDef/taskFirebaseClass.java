@@ -7,11 +7,14 @@ import androidx.annotation.NonNull;
 import com.cmpt275.house.classDef.databaseObjects.nameObj;
 import com.cmpt275.house.classDef.databaseObjects.taskAssignObj;
 import com.cmpt275.house.classDef.documentClass.firebaseTaskDocument;
+import com.cmpt275.house.classDef.documentClass.firebaseVotingDocument;
 import com.cmpt275.house.classDef.infoClass.houseInfo;
 import com.cmpt275.house.classDef.infoClass.taskInfo;
 import com.cmpt275.house.classDef.infoClass.userInfo;
+import com.cmpt275.house.classDef.infoClass.votingInfo;
 import com.cmpt275.house.classDef.mappingClass.statusMapping;
 import com.cmpt275.house.classDef.mappingClass.tagMapping;
+import com.cmpt275.house.classDef.mappingClass.voteTypeMapping;
 import com.cmpt275.house.interfaceDef.Callbacks.booleanCallback;
 import com.cmpt275.house.interfaceDef.Callbacks.tInfoArrayCallback;
 import com.cmpt275.house.interfaceDef.Callbacks.tInfoCallback;
@@ -21,6 +24,7 @@ import com.cmpt275.house.interfaceDef.mapping;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -28,8 +32,11 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.firestore.WriteBatch;
+import com.google.type.DateTime;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,6 +59,7 @@ public class taskFirebaseClass implements TaskBE {
     // TODO: add variables below to documentation
     statusMapping statusMap;
     tagMapping tagMap;
+    voteTypeMapping voteMap;
 
 
     //
@@ -67,6 +75,7 @@ public class taskFirebaseClass implements TaskBE {
         db = FirebaseFirestore.getInstance();
         statusMap = new statusMapping();
         tagMap = new tagMapping();
+        voteMap = new voteTypeMapping();
     }
 
 
@@ -303,7 +312,7 @@ public class taskFirebaseClass implements TaskBE {
                 //Remove the user that declined the task from the assigned to map
                 tInfo.assignedTo.remove(user_id);
 
-                //Check if there is anyone still assigned to the task
+                //Check if there is anyone still assigned to the task -- if not assign creator
                 if(tInfo.assignedTo.size() < 1) {
                     tInfo.assignedTo.put(tInfo.createdBy_id, new taskAssignObj(tInfo.createdBy, true, true));      //Add the created by user to the task
                     newAssignee = true;
@@ -346,6 +355,150 @@ public class taskFirebaseClass implements TaskBE {
                             callback.onReturn(null, false, DATABASE_ERROR_MESSAGE);
                         });
                 }
+            }
+        }
+        catch(Exception e) {
+            Log.e(TAG, "ERROR: Exception caught: " + e.getMessage());
+            callback.onReturn(null, false, UNKNOWN_ERROR_MESSAGE);
+        }
+    }
+
+
+    ////////////////////////////////////////////////////////////
+    //
+    // Will set up a vote for the task dispute in order to determine the state
+    //
+    ////////////////////////////////////////////////////////////
+    public void disputeTask(taskInfo tInfo, tInfoCallback callback) {
+
+        try{
+            //Ensure the task  and disputer don't  have null values
+            if(tInfo == null || tInfo.id == null) {
+                Log.w(TAG, "Invalid parameters. taskInfo or tInfo.id sent was null");
+
+                callback.onReturn(null, false, INVALID_PARAMETER_MESSAGE);
+            }
+            else {
+                //Set the new status of the task
+                tInfo.status = statusMap.DISPUTE;
+
+                //Create a vote info class
+                votingInfo vInfo = new votingInfo();
+                vInfo.house_id = tInfo.house_id;
+                vInfo.houseName = tInfo.houseName;
+                vInfo.task_id = tInfo.id;
+                vInfo.taskName = tInfo.displayName;
+                vInfo.type = voteMap.DISPUTE_COMPLETION;
+
+                //Set the vote ending date
+                Date endOfVote = new Date();
+                Calendar c = Calendar.getInstance();
+                c.setTime(endOfVote);
+                c.add(Calendar.DATE, 1);
+                vInfo.endOfVote = c.getTime();
+
+
+                //Convert info classes to data classes for database
+                firebaseTaskDocument taskData = new firebaseTaskDocument(tInfo);
+                firebaseVotingDocument voteData = new firebaseVotingDocument(vInfo);
+
+                //Create write batch
+                WriteBatch batch = db.batch();
+
+                //Add update to task status
+                DocumentReference taskRef = db.collection("tasks").document(tInfo.id);
+                batch.update(taskRef, "status", taskData.getStatus());
+
+                //Add the vote
+                DocumentReference voteRef = db.collection("voting").document();
+                batch.set(voteRef, voteData);
+
+                //Write to database
+                batch.commit().addOnCompleteListener(task -> {
+                    if(task.isSuccessful()) {
+                        Log.d(TAG, "Task: " + tInfo.id + " Successfully disputed");
+
+                        //Return the task info
+                        callback.onReturn(tInfo, true, NO_ERROR);
+                    }
+                    else {
+                        Log.d(TAG, "Error disputing Task: " + tInfo.id);
+
+                        callback.onReturn(null, false, DATABASE_ERROR_MESSAGE);
+                    }
+                });
+            }
+        }
+        catch(Exception e) {
+            Log.e(TAG, "ERROR: Exception caught: " + e.getMessage());
+            callback.onReturn(null, false, UNKNOWN_ERROR_MESSAGE);
+        }
+    }
+
+
+    ////////////////////////////////////////////////////////////
+    //
+    // Will set up a vote for the task dispute in order to determine the state
+    //
+    ////////////////////////////////////////////////////////////
+    public void requestExtension(taskInfo tInfo, tInfoCallback callback) {
+
+        try{
+            //Ensure the task  and disputer don't  have null values
+            if(tInfo == null || tInfo.id == null) {
+                Log.w(TAG, "Invalid parameters. taskInfo or tInfo.id sent was null");
+
+                callback.onReturn(null, false, INVALID_PARAMETER_MESSAGE);
+            }
+            else {
+                //Set the new status of the task
+                tInfo.status = statusMap.LATE;
+
+                //Create a vote info class
+                votingInfo vInfo = new votingInfo();
+                vInfo.house_id = tInfo.house_id;
+                vInfo.houseName = tInfo.houseName;
+                vInfo.task_id = tInfo.id;
+                vInfo.taskName = tInfo.displayName;
+                vInfo.type = voteMap.DISPUTE_COMPLETION;
+
+                //Set the vote ending date
+                Date endOfVote = new Date();
+                Calendar c = Calendar.getInstance();
+                c.setTime(endOfVote);
+                c.add(Calendar.DATE, 1);
+                vInfo.endOfVote = c.getTime();
+
+
+                //Convert info classes to data classes for database
+                firebaseTaskDocument taskData = new firebaseTaskDocument(tInfo);
+                firebaseVotingDocument voteData = new firebaseVotingDocument(vInfo);
+
+                //Create write batch
+                WriteBatch batch = db.batch();
+
+                //Add update to task status
+                DocumentReference taskRef = db.collection("tasks").document(tInfo.id);
+                batch.update(taskRef, "status", taskData.getStatus());
+
+                //Add the vote
+                DocumentReference voteRef = db.collection("voting").document();
+                batch.set(voteRef, voteData);
+
+                //Write to database
+                batch.commit().addOnCompleteListener(task -> {
+                    if(task.isSuccessful()) {
+                        Log.d(TAG, "Task: " + tInfo.id + " Successfully disputed");
+
+                        //Return the task info
+                        callback.onReturn(tInfo, true, NO_ERROR);
+                    }
+                    else {
+                        Log.d(TAG, "Error disputing Task: " + tInfo.id);
+
+                        callback.onReturn(null, false, DATABASE_ERROR_MESSAGE);
+                    }
+                });
             }
         }
         catch(Exception e) {

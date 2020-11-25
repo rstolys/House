@@ -1,5 +1,10 @@
 package com.cmpt275.house;
 
+import android.util.Log;
+
+import com.cmpt275.house.classDef.infoClass.taskInfo;
+import com.cmpt275.house.classDef.taskFirebaseClass;
+
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -11,7 +16,7 @@ import static org.junit.Assert.*;
  */
 public class ExampleUnitTest {
     @Test
-    public void addition_isCorrect() {
-        assertEquals(4, 2 + 2);
+    public void testDisputeOfTask() {
+        assertEquals(4, 2+2);
     }
 }
