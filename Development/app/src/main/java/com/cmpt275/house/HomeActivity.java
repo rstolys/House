@@ -81,7 +81,7 @@ public class HomeActivity extends AppCompatActivity {
                         // Convert object data to encoded string
                         ByteArrayOutputStream bo = new ByteArrayOutputStream();
                         ObjectOutputStream so = new ObjectOutputStream(bo);
-                        so.writeObject(uInfo);
+                        so.writeObject(homeClass.uInfo);
                         so.flush();
                         final byte[] byteArray = bo.toByteArray();
                         serializedUserInfo = Base64.encodeToString(byteArray, Base64.DEFAULT);

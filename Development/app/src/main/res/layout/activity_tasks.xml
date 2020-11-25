@@ -26,13 +26,13 @@
             app:menu="@menu/bottom_nav_menu" />
 
     <TextView
-        android:id="@+id/new_task_title"
+        android:id="@+id/my_tasks_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="80dp"
         android:layout_marginEnd="16dp"
-        android:text="@string/new_task_title"
+        android:text="@string/my_tasks"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/screen_container"
         app:layout_constraintEnd_toEndOf="parent"
@@ -49,7 +49,7 @@
             app:layout_constraintBottom_toTopOf="@+id/nav_view"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/new_task_title">
+            app:layout_constraintTop_toBottomOf="@id/my_tasks_title">
 
             <LinearLayout
                 android:id="@+id/my_tasks_list"

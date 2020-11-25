@@ -30,8 +30,9 @@ public class TaskActivity extends AppCompatActivity {
     taskInfo tInfo;
     userInfo uInfo;
 
-    private taskClass myTaskClass = new taskClass();
+    private taskClass myTaskClass = new taskClass(this);
     private Intent newIntent;
+    private Intent buttonIntent;
     FragmentTransaction fragmentTransaction;
 
     @Override
@@ -82,9 +83,9 @@ public class TaskActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                newIntent = new Intent(TaskActivity.this, NewTaskActivity.class);
-                newIntent.putExtra("userInfo", serializedUserInfo);
-                startActivity( newIntent );
+                buttonIntent = new Intent(TaskActivity.this, NewTaskActivity.class);
+                buttonIntent.putExtra("userInfo", serializedUserInfo);
+                startActivity( buttonIntent );
             }
         });
     }

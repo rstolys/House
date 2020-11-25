@@ -39,7 +39,7 @@ public class NewTaskActivity extends AppCompatActivity{
 
         if(serializedObject == ""){
             // If the serialized object is empty, error!
-            Log.e("OnCreate Home", "userInfo not passed from last activity");
+            Log.e("OnCreate New Task", "userInfo not passed from last activity");
         } else {
             try {
                 // Decode the string into a byte array
@@ -61,11 +61,11 @@ public class NewTaskActivity extends AppCompatActivity{
 
         Button saveButton = findViewById(R.id.new_task_save_button);
         saveButton.setOnClickListener(v -> {
-            EditText taskTitle = findViewById(R.id.new_task_name);
+           /* EditText taskTitle = findViewById(R.id.new_task_name);
             newTaskInfo.displayName = String.valueOf(taskTitle.getText());
 
             EditText taskDescription = findViewById(R.id.new_task_description);
-            newTaskInfo.description = String.valueOf(taskDescription);
+            newTaskInfo.description = String.valueOf(taskDescription)*/;
         });
     }
 
