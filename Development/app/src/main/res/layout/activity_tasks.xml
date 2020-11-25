@@ -52,7 +52,7 @@
             app:layout_constraintTop_toBottomOf="@id/my_tasks_title">
 
             <LinearLayout
-                android:id="@+id/my_tasks_list"
+                android:id="@+id/add_button_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -63,6 +63,71 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
                     android:text="Add" />
+
+                <TextView
+                    android:id="@+id/due_today_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:background="@android:color/holo_red_dark"
+                    android:text="@string/due_today_title" />
+                <LinearLayout
+                    android:id="@+id/due_today_tasks_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white" />
+                <TextView
+                    android:id="@+id/due_this_week_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:background="@android:color/holo_orange_light"
+                    android:text="@string/due_this_week_title" />
+                <LinearLayout
+                    android:id="@+id/due_this_week_tasks_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white" />
+                <TextView
+                    android:id="@+id/due_this_month_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:background="@color/yellow"
+                    android:text="@string/due_this_month_title" />
+                <LinearLayout
+                    android:id="@+id/due_this_month_tasks_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white" />
+                <TextView
+                    android:id="@+id/due_later_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:background="@android:color/holo_green_light"
+                    android:text="@string/due_later_title" />
+                <LinearLayout
+                    android:id="@+id/due_later_tasks_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                </LinearLayout>
+
             </LinearLayout>
         </ScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>

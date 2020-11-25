@@ -15,6 +15,8 @@ import com.cmpt275.house.interfaceDef.Callbacks.tInfoCallback;
 import com.cmpt275.house.interfaceDef.mapping;
 import com.cmpt275.house.interfaceDef.task;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Observable;
 
@@ -23,10 +25,24 @@ public class taskClass extends Observable implements task {
     //
     // Class Variables
     //
-    private taskInfo[] tInfos;
-
+  // private taskInfo[] tInfos;
+    public ArrayList<taskInfo> tInfos;
     private Context mContext;
     private taskFirebaseClass firebaseTask;
+
+    //
+    // Observable pattern update tInfo
+    //
+    public void settInfos(ArrayList<taskInfo> tInfos){
+        Log.d("SET_TINFOS", "In SET_TINFOS");
+        // For every observer in observer list, notify them
+        this.tInfos = tInfos;
+        Log.d("SET_TINFOS", "About to set changed");
+        setChanged();
+        Log.d("SET_TINFOS", "setChanged, about to notify observers");
+        notifyObservers();
+        Log.d("SET_TINFOS", "Notified observers");
+    }
 
     //
     // Class Functions
@@ -38,6 +54,25 @@ public class taskClass extends Observable implements task {
         this.mContext = mContext;
     }
 
+
+    public void viewUserTasks(String user_id){
+
+        Log.d("viewCurrentTasks:", "In viewUserTasks");
+        userInfo myUInfo = new userInfo();
+
+        myUInfo.id = "w4OFKQrvL28T3WlXVP4X";    //Ryan Stolys user_id
+
+        firebaseTask.getCurrentTasks(myUInfo, (tInfos, success, errorMessage) -> {
+            Log.d("getCurrentTasks:", "Returned with success: " + success);
+            ArrayList<taskInfo> taskInfoList = new ArrayList<taskInfo>();
+            Collections.addAll(taskInfoList, tInfos);
+
+            this.settInfos( taskInfoList );
+            Log.d("viewUserTasks", "Done getting tasks set up");
+        });
+
+        Log.d("viewCurrentTasks", "After call to viewUserTasks should be before asynchronous call");
+    }
 
     public void viewTask(String task_id) {
 

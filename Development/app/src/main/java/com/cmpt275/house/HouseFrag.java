@@ -16,7 +16,7 @@ import com.cmpt275.house.classDef.infoClass.houseMemberInfoObj;
 
 import java.util.Map;
 
-/**
+/*
  * A simple {@link Fragment} subclass.
  * Use the {@link HouseFrag#newInstance} factory method to
  * create an instance of this fragment.

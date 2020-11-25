@@ -7,8 +7,6 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import androidx.annotation.NonNull;
@@ -26,10 +24,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.Observable;
-import java.util.Observer;
 
-public class TaskActivity extends AppCompatActivity implements Observer {
+public class TaskViewActivity extends AppCompatActivity {
 
     taskInfo tInfo;
     userInfo uInfo;
@@ -42,7 +38,7 @@ public class TaskActivity extends AppCompatActivity implements Observer {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tasks);
+        setContentView(R.layout.activity_task_view);
 
         // Get userInfo from last activity
         Intent lastIntent = getIntent();
@@ -50,7 +46,7 @@ public class TaskActivity extends AppCompatActivity implements Observer {
 
         if(serializedObject == ""){
             // If the serialized object is empty, error!
-            Log.e("OnCreate Task", "userInfo not passed from last activity");
+            Log.e("OnCreate Task View", "userInfo not passed from last activity");
         } else {
             try {
                 // Decode the string into a byte array
@@ -66,40 +62,8 @@ public class TaskActivity extends AppCompatActivity implements Observer {
             }
         }
 
-
-        myTaskClass.addObserver(this);
-
-        // Update the tasks in the houseClass from the database
-        Log.d("OnCreate House Activity", "Before call to view your houses" );
-        myTaskClass.viewUserTasks(uInfo.id);
-        Log.d("OnCreate House Activity", "After call to view your houses" );
-
         BottomNavigationView navView = findViewById(R.id.nav_view);
         navView.setOnNavigationItemSelectedListener(navListener); //so we can implement it outside onCreate
-
-        Button addTask = (Button) findViewById(R.id.addTaskButton);
-        addTask.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // First prepare the userInfo to pass to next activity
-                String serializedUserInfo = "";
-                try {
-                    // Convert object data to encoded string
-                    ByteArrayOutputStream bo = new ByteArrayOutputStream();
-                    ObjectOutputStream so = new ObjectOutputStream(bo);
-                    so.writeObject(uInfo);
-                    so.flush();
-                    final byte[] byteArray = bo.toByteArray();
-                    serializedUserInfo = Base64.encodeToString(byteArray, Base64.DEFAULT);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                buttonIntent = new Intent(TaskActivity.this, NewTaskActivity.class);
-                buttonIntent.putExtra("userInfo", serializedUserInfo);
-                startActivity( buttonIntent );
-            }
-        });
 
     }
 
@@ -125,22 +89,22 @@ public class TaskActivity extends AppCompatActivity implements Observer {
                     // Now start appropriate activity
                     switch (item.getItemId()){
                         case R.id.navBar_home:
-                            newIntent = new Intent(TaskActivity.this, HomeActivity.class);
+                            newIntent = new Intent(TaskViewActivity.this, HomeActivity.class);
                             newIntent.putExtra("userInfo", serializedUserInfo);
                             startActivity( newIntent );
                             break;
                         case R.id.navBar_tasks:
-                            newIntent = new Intent(TaskActivity.this, TaskActivity.class);
+                            newIntent = new Intent(TaskViewActivity.this, TaskActivity.class);
                             newIntent.putExtra("userInfo", serializedUserInfo);
                             startActivity( newIntent );
                             break;
                         case R.id.navBar_houses:
-                            newIntent = new Intent(TaskActivity.this, HouseActivity.class);
+                            newIntent = new Intent(TaskViewActivity.this, HouseActivity.class);
                             newIntent.putExtra("userInfo", serializedUserInfo);
                             startActivity( newIntent );
                             break;
                         case R.id.navBar_Settings:
-                            newIntent = new Intent(TaskActivity.this, SettingsActivity.class);
+                            newIntent = new Intent(TaskViewActivity.this, SettingsActivity.class);
                             newIntent.putExtra("userInfo", serializedUserInfo);
                             startActivity( newIntent );
                             break;
@@ -198,36 +162,4 @@ public class TaskActivity extends AppCompatActivity implements Observer {
         //Usually ensures all the activities resources are released
     }
 
-    @Override
-    public void update(Observable o, Object arg) {
-        Log.d("UPDATE", "In update to update tasks");
-        this.updateTasks();
-    }
-
-    private void updateTasks() {
-
-        // First check if there are any houses on the screen
-        FragmentManager fm = getSupportFragmentManager();
-        fragmentTransaction = fm.beginTransaction();
-        Log.d("UPDATE_tASKS", "I am removing old tasks from the screen");
-
-        try {
-            Log.d("UPDATE_TASKS", "There are " + fm.getBackStackEntryCount() + " backEntry");
-            int numBackStack = fm.getBackStackEntryCount();
-            for(; numBackStack>0; numBackStack--) {
-                fm.popBackStack();
-            }
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-
-        Log.d("UPDATE_TASKS", "I am putting my tasks to screen");
-        for(int i = 0; i < myTaskClass.tInfos.size(); i++ ){
-            TaskFrag taskFrag = new TaskFrag(myTaskClass.tInfos.get(i));
-            fragmentTransaction.add(R.id.due_today_tasks_list, taskFrag);
-            fragmentTransaction.addToBackStack(null);
-        }
-
-        fragmentTransaction.commit();
-    }
 }
