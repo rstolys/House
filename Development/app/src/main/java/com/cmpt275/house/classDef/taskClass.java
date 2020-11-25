@@ -95,10 +95,9 @@ public class taskClass extends Observable implements task {
         });
     }
 
-    public void disputeTask(String task_id) {
-        taskInfo tInfo = new taskInfo();
+    public void disputeTask(taskInfo tInfo) {
 
-        task_id = "6PBXbr63dg8XaMK9w3gV";
+        String task_id = "6PBXbr63dg8XaMK9w3gV";
 
         firebaseTask.getTaskInfo(task_id, (tInfoRet, success, errorMessage) -> {
             Log.d("getTaskInfo:", "Returned with success " + success);
@@ -110,9 +109,21 @@ public class taskClass extends Observable implements task {
                 });
             }
         });
+    }
 
+    public void requestExtension(taskInfo tInfo) {
+        String task_id = "6PBXbr63dg8XaMK9w3gV";
 
+        firebaseTask.getTaskInfo(task_id, (tInfoRet, success, errorMessage) -> {
+            Log.d("getTaskInfo:", "Returned with success " + success);
 
+            if(success) {
+                firebaseTask.requestExtension(tInfoRet, (tInfoRet2, success2, errorMessage2) -> {
+                    Log.d("requestExtension:", "Returned with success " + success);
+                    //Do stuff here...
+                });
+            }
+        });
     }
 
     public void createTask(taskInfo tInfo) {
@@ -253,6 +264,22 @@ public class taskClass extends Observable implements task {
         firebaseTask.approveTaskAssignment(myTInfo, "NO_ID", false, (tInfo, success, errorMessage) -> {
             Log.d("approveTaskAssignment:", "Returned with success " + success);
             //Do stuff here ...
+        });
+    }
+
+
+    public void getTaskVotes(String task_id) {
+
+        task_id = "6PBXbr63dg8XaMK9w3gV_fail";
+
+        //Get the task to display
+        firebaseTask.getTaskVotes(task_id, (vInfos, success, errorMessage) -> {
+            Log.d("getTaskVotes:", "Returned with success " + success);
+
+            if(success) {
+                Log.d("getTaskVotes:", "Returned " + vInfos.length + " voting classes");
+                //Do Stuff here...
+            }
         });
     }
 

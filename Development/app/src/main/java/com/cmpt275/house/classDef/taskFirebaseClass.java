@@ -18,6 +18,7 @@ import com.cmpt275.house.classDef.mappingClass.voteTypeMapping;
 import com.cmpt275.house.interfaceDef.Callbacks.booleanCallback;
 import com.cmpt275.house.interfaceDef.Callbacks.tInfoArrayCallback;
 import com.cmpt275.house.interfaceDef.Callbacks.tInfoCallback;
+import com.cmpt275.house.interfaceDef.Callbacks.vInfoArrayCallback;
 import com.cmpt275.house.interfaceDef.TaskBE;
 import com.cmpt275.house.interfaceDef.mapping;
 
@@ -254,6 +255,61 @@ public class taskFirebaseClass implements TaskBE {
 
     ////////////////////////////////////////////////////////////
     //
+    // Will get the current votes for the task specified
+    //
+    ////////////////////////////////////////////////////////////
+    public void getTaskVotes(String task_id, vInfoArrayCallback callback) {
+
+        try{
+            //Ensure the uInfo has a valid id
+            if(task_id == null) {
+                Log.w(TAG, "getTaskVotes passed with null task_id");
+
+                //We cannot access db without valid id for user. Return failure.
+                callback.onReturn(null, false, INVALID_PARAMETER_MESSAGE);
+            }
+            else {
+                Log.d(TAG, "getTaskVotes for task: " + task_id);
+
+                //Get documents from the collection that have user_id specified -- need to check house_id after document collected
+                db.collection("voting").whereEqualTo("task_id", task_id).get()
+                        .addOnCompleteListener(queryResult -> {
+
+                            if(queryResult.isSuccessful()) {
+                                Log.d(TAG, "Successfully Query in getTaskVotes");
+
+                                List<votingInfo> voteInfoList = new ArrayList<votingInfo>();
+                                for(QueryDocumentSnapshot document : Objects.requireNonNull(queryResult.getResult())) {
+
+                                    //Convert queried document to taskData class
+                                    firebaseVotingDocument voteData = document.toObject(firebaseVotingDocument.class);
+
+                                    voteInfoList.add(voteData.toVotingInfo(document.getId()));
+                                }
+
+                                //Convert list to array and return
+                                votingInfo[] vInfos = new votingInfo[voteInfoList.size()];
+                                voteInfoList.toArray(vInfos);
+                                callback.onReturn(vInfos, true, NO_ERROR);
+                            }
+                            else {
+                                Log.d(TAG, "getTaskVotes: Error getting tasks for user: ", queryResult.getException());
+
+                                //Call function to return task value
+                                callback.onReturn(null, false, DATABASE_ERROR_MESSAGE);
+                            }
+                        });
+            }
+        }
+        catch(Exception e) {
+            Log.e(TAG, "ERROR: Exception caught: " + e.getMessage());
+            callback.onReturn(null, false, UNKNOWN_ERROR_MESSAGE);
+        }
+    }
+
+
+    ////////////////////////////////////////////////////////////
+    //
     // Will determine the approval status and update the task to reflect that
     //
     ////////////////////////////////////////////////////////////
@@ -394,7 +450,7 @@ public class taskFirebaseClass implements TaskBE {
                 Date endOfVote = new Date();
                 Calendar c = Calendar.getInstance();
                 c.setTime(endOfVote);
-                c.add(Calendar.DATE, 1);
+                c.add(Calendar.DATE, 1);            //Allow for one day of voting
                 vInfo.endOfVote = c.getTime();
 
 
@@ -452,7 +508,12 @@ public class taskFirebaseClass implements TaskBE {
             }
             else {
                 //Set the new status of the task
-                tInfo.status = statusMap.LATE;
+                if(tInfo.dueDate.before(new Date())) {
+                    tInfo.status = statusMap.LATE;
+                }
+                else {
+                    tInfo.status = statusMap.NOT_COMPLETE;
+                }
 
                 //Create a vote info class
                 votingInfo vInfo = new votingInfo();
@@ -460,13 +521,13 @@ public class taskFirebaseClass implements TaskBE {
                 vInfo.houseName = tInfo.houseName;
                 vInfo.task_id = tInfo.id;
                 vInfo.taskName = tInfo.displayName;
-                vInfo.type = voteMap.DISPUTE_COMPLETION;
+                vInfo.type = voteMap.DEADLINE_EXTENSION;
 
                 //Set the vote ending date
                 Date endOfVote = new Date();
                 Calendar c = Calendar.getInstance();
                 c.setTime(endOfVote);
-                c.add(Calendar.DATE, 1);
+                c.add(Calendar.DATE, 1);        //Allow for one day of voting
                 vInfo.endOfVote = c.getTime();
 
 
@@ -488,13 +549,13 @@ public class taskFirebaseClass implements TaskBE {
                 //Write to database
                 batch.commit().addOnCompleteListener(task -> {
                     if(task.isSuccessful()) {
-                        Log.d(TAG, "Task: " + tInfo.id + " Successfully disputed");
+                        Log.d(TAG, "Task: " + tInfo.id + " extension successfully requested");
 
                         //Return the task info
                         callback.onReturn(tInfo, true, NO_ERROR);
                     }
                     else {
-                        Log.d(TAG, "Error disputing Task: " + tInfo.id);
+                        Log.d(TAG, "Error requesting extension Task: " + tInfo.id);
 
                         callback.onReturn(null, false, DATABASE_ERROR_MESSAGE);
                     }

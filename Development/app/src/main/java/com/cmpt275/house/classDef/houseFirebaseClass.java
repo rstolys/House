@@ -555,6 +555,7 @@ public class houseFirebaseClass implements HouseBE {
                 //**Should we verify this user is allowed to vote (is a part of house)
                 //  won't be issue in normal operation, would need many errors for this to occur
 
+                //TODO: check that user has not already voted
                 //Add the vote to the vInfo
                 vInfo.voters.put(user_id, new voterObj(userName, true, yesVote));
 
