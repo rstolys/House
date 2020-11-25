@@ -2,25 +2,71 @@ package com.cmpt275.house;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Base64;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.cmpt275.house.classDef.infoClass.taskInfo;
+import com.cmpt275.house.classDef.infoClass.userInfo;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 public class NewTaskActivity extends AppCompatActivity{
 
     public Intent newIntent;
+    public taskInfo newTaskInfo = new taskInfo();
+    userInfo uInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_newtask);
 
+
+        Intent lastIntent = getIntent();
+        String serializedObject = lastIntent.getStringExtra("userInfo");
+
+        if(serializedObject == ""){
+            // If the serialized object is empty, error!
+            Log.e("OnCreate New Task", "userInfo not passed from last activity");
+        } else {
+            try {
+                // Decode the string into a byte array
+                byte b[] = Base64.decode( serializedObject, Base64.DEFAULT );
+
+                // Convert byte array into userInfo object
+                ByteArrayInputStream bi = new ByteArrayInputStream(b);
+                ObjectInputStream si = new ObjectInputStream(bi);
+                uInfo = (userInfo) si.readObject();
+                Log.d("NEW_TASK_ACTIVITY", "Userinfo.displayName passed: " + uInfo.displayName );
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+
         BottomNavigationView navView = findViewById(R.id.nav_view);
         navView.setOnNavigationItemSelectedListener(navListener); //so we can implement it outside onCreate
 
+
+        Button saveButton = findViewById(R.id.new_task_save_button);
+        saveButton.setOnClickListener(v -> {
+           /* EditText taskTitle = findViewById(R.id.new_task_name);
+            newTaskInfo.displayName = String.valueOf(taskTitle.getText());
+
+            EditText taskDescription = findViewById(R.id.new_task_description);
+            newTaskInfo.description = String.valueOf(taskDescription)*/;
+        });
     }
 
 
@@ -28,26 +74,41 @@ public class NewTaskActivity extends AppCompatActivity{
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+                    // First prepare the userInfo to pass to next activity
+                    String serializedUserInfo = "";
+                    try {
+                        // Convert object data to encoded string
+                        ByteArrayOutputStream bo = new ByteArrayOutputStream();
+                        ObjectOutputStream so = new ObjectOutputStream(bo);
+                        so.writeObject(uInfo);
+                        so.flush();
+                        final byte[] byteArray = bo.toByteArray();
+                        serializedUserInfo = Base64.encodeToString(byteArray, Base64.DEFAULT);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
                     switch (item.getItemId()){
                         case R.id.navBar_home:
                             newIntent = new Intent(NewTaskActivity.this, HomeActivity.class);
-                            newIntent.putExtra("userInfo", 0);
+                            newIntent.putExtra("userInfo", serializedUserInfo);
                             startActivity( newIntent );
                             break;
                         case R.id.navBar_tasks:
                             // Do we really want to go back to tasks page here?
                             newIntent = new Intent(NewTaskActivity.this, TaskActivity.class);
-                            newIntent.putExtra("userInfo", 0);
+                            newIntent.putExtra("userInfo", serializedUserInfo);
                             startActivity( newIntent );
                             break;
                         case R.id.navBar_houses:
                             newIntent = new Intent(NewTaskActivity.this, HouseActivity.class);
-                            newIntent.putExtra("userInfo", 0);
+                            newIntent.putExtra("userInfo", serializedUserInfo);
                             startActivity( newIntent );
                             break;
                         case R.id.navBar_Settings:
                             newIntent = new Intent(NewTaskActivity.this, SettingsActivity.class);
-                            newIntent.putExtra("userInfo", 0);
+                            newIntent.putExtra("userInfo", serializedUserInfo);
                             startActivity( newIntent );
                             break;
                     }

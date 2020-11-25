@@ -82,6 +82,7 @@
 
     <!-- Strings related to Tasks Page -->
     <string name="my_tasks_title">My Tasks</string>
+    <string name="new_task_title">New Task</string>
     <string name="due_today_title">Due today</string>
     <string name="due_this_week_title">Due this week</string>
     <string name="due_this_month_title">Due this month</string>
@@ -101,5 +102,13 @@
     <string name="new_house_notification_sched">None, Weekly, or Monthly. Default: None</string>
     <string name="view_house_button">View House</string>
 
+
+    <!-- Strings related to New Task -->
+    <string name="save_new_task_button_title">CREATE</string>
+    <string name="new_task_name">New Task Title</string>
+    <string name="new_task_description">Description</string>
+    <string name="new_task_due_date">Task Due Date</string>
+    <string name="new_task_assignee">Task Assignee</string>
+    <string name="house_name">House Name</string>
 
 </resources>

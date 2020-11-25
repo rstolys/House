@@ -5,20 +5,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    tools:context=".TaskActivity">
 
     <FrameLayout
-        android:id="@+id/tasks_container"
+        android:id="@+id/screen_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/nav_view">
-
-        <Button
-            android:id="@+id/addTaskButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="310dp"
-            android:text="Add" />
-    </FrameLayout>
+        android:layout_above="@id/nav_view" />
   
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/nav_view"
@@ -32,19 +25,20 @@
             app:layout_constraintRight_toRightOf="parent"
             app:menu="@menu/bottom_nav_menu" />
 
-        <TextView
-            android:id="@+id/my_tasks_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="80dp"
-            android:layout_marginEnd="16dp"
-            android:text="@string/my_tasks_title"
-            android:textSize="24sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/my_tasks_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/my_tasks"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/screen_container"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
         <ScrollView
@@ -58,9 +52,17 @@
             app:layout_constraintTop_toBottomOf="@id/my_tasks_title">
 
             <LinearLayout
+                android:id="@+id/add_button_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/addTaskButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:text="Add" />
 
                 <TextView
                     android:id="@+id/due_today_title"
@@ -69,212 +71,62 @@
                     android:background="@android:color/holo_red_dark"
                     android:text="@string/due_today_title" />
                 <LinearLayout
-                    android:layout_height="wrap_content"
+                    android:id="@+id/due_today_tasks_list"
                     android:layout_width="match_parent"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:id="@+id/house3_task2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="200"
-                        android:text="@string/house1_task3_title" />
-
-                    <TextView
-                        android:id="@+id/house3_title"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="200"
-                        android:text="@string/house1_name" />
-                    <TextView
-                        android:id="@+id/due_date1"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="200"
-                        android:text="@string/due_date_1" />
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_height="wrap_content"
+                <TextView
                     android:layout_width="match_parent"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:id="@+id/house1_task4"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="200"
-                        android:text="@string/house2_task3_title" />
-
-                    <TextView
-                        android:id="@+id/house1_title"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="200"
-                        android:text="@string/house2_name" />
-                    <TextView
-                        android:id="@+id/due_date3"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="200"
-                        android:text="@string/due_date_1" />
-                </LinearLayout>
-
-                <LinearLayout
                     android:layout_height="wrap_content"
-                    android:layout_width="match_parent"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:id="@+id/house2_task4"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="200"
-                        android:text="@string/house1_task1_title" />
-
-                    <TextView
-                        android:id="@+id/house2_title"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="200"
-                        android:text="@string/house1_name" />
-                    <TextView
-                        android:id="@+id/due_date2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="200"
-                        android:text="@string/due_date_1" />
-                </LinearLayout>
-
-
+                    android:background="@color/white" />
                 <TextView
                     android:id="@+id/due_this_week_title"
                     android:layout_width="match_parent"
                     android:layout_height="35dp"
                     android:background="@android:color/holo_orange_light"
                     android:text="@string/due_this_week_title" />
-
-
                 <LinearLayout
-                    android:layout_height="wrap_content"
+                    android:id="@+id/due_this_week_tasks_list"
                     android:layout_width="match_parent"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="200"
-                        android:text="@string/house1_task2_title" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="200"
-                        android:text="@string/house1_name" />
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="200"
-                        android:text="@string/due_date_2" />
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
                 </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white" />
                 <TextView
                     android:id="@+id/due_this_month_title"
                     android:layout_width="match_parent"
                     android:layout_height="35dp"
                     android:background="@color/yellow"
                     android:text="@string/due_this_month_title" />
-
                 <LinearLayout
-                    android:layout_height="wrap_content"
+                    android:id="@+id/due_this_month_tasks_list"
                     android:layout_width="match_parent"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="200"
-                        android:text="@string/house1_task2_title" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="200"
-                        android:text="@string/house1_name" />
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="200"
-                        android:text="@string/due_date_3" />
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_height="wrap_content"
+                <TextView
                     android:layout_width="match_parent"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="200"
-                        android:text="@string/house2_task1_title" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="200"
-                        android:text="@string/house3_name" />
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="200"
-                        android:text="@string/due_date_3" />
-                </LinearLayout>
-
+                    android:layout_height="wrap_content"
+                    android:background="@color/white" />
                 <TextView
                     android:id="@+id/due_later_title"
                     android:layout_width="match_parent"
                     android:layout_height="35dp"
                     android:background="@android:color/holo_green_light"
                     android:text="@string/due_later_title" />
-
                 <LinearLayout
-                    android:layout_height="wrap_content"
+                    android:id="@+id/due_later_tasks_list"
                     android:layout_width="match_parent"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="200"
-                        android:text="@string/house1_task3_title" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="200"
-                        android:text="@string/house3_name" />
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="200"
-                        android:text="-" />
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
                 </LinearLayout>
-
-
 
             </LinearLayout>
         </ScrollView>

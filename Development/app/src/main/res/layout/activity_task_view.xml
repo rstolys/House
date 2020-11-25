@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".NewTaskActivity">
+    tools:context=".TaskViewActivity">
 
     <FrameLayout
         android:id="@+id/screen_container"
@@ -25,13 +25,13 @@
         app:menu="@menu/bottom_nav_menu" />
 
     <TextView
-        android:id="@+id/new_task_title"
+        android:id="@+id/task_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="80dp"
         android:layout_marginEnd="16dp"
-        android:text="New Task"
+        android:text="Task Title"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/screen_container"
         app:layout_constraintEnd_toEndOf="parent"
@@ -51,150 +51,163 @@
         app:layout_constraintBottom_toTopOf="@+id/nav_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/new_task_title">
+        app:layout_constraintTop_toBottomOf="@+id/task_title">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/purple_200"
             android:orientation="vertical">
 
+
+
             <TableRow
-                android:id="@+id/new_task_row1"
+                android:id="@+id/task_row2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/purple_200">
 
-                <EditText
-                    android:id="@+id/new_task_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:importantForAutofill="no"
-                    android:inputType="textPersonName"
-                    android:text="@string/new_task_name" />
-
-            </TableRow>
-
-            <TableRow
-                android:id="@+id/new_task_row2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/purple_200">
-
-                <EditText
+                <TextView
                     android:id="@+id/new_task_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:importantForAutofill="no"
-                    android:inputType="textPersonName"
+                    android:textSize="18sp"
                     android:text="@string/new_task_description" />
             </TableRow>
 
 
             <TableRow
-                android:id="@+id/new_task_row3"
+                android:id="@+id/task_row3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/purple_200">
 
-                <EditText
-                    android:id="@+id/new_task_due_date"
-                    android:layout_width="match_parent"
+                <TextView
+                    android:layout_width="190dp"
                     android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:importantForAutofill="no"
-                    android:inputType="textPersonName"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:text="@string/new_task_due_date" />
+                <TextView
+                    android:id="@+id/new_task_due_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
                     android:text="@string/new_task_due_date" />
 
             </TableRow>
 
             <TableRow
-                android:id="@+id/new_task_row4"
+                android:id="@+id/task_row4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/purple_200">
 
+                <TextView
+                    android:layout_width="190dp"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:text="@string/house_name" />
                 <TextView
                     android:id="@+id/house_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/black"
                     android:textSize="18sp"
-                    android:text="@string/house_name"/>
-                <Spinner
-                    android:id="@+id/houses_spinner"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:background="@android:drawable/btn_dropdown"
-                    android:spinnerMode="dropdown"/>
+                    android:text="@string/house_name" />
+
             </TableRow>
 
             <TableRow
-                android:id="@+id/new_task_row5"
+                android:id="@+id/task_row5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/purple_200">
 
                 <TextView
-                    android:id="@+id/new_task_assignee"
-                    android:layout_width="wrap_content"
+                    android:layout_width="190dp"
                     android:layout_height="wrap_content"
                     android:textColor="@color/black"
                     android:textSize="18sp"
-                    android:text="@string/new_task_assignee"/>
-                <Spinner
-                    android:id="@+id/assignee_spinner"
-                    android:layout_width="match_parent"
+                    android:text="Task Assignee" />
+                <TextView
+                    android:id="@+id/assignee_name"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:background="@android:drawable/btn_dropdown"
-                    android:spinnerMode="dropdown"/>
+                    android:textSize="18sp"
+                    android:text="Assignee" />
+
             </TableRow>
 
             <TableRow
-                android:id="@+id/new_task_row8"
+                android:id="@+id/task_row6"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/purple_200">
 
                 <TextView
-                    android:id="@+id/notification_settings"
-                    android:layout_width="wrap_content"
+                    android:layout_width="190dp"
                     android:layout_height="wrap_content"
                     android:textColor="@color/black"
                     android:textSize="18sp"
-                    android:text="Notifications"/>
-                <ToggleButton
-                    android:id="@+id/toggleButton"
+                    android:text="Assigned by" />
+                <TextView
+                    android:id="@+id/assigned_by_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="68dp"
-                    android:layout_marginEnd="68dp"
-                    android:text="@string/toggle_notification_button" />
+                    android:textSize="18sp"
+                    android:text="Admin User" />
+
             </TableRow>
 
+
             <TableRow
-                android:id="@+id/new_task_row6"
+                android:id="@+id/task_row7"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/purple_200">
+                android:layout_height="match_parent">
 
                 <Button
-                    android:id="@+id/new_task_save_button"
+                    android:id="@+id/dispute_task_button"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="38dp"
+                    android:layout_marginEnd="90dp"
+                    android:text="Dispute" />
+
+                <Button
+                    android:id="@+id/swap_task_button"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="15dp"
+                    android:text="Swap" />
+
+            </TableRow>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white" />
+
+            <TableRow
+                android:id="@+id/voting_row1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/light_blue">
+
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="68dp"
-                    android:layout_marginEnd="68dp"
-                    android:background="@color/purple_200"
-                    android:text="@string/save_new_task_button_title" />
+                    android:textColor="@color/black"
+                    android:gravity="center"
+                    android:textSize="18sp"
+                    android:text="Voting" />
+
 
             </TableRow>
 
         </LinearLayout>
-
 
     </LinearLayout>
 
