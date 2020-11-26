@@ -112,9 +112,7 @@ public class MainActivity extends AppCompatActivity implements updateUI {
         display.showMessage(this, "Signing In", display.LONG);
 
         //Call function to signIn the user
-        //auth.signInUser(email.getText().toString(), password.getText().toString());
-
-        taskAction.getTaskVotes(null);
+        auth.signInUser(email.getText().toString(), password.getText().toString());
     }
 
     ////////////////////////////////////////////////
