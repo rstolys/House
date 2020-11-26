@@ -1,7 +1,7 @@
 package com.cmpt275.house.interfaceDef;
 
 public interface settings {
-    public void logout();
+    public void logout(updateUI callback);
     public void viewLegal();
     public void viewSettings(String user_id);
     public void changeDisplayName(String displayName);

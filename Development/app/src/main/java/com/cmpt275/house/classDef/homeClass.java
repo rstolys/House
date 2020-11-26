@@ -51,7 +51,7 @@ public class homeClass implements home {
     ////////////////////////////////////////////////////////////
     public void logout() {
         //Show we are logging out
-        display.showMessage(mContext, "Logging out", display.LONG);
+        display.showToastMessage(mContext, "Logging out", display.LONG);
 
         //Logout user
         firebaseUserTask.logout(uInfo, (result, errorMessage) -> {
@@ -73,7 +73,7 @@ public class homeClass implements home {
 
         //Make sure  the user_id is valid
         if(user_id == null) {
-            display.showMessage(mContext, "Oops. Looks like something went wrong", display.LONG);
+            display.showToastMessage(mContext, "Oops. Looks like something went wrong", display.LONG);
             //This should not occur, we should probably logout the user if this happens
         }
         else {
@@ -85,7 +85,7 @@ public class homeClass implements home {
                     //Do stuff here...
                 }
                 else {
-                    display.showMessage(mContext, errorMessage, display.LONG);
+                    display.showToastMessage(mContext, errorMessage, display.LONG);
                 }
             });
         }
@@ -101,7 +101,7 @@ public class homeClass implements home {
 
         //Make sure  the user_id is valid
         if(user_id == null) {
-            display.showMessage(mContext, "Oops. Looks like something went wrong.", display.LONG);
+            display.showToastMessage(mContext, "Oops. Looks like something went wrong.", display.LONG);
             //This should not occur, we should probably logout the user if this happens
         }
         else {
@@ -113,7 +113,7 @@ public class homeClass implements home {
                     //Do stuff here...
                 }
                 else {
-                    display.showMessage(mContext, errorMessage, display.LONG);
+                    display.showToastMessage(mContext, errorMessage, display.LONG);
                 }
             });
         }
