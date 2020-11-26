@@ -24,6 +24,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
@@ -110,18 +111,7 @@ public class HouseActivity extends AppCompatActivity implements Observer {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                     // First prepare the userInfo to pass to next activity
-                    String serializedUserInfo = "";
-                    try {
-                        // Convert object data to encoded string
-                        ByteArrayOutputStream bo = new ByteArrayOutputStream();
-                        ObjectOutputStream so = new ObjectOutputStream(bo);
-                        so.writeObject(uInfo);
-                        so.flush();
-                        final byte[] byteArray = bo.toByteArray();
-                        serializedUserInfo = Base64.encodeToString(byteArray, Base64.DEFAULT);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    String serializedUserInfo = serializeUserInfo();
 
                     // Now go to which activity was requested
                     switch (item.getItemId()){
@@ -199,13 +189,14 @@ public class HouseActivity extends AppCompatActivity implements Observer {
     public void update(Observable o, Object obj) {
         // Update screen with new houses
         Log.d("UPDATE", "In update to update houses");
-        this.updateHouses(false);
+        this.updateHouses();
     }
 
-    public void updateHouses(boolean newHouseTop){
+    public void updateHouses(){
         // First check if there are any houses on the screen
         Log.d("UPDATE_HOUSES", "I am removing old houses from the screen");
 
+        // Remove them if there are
         try {
             Log.d("UPDATE_HOUSES", "There are " + fm.getBackStackEntryCount() + " backEntry");
             int numBackStack = fm.getBackStackEntryCount();
@@ -218,6 +209,7 @@ public class HouseActivity extends AppCompatActivity implements Observer {
 
         fragmentTransaction = fm.beginTransaction();
 
+        // Now add back the updated houses
         Log.d("UPDATE_HOUSES", "I am putting my houses to screen");
         for(int i = 0; i < myHouseClass.hInfos.size(); i++ ){
             HouseFrag houseFrag = new HouseFrag(myHouseClass.hInfos.get(i));
@@ -227,4 +219,31 @@ public class HouseActivity extends AppCompatActivity implements Observer {
 
         fragmentTransaction.commit();
     }
+
+    public void viewHouseButtonClick(View v){
+        // User has requested to view the house they clicked on
+        // Start the view house activity
+        String serializedUserInfo = serializeUserInfo();
+        newIntent = new Intent(HouseActivity.this, HouseViewActivity.class);
+        newIntent.putExtra("userInfo", serializedUserInfo);
+        startActivity(newIntent);
+    }
+
+    private String serializeUserInfo(){
+
+        String serializedUserInfo = "";
+        try {
+            // Convert object data to encoded string
+            ByteArrayOutputStream bo = new ByteArrayOutputStream();
+            ObjectOutputStream so = new ObjectOutputStream(bo);
+            so.writeObject(uInfo);
+            so.flush();
+            final byte[] byteArray = bo.toByteArray();
+            serializedUserInfo = Base64.encodeToString(byteArray, Base64.DEFAULT);
+        } catch (Exception e){
+        }
+
+        return serializedUserInfo;
+    }
+
 }

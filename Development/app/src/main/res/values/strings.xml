@@ -110,5 +110,11 @@
     <string name="new_task_due_date">Task Due Date</string>
     <string name="new_task_assignee">Task Assignee</string>
     <string name="house_name">House Name</string>
+    <string name="back">Back</string>
+    <string name="edit">Edit</string>
+    <string name="balance_outstanding">Balance Outstanding ($)</string>
+    <string name="members">Members</string>
+    <string name="house_description">House Description</string>
+    <string name="voting">Voting</string>
 
 </resources>
