@@ -81,7 +81,6 @@ public class NewHouseFrag extends Fragment {
             Log.d("createHouseButton", "Creating house in db with name: " + newHouseInfo.displayName);
 
             theHouseClass.createHouse(newHouseInfo);
-
         });
 
         return view;

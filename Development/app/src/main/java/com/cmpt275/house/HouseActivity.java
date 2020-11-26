@@ -31,6 +31,7 @@ import java.util.Observer;
 
 public class HouseActivity extends AppCompatActivity implements Observer {
 
+    FragmentManager fm = getSupportFragmentManager();
     FragmentTransaction fragmentTransaction;
     private houseClass myHouseClass = new houseClass(this);
     public Intent newIntent;
@@ -76,10 +77,29 @@ public class HouseActivity extends AppCompatActivity implements Observer {
 
         Button addHouseButton = findViewById(R.id.add_house_button);
         addHouseButton.setOnClickListener(v -> {
+            // Remove all current houses there
+            try {
+                int numBackStack = fm.getBackStackEntryCount();
+                for(; numBackStack>0; numBackStack--) {
+                    fm.popBackStack();
+                }
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+
+            // Add new house first
             fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            NewHouseFrag houseFrag = new NewHouseFrag(myHouseClass, uInfo);
-            fragmentTransaction.add(R.id.my_houses_list, houseFrag);
+            NewHouseFrag newHouseFrag = new NewHouseFrag(myHouseClass, uInfo);
+            fragmentTransaction.add(R.id.my_houses_list, newHouseFrag);
             fragmentTransaction.addToBackStack(null);
+
+            // Put back all old houses
+            for(int i = 0; i < myHouseClass.hInfos.size(); i++ ){
+                HouseFrag houseFrag = new HouseFrag(myHouseClass.hInfos.get(i));
+                fragmentTransaction.add(R.id.my_houses_list, houseFrag);
+                fragmentTransaction.addToBackStack(null);
+            }
+
             fragmentTransaction.commit();
         });
     }
@@ -164,7 +184,7 @@ public class HouseActivity extends AppCompatActivity implements Observer {
     protected void onRestart() {
         super.onRestart();
         //When app in stopped state is about to restart
-        // Should restore the state of the activity
+        //Should restore the state of the activity
         //Next callback will always be onStart()
     }
 
@@ -179,13 +199,11 @@ public class HouseActivity extends AppCompatActivity implements Observer {
     public void update(Observable o, Object obj) {
         // Update screen with new houses
         Log.d("UPDATE", "In update to update houses");
-        this.updateHouses();
+        this.updateHouses(false);
     }
 
-    public void updateHouses(){
+    public void updateHouses(boolean newHouseTop){
         // First check if there are any houses on the screen
-        FragmentManager fm = getSupportFragmentManager();
-        fragmentTransaction = fm.beginTransaction();
         Log.d("UPDATE_HOUSES", "I am removing old houses from the screen");
 
         try {
@@ -197,6 +215,8 @@ public class HouseActivity extends AppCompatActivity implements Observer {
         } catch (Exception e){
             e.printStackTrace();
         }
+
+        fragmentTransaction = fm.beginTransaction();
 
         Log.d("UPDATE_HOUSES", "I am putting my houses to screen");
         for(int i = 0; i < myHouseClass.hInfos.size(); i++ ){

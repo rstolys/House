@@ -42,14 +42,10 @@ public class houseClass extends taskClass implements house {
     // Observable pattern update hInfo
     //
     public void sethInfos(ArrayList<houseInfo> hInfos){
-        Log.d("SET_HINFOS", "In SET_HINFOS");
         // For every observer in observer list, notify them
         this.hInfos = hInfos;
-        Log.d("SET_HINFOS", "About to set changed");
         setChanged();
-        Log.d("SET_HINFOS", "setChanged, about to notify observers");
         notifyObservers();
-        Log.d("SET_HINFOS", "Notified observers");
     }
 
     //
@@ -89,16 +85,13 @@ public class houseClass extends taskClass implements house {
         myHInfo.maxMembers = 4;
         myHInfo.houseNotifications = hInfo.houseNotifications;
 
-        Set<String> uInfoKeys = myHInfo.members.keySet();
-
         firebaseTask.createNewHouse(myHInfo, (hInfo1, success, errorMessage) -> {
             Log.d("createNewHouse:", "Returned with success: " + success);
-            //Do stuff here ...
+            // If successful, the new house is created and displayed to screen with the rest of the houes
             if( success ){
                 this.hInfos.add(hInfo1);
-                Log.d("SET_HINFOS", "About to call SET_HINFOS");
                 sethInfos(this.hInfos);
-            }
+            } // Else we should display error message
         });
     }
 
