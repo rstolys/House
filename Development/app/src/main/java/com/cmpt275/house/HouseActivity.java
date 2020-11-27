@@ -96,7 +96,7 @@ public class HouseActivity extends AppCompatActivity implements Observer {
 
             // Put back all old houses
             for(int i = 0; i < myHouseClass.hInfos.size(); i++ ){
-                HouseFrag houseFrag = new HouseFrag(myHouseClass.hInfos.get(i));
+                HouseFrag houseFrag = new HouseFrag(myHouseClass.hInfos.get(i), myHouseClass);
                 fragmentTransaction.add(R.id.my_houses_list, houseFrag);
                 fragmentTransaction.addToBackStack(null);
             }
@@ -117,7 +117,7 @@ public class HouseActivity extends AppCompatActivity implements Observer {
                     switch (item.getItemId()){
                         case R.id.navBar_home:
                             newIntent = new Intent(HouseActivity.this, HomeActivity.class);
-                            newIntent.putExtra("userInfo",serializedUserInfo);
+                            newIntent.putExtra("userInfo", serializedUserInfo);
                             startActivity(newIntent);
                             break;
                         case R.id.navBar_tasks:
@@ -187,9 +187,22 @@ public class HouseActivity extends AppCompatActivity implements Observer {
 
     @Override
     public void update(Observable o, Object obj) {
+        // Observer pattern to update houses or start a new activity
         // Update screen with new houses
-        Log.d("UPDATE", "In update to update houses");
-        this.updateHouses();
+        Log.d("UPDATE", "Object is: " + obj);
+        String passedParam = String.valueOf(obj);
+        if(passedParam == ""){
+            Log.d("UPDATE", "In update to update houses");
+            this.updateHouses();
+        } else {
+            houseInfo hInfo = (houseInfo) obj;
+            String serializedUserInfo = serializeUserInfo();
+
+            newIntent = new Intent(HouseActivity.this, HouseViewActivity.class);
+            newIntent.putExtra("userInfo", serializedUserInfo);
+            newIntent.putExtra("houseInfo", hInfo.id );
+            startActivity(newIntent);
+        }
     }
 
     public void updateHouses(){
@@ -212,21 +225,12 @@ public class HouseActivity extends AppCompatActivity implements Observer {
         // Now add back the updated houses
         Log.d("UPDATE_HOUSES", "I am putting my houses to screen");
         for(int i = 0; i < myHouseClass.hInfos.size(); i++ ){
-            HouseFrag houseFrag = new HouseFrag(myHouseClass.hInfos.get(i));
+            HouseFrag houseFrag = new HouseFrag(myHouseClass.hInfos.get(i), myHouseClass);
             fragmentTransaction.add(R.id.my_houses_list, houseFrag);
             fragmentTransaction.addToBackStack(null);
         }
 
         fragmentTransaction.commit();
-    }
-
-    public void viewHouseButtonClick(View v){
-        // User has requested to view the house they clicked on
-        // Start the view house activity
-        String serializedUserInfo = serializeUserInfo();
-        newIntent = new Intent(HouseActivity.this, HouseViewActivity.class);
-        newIntent.putExtra("userInfo", serializedUserInfo);
-        startActivity(newIntent);
     }
 
     private String serializeUserInfo(){
@@ -245,5 +249,32 @@ public class HouseActivity extends AppCompatActivity implements Observer {
 
         return serializedUserInfo;
     }
+
+    private String serializeHouseInfo(Object hInfo){
+
+        String serializedHouseInfo = "";
+        try {
+            // Convert object data to encoded string
+            Log.d("SerializeHouseInfo", "Exception 0");
+            ByteArrayOutputStream bo = new ByteArrayOutputStream();
+            Log.d("SerializeHouseInfo", "Exception 1");
+            ObjectOutputStream so = new ObjectOutputStream(bo);
+            Log.d("SerializeHouseInfo", "Exception 2");
+            Log.d("SerializeHouseInfo", "hInfo passed " + hInfo);
+            so.writeObject(hInfo);
+            Log.d("SerializeHouseInfo", "Exception 3");
+            so.flush();
+            Log.d("SerializeHouseInfo", "Exception 4");
+            final byte[] byteArray = bo.toByteArray();
+            Log.d("SerializeHouseInfo", "Exception 5");
+            serializedHouseInfo = Base64.encodeToString(byteArray, Base64.DEFAULT);
+            Log.d("SerializeHouseInfo", "Exception 6");
+        } catch (Exception e){
+            Log.d("SerializeHouseInfo", "Exception caught");
+        }
+
+        return serializedHouseInfo;
+    }
+
 
 }

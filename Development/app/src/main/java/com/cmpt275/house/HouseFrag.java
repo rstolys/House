@@ -10,11 +10,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.cmpt275.house.classDef.houseClass;
 import com.cmpt275.house.classDef.infoClass.houseInfo;
 import com.cmpt275.house.classDef.databaseObjects.houseMemberObj;
 import com.cmpt275.house.classDef.infoClass.houseMemberInfoObj;
+import com.google.android.gms.common.data.DataBufferObserver;
 
 import java.util.Map;
+import java.util.Observable;
 
 /*
  * A simple {@link Fragment} subclass.
@@ -22,11 +25,13 @@ import java.util.Map;
  * create an instance of this fragment.
  */
 public class HouseFrag extends Fragment {
-    private final houseInfo hInfo;
+    private houseInfo hInfo;
     private final int NUM_DISPLAYED_TASKS = 3;
+    private houseClass hClass; // No context here to pass, this could end up being a bug
 
-    public HouseFrag(houseInfo hInfo) {
+    public HouseFrag(houseInfo hInfo, houseClass houseClass) {
         this.hInfo = hInfo;
+        this.hClass = houseClass;
     }
 
     @Override
@@ -56,6 +61,11 @@ public class HouseFrag extends Fragment {
         }
         TextView membersList = view.findViewById(R.id.house1_members_list);
         membersList.setText(membersListString.toString());
+
+        Button viewHouseButton = view.findViewById(R.id.view_house_button);
+        viewHouseButton.setOnClickListener(v -> {
+            hClass.viewHouse(this.hInfo.id);
+        });
 
         Button leaveHouseButton = view.findViewById(R.id.house1_leave_house_button);
         leaveHouseButton.setOnClickListener(v -> leaveHouseButton.setText("Leaving house"));

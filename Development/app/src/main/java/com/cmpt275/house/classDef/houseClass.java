@@ -44,8 +44,9 @@ public class houseClass extends taskClass implements house {
     public void sethInfos(ArrayList<houseInfo> hInfos){
         // For every observer in observer list, notify them
         this.hInfos = hInfos;
+        String updateInfo = "";
         setChanged();
-        notifyObservers();
+        notifyObservers(updateInfo);
     }
 
     //
@@ -100,9 +101,9 @@ public class houseClass extends taskClass implements house {
     public void viewYourHouses(userInfo uInfo) {
         Log.d("viewCurrentHouses:", "In viewYourHouses");
 
-        userInfo myUInfo = new userInfo();
+        userInfo myUInfo = uInfo;
 
-        myUInfo.id = "w4OFKQrvL28T3WlXVP4X";    //Ryan Stolys user_id
+        // myUInfo.id = "w4OFKQrvL28T3WlXVP4X";    //Ryan Stolys user_id
 
         firebaseTask.getCurrentHouses(myUInfo, (hInfos, success, errorMessage) -> {
             Log.d("getCurrentHouses:", "Returned with success: " + success);
@@ -112,17 +113,15 @@ public class houseClass extends taskClass implements house {
             this.sethInfos( houseInfoList );
             Log.d("viewYourHouses", "Done getting houses set up");
         });
-
-        Log.d("viewCurrentHouses", "After call to viewYourHouses should be before asyncronous call");
     }
 
     public void viewHouse(String house_id) {
 
-        house_id = "TfB0rlNBEuj9dSMzA1OM";        //Cowichan 09 house_id
-
         firebaseTask.getHouseInfo(house_id, (hInfo, success, errorMessage) -> {
             Log.d("getHouseInfo:", "Returned with success: " + success);
-            //Do stuff here ...
+            // Notify HouseActivity that viewHouse all requested on this hInfo
+            setChanged();
+            notifyObservers(hInfo);
         });
     }
 

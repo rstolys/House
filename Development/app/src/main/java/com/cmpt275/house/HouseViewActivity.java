@@ -5,10 +5,13 @@ import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.cmpt275.house.classDef.houseClass;
+import com.cmpt275.house.classDef.infoClass.houseInfo;
 import com.cmpt275.house.classDef.infoClass.userInfo;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -17,11 +20,15 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.Observable;
+import java.util.Observer;
 
-public class HouseViewActivity extends AppCompatActivity {
+public class HouseViewActivity extends AppCompatActivity implements Observer {
 
     private Intent newIntent;
     userInfo uInfo;
+    houseInfo hInfo;
+    houseClass hClass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,13 +38,16 @@ public class HouseViewActivity extends AppCompatActivity {
         // Get userInfo from last activity
         Intent lastIntent = getIntent();
         String serializedObject = lastIntent.getStringExtra("userInfo");
+        String houseId = lastIntent.getStringExtra("houseInfo");
+        Log.d("HOUSE_VIEW_ACTIVITY", "Started view with serialized object: " + serializedObject );
+//        Log.d("HOUSE_VIEW_ACTIVITY", "Started view with serialized house object: " + serializedHouseObject );
 
         if(serializedObject == ""){
             // If the serialized object is empty, error!
             Log.e("OnCreate Task View", "userInfo not passed from last activity");
         } else {
             try {
-                // Decode the string into a byte array
+                // Decode the userInfo string into a byte array
                 byte b[] = Base64.decode( serializedObject, Base64.DEFAULT );
 
                 // Convert byte array into userInfo object
@@ -45,10 +55,25 @@ public class HouseViewActivity extends AppCompatActivity {
                 ObjectInputStream si = new ObjectInputStream(bi);
                 uInfo = (userInfo) si.readObject();
                 Log.d("HOUSE_VIEW_ACTIVITY", "Userinfo.displayName passed: " + uInfo.displayName );
+
+//                // Decode the houseInfo string into a byte array
+//                byte b2 [] = Base64.decode( serializedHouseObject, Base64.DEFAULT );
+//
+//                // Convert second byte array into userInfo object
+//                ByteArrayInputStream bi2 = new ByteArrayInputStream(b2);
+//                ObjectInputStream si2 = new ObjectInputStream(bi2);
+//                hInfo = (houseInfo) si2.readObject();
+//
+//                Log.d("HOUSE_VIEW_ACTIVITY", "Started view with house ID: " + hInfo.id );
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
+
+        hClass = new houseClass( this );
+        hClass.addObserver(this);
+        hClass.viewHouse(houseId);
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
         navView.setOnNavigationItemSelectedListener(navListener); //so we can implement it outside onCreate
@@ -102,4 +127,11 @@ public class HouseViewActivity extends AppCompatActivity {
             };
 
 
+    @Override
+    public void update(Observable o, Object obj) {
+        // Get house information from house class, now put it to screen
+        this.hInfo = (houseInfo) obj;
+        TextView houseTitle =  findViewById(R.id.view_hosue_house_name);
+        houseTitle.setText(this.hInfo.displayName);
+    }
 }
