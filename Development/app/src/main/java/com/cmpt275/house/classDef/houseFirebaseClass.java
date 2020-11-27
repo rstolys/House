@@ -44,8 +44,8 @@ public class houseFirebaseClass implements HouseBE {
 
     private final String NO_ERROR = "";
     private final String INVALID_PARAMETER_MESSAGE = "Looks like we couldn't access your information. Try signing in again";
-    private final String DATABASE_ERROR_MESSAGE = "Oops! Looks like there was an error on our end. Sorry about that\n Please try again";
-    private final String UNKNOWN_ERROR_MESSAGE = "Oops! Looks something went wrong there. Sorry about that\n Please try again";
+    private final String DATABASE_ERROR_MESSAGE = "Oops! Looks like there was an error on our end. Sorry about that. Please try again";
+    private final String UNKNOWN_ERROR_MESSAGE = "Oops! Looks something went wrong there. Sorry about that. Please try again";
 
 
     // TODO: add variables below to documentation

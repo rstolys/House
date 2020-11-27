@@ -3,6 +3,7 @@ package com.cmpt275.house.classDef.documentClass;
 import com.cmpt275.house.classDef.databaseObjects.nameObj;
 import com.cmpt275.house.classDef.infoClass.userInfo;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class firebaseUserDocument {
@@ -12,9 +13,9 @@ public class firebaseUserDocument {
     private String firebase_id;
     private String displayName;
     private boolean notificationsAllowed;
-    private Map<String, Double> moneyBalance;       //Map of {house_id: String, value: double}
-    private Map<String, nameObj> houses;
-    private Map<String, nameObj> tasks;
+    private Map<String, Double> moneyBalance = new HashMap<String, Double>();       //Map of {house_id: String, value: double}
+    private Map<String, nameObj> houses  = new HashMap<String, nameObj>();
+    private Map<String, nameObj> tasks  = new HashMap<String, nameObj>();
 
 
     /////////////////////////////////////////////////////////
@@ -53,7 +54,7 @@ public class firebaseUserDocument {
 
         //Convert houses maps to objects for database
         if(uInfo.houses == null) {
-            houses = null;
+            this.houses = null;
         }
         else {
             for(String house_id : uInfo.houses.keySet()) {
@@ -65,7 +66,7 @@ public class firebaseUserDocument {
 
         //Convert task maps to objects for database
         if(uInfo.tasks == null) {
-            tasks = null;
+            this.tasks = null;
         }
         else {
             for(String task_id : uInfo.tasks.keySet()) {

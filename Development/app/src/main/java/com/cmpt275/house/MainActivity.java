@@ -1,18 +1,13 @@
 package com.cmpt275.house;
 
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Base64;
-import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationManagerCompat;
 
 import com.cmpt275.house.classDef.displayMessage;
 import com.cmpt275.house.classDef.houseClass;
@@ -28,7 +23,6 @@ import com.cmpt275.house.interfaceDef.updateUI;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements updateUI {
 
@@ -109,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements updateUI {
         EditText password = findViewById(R.id.passwordOfUser);
 
         //Show a message to the user
-        display.showMessage(this, "Signing In", display.LONG);
+        display.showToastMessage(this, "Signing In", display.LONG);
 
         //Call function to signIn the user
         auth.signInUser(email.getText().toString(), password.getText().toString());
@@ -146,6 +140,21 @@ public class MainActivity extends AppCompatActivity implements updateUI {
 
             // Start the activity
             startActivity(homeIntent);
+        }
+    }
+
+
+    /////////////////////////////////////////////////
+    //
+    // Will hide the keyboard on the call
+    //
+    /////////////////////////////////////////////////
+    public void hideKeyboard(View view) {
+
+        //Hide  the keyboard from the user
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getSystemService(this.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
 

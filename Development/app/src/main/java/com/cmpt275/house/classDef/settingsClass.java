@@ -6,6 +6,8 @@ import android.util.Log;
 import com.cmpt275.house.classDef.infoClass.feedbackInfo;
 import com.cmpt275.house.classDef.infoClass.userInfo;
 import com.cmpt275.house.interfaceDef.settings;
+import com.cmpt275.house.interfaceDef.updateUI;
+import com.google.android.gms.common.api.internal.IStatusCallback;
 
 import java.util.Date;
 
@@ -43,15 +45,15 @@ public class settingsClass implements settings {
     // Will Logout the user
     //
     /////////////////////////////////////////////////
-    public void logout() {
+    public void logout(updateUI callback) {
         //Show we are logging out
-        display.showMessage(mContext, "Logging out", display.LONG);
+        display.showToastMessage(mContext, "Logging out", display.LONG);
 
         //Logout user
         firebaseUserTask.logout(uInfo, (result, errorMessage) -> {
             Log.d("logout:", "User " + uInfo.displayName + " is logged out");
 
-            //Update the UI to move back to main activity
+            callback.stateChanged(0);
         });
     }
 
@@ -78,7 +80,7 @@ public class settingsClass implements settings {
             //Indicate to UI to display information
         }
         else if(user_id == null) {          //Make sure  the user_id is valid
-                display.showMessage(mContext, "Oops. Looks like something went wrong", display.LONG);
+                display.showToastMessage(mContext, "Oops. Looks like something went wrong", display.LONG);
                 //This should not occur, we should probably logout the user if this happens
         }
         else {
@@ -91,7 +93,7 @@ public class settingsClass implements settings {
                 }
                 else {
                     Log.d("getUserInfo:", "Error Message: " + errorMessage);
-                    display.showMessage(mContext, errorMessage, display.LONG);
+                    display.showToastMessage(mContext, errorMessage, display.LONG);
                 }
             });
         }
@@ -108,7 +110,7 @@ public class settingsClass implements settings {
         if(displayName == null || displayName.length() < 1) {
             Log.d("changeDisplayName", "display name provided is null or empty");
 
-            display.showMessage(mContext, "Your display name can't be empty", display.LONG);
+            display.showToastMessage(mContext, "Your display name can't be empty", display.LONG);
         }
         else {
             firebaseUserTask.modifyDisplayName(uInfo, displayName, (uInfo, success, errorMessage) -> {
@@ -116,14 +118,14 @@ public class settingsClass implements settings {
 
                 if(success) {
                     Log.d("modifyDisplayName:", "New user display name: " + uInfo.displayName);
-                    display.showMessage(mContext, "Display name successfully updated!", display.LONG);
+                    display.showToastMessage(mContext, "Display name successfully updated!", display.LONG);
                     this.uInfo = uInfo;
 
                     //Do Stuff here...
                 }
                 else {
                     Log.d("modifyDisplayName:", "Error Message: " + errorMessage);
-                    display.showMessage(mContext, errorMessage, display.LONG);
+                    display.showToastMessage(mContext, errorMessage, display.LONG);
                 }
             });
         }
@@ -140,15 +142,15 @@ public class settingsClass implements settings {
         if(email == null || email.length() < 1) {
             Log.d("changeEmail", "email provided is null or empty");
 
-            display.showMessage(mContext, "Your email can't be empty", display.LONG);
+            display.showToastMessage(mContext, "Your email can't be empty", display.LONG);
         }
         else {
             firebaseUserTask.modifyEmail(email, uInfo, (uInfo, success, errorMessage) -> {
                 Log.d("modifyEmail:", "Returned with success: " + success);
 
                 if(success) {
-                    Log.d("modifyEmail:", "New user display name: " + uInfo.displayName);
-                    display.showMessage(mContext, "Email successfully updated!", display.LONG);
+                    Log.d("modifyEmail:", "New user email: " + uInfo.email);
+                    display.showToastMessage(mContext, "Email successfully updated!", display.LONG);
 
                     this.uInfo = uInfo;         //Update the userInfo
 
@@ -156,7 +158,7 @@ public class settingsClass implements settings {
                 }
                 else {
                     Log.d("modifyEmail:", "Error Message: " + errorMessage);
-                    display.showMessage(mContext, errorMessage, display.LONG);
+                    display.showToastMessage(mContext, errorMessage, display.LONG);
                 }
             });
         }
@@ -174,13 +176,13 @@ public class settingsClass implements settings {
             Log.d("updateNotifications:", "Returned with success: " + success);
 
             if(success) {
-                display.showMessage(mContext, "Notification Settings successfully updated!", display.LONG);
+                display.showToastMessage(mContext, "Notification Settings successfully updated!", display.LONG);
                 this.uInfo = uInfo;
                 //Do Stuff here
             }
             else {
                 Log.d("updateNotifications:", "Error Message: " + errorMessage);
-                display.showMessage(mContext, errorMessage, display.LONG);
+                display.showToastMessage(mContext, errorMessage, display.LONG);
             }
         });
     }
@@ -196,20 +198,20 @@ public class settingsClass implements settings {
         if(email == null || email.length() < 1) {
             Log.d("resetPassword", "email provided is null or empty");
 
-            display.showMessage(mContext, "Oops. Looks like we ran into an issue. Try signing in again", display.LONG);
+            display.showToastMessage(mContext, "Oops. Looks like we ran into an issue. Try signing in again", display.LONG);
 
             //We should send user to signIn again since we are missing information we should have
         }
         else {
-            firebaseUserTask.resetPassword("ryanstolys@gmail.com", (result, errorMessage) -> {
+            firebaseUserTask.resetPassword(email, (result, errorMessage) -> {
                 Log.d("resetPassword:", "Returned with result: " + result);
 
                 if(result) {
-                    display.showMessage(mContext, "Password Reset Email Sent!", display.LONG);
+                    display.showToastMessage(mContext, "Password Reset Email Sent!", display.LONG);
                 }
                 else {
                     Log.d("resetPassword:", "Error Message: " + errorMessage);
-                    display.showMessage(mContext, errorMessage, display.LONG);
+                    display.showToastMessage(mContext, errorMessage, display.LONG);
                 }
             });
         }
@@ -226,7 +228,7 @@ public class settingsClass implements settings {
         if(feedback == null || feedback.length() < 1) {
             Log.d("provideFeedback", "Feedback provided is null or empty");
 
-            display.showMessage(mContext, "Oops. We want to hear more from you before we submit your feedback. Keep typing", display.LONG);
+            display.showToastMessage(mContext, "Oops. We want to hear more from you before we submit your feedback. Keep typing", display.LONG);
         }
         else {
             //Create new feedback info class to submit
@@ -240,11 +242,11 @@ public class settingsClass implements settings {
                 Log.d("submitFeedback:", "Returned with result: " + result);
 
                 if(result) {
-                    display.showMessage(mContext, "Feedback successfully submitted. Thanks for helping make this app better!", display.LONG);
+                    display.showToastMessage(mContext, "Feedback successfully submitted. Thanks for helping make this app better!", display.LONG);
                 }
                 else {
                     Log.d("submitFeedback:", "Error Message: " + errorMessage);
-                    display.showMessage(mContext, errorMessage, display.LONG);
+                    display.showToastMessage(mContext, errorMessage, display.LONG);
                 }
             });
         }
