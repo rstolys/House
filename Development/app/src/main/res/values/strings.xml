@@ -117,4 +117,8 @@
     <string name="house_description">House Description</string>
     <string name="voting">Voting</string>
 
+    <!-- Strings related to Displaying House Members -->
+    <string name="name1">Name1</string>
+    <string name="view_house_member_amount_owed">Amount Owed</string>
+
 </resources>

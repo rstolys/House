@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.cmpt275.house.classDef.houseClass;
 import com.cmpt275.house.classDef.infoClass.houseInfo;
@@ -21,6 +23,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.Objects;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -138,9 +141,20 @@ public class HouseViewActivity extends AppCompatActivity implements Observer {
 
     @Override
     public void update(Observable o, Object obj) {
-        // Called on dispaying a users house information to the screen
+        // Called on displaying a users house information to the screen
         this.hInfo = (houseInfo) obj;
         TextView houseTitle =  findViewById(R.id.view_hosue_house_name);
         houseTitle.setText(this.hInfo.displayName);
+
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+
+        for(int i = 0; i < hInfo.members.size(); i++){
+            HouseViewMemberFrag hvmf = new HouseViewMemberFrag("HARDCODED Ryan Stolys", "0");
+            ft.add(R.id.view_house_members, hvmf);
+            ft.addToBackStack(null);
+        }
+
+        ft.commit();
     }
 }

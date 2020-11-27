@@ -76,14 +76,16 @@
                     android:id="@+id/view_house_members_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="160dp"
-                    android:text="@string/members" />
+                    android:layout_marginEnd="110dp"
+                    android:text="@string/members"
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/view_houses_balance_outstanding_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/balance_outstanding" />
+                    android:text="@string/balance_outstanding"
+                    android:textSize="18sp" />
 
             </TableRow>
 
@@ -103,7 +105,8 @@
                 android:id="@+id/view_house_votes_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/voting" />
+                android:text="@string/voting"
+                android:textSize="18sp" />
 
             <LinearLayout
                 android:id="@+id/view_house_votes"
@@ -120,14 +123,16 @@
                     android:id="@+id/view_house_my_tasks_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/my_tasks" />
+                    android:text="@string/my_tasks"
+                    android:textSize="18sp" />
             </TableRow>
 
             <TextView
                 android:id="@+id/view_house_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/house_description" />
+                android:text="@string/house_description"
+                android:textSize="18sp" />
 
         </LinearLayout>
     </ScrollView>
