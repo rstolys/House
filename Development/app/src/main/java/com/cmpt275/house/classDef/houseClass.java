@@ -103,8 +103,6 @@ public class houseClass extends taskClass implements house {
 
         userInfo myUInfo = uInfo;
 
-        // myUInfo.id = "w4OFKQrvL28T3WlXVP4X";    //Ryan Stolys user_id
-
         firebaseTask.getCurrentHouses(myUInfo, (hInfos, success, errorMessage) -> {
             Log.d("getCurrentHouses:", "Returned with success: " + success);
             ArrayList<houseInfo> houseInfoList = new ArrayList<houseInfo>();

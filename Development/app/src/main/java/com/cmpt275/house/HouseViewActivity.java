@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -38,9 +39,7 @@ public class HouseViewActivity extends AppCompatActivity implements Observer {
         // Get userInfo from last activity
         Intent lastIntent = getIntent();
         String serializedObject = lastIntent.getStringExtra("userInfo");
-        String houseId = lastIntent.getStringExtra("houseInfo");
-        Log.d("HOUSE_VIEW_ACTIVITY", "Started view with serialized object: " + serializedObject );
-//        Log.d("HOUSE_VIEW_ACTIVITY", "Started view with serialized house object: " + serializedHouseObject );
+        String houseId = lastIntent.getStringExtra("houseId");
 
         if(serializedObject == ""){
             // If the serialized object is empty, error!
@@ -56,28 +55,38 @@ public class HouseViewActivity extends AppCompatActivity implements Observer {
                 uInfo = (userInfo) si.readObject();
                 Log.d("HOUSE_VIEW_ACTIVITY", "Userinfo.displayName passed: " + uInfo.displayName );
 
-//                // Decode the houseInfo string into a byte array
-//                byte b2 [] = Base64.decode( serializedHouseObject, Base64.DEFAULT );
-//
-//                // Convert second byte array into userInfo object
-//                ByteArrayInputStream bi2 = new ByteArrayInputStream(b2);
-//                ObjectInputStream si2 = new ObjectInputStream(bi2);
-//                hInfo = (houseInfo) si2.readObject();
-//
-//                Log.d("HOUSE_VIEW_ACTIVITY", "Started view with house ID: " + hInfo.id );
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
+        // Start asyncronous call to get the entire hInfo
         hClass = new houseClass( this );
         hClass.addObserver(this);
         hClass.viewHouse(houseId);
 
+        Button backButton = findViewById(R.id.view_house_back_button);
+        backButton.setOnClickListener(v->{
+            String serializedUserInfo = "";
+            try {
+                // Convert object data to encoded string
+                ByteArrayOutputStream bo = new ByteArrayOutputStream();
+                ObjectOutputStream so = new ObjectOutputStream(bo);
+                so.writeObject(uInfo);
+                so.flush();
+                final byte[] byteArray = bo.toByteArray();
+                serializedUserInfo = Base64.encodeToString(byteArray, Base64.DEFAULT);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            newIntent = new Intent(HouseViewActivity.this, HouseActivity.class);
+            newIntent.putExtra("userInfo", serializedUserInfo);
+            startActivity( newIntent );
+        });
+
         BottomNavigationView navView = findViewById(R.id.nav_view);
         navView.setOnNavigationItemSelectedListener(navListener); //so we can implement it outside onCreate
-
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
@@ -129,7 +138,7 @@ public class HouseViewActivity extends AppCompatActivity implements Observer {
 
     @Override
     public void update(Observable o, Object obj) {
-        // Get house information from house class, now put it to screen
+        // Called on dispaying a users house information to the screen
         this.hInfo = (houseInfo) obj;
         TextView houseTitle =  findViewById(R.id.view_hosue_house_name);
         houseTitle.setText(this.hInfo.displayName);

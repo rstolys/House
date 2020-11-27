@@ -200,7 +200,7 @@ public class HouseActivity extends AppCompatActivity implements Observer {
 
             newIntent = new Intent(HouseActivity.this, HouseViewActivity.class);
             newIntent.putExtra("userInfo", serializedUserInfo);
-            newIntent.putExtra("houseInfo", hInfo.id );
+            newIntent.putExtra("houseId", hInfo.id );
             startActivity(newIntent);
         }
     }
@@ -249,32 +249,4 @@ public class HouseActivity extends AppCompatActivity implements Observer {
 
         return serializedUserInfo;
     }
-
-    private String serializeHouseInfo(Object hInfo){
-
-        String serializedHouseInfo = "";
-        try {
-            // Convert object data to encoded string
-            Log.d("SerializeHouseInfo", "Exception 0");
-            ByteArrayOutputStream bo = new ByteArrayOutputStream();
-            Log.d("SerializeHouseInfo", "Exception 1");
-            ObjectOutputStream so = new ObjectOutputStream(bo);
-            Log.d("SerializeHouseInfo", "Exception 2");
-            Log.d("SerializeHouseInfo", "hInfo passed " + hInfo);
-            so.writeObject(hInfo);
-            Log.d("SerializeHouseInfo", "Exception 3");
-            so.flush();
-            Log.d("SerializeHouseInfo", "Exception 4");
-            final byte[] byteArray = bo.toByteArray();
-            Log.d("SerializeHouseInfo", "Exception 5");
-            serializedHouseInfo = Base64.encodeToString(byteArray, Base64.DEFAULT);
-            Log.d("SerializeHouseInfo", "Exception 6");
-        } catch (Exception e){
-            Log.d("SerializeHouseInfo", "Exception caught");
-        }
-
-        return serializedHouseInfo;
-    }
-
-
 }
