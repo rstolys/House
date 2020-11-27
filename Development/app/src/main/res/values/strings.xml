@@ -108,7 +108,6 @@
     <string name="new_house_notification_sched">None, Weekly, or Monthly. Default: None</string>
     <string name="view_house_button">View House</string>
 
-
     <!-- Strings related to New Task -->
     <string name="save_new_task_button_title">CREATE</string>
     <string name="new_task_name">New Task Title</string>
@@ -116,6 +115,16 @@
     <string name="new_task_due_date">Task Due Date</string>
     <string name="new_task_assignee">Task Assignee</string>
     <string name="house_name">House Name</string>
+    <string name="back">Back</string>
+    <string name="edit">Edit</string>
+    <string name="balance_outstanding">Balance Outstanding ($)</string>
+    <string name="members">Members</string>
+    <string name="house_description">House Description</string>
+    <string name="voting">Voting</string>
     <string name="toggle_notification_button">OFF</string>
+
+    <!-- Strings related to Displaying House Members -->
+    <string name="name1">Name1</string>
+    <string name="view_house_member_amount_owed">Amount Owed</string>
 
 </resources>
