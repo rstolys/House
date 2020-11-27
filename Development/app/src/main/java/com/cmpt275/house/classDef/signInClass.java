@@ -3,7 +3,6 @@ package com.cmpt275.house.classDef;
 import android.content.Context;
 import android.util.Log;
 
-import com.cmpt275.house.MainActivity;
 import com.cmpt275.house.classDef.infoClass.userInfo;
 import com.cmpt275.house.interfaceDef.signIn;
 
@@ -55,10 +54,10 @@ public class signInClass implements signIn {
         password = password; //"066923384"
 
         if(email == null || email.length() < 1) {
-            display.showMessage(mContext, "You email input is empty.", display.LONG);
+            display.showToastMessage(mContext, "You email input is empty.", display.LONG);
         }
         else if(password == null || password.length() < 1) {
-            display.showMessage(mContext, "You password input is empty.", display.LONG);
+            display.showToastMessage(mContext, "You password input is empty.", display.LONG);
         }
         else {
             firebaseUserTask.signInUser(email, password, (uInfo, success, errorMessage) -> {
@@ -71,7 +70,7 @@ public class signInClass implements signIn {
                 }
                 else {
                     Log.d("signInUser:", "Error Message: " + errorMessage);
-                    display.showMessage(mContext, errorMessage, display.LONG);
+                    display.showToastMessage(mContext, errorMessage, display.LONG);
                 }
 
                 //Tell ui to check if it needs to be updated
@@ -90,14 +89,14 @@ public class signInClass implements signIn {
 
         //make sure all the required fields are valid
         if(displayName == null || displayName.length() < 1) {
-            display.showMessage(mContext, "You display name must be at least 1 character long", display.LONG);
+            display.showToastMessage(mContext, "You display name must be at least 1 character long", display.LONG);
         }
         else if(email == null || email.length() < 1) {
-            display.showMessage(mContext, "You email name must be at least 1 character long", display.LONG);
+            display.showToastMessage(mContext, "You email name must be at least 1 character long", display.LONG);
         }
         else if(password == null || password.length() < 5) {
             //Firebase has minimum on password length. Will avoid error later if the password is short than 6 characters
-            display.showMessage(mContext, "You password name must be at least 6 characters long", display.LONG);
+            display.showToastMessage(mContext, "You password name must be at least 6 characters long", display.LONG);
         }
         else {
             //All values are valid -- Create a new account
@@ -106,7 +105,7 @@ public class signInClass implements signIn {
 
                 if(success) {
                     Log.d("createAccount:", "User_id is: " + uInfo.id);
-                    display.showMessage(mContext, "You account  was successfully created! You can now login", display.LONG);
+                    display.showToastMessage(mContext, "You account  was successfully created! You can now login", display.LONG);
 
                     this.uInfo = uInfo;
 
@@ -114,7 +113,7 @@ public class signInClass implements signIn {
                 }
                 else {
                     Log.d("createAccount:", "Error Messaage " + errorMessage);
-                    display.showMessage(mContext, errorMessage, display.LONG);
+                    display.showToastMessage(mContext, errorMessage, display.LONG);
                 }
             });
         }
@@ -131,7 +130,7 @@ public class signInClass implements signIn {
         if(email == null || email.length() < 1) {
             Log.d("forgotPassword", "email provided is null or empty");
 
-            display.showMessage(mContext, "Oops. Looks like we ran into an issue. Try signing in again", display.LONG);
+            display.showToastMessage(mContext, "Oops. Looks like we ran into an issue. Try signing in again", display.LONG);
 
             //We should send user to signIn again since we are missing information we should have
         }
@@ -140,11 +139,11 @@ public class signInClass implements signIn {
                 Log.d("resetPassword:", "Returned with result: " + result);
 
                 if(result) {
-                    display.showMessage(mContext, "Password Reset Email Sent!", display.LONG);
+                    display.showToastMessage(mContext, "Password Reset Email Sent!", display.LONG);
                 }
                 else {
                     Log.d("resetPassword:", "Error Message: " + errorMessage);
-                    display.showMessage(mContext, errorMessage, display.LONG);
+                    display.showToastMessage(mContext, errorMessage, display.LONG);
                 }
             });
         }
