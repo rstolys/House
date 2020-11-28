@@ -82,6 +82,7 @@ public class displayMessage extends DialogFragment {
 
         LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) btnPositive.getLayoutParams();
         layoutParams.weight = 10;
+        layoutParams.setMargins(10, 0, 10, 0);
         btnPositive.setLayoutParams(layoutParams);
         btnNegative.setLayoutParams(layoutParams);
     }

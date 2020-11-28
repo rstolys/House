@@ -1,13 +1,16 @@
 package com.cmpt275.house;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 
 import com.cmpt275.house.classDef.displayMessage;
 import com.cmpt275.house.classDef.houseClass;
@@ -32,6 +35,8 @@ public class MainActivity extends AppCompatActivity implements updateUI {
     private settings settingsAction = new settingsClass(this);
     private displayMessage display = new displayMessage();
     private notifications notify = new notifications();
+
+    private createAccountDialogFrag createAccountDialog;
 
     private String userInfoString;
 
@@ -146,6 +151,41 @@ public class MainActivity extends AppCompatActivity implements updateUI {
 
     /////////////////////////////////////////////////
     //
+    // Will open the create account fragment
+    //
+    /////////////////////////////////////////////////
+    public void startCreateNewAccount(View view) {
+        FragmentManager fm = getSupportFragmentManager();
+        createAccountDialog = createAccountDialogFrag.newInstance(this);
+        createAccountDialog.show(fm, "fragment_create_account");
+    }
+
+
+    /////////////////////////////////////////////////
+    //
+    // Will create an account and close the dialog
+    //
+    /////////////////////////////////////////////////
+    public void createAccount(View view) {
+        Log.d("createAccount:", "Creating an account");
+        createAccountDialog.createAccount(view);
+    }
+
+
+    /////////////////////////////////////////////////
+    //
+    // Will close the dialog since it is no longer needed
+    //
+    /////////////////////////////////////////////////
+    public void closeCreateAccountDialog(View view) {
+
+        //Close the dialog window
+        createAccountDialog.dismiss();
+    }
+
+
+    /////////////////////////////////////////////////
+    //
     // Will hide the keyboard on the call
     //
     /////////////////////////////////////////////////
@@ -153,10 +193,12 @@ public class MainActivity extends AppCompatActivity implements updateUI {
 
         //Hide  the keyboard from the user
         if (view != null) {
-            InputMethodManager imm = (InputMethodManager)getSystemService(this.INPUT_METHOD_SERVICE);
+            InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
+
+
 
 }
 
