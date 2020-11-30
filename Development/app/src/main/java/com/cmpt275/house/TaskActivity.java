@@ -70,9 +70,9 @@ public class TaskActivity extends AppCompatActivity implements Observer {
         myTaskClass.addObserver(this);
 
         // Update the tasks in the houseClass from the database
-        Log.d("OnCreate House Activity", "Before call to view your houses" );
+        Log.d("OnCreate Task Activity", "Before call to view your tasks" );
         myTaskClass.viewUserTasks(uInfo.id);
-        Log.d("OnCreate House Activity", "After call to view your houses" );
+        Log.d("OnCreate Task Activity", "After call to view your tasks" );
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
         navView.setOnNavigationItemSelectedListener(navListener); //so we can implement it outside onCreate
