@@ -42,14 +42,11 @@ public class houseClass extends taskClass implements house {
     // Observable pattern update hInfo
     //
     public void sethInfos(ArrayList<houseInfo> hInfos){
-        Log.d("SET_HINFOS", "In SET_HINFOS");
         // For every observer in observer list, notify them
         this.hInfos = hInfos;
-        Log.d("SET_HINFOS", "About to set changed");
+        String updateInfo = "";
         setChanged();
-        Log.d("SET_HINFOS", "setChanged, about to notify observers");
-        notifyObservers();
-        Log.d("SET_HINFOS", "Notified observers");
+        notifyObservers(updateInfo);
     }
 
     //
@@ -89,16 +86,13 @@ public class houseClass extends taskClass implements house {
         myHInfo.maxMembers = 4;
         myHInfo.houseNotifications = hInfo.houseNotifications;
 
-        Set<String> uInfoKeys = myHInfo.members.keySet();
-
         firebaseTask.createNewHouse(myHInfo, (hInfo1, success, errorMessage) -> {
             Log.d("createNewHouse:", "Returned with success: " + success);
-            //Do stuff here ...
+            // If successful, the new house is created and displayed to screen with the rest of the houes
             if( success ){
                 this.hInfos.add(hInfo1);
-                Log.d("SET_HINFOS", "About to call SET_HINFOS");
                 sethInfos(this.hInfos);
-            }
+            } // Else we should display error message
         });
     }
 
@@ -107,9 +101,7 @@ public class houseClass extends taskClass implements house {
     public void viewYourHouses(userInfo uInfo) {
         Log.d("viewCurrentHouses:", "In viewYourHouses");
 
-        userInfo myUInfo = new userInfo();
-
-        myUInfo.id = "w4OFKQrvL28T3WlXVP4X";    //Ryan Stolys user_id
+        userInfo myUInfo = uInfo;
 
         firebaseTask.getCurrentHouses(myUInfo, (hInfos, success, errorMessage) -> {
             Log.d("getCurrentHouses:", "Returned with success: " + success);
@@ -119,17 +111,15 @@ public class houseClass extends taskClass implements house {
             this.sethInfos( houseInfoList );
             Log.d("viewYourHouses", "Done getting houses set up");
         });
-
-        Log.d("viewCurrentHouses", "After call to viewYourHouses should be before asyncronous call");
     }
 
     public void viewHouse(String house_id) {
 
-        house_id = "TfB0rlNBEuj9dSMzA1OM";        //Cowichan 09 house_id
-
         firebaseTask.getHouseInfo(house_id, (hInfo, success, errorMessage) -> {
             Log.d("getHouseInfo:", "Returned with success: " + success);
-            //Do stuff here ...
+            // Notify HouseActivity that viewHouse all requested on this hInfo
+            setChanged();
+            notifyObservers(hInfo);
         });
     }
 

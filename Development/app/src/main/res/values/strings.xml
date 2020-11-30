@@ -24,6 +24,22 @@
     <string name="my_houses">My Houses</string>
     <string name="settings_button">Settings</string>
     <string name="logout_button">Logout</string>
+    <string name="newAccountPrompt">Are you new here?</string>
+    <string name="createAccountBtn">Create a new Account</string>
+
+
+    <!-- Strings related to Create Account Fragment -->
+    <string name="createAccount_title">Create Account</string>
+    <string name="createAccount_name">Display Name:</string>
+    <string name="createAccount_name_prompt">Enter Name</string>
+    <string name="createAccount_email">Email:</string>
+    <string name="createAccount_email_prompt">Enter Email</string>
+    <string name="createAccount_password">Password:</string>
+    <string name="createAccount_password_prompt">Enter Password</string>
+    <string name="createAccount_password_rule">Password Must be at least 5 characters</string>
+    <string name="createAccount_submit">Create Account</string>
+    <string name="createAccount_cancel">Cancel</string>
+
 
     <!-- Strings related to Houses Page -->
     <string name="my_houses_title">My Houses</string>
@@ -108,7 +124,6 @@
     <string name="new_house_notification_sched">None, Weekly, or Monthly. Default: None</string>
     <string name="view_house_button">View House</string>
 
-
     <!-- Strings related to New Task -->
     <string name="save_new_task_button_title">CREATE</string>
     <string name="new_task_name">New Task Title</string>
@@ -116,6 +131,18 @@
     <string name="new_task_due_date">Task Due Date</string>
     <string name="new_task_assignee">Task Assignee</string>
     <string name="house_name">House Name</string>
+    <string name="back">Back</string>
+    <string name="edit">Edit</string>
+    <string name="balance_outstanding">Balance Outstanding ($)</string>
+    <string name="members">Members</string>
+    <string name="house_description">House Description</string>
+    <string name="voting">Voting</string>
     <string name="toggle_notification_button">OFF</string>
+
+    <!-- Strings related to Displaying House Members -->
+    <string name="name1">Name1</string>
+    <string name="view_house_member_amount_owed">Amount Owed</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

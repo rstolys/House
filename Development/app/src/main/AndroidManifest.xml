@@ -39,8 +39,8 @@
             android:label="@string/app_name">
         </activity>
         <activity
-            android:name=".TaskViewActivity"
-            android:label="@string/app_name">
+            android:name=".HouseViewActivity"
+            android:label="House">
         </activity>
         <receiver android:name=".classDef.notifications" />
     </application>
