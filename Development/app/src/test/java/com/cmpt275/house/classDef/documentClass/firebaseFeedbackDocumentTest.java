@@ -18,22 +18,34 @@ public class firebaseFeedbackDocumentTest {
     /////////////////////////////////////////////////////////
     @Test
     public void testConstructor() {
-        boolean valuesMatch = false;
 
         feedbackInfo fInfo = new feedbackInfo();
         fInfo.user_id = "testID";
         fInfo.feedback = "This is a unit Test";
         fInfo.date = new Date();
 
+        //Normal Values
         firebaseFeedbackDocument feedbackDoc = new firebaseFeedbackDocument(fInfo);
 
-        if(feedbackDoc.getDateAdded() == fInfo.date &&
-                feedbackDoc.getFeedback().equals(fInfo.feedback) &&
-                feedbackDoc.getUser_id().equals(fInfo.user_id)) {
-            valuesMatch = true;
+        if(feedbackDoc.getDateAdded() != fInfo.date ||
+                !feedbackDoc.getFeedback().equals(fInfo.feedback) ||
+                !feedbackDoc.getUser_id().equals(fInfo.user_id)) {
+            Assert.fail();
         }
 
-        Assert.assertTrue(valuesMatch);
+        //Boundary Values
+        boolean properException = false;
+        try {
+            feedbackDoc = new firebaseFeedbackDocument(null);
+        }
+        catch (NullPointerException e) {
+            properException = true;
+        }
+        catch (Exception e) {
+            properException = false;
+        }
+
+        Assert.assertTrue(properException);
     }
 
 
@@ -44,8 +56,9 @@ public class firebaseFeedbackDocumentTest {
     /////////////////////////////////////////////////////////
     @Test
     public void testToFeedbackInfo() {
-        boolean valuesMatch = false;
 
+
+        //Normal Values
         feedbackInfo fInfo = new feedbackInfo();
         fInfo.user_id = "testID";
         fInfo.feedback = "This is a unit Test";
@@ -57,12 +70,27 @@ public class firebaseFeedbackDocumentTest {
         feedbackInfo fInfoReturned = feedbackDoc.toFeedbackInfo("feedbackID");
 
 
-        if(fInfo.id.equals(fInfoReturned.id) && fInfo.feedback.equals(fInfoReturned.feedback) &&
-                fInfo.date.equals(fInfoReturned.date) && fInfo.user_id.equals(fInfoReturned.user_id)) {
-            valuesMatch = true;
+        if(!fInfo.id.equals(fInfoReturned.id) || !fInfo.feedback.equals(fInfoReturned.feedback) ||
+                !fInfo.date.equals(fInfoReturned.date) || !fInfo.user_id.equals(fInfoReturned.user_id)) {
+            Assert.fail();
         }
 
-        Assert.assertTrue(valuesMatch);
+
+        //Boundary Values
+        boolean properException = false;
+        try {
+            feedbackDoc = new firebaseFeedbackDocument(null);
+
+            fInfoReturned = feedbackDoc.toFeedbackInfo(null);
+        }
+        catch (NullPointerException e) {
+            properException = true;
+        }
+        catch (Exception e) {
+            properException = false;
+        }
+
+        Assert.assertTrue(properException);
     }
 
 }

@@ -74,8 +74,20 @@ public class firebaseHouseDocumentTest {
             }
         }
 
+        //Boundary Values
+        boolean properException = false;
+        try {
+            houseDoc = new firebaseHouseDocument(null);
+        }
+        catch (NullPointerException e) {
+            properException = true;
+        }
+        catch (Exception e) {
+            properException = false;
+        }
 
-        Assert.assertTrue(true);
+
+        Assert.assertTrue(properException);
     }
 
 
@@ -135,9 +147,24 @@ public class firebaseHouseDocumentTest {
         }
 
 
+        //Boundary Values
+        boolean properException = false;
+        try {
+            houseDoc = new firebaseHouseDocument(null);
+
+            hInfoRet = houseDoc.toHouseInfo(null);
+        }
+        catch (NullPointerException e) {
+            properException = true;
+        }
+        catch (Exception e) {
+            properException = false;
+        }
+
+
 
         //All conditions are true
-        Assert.assertTrue(true);
+        Assert.assertTrue(properException);
     }
 
 

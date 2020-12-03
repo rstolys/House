@@ -50,7 +50,7 @@ public class notificationMappingTest {
     //
     /////////////////////////////////////////////////////////
     @Test
-    public void testListOfIntToStringAndBack() {
+    public void testListOfIntToString() {
 
         notificationMapping notify = new notificationMapping();
 
@@ -72,7 +72,7 @@ public class notificationMappingTest {
     //
     /////////////////////////////////////////////////////////
     @Test
-    public void testListOfStringToIntAndBack() {
+    public void testListOfStringToInt() {
 
         notificationMapping notify = new notificationMapping();
 

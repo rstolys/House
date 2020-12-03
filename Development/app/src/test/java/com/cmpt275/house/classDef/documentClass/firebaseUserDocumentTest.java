@@ -58,7 +58,19 @@ public class firebaseUserDocumentTest {
         }
 
 
-        Assert.assertTrue(true);
+        boolean properException = false;
+        try {
+            userDoc = new firebaseUserDocument(null);
+        }
+        catch (NullPointerException e) {
+            properException = true;
+        }
+        catch (Exception e) {
+            properException = false;
+        }
+
+
+        Assert.assertTrue(properException);
     }
 
 
@@ -68,7 +80,7 @@ public class firebaseUserDocumentTest {
     //
     /////////////////////////////////////////////////////////
     @Test
-    public void testToTaskInfo() {
+    public void testToUserInfo() {
 
         userInfo uInfo = generateUInfo();
 
@@ -101,7 +113,21 @@ public class firebaseUserDocumentTest {
             Assert.fail();
 
 
-        Assert.assertTrue(true);
+        boolean properException = false;
+        try {
+            userDoc = new firebaseUserDocument(null);
+
+            uInfoRet = userDoc.toUserInfo(null, null);
+        }
+        catch (NullPointerException e) {
+            properException = true;
+        }
+        catch (Exception e) {
+            properException = false;
+        }
+
+
+        Assert.assertTrue(properException);
     }
 
 

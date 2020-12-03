@@ -29,8 +29,6 @@ import java.io.ObjectOutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-import kotlinx.coroutines.scheduling.Task;
-
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -87,6 +85,7 @@ public class HomeActivity extends AppCompatActivity {
 
         //Set the navigation bar
         BottomNavigationView navView = findViewById(R.id.nav_view);
+        navView.setSelectedItemId(R.id.navBar_home);
         navView.setOnNavigationItemSelectedListener(navListener); //so we can implement it outside onCreate
     }
 
@@ -109,7 +108,7 @@ public class HomeActivity extends AppCompatActivity {
                     houseIntent.putExtra("userInfo", serializedUserInfo);
                     startActivity(houseIntent);
                     break;
-                case R.id.navBar_Settings:
+                case R.id.navBar_settings:
                     Intent settingsIntent = new Intent(HomeActivity.this, SettingsActivity.class);
                     settingsIntent.putExtra("userInfo", serializedUserInfo);
                     startActivity(settingsIntent);

@@ -103,7 +103,7 @@ public class TaskViewActivity extends AppCompatActivity {
                             newIntent.putExtra("userInfo", serializedUserInfo);
                             startActivity( newIntent );
                             break;
-                        case R.id.navBar_Settings:
+                        case R.id.navBar_settings:
                             newIntent = new Intent(TaskViewActivity.this, SettingsActivity.class);
                             newIntent.putExtra("userInfo", serializedUserInfo);
                             startActivity( newIntent );

@@ -73,8 +73,19 @@ public class firebaseTaskDocumentTest {
             }
         }
 
+        boolean properException = false;
+        try {
+            taskDoc = new firebaseTaskDocument(null);
+        }
+        catch (NullPointerException e) {
+            properException = true;
+        }
+        catch (Exception e) {
+            properException = false;
+        }
 
-        Assert.assertTrue(true);
+
+        Assert.assertTrue(properException);
     }
 
 
@@ -136,8 +147,21 @@ public class firebaseTaskDocumentTest {
             }
         }
 
-        //All conditions are true
-        Assert.assertTrue(true);
+        boolean properException = false;
+        try {
+            taskDoc = new firebaseTaskDocument(null);
+
+            tInfoRet = taskDoc.toTaskInfo(null);
+        }
+        catch (NullPointerException e) {
+            properException = true;
+        }
+        catch (Exception e) {
+            properException = false;
+        }
+
+
+        Assert.assertTrue(properException);
     }
 
 
