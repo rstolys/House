@@ -14,11 +14,9 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.cmpt275.house.classDef.houseClass;
 import com.cmpt275.house.classDef.taskClass;
 import com.cmpt275.house.classDef.infoClass.taskInfo;
 import com.cmpt275.house.classDef.infoClass.userInfo;
-import com.cmpt275.house.interfaceDef.task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.ByteArrayInputStream;
@@ -36,7 +34,7 @@ public class TaskActivity extends AppCompatActivity implements Observer {
 
     private taskClass myTaskClass = new taskClass(this);
     private Intent newIntent;
-    private Intent buttonIntent;
+    private Intent addButtonIntent;
     FragmentTransaction fragmentTransaction;
 
     @Override
@@ -69,7 +67,7 @@ public class TaskActivity extends AppCompatActivity implements Observer {
 
         myTaskClass.addObserver(this);
 
-        // Update the tasks in the houseClass from the database
+        // Update the tasks in the taskClass from the database
         Log.d("OnCreate Task Activity", "Before call to view your tasks" );
         myTaskClass.viewUserTasks(uInfo.id);
         Log.d("OnCreate Task Activity", "After call to view your tasks" );
@@ -95,9 +93,9 @@ public class TaskActivity extends AppCompatActivity implements Observer {
                     e.printStackTrace();
                 }
 
-                buttonIntent = new Intent(TaskActivity.this, NewTaskActivity.class);
-                buttonIntent.putExtra("userInfo", serializedUserInfo);
-                startActivity( buttonIntent );
+                addButtonIntent = new Intent(TaskActivity.this, NewTaskActivity.class);
+                addButtonIntent.putExtra("userInfo", serializedUserInfo);
+                startActivity(addButtonIntent);
             }
         });
 
@@ -206,7 +204,7 @@ public class TaskActivity extends AppCompatActivity implements Observer {
 
     private void updateTasks() {
 
-        // First check if there are any houses on the screen
+        // First check if there are any tasks on the screen
         FragmentManager fm = getSupportFragmentManager();
         fragmentTransaction = fm.beginTransaction();
         Log.d("UPDATE_tASKS", "I am removing old tasks from the screen");
