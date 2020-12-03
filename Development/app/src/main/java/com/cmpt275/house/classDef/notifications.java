@@ -21,6 +21,7 @@ import com.cmpt275.house.MainActivity;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 
@@ -69,6 +70,20 @@ public class notifications extends BroadcastReceiver {
 
     /////////////////////////////////////////////////////////
     //
+    // Will create a notification for to display
+    //
+    /////////////////////////////////////////////////////////
+    public void generateNotification(Context mContext, String title, String contentText, Date notifyOn) {
+        //First create a notification channel -- won't do anything if it is already created
+        createNotificationChannel(mContext);
+
+        //Create and Schedule the notification
+        scheduleNotification(mContext, getNotification(title, contentText, mContext), getMsToDate(notifyOn));
+    }
+
+
+    /////////////////////////////////////////////////////////
+    //
     // Will create a notification based on the title and text
     //
     /////////////////////////////////////////////////////////
@@ -97,7 +112,11 @@ public class notifications extends BroadcastReceiver {
     // Will setup the notification to be displayed when ready
     //
     /////////////////////////////////////////////////////////
-    public void scheduleNotification(Context mContext, Notification notification, int msFromNow) {
+    public void scheduleNotification(Context mContext, Notification notification, long msFromNow) {
+
+        //Make sure  the msFromNow is at least 0
+        if(msFromNow < 0) msFromNow = 0;
+
         Intent notificationIntent = new Intent(mContext, notifications.class);
         notificationIntent.putExtra(notifications.NOTIFICATION_ID, 1);
         notificationIntent.putExtra(notifications.NOTIFICATION, notification);
@@ -125,6 +144,18 @@ public class notifications extends BroadcastReceiver {
         Notification notification = intent.getParcelableExtra(NOTIFICATION);
         int id = intent.getIntExtra(NOTIFICATION_ID, 0);
         notificationManager.notify(id, notification);
+    }
+
+
+    /////////////////////////////////////////////////////////
+    //
+    // Will compute the number of ms until the notification should be sent
+    //
+    /////////////////////////////////////////////////////////
+    public long getMsToDate(Date notifyDate) {
+        Date currentDate = new Date();
+
+        return notifyDate.getTime() - currentDate.getTime();
     }
 }
 
