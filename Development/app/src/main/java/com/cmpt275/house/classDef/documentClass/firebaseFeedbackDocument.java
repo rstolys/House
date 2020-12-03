@@ -1,5 +1,7 @@
 package com.cmpt275.house.classDef.documentClass;
 
+import android.util.Log;
+
 import com.cmpt275.house.classDef.infoClass.feedbackInfo;
 
 import java.util.Date;
@@ -45,8 +47,6 @@ public class firebaseFeedbackDocument {
         this.user_id = fInfo.user_id;
         this.feedback = fInfo.feedback;
         this.dateAdded = fInfo.date;
-
-        return;
     }
 
 
@@ -60,7 +60,11 @@ public class firebaseFeedbackDocument {
         //Create feedbackInfo class to return to caller
         feedbackInfo returnFeedback = new feedbackInfo();
 
-        returnFeedback.id = feedback_id;
+        if(feedback_id == null)
+            returnFeedback.id = "";
+        else
+            returnFeedback.id = feedback_id;
+
         returnFeedback.user_id = user_id;
         returnFeedback.feedback = feedback;
         returnFeedback.date = dateAdded;

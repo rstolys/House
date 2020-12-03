@@ -73,6 +73,7 @@ public class TaskActivity extends AppCompatActivity implements Observer {
         Log.d("OnCreate Task Activity", "After call to view your tasks" );
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
+        navView.setSelectedItemId(R.id.navBar_tasks);
         navView.setOnNavigationItemSelectedListener(navListener); //so we can implement it outside onCreate
 
         Button addTask = (Button) findViewById(R.id.addTaskButton);
@@ -128,16 +129,13 @@ public class TaskActivity extends AppCompatActivity implements Observer {
                             startActivity( newIntent );
                             break;
                         case R.id.navBar_tasks:
-                            newIntent = new Intent(TaskActivity.this, TaskActivity.class);
-                            newIntent.putExtra("userInfo", serializedUserInfo);
-                            startActivity( newIntent );
                             break;
                         case R.id.navBar_houses:
                             newIntent = new Intent(TaskActivity.this, HouseActivity.class);
                             newIntent.putExtra("userInfo", serializedUserInfo);
                             startActivity( newIntent );
                             break;
-                        case R.id.navBar_Settings:
+                        case R.id.navBar_settings:
                             newIntent = new Intent(TaskActivity.this, SettingsActivity.class);
                             newIntent.putExtra("userInfo", serializedUserInfo);
                             startActivity( newIntent );

@@ -93,6 +93,7 @@ public class firebaseTaskDocument {
         this.difficultyScore = tInfo.difficultyScore;
         this.dueDate = tInfo.dueDate;
         this.notificationTime = tInfo.notificationTime;
+        this.itemList = tInfo.itemList;
 
         //Map tag string to int
         mapping tagMap = new tagMapping();
