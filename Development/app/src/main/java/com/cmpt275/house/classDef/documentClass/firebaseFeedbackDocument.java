@@ -45,8 +45,6 @@ public class firebaseFeedbackDocument {
         this.user_id = fInfo.user_id;
         this.feedback = fInfo.feedback;
         this.dateAdded = fInfo.date;
-
-        return;
     }
 
 

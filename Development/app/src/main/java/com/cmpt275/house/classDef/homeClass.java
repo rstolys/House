@@ -7,6 +7,7 @@ import com.cmpt275.house.classDef.infoClass.houseInfo;
 import com.cmpt275.house.classDef.infoClass.taskInfo;
 import com.cmpt275.house.classDef.infoClass.userInfo;
 import com.cmpt275.house.interfaceDef.home;
+import com.cmpt275.house.interfaceDef.updateUI;
 
 public class homeClass implements home {
     //
@@ -44,22 +45,20 @@ public class homeClass implements home {
     }
 
 
-    ////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////
     //
-    // Will logout the user
+    // Will Logout the user
     //
-    ////////////////////////////////////////////////////////////
-    public void logout() {
+    /////////////////////////////////////////////////
+    public void logout(updateUI callback) {
         //Show we are logging out
         display.showToastMessage(mContext, "Logging out", display.LONG);
 
         //Logout user
         firebaseUserTask.logout(uInfo, (result, errorMessage) -> {
-            if(result) {
-                Log.d("logout:", "User " + uInfo.displayName + " is logged out");
-            }
+            Log.d("logout:", "User " + uInfo.displayName + " is logged out");
 
-            //Update the UI to move back to main activity
+            callback.stateChanged(0);
         });
     }
 

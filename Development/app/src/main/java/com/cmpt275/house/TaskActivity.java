@@ -130,9 +130,6 @@ public class TaskActivity extends AppCompatActivity implements Observer {
                             startActivity( newIntent );
                             break;
                         case R.id.navBar_tasks:
-                            newIntent = new Intent(TaskActivity.this, TaskActivity.class);
-                            newIntent.putExtra("userInfo", serializedUserInfo);
-                            startActivity( newIntent );
                             break;
                         case R.id.navBar_houses:
                             newIntent = new Intent(TaskActivity.this, HouseActivity.class);
