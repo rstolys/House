@@ -69,6 +69,7 @@ public class HouseActivity extends AppCompatActivity implements Observer {
         Log.d("OnCreate House Activity", "After call to view your houses" );
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
+        navView.setSelectedItemId(R.id.navBar_houses);
         navView.setOnNavigationItemSelectedListener(navListener); //so we can implement it outside onCreate
 
         Button addHouseButton = findViewById(R.id.add_house_button);

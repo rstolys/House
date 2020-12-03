@@ -73,6 +73,7 @@ public class TaskActivity extends AppCompatActivity implements Observer {
         Log.d("OnCreate House Activity", "After call to view your houses" );
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
+        navView.setSelectedItemId(R.id.navBar_tasks);
         navView.setOnNavigationItemSelectedListener(navListener); //so we can implement it outside onCreate
 
         Button addTask = (Button) findViewById(R.id.addTaskButton);

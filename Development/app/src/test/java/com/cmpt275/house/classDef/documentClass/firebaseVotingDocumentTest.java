@@ -47,7 +47,20 @@ public class firebaseVotingDocumentTest {
         if(!votingDoc.getEndOfVote().equals(vInfo.endOfVote))
             Assert.fail();
 
-        Assert.assertTrue(true);
+
+        boolean properException = false;
+        try {
+            votingDoc = new firebaseVotingDocument(null);
+        }
+        catch (NullPointerException e) {
+            properException = true;
+        }
+        catch (Exception e) {
+            properException = false;
+        }
+
+
+        Assert.assertTrue(properException);
     }
 
 
@@ -96,7 +109,21 @@ public class firebaseVotingDocumentTest {
             Assert.fail();
 
 
-        Assert.assertTrue(true);
+        boolean properException = false;
+        try {
+            votingDoc = new firebaseVotingDocument(null);
+
+            vInfoRet = votingDoc.toVotingInfo(null);
+        }
+        catch (NullPointerException e) {
+            properException = true;
+        }
+        catch (Exception e) {
+            properException = false;
+        }
+
+
+        Assert.assertTrue(properException);
     }
 
 

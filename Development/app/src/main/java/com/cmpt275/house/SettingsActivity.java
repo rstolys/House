@@ -63,6 +63,7 @@ public class SettingsActivity extends AppCompatActivity {
 
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
+        navView.setSelectedItemId(R.id.navBar_settings);
         navView.setOnNavigationItemSelectedListener(navListener);       //so we can implement it outside onCreate
     }
 

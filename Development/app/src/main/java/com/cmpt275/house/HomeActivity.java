@@ -80,6 +80,7 @@ public class HomeActivity extends AppCompatActivity {
 
         //Set the navigation bar
         BottomNavigationView navView = findViewById(R.id.nav_view);
+        navView.setSelectedItemId(R.id.navBar_home);
         navView.setOnNavigationItemSelectedListener(navListener); //so we can implement it outside onCreate
     }
 
