@@ -15,7 +15,9 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.cmpt275.house.classDef.houseClass;
 import com.cmpt275.house.classDef.infoClass.houseInfo;
+import com.cmpt275.house.classDef.infoClass.houseMemberInfoObj;
 import com.cmpt275.house.classDef.infoClass.userInfo;
+import com.cmpt275.house.classDef.infoClass.votingInfo;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.ByteArrayInputStream;
@@ -23,7 +25,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.Objects;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -33,6 +34,7 @@ public class HouseViewActivity extends AppCompatActivity implements Observer {
     userInfo uInfo;
     houseInfo hInfo;
     houseClass hClass;
+    votingInfo[] vInfos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +69,7 @@ public class HouseViewActivity extends AppCompatActivity implements Observer {
         hClass = new houseClass( this );
         hClass.addObserver(this);
         hClass.viewHouse(houseId);
+        hClass.viewVoting(houseId);
 
         Button backButton = findViewById(R.id.view_house_back_button);
         backButton.setOnClickListener(v->{
@@ -142,17 +145,28 @@ public class HouseViewActivity extends AppCompatActivity implements Observer {
     @Override
     public void update(Observable o, Object obj) {
         // Called on displaying a users house information to the screen
-        this.hInfo = (houseInfo) obj;
-        TextView houseTitle =  findViewById(R.id.view_hosue_house_name);
-        houseTitle.setText(this.hInfo.displayName);
-
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
 
-        for(int i = 0; i < hInfo.members.size(); i++){
-            HouseViewMemberFrag hvmf = new HouseViewMemberFrag("HARDCODED Ryan Stolys", "0");
-            ft.add(R.id.view_house_members, hvmf);
-            ft.addToBackStack(null);
+        Log.d("UPDATE HOUSE_VIEW_ACT:", "Object passed: " + obj);
+        if(String.valueOf(obj) == "viewVoting"){
+            this.vInfos = this.hClass.vInfos;
+
+
+        } else if(String.valueOf(obj) == "viewHouse"){
+            // Load house data that is not on a callback (title, members, description)
+            this.hInfo = this.hClass.hInfo;
+            TextView houseTitle = findViewById(R.id.view_house_house_name);
+            houseTitle.setText(this.hInfo.displayName);
+
+            for(houseMemberInfoObj houseMember : hInfo.members.values()) {
+                HouseViewMemberFrag hvmf = new HouseViewMemberFrag(houseMember.name, "0");
+                ft.add(R.id.view_house_members, hvmf);
+                ft.addToBackStack(null);
+            }
+
+            TextView houseDescription = findViewById(R.id.view_house_description);
+            houseDescription.setText("House Description: " + this.hInfo.description);
         }
 
         ft.commit();

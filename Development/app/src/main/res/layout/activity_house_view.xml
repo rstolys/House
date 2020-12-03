@@ -28,7 +28,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/view_hosue_house_name"
+        android:id="@+id/view_house_house_name"
         android:gravity="center_horizontal|center_vertical"
         android:layout_width="191dp"
         android:layout_height="34dp"
