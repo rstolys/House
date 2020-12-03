@@ -17,7 +17,7 @@
         android:icon="@drawable/ic_baseline_house_siding_24"
         android:title="@string/navBar_houses" />
     <item
-        android:id="@+id/navBar_Settings"
+        android:id="@+id/navBar_settings"
         android:icon="@drawable/ic_baseline_settings_24"
         android:title="@string/navBar_settings" />
 

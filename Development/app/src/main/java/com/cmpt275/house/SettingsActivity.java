@@ -1,6 +1,5 @@
 package com.cmpt275.house;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Base64;
@@ -103,7 +102,7 @@ public class SettingsActivity extends AppCompatActivity {
                             newIntent.putExtra("userInfo", serializedUserInfo);
                             startActivity( newIntent );
                             break;
-                        case R.id.navBar_Settings:
+                        case R.id.navBar_settings:
                             break;
                     }
 

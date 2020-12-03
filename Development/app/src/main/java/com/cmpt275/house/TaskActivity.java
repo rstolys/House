@@ -14,11 +14,9 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.cmpt275.house.classDef.houseClass;
 import com.cmpt275.house.classDef.taskClass;
 import com.cmpt275.house.classDef.infoClass.taskInfo;
 import com.cmpt275.house.classDef.infoClass.userInfo;
-import com.cmpt275.house.interfaceDef.task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.ByteArrayInputStream;
@@ -136,7 +134,7 @@ public class TaskActivity extends AppCompatActivity implements Observer {
                             newIntent.putExtra("userInfo", serializedUserInfo);
                             startActivity( newIntent );
                             break;
-                        case R.id.navBar_Settings:
+                        case R.id.navBar_settings:
                             newIntent = new Intent(TaskActivity.this, SettingsActivity.class);
                             newIntent.putExtra("userInfo", serializedUserInfo);
                             startActivity( newIntent );

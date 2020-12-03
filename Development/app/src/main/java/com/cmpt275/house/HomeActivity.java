@@ -5,12 +5,10 @@ import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,17 +17,12 @@ import com.cmpt275.house.classDef.homeClass;
 import com.cmpt275.house.classDef.infoClass.userInfo;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.HashMap;
 import java.util.Map;
-
-import kotlinx.coroutines.scheduling.Task;
 
 
 public class HomeActivity extends AppCompatActivity {
@@ -109,7 +102,7 @@ public class HomeActivity extends AppCompatActivity {
                     houseIntent.putExtra("userInfo", serializedUserInfo);
                     startActivity(houseIntent);
                     break;
-                case R.id.navBar_Settings:
+                case R.id.navBar_settings:
                     Intent settingsIntent = new Intent(HomeActivity.this, SettingsActivity.class);
                     settingsIntent.putExtra("userInfo", serializedUserInfo);
                     startActivity(settingsIntent);
