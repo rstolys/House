@@ -52,10 +52,6 @@ public class houseFirebaseClass implements HouseBE {
     private final roleMapping roleMap;
 
 
-    //Also need to update documentation with new version of callbacks
-
-
-
     //
     // Class Functions
     //
