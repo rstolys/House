@@ -175,7 +175,6 @@ public class TaskActivity extends AppCompatActivity implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        Log.d("UPDATE", "In update to update tasks");
         this.updateTasks();
     }
 
@@ -184,7 +183,6 @@ public class TaskActivity extends AppCompatActivity implements Observer {
         // First check if there are any tasks on the screen
         FragmentManager fm = getSupportFragmentManager();
         fragmentTransaction = fm.beginTransaction();
-        Log.d("UPDATE_tASKS", "I am removing old tasks from the screen");
 
         try {
             Log.d("UPDATE_TASKS", "There are " + fm.getBackStackEntryCount() + " backEntry");

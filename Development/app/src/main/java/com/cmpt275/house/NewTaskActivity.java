@@ -29,6 +29,7 @@ import com.cmpt275.house.classDef.infoClass.houseMemberInfoObj;
 import com.cmpt275.house.classDef.infoClass.taskInfo;
 import com.cmpt275.house.classDef.infoClass.userInfo;
 import com.cmpt275.house.classDef.mappingClass.statusMapping;
+import com.cmpt275.house.classDef.taskClass;
 import com.cmpt275.house.interfaceDef.mapping;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -41,12 +42,14 @@ import java.util.GregorianCalendar;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Set;
 
 public class NewTaskActivity extends AppCompatActivity implements Observer {
 
     public Intent newIntent;
     public taskInfo newTaskInfo = new taskInfo();
     private houseClass myHouseClass = new houseClass(this);
+    private taskClass theTaskClass = new taskClass(this);
 
     userInfo uInfo;
 
@@ -100,6 +103,7 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
             //create a list of items for the spinner.
             ArrayList<String> nOptions =new ArrayList<String>();
 
+            nOptions.add("None");
             nOptions.add("1 hour before due date");
             nOptions.add("1 day before due date");
             nOptions.add("1 week before due date");
@@ -120,7 +124,7 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
                     //create a list of items for the spinner.
                     ArrayList<String> memOptions = new ArrayList<String>();
 
-                    Log.d("UPDATE MEMBER DROPDOWN", "I am putting houses in dropdown");
+                    Log.d("UPDATE MEMBER DROPDOWN", "I am putting members in dropdown");
 
 
                     StringBuilder membersListString = new StringBuilder(" ");
@@ -144,7 +148,6 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
                     //
                 }
             });
-
 
         }
 
@@ -173,7 +176,30 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
             newTaskInfo.houseName = myHouseClass.hInfos.get(houseDropdown.getSelectedItemPosition()).displayName;
             newTaskInfo.house_id = myHouseClass.hInfos.get(houseDropdown.getSelectedItemPosition()).id;
 
-            newTaskInfo.assignedTo.put("NO_ID", new taskAssignObj("Ryan Stolys", true, false));
+
+                    //create a list of items from hashmap
+                    ArrayList<String> namesMem = new ArrayList<String>();
+                     ArrayList<String> idMem = new ArrayList<String>();
+
+                    StringBuilder membersListString = new StringBuilder(" ");
+                    for (Map.Entry<String, houseMemberInfoObj> entry :
+                            myHouseClass.hInfos.get(houseDropdown.getSelectedItemPosition()).members.entrySet()){
+                        houseMemberInfoObj hMemberObj = entry.getValue();
+
+                        membersListString.append(", ");
+                        membersListString.append(hMemberObj.name);
+                        namesMem.add(hMemberObj.getName());
+                        idMem.add(entry.getKey());
+                    }
+
+
+            newTaskInfo.assignedTo.put(idMem.get(memberDropdown.getSelectedItemPosition()),
+                    new taskAssignObj(namesMem.get(memberDropdown.getSelectedItemPosition()), true, true));
+            Log.d("NEW TASK", "onCreate: ASSIGNED ID "+ idMem.get(memberDropdown.getSelectedItemPosition()));
+            Log.d("NEW TASK", "onCreate: ASSIGNED NAME "+ namesMem.get(memberDropdown.getSelectedItemPosition()));
+
+            newTaskInfo.createdBy = uInfo.displayName;
+            newTaskInfo.createdBy_id = uInfo.id;
 
             mapping statusMap = new statusMapping();
             newTaskInfo.status = statusMap.mapIntToString(5);
@@ -181,31 +207,43 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
             newTaskInfo.costAssociated = 0.0;
             newTaskInfo.difficultyScore  = 1;
 
-/*
-            final roleMapping roleMap = new roleMapping();
-            newHouseInfo.members.put(uInfo.id, new houseMemberInfoObj(uInfo.displayName, roleMap.ADMIN));
+            Date notifDate = new Date();
 
-            EditText punishMult;
-            punishMult = view.findViewById(R.id.new_house_punish_mult);
-            String newString = String.valueOf(punishMult.getText());
-            newHouseInfo.punishmentMultiplier = (int) Double.parseDouble(newString);
-
-            EditText notifSchedInput = view.findViewById((R.id.new_house_notification_sched));
-            String notifSched = String.valueOf(notifSchedInput);
-            final notificationMapping notificationMap = new notificationMapping();
-            if( notifSched.equals("Weekly") || notifSched.equals("weekly") ){
-                newHouseInfo.houseNotifications = notificationMap.WEEKLY;
-            } else if( notifSched.equals("Monthly") || notifSched.equals("monthly") ){
-                newHouseInfo.houseNotifications = notificationMap.MONTHLY;
-            } else {
-                newHouseInfo.houseNotifications = notificationMap.NONE;
+            switch (notifDropdown.getSelectedItemPosition()){
+                case 0:
+                    //no notifications
+                    break;
+                case 1:
+                    notifDate=  new GregorianCalendar(datePicker.getYear(), datePicker.getMonth(),
+                        datePicker.getDayOfMonth(), timePicker.getCurrentHour()-1,
+                            timePicker.getCurrentMinute()).getTime();
+                    break;
+                case 2:
+                    notifDate=  new GregorianCalendar(datePicker.getYear(), datePicker.getMonth(),
+                            datePicker.getDayOfMonth()-1, timePicker.getCurrentHour(),
+                            timePicker.getCurrentMinute()).getTime();
+                    break;
+                case 3:
+                    notifDate=  new GregorianCalendar(datePicker.getYear(), datePicker.getMonth(),
+                            datePicker.getDayOfMonth()-7, timePicker.getCurrentHour(),
+                            timePicker.getCurrentMinute()).getTime();
+                    break;
+                case 4:
+                    notifDate=  new GregorianCalendar(datePicker.getYear(), datePicker.getMonth()-1,
+                            datePicker.getDayOfMonth(), timePicker.getCurrentHour(),
+                            timePicker.getCurrentMinute()).getTime();
+                    break;
             }
+            newTaskInfo.notificationTime= notifDate;
 
-            saveButton.setText("Creating House");
+            Log.d("createTaskButton", "Creating task in db with name: " + newTaskInfo.displayName);
+            theTaskClass.createTask(newTaskInfo);
 
-            Log.d("createHouseButton", "Creating house in db with name: " + newHouseInfo.displayName);
-
-            theHouseClass.createHouse(newHouseInfo);*/
+            // First prepare the userInfo to pass to next activity
+            String serializedUserInfo = getSerializedUserInfo();
+            newIntent = new Intent(NewTaskActivity.this, TaskActivity.class);
+            newIntent.putExtra("userInfo", serializedUserInfo);
+            startActivity( newIntent );
         });
     }
 
