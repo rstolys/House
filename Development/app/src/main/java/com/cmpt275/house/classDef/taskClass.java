@@ -34,14 +34,9 @@ public class taskClass extends Observable implements task {
     // Observable pattern update tInfo
     //
     public void settInfos(ArrayList<taskInfo> tInfos){
-        Log.d("SET_TINFOS", "In SET_TINFOS");
-        // For every observer in observer list, notify them
         this.tInfos = tInfos;
-        Log.d("SET_TINFOS", "About to set changed");
         setChanged();
-        Log.d("SET_TINFOS", "setChanged, about to notify observers");
         notifyObservers();
-        Log.d("SET_TINFOS", "Notified observers");
     }
 
     //
@@ -60,7 +55,8 @@ public class taskClass extends Observable implements task {
         Log.d("viewCurrentTasks:", "In viewUserTasks");
         userInfo myUInfo = new userInfo();
 
-        myUInfo.id = "w4OFKQrvL28T3WlXVP4X";    //Ryan Stolys user_id
+        //myUInfo.id = "w4OFKQrvL28T3WlXVP4X";    //Ryan Stolys user_id
+        myUInfo.id= user_id;
 
         firebaseTask.getCurrentTasks(myUInfo, (tInfos, success, errorMessage) -> {
             Log.d("getCurrentTasks:", "Returned with success: " + success);
@@ -128,35 +124,7 @@ public class taskClass extends Observable implements task {
 
     public void createTask(taskInfo tInfo) {
 
-        //Testing
-        taskInfo myTInfo = new taskInfo();
-
-        //Set parameters for testing
-        myTInfo.id = null;
-        myTInfo.displayName = "Emulator Test Task";
-        myTInfo.description = "I really hope this works";
-        myTInfo.createdBy = "Ryan Stolys";
-        myTInfo.createdBy_id = "NO_IDs_HAVE_BEEN_SET";
-
-        //Set status value
-        mapping statusMap = new statusMapping();
-        myTInfo.status = statusMap.mapIntToString(5);
-
-        myTInfo.assignedTo.put("NO_ID", new taskAssignObj("Ryan Stolys", true, false));
-        myTInfo.houseName = "DevHouse";
-        myTInfo.house_id = "NO_IDs_HAVE_BEEN_SET";
-        myTInfo.costAssociated = 0;
-        myTInfo.difficultyScore = 5;
-        myTInfo.dueDate = new Date();
-        myTInfo.itemList.add("Test1");
-        myTInfo.itemList.add("Test2");
-        myTInfo.itemList.add("Test3");
-        myTInfo.notificationTime = new Date();
-        myTInfo.tag.add("Garbage");
-        myTInfo.tag.add("Kitchen");
-        myTInfo.tag.add("Cleaning");
-
-        firebaseTask.createTask(myTInfo, (tInfo1, success, errorMessage) -> {
+        firebaseTask.createTask(tInfo, (tInfo1, success, errorMessage) -> {
             Log.d("createTask:", "Returned with success " + success);
             //Do stuff here ...
         });
