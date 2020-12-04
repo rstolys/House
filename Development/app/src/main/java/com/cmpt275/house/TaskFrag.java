@@ -22,6 +22,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /*
  * A simple {@link Fragment} subclass.
@@ -72,8 +75,20 @@ public class TaskFrag extends Fragment {
             }
         }
 
+        //populating with db data
         TextView title = view.findViewById(R.id.task_name);
         title.setText(tInfo.displayName);
+
+        TextView house = view.findViewById(R.id.house_name);
+        house.setText(tInfo.houseName);
+
+        TextView description = view.findViewById(R.id.new_task_description);
+        description.setText(tInfo.description);
+
+        TextView dueDate = view.findViewById(R.id.new_task_due_date);
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+        dueDate.setText(dateFormat.format(tInfo.dueDate));
+
 
         //complete task button
         Button completeTaskButton = view.findViewById(R.id.complete_task_button);

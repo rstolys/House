@@ -180,7 +180,7 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
 
                     //create a list of items from hashmap
                     ArrayList<String> namesMem = new ArrayList<String>();
-                     ArrayList<String> idMem = new ArrayList<String>();
+                    ArrayList<String> idMem = new ArrayList<String>();
 
                     StringBuilder membersListString = new StringBuilder(" ");
                     for (Map.Entry<String, houseMemberInfoObj> entry :
@@ -280,7 +280,6 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
                             startActivity( newIntent );
                             break;
                     }
-
                     return true;
                 }
             };
