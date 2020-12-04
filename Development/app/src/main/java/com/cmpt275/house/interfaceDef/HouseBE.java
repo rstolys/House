@@ -12,6 +12,7 @@ import com.cmpt275.house.interfaceDef.Callbacks.vInfoCallback;
 //TODO: Update documentation to match new interface
 public interface HouseBE {
     public void getCurrentHouses(userInfo uInfo, hInfoArrayCallback callback);
+    public void getAllHouses(hInfoArrayCallback callback);
     public void getHouseInfo(String house_id, hInfoCallback callback);
     public void createNewHouse(houseInfo hInfo, hInfoCallback callback);
     public void deleteHouse(houseInfo hInfo, String callerID, booleanCallback callback);
