@@ -21,7 +21,9 @@
     <!-- Strings related to Home Page -->
     <string name="welcome_home">Welcome Home!</string>
     <string name="my_tasks">My Tasks</string>
+    <string name="view_tasks">View Tasks</string>
     <string name="my_houses">My Houses</string>
+    <string name="view_houses">View Houses</string>
     <string name="settings_button">Settings</string>
     <string name="logout_button">Logout</string>
     <string name="newAccountPrompt">Are you new here?</string>

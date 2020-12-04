@@ -1,6 +1,5 @@
 package com.cmpt275.house;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Base64;
@@ -42,38 +41,30 @@ public class SettingsActivity extends AppCompatActivity {
         Intent lastIntent = getIntent();
         String serializedObject = lastIntent.getStringExtra("userInfo");
 
-        if(serializedObject == ""){
+        if(serializedObject.equals("")){
             // If the serialized object is empty, error!
             Log.e("OnCreate Home", "userInfo not passed from last activity");
-        } else {
+        }
+        else {
             try {
                 // Decode the string into a byte array
-                byte b[] = Base64.decode( serializedObject, Base64.DEFAULT );
+                byte[] b = Base64.decode( serializedObject, Base64.DEFAULT );
 
                 // Convert byte array into userInfo object
                 ByteArrayInputStream bi = new ByteArrayInputStream(b);
                 ObjectInputStream si = new ObjectInputStream(bi);
                 setting.uInfo = (userInfo) si.readObject();
                 Log.d("SETTINGS_ACTIVITY", "UserInfo.displayName passed: " + setting.uInfo.displayName );
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
+
         BottomNavigationView navView = findViewById(R.id.nav_view);
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-       /* AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navBar_home, R.id.navBar_tasks, R.id.navBar_houses, R.id.navBar_Settings)
-                .build();*/
-        navView.setOnNavigationItemSelectedListener(navListener); //so we can implement it outside onCreate
-
-        /*
-        NavController navController = Navigation.findNavController(this, R.id.bottom_nav_menu);
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-        NavigationUI.setupWithNavController(navView, navController);
-         */
-
+        navView.setSelectedItemId(R.id.navBar_settings);
+        navView.setOnNavigationItemSelectedListener(navListener);       //so we can implement it outside onCreate
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
@@ -112,7 +103,7 @@ public class SettingsActivity extends AppCompatActivity {
                             newIntent.putExtra("userInfo", serializedUserInfo);
                             startActivity( newIntent );
                             break;
-                        case R.id.navBar_Settings:
+                        case R.id.navBar_settings:
                             break;
                     }
 
