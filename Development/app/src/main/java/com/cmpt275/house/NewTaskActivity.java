@@ -152,6 +152,7 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
         }
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
+        navView.setSelectedItemId(R.id.navBar_tasks);
         navView.setOnNavigationItemSelectedListener(navListener); //so we can implement it outside onCreate
 
 
