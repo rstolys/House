@@ -75,7 +75,14 @@ public class firebaseUserDocument {
             }
         }
 
-        this.moneyBalance = uInfo.moneyBalance;
+        if(uInfo.moneyBalance == null) {
+            this.moneyBalance = new HashMap<String, Double>();
+        }
+        else {
+            for(String houseID : uInfo.moneyBalance.keySet()) {
+                this.moneyBalance.put(houseID, uInfo.moneyBalance.get(houseID));
+            }
+        }
     }
 
 
@@ -97,7 +104,7 @@ public class firebaseUserDocument {
 
         //Create house map from name object
         if(houses == null) {
-            returnUser.houses = null;
+            returnUser.houses = new HashMap<String, String>();
         }
         else {
             for(String house_id : houses.keySet()) {
@@ -108,7 +115,7 @@ public class firebaseUserDocument {
 
         //Create task map from name object
         if(tasks == null) {
-            returnUser.tasks = null;
+            returnUser.tasks = new HashMap<String, String>();;
         }
         else {
             for(String task_id : tasks.keySet()) {

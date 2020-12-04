@@ -14,6 +14,10 @@ import androidx.fragment.app.FragmentManager;
 
 import com.cmpt275.house.classDef.displayMessage;
 import com.cmpt275.house.classDef.houseClass;
+import com.cmpt275.house.classDef.houseFirebaseClass;
+import com.cmpt275.house.classDef.infoClass.houseInfo;
+import com.cmpt275.house.classDef.infoClass.houseMemberInfoObj;
+import com.cmpt275.house.classDef.infoClass.userInfo;
 import com.cmpt275.house.classDef.notifications;
 import com.cmpt275.house.classDef.settingsClass;
 import com.cmpt275.house.classDef.signInClass;
@@ -29,12 +33,9 @@ import java.io.ObjectOutputStream;
 
 public class MainActivity extends AppCompatActivity implements updateUI {
 
-    private signInClass auth = new signInClass(this, this);
-    private task taskAction = new taskClass(this);
-    private house houseAction = new houseClass(this);
-    private settings settingsAction = new settingsClass(this);
-    private displayMessage display = new displayMessage();
-    private notifications notify = new notifications();
+    private final signInClass auth = new signInClass(this, this);
+    private final displayMessage display = new displayMessage();
+    private final notifications notify = new notifications();
 
     private createAccountDialogFrag createAccountDialog;
 
@@ -49,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements updateUI {
         notify.createNotificationChannel(this);
 
         //Check if the user is already signed in
-        auth.checkAuthStatus();
+        //auth.checkAuthStatus();
     }
 
     @Override
@@ -108,10 +109,12 @@ public class MainActivity extends AppCompatActivity implements updateUI {
         EditText password = findViewById(R.id.passwordOfUser);
 
         //Show a message to the user
-        display.showToastMessage(this, "Signing In", display.LONG);
+        display.showToastMessage(this, "Signing In", display.SHORT);
 
         //Call function to signIn the user
-        auth.signInUser(email.getText().toString(), password.getText().toString());
+        //auth.signInUser(email.getText().toString(), password.getText().toString());
+
+        
     }
 
     ////////////////////////////////////////////////
