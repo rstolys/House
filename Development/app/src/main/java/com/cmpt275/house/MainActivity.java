@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements updateUI {
         notify.createNotificationChannel(this);
 
         //Check if the user is already signed in
-        //auth.checkAuthStatus();
+        auth.checkAuthStatus();
     }
 
     @Override
@@ -112,9 +112,7 @@ public class MainActivity extends AppCompatActivity implements updateUI {
         display.showToastMessage(this, "Signing In", display.SHORT);
 
         //Call function to signIn the user
-        //auth.signInUser(email.getText().toString(), password.getText().toString());
-
-        
+        auth.signInUser(email.getText().toString(), password.getText().toString());
     }
 
     ////////////////////////////////////////////////

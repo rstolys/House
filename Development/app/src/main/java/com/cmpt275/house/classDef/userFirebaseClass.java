@@ -31,7 +31,6 @@ public class userFirebaseClass implements UsersBE {
     private final String DATABASE_ERROR_MESSAGE = "Oops! Looks like there was an error on our end. Sorry about that. Please try again";
     private final String UNKNOWN_ERROR_MESSAGE = "Oops! Looks something went wrong there. Sorry about that. Please try again";
 
-    //TODO: Add attributes to documentation
     private final FirebaseAuth firebaseAuth;
 
     //

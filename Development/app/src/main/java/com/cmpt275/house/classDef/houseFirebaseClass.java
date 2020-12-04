@@ -4,7 +4,6 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.cmpt275.house.classDef.databaseObjects.houseMemberObj;
 import com.cmpt275.house.classDef.databaseObjects.voterObj;
 import com.cmpt275.house.classDef.documentClass.firebaseHouseDocument;
 import com.cmpt275.house.classDef.documentClass.firebaseUserDocument;
@@ -50,9 +49,6 @@ public class houseFirebaseClass implements HouseBE {
     private final String UNKNOWN_ERROR_MESSAGE = "Oops! Looks something went wrong there. Sorry about that. Please try again";
 
     private final roleMapping roleMap;
-
-
-    //Also need to update documentation with new version of callbacks
 
 
 
@@ -270,7 +266,7 @@ public class houseFirebaseClass implements HouseBE {
                 if(!Objects.requireNonNull(hInfo.members.get(user_id)).role.equals(roleMap.ADMIN)) {
                     Log.d(TAG, "deleteHouse cannot be done by a non-admin member");
 
-                    callback.onReturn(false, "Sorry. You don't have permission to delete this house.");
+                    callback.onReturn(false, INVALID_PERMISSIONS_MESSAGE);
                 }
                 else {
                     WriteBatch batch = db.batch();
@@ -515,7 +511,7 @@ public class houseFirebaseClass implements HouseBE {
                 else {
                     Log.d(TAG, "removeMember: This caller: " + callerID + " does not have permission to remove the house member");
 
-                    callback.onReturn(false, "Sorry. You don't have permission to remove " + hInfo.members.get(user_id).getName() + "from this house");
+                    callback.onReturn(false, INVALID_PERMISSIONS_MESSAGE);
                 }
             }
         }
