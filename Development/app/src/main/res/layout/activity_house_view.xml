@@ -29,11 +29,12 @@
 
     <TextView
         android:id="@+id/view_house_house_name"
-        android:gravity="center_horizontal|center_vertical"
         android:layout_width="191dp"
-        android:layout_height="34dp"
-        android:layout_marginTop="40dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="44dp"
+        android:gravity="center_horizontal|center_vertical"
         android:text="@string/house_name"
+        android:textColor="#673AB7"
         android:textSize="18sp"
         app:layout_constraintEnd_toStartOf="@+id/view_house_edit_button"
         app:layout_constraintHorizontal_bias="0.382"
@@ -54,10 +55,11 @@
         android:id="@+id/view_house_details"
         android:layout_width="377dp"
         android:layout_height="574dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="100dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="32dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.533"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -76,8 +78,9 @@
                     android:id="@+id/view_house_members_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="110dp"
+                    android:layout_marginEnd="100dp"
                     android:text="@string/members"
+                    android:textColor="#673AB7"
                     android:textSize="18sp" />
 
                 <TextView
@@ -85,6 +88,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/balance_outstanding"
+                    android:textColor="#673AB7"
                     android:textSize="18sp" />
 
             </TableRow>
@@ -106,6 +110,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/voting"
+                android:textColor="#673AB7"
                 android:textSize="18sp" />
 
             <LinearLayout
@@ -124,6 +129,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/my_tasks"
+                    android:textColor="#673AB7"
                     android:textSize="18sp" />
             </TableRow>
 
@@ -132,6 +138,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/house_description"
+                android:textColor="#673AB7"
                 android:textSize="18sp" />
 
         </LinearLayout>

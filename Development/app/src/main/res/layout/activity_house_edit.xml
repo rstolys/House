@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/windowBackground"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:menu="@menu/bottom_nav_menu">
+
+    </com.google.android.material.bottomnavigation.BottomNavigationView>
+
+    <Button
+        android:id="@+id/edit_house_back_button"
+        android:layout_width="74dp"
+        android:layout_height="39dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="40dp"
+        android:text="@string/back"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/edit_house_house_name"
+        android:layout_width="190dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="16dp"
+        android:ems="10"
+        android:gravity="center_horizontal|center_vertical"
+        android:importantForAutofill="no"
+        android:inputType="textPersonName"
+        android:text="@string/edit_house_name"
+        android:textColor="#673AB7"
+        app:layout_constraintEnd_toStartOf="@+id/edit_house_save_button"
+        app:layout_constraintHorizontal_bias="0.307"
+        app:layout_constraintStart_toEndOf="@+id/edit_house_back_button"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/edit_house_save_button"
+        android:layout_width="77dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="16dp"
+        android:enabled="true"
+        android:text="@string/save_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ScrollView
+        android:layout_width="372dp"
+        android:layout_height="572dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="377dp"
+            android:layout_height="574dp"
+            android:orientation="vertical">
+
+            <TableRow
+                android:id="@+id/edit_house_row1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/view_house_members_title2"
+                    android:layout_width="180dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="110dp"
+                    android:text="@string/members"
+                    android:textColor="#673AB7"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/edit_house_change_admin_status_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Role"
+                    android:textColor="#673AB7"
+                    android:textSize="18sp" />
+            </TableRow>
+
+            <LinearLayout
+                android:id="@+id/edit_house_member_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"></LinearLayout>
+
+            <TableRow
+                android:id="@+id/edit_house_row2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/edit_house_max_members"
+                    android:layout_width="195dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/view_house_max_members_in_house"
+                    android:textColor="#673AB7"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/edit_house_max_members_int"
+                    android:layout_width="184dp"
+                    android:layout_height="wrap_content"
+                    android:importantForAutofill="no"
+                    android:inputType="number"
+                    android:text="@string/edit_house_max_members_default" />
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/edit_house_row3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/edit_house_notifications_title"
+                    android:layout_width="195dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/new_house_notification_schedule_title"
+                    android:textColor="#673AB7"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/edit_house_notification_schedule"
+                    android:layout_width="186dp"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:importantForAutofill="no"
+                    android:inputType="textPersonName"
+                    android:text="@string/new_house_notification_sched" />
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/edit_house_row4"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/edit_house_punishment_mult"
+                    android:layout_width="195dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/edit_house_punishment_multiplier"
+                    android:textColor="#673AB7"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/edit_houes_punishment_mult"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:importantForAutofill="no"
+                    android:inputType="number"
+                    android:text="@string/edit_house_punishment_mult_default" />
+            </TableRow>
+        </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
