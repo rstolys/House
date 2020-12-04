@@ -70,18 +70,7 @@ public class TaskViewActivity extends AppCompatActivity {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                     // First prepare the userInfo to pass to next activity
-                    String serializedUserInfo = "";
-                    try {
-                        // Convert object data to encoded string
-                        ByteArrayOutputStream bo = new ByteArrayOutputStream();
-                        ObjectOutputStream so = new ObjectOutputStream(bo);
-                        so.writeObject(uInfo);
-                        so.flush();
-                        final byte[] byteArray = bo.toByteArray();
-                        serializedUserInfo = Base64.encodeToString(byteArray, Base64.DEFAULT);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    String serializedUserInfo = getSerializedUserInfo();
 
                     // Now start appropriate activity
                     switch (item.getItemId()){
@@ -157,6 +146,26 @@ public class TaskViewActivity extends AppCompatActivity {
         super.onDestroy();
         //System invokes this before the app is destroyed
         //Usually ensures all the activities resources are released
+    }
+
+    private String getSerializedUserInfo() {
+
+        String serializedUserInfo = "";
+        try {
+            // Convert object data to encoded string
+            ByteArrayOutputStream bo = new ByteArrayOutputStream();
+            ObjectOutputStream so = new ObjectOutputStream(bo);
+            so.writeObject(uInfo);
+            so.flush();
+            final byte[] byteArray = bo.toByteArray();
+            serializedUserInfo = Base64.encodeToString(byteArray, Base64.DEFAULT);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+            serializedUserInfo = "";
+        }
+
+        return serializedUserInfo;
     }
 
 }

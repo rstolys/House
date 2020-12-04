@@ -35,7 +35,6 @@ public class taskClass extends Observable implements task {
     //
     public void settInfos(ArrayList<taskInfo> tInfos){
         Log.d("SET_TINFOS", "In SET_TINFOS");
-        // For every observer in observer list, notify them
         this.tInfos = tInfos;
         Log.d("SET_TINFOS", "About to set changed");
         setChanged();
