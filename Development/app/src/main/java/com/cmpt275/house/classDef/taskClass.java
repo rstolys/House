@@ -59,7 +59,8 @@ public class taskClass extends Observable implements task {
         Log.d("viewCurrentTasks:", "In viewUserTasks");
         userInfo myUInfo = new userInfo();
 
-        myUInfo.id = "w4OFKQrvL28T3WlXVP4X";    //Ryan Stolys user_id
+        //myUInfo.id = "w4OFKQrvL28T3WlXVP4X";    //Ryan Stolys user_id
+        myUInfo.id= user_id;
 
         firebaseTask.getCurrentTasks(myUInfo, (tInfos, success, errorMessage) -> {
             Log.d("getCurrentTasks:", "Returned with success: " + success);

@@ -39,12 +39,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
-        android:layout_width="326dp"
-        android:layout_height="509dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginEnd="40dp"
+    <ScrollView
+        android:layout_width="329dp"
+        android:layout_height="545dp"
+        android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/nav_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/new_task_title">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="0dp"
         android:background="@color/white"
         android:clickable="false"
         android:orientation="vertical"
@@ -196,13 +203,14 @@
                     android:textColor="@color/black"
                     android:textSize="18sp"
                     android:text="Notifications"/>
-                <ToggleButton
-                    android:id="@+id/notification_choice"
-                    android:layout_width="wrap_content"
+                <Spinner
+                    android:id="@+id/notifications_spinner"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="68dp"
-                    android:layout_marginEnd="68dp"
-                    android:text="@string/toggle_notification_button" />
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="@android:drawable/btn_dropdown"
+                    android:spinnerMode="dropdown"/>
             </TableRow>
 
             <TableRow
@@ -226,5 +234,5 @@
 
 
     </LinearLayout>
-
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

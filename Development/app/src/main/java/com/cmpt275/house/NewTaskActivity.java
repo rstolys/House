@@ -23,10 +23,13 @@ import android.widget.TimePicker;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.cmpt275.house.classDef.databaseObjects.taskAssignObj;
 import com.cmpt275.house.classDef.houseClass;
 import com.cmpt275.house.classDef.infoClass.houseMemberInfoObj;
 import com.cmpt275.house.classDef.infoClass.taskInfo;
 import com.cmpt275.house.classDef.infoClass.userInfo;
+import com.cmpt275.house.classDef.mappingClass.statusMapping;
+import com.cmpt275.house.interfaceDef.mapping;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.ByteArrayInputStream;
@@ -51,6 +54,7 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
     TimePicker timePicker;
     Spinner houseDropdown;
     Spinner memberDropdown;
+    Spinner notifDropdown;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +82,11 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
                 e.printStackTrace();
             }
 
+            // Observe the instance of the houseClass
+            myHouseClass.addObserver(this);
+            // Update the tasks in the houseClass from the database
+            myHouseClass.viewYourHouses(uInfo);
+
             datePicker = (DatePicker)findViewById(R.id.datePicker1);
             timePicker = (TimePicker)findViewById(R.id.timePicker1);
 
@@ -86,31 +95,35 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
 
             memberDropdown = findViewById(R.id.assignee_spinner);
 
-            // Observe the instance of the houseClass
-            myHouseClass.addObserver(this);
+            notifDropdown = findViewById(R.id.notifications_spinner);
 
-            // Update the tasks in the houseClass from the database
-            Log.d("OnCreate House Activity", "Before call to view your houses" );
-            myHouseClass.viewYourHouses(uInfo);
-            Log.d("OnCreate House Activity", "After call to view your houses" );
+            //create a list of items for the spinner.
+            ArrayList<String> nOptions =new ArrayList<String>();
+
+            nOptions.add("1 hour before due date");
+            nOptions.add("1 day before due date");
+            nOptions.add("1 week before due date");
+            nOptions.add("1 month before due date");
+
+            ArrayAdapter<String> adapter2 = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, nOptions);
+//set the spinners adapter to the previously created one.
+            notifDropdown.setAdapter(adapter2);
+            notifDropdown.setSelection(0);
+
+
 
             houseDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                    //myHouseClass.viewHouse(myHouseClass.hInfos.get(position).id);
-
                     //create a list of items for the spinner.
                     ArrayList<String> memOptions = new ArrayList<String>();
 
                     Log.d("UPDATE MEMBER DROPDOWN", "I am putting houses in dropdown");
-                   /* for(int i = 0; i < myHouseClass.hInfos.get(position).members.size(); i++ ){
-                        memOptions.add(myHouseClass.hInfos.get(position).members.get(i).getName());
-                    }*/
+
 
                     StringBuilder membersListString = new StringBuilder(" ");
-                    boolean firstMember = true;
                     for (Map.Entry<String, houseMemberInfoObj> entry : myHouseClass.hInfos.get(position).members.entrySet()){
                         houseMemberInfoObj hMemberObj = entry.getValue();
 
@@ -129,9 +142,7 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
                 @Override
                 public void onNothingSelected(AdapterView<?> arg0) {
                     //
-
                 }
-
             });
 
 
@@ -159,8 +170,16 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
             String strDate = dateFormat.format(dueDate);
             Log.d("NEW_TASK_ACTIVITY", "new task date " + strDate );
 
+            newTaskInfo.houseName = myHouseClass.hInfos.get(houseDropdown.getSelectedItemPosition()).displayName;
+            newTaskInfo.house_id = myHouseClass.hInfos.get(houseDropdown.getSelectedItemPosition()).id;
 
+            newTaskInfo.assignedTo.put("NO_ID", new taskAssignObj("Ryan Stolys", true, false));
 
+            mapping statusMap = new statusMapping();
+            newTaskInfo.status = statusMap.mapIntToString(5);
+
+            newTaskInfo.costAssociated = 0.0;
+            newTaskInfo.difficultyScore  = 1;
 
 /*
             final roleMapping roleMap = new roleMapping();
@@ -285,7 +304,7 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
 
 //create a list of items for the spinner.
         ArrayList<String> hOptions =new ArrayList<String>();
-//create an adapter to describe how the items are displayed, adapters are used in several places in android.
+//create an adapter to describe how the items are displayed
 
        Log.d("UPDATE HOUSE DROPDOWN", "I am putting houses in dropdown");
         for(int i = 0; i < myHouseClass.hInfos.size(); i++ ){
@@ -297,10 +316,6 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
         houseDropdown.setAdapter(adapter);
         if(myHouseClass.hInfos.size()>0)
         houseDropdown.setSelection(0);
-
-        ///////////////////////
-
-
 
     }
 
