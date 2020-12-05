@@ -94,7 +94,7 @@
                     android:layout_height="wrap_content"
                     android:importantForAutofill="no"
                     android:maxLength="10000"
-                    android:text="@string/new_task_description" />
+                    android:hint="@string/new_task_description" />
             </TableRow>
 
 
