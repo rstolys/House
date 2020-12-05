@@ -757,7 +757,7 @@ public class taskFirebaseClass implements TaskBE {
                             userUpdate.put("tasks." + tInfo.id, new nameObj(tInfo.displayName, true));
 
                             DocumentReference userRef = db.collection("users").document(taskAssignee_id);
-                            batch.update(houseRef, userUpdate);
+                            batch.update(userRef, userUpdate);
                         }
 
                         //Commit the writes to the databse and wait for completion

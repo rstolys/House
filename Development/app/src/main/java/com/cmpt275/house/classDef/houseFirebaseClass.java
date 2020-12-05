@@ -4,6 +4,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.cmpt275.house.classDef.databaseObjects.nameObj;
 import com.cmpt275.house.classDef.databaseObjects.voterObj;
 import com.cmpt275.house.classDef.documentClass.firebaseHouseDocument;
 import com.cmpt275.house.classDef.documentClass.firebaseUserDocument;
@@ -232,8 +233,28 @@ public class houseFirebaseClass implements HouseBE {
                         //Set the id of the house
                         hInfo.id = documentReference.getId();
 
-                        //Return the house info
-                        callback.onReturn(hInfo, true, NO_ERROR);
+                        //Add house to the user
+                        Map<String, Object> userUpdate = new HashMap<>();
+                        userUpdate.put("houses." + hInfo.id, new nameObj(hInfo.displayName, true));
+
+                        String houseMember_id = "";
+                        for(String key : hInfo.members.keySet()) {
+                            houseMember_id = key;
+                        }
+
+                        db.collection("users").document(houseMember_id).update(userUpdate)
+                            .addOnSuccessListener( userDocReference -> {
+                                Log.d(TAG, "House added to creater mapping");
+
+                                //Return the house info
+                                callback.onReturn(hInfo, true, NO_ERROR);
+                            })
+                            .addOnFailureListener(e -> {
+                                Log.w(TAG, "Error adding document", e);
+
+                                //Return null to indicate error in task
+                                callback.onReturn(null, false, DATABASE_ERROR_MESSAGE);
+                            });
                     })
                     .addOnFailureListener(e -> {
                         Log.w(TAG, "Error adding document", e);
