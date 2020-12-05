@@ -10,12 +10,14 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 
 public class HouseViewMemberFrag extends Fragment {
+    private String context;
     private String memberName;
-    private String amountOwing;
+    private String bonusInfo;
 
-    public HouseViewMemberFrag(String memberName, String amountOwing) {
+    public HouseViewMemberFrag(String viewContext, String memberName, String bonusInfo) {
+        this.context = viewContext;
         this.memberName = memberName;
-        this.amountOwing = amountOwing;
+        this.bonusInfo = bonusInfo;
     }
 
     @Override
@@ -24,11 +26,19 @@ public class HouseViewMemberFrag extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_view_house_member, container, false);
 
-        TextView name = view.findViewById(R.id.view_house_member_name);
-        name.setText(this.memberName);
+        if(this.context == "viewHouse") {
+            TextView name = view.findViewById(R.id.view_house_member_name);
+            name.setText(this.memberName);
 
-        TextView owing = view.findViewById(R.id.view_house_member_amount_owed);
-        owing.setText(amountOwing);
+            TextView owing = view.findViewById(R.id.view_house_member_amount_owed);
+            owing.setText(bonusInfo);
+        } else if(this.context == "editHouse"){
+            TextView name = view.findViewById(R.id.view_house_member_name);
+            name.setText(this.memberName);
+
+            TextView owing = view.findViewById(R.id.view_house_member_amount_owed);
+            owing.setText(bonusInfo);
+        }
 
         return view;
     }

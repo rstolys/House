@@ -152,7 +152,6 @@ public class houseClass extends taskClass implements house {
         //myHInfo.members.put("DummyUser", new houseMemberObj("Jayden Cole", true, roleMap.mapStringToInt("Administrator")));
         myHInfo.members.put("w4OFKQrvL28T3WlXVP4X", new houseMemberInfoObj("Ryan Stolys", roleMap.ADMIN));
 
-
         //Set Ryan Stolys to a regular house member
         firebaseTask.setUserRole(myHInfo, "w4OFKQrvL28T3WlXVP4X", roleMap.mapIntToString(1), (hInfo, success, errorMessage) -> {
             Log.d("setUserRole:", "Returned with success: " + success);
@@ -188,27 +187,15 @@ public class houseClass extends taskClass implements house {
     public void viewSettings(String house_id) {}
 
     public void editSettings(houseInfo hInfo) {
+        // Update the settings information for this house
 
-        houseInfo myHInfo = new houseInfo();
-
-        myHInfo.id = "TfB0rlNBEuj9dSMzA1OM";
-        myHInfo.displayName = "Cowichan  9";
-        //myHInfo.displayName = hInfo.displayName;
-        myHInfo.voting_ids = null;
-        myHInfo.tasks = null;
-
-        myHInfo.members.put("w4OFKQrvL28T3WlXVP4X", new houseMemberInfoObj("Ryan Stolys", roleMap.ADMIN));
-        //**when creating a house the first member must be role "2" meaning admin
-
-        myHInfo.description = "This the SFU Golf townhouse. It contains 4 people. We are all on the golf team";
-        //myHInfo.description = hInfo.description;
-        myHInfo.punishmentMultiplier = 3;
-        myHInfo.maxMembers = 5;
-        myHInfo.houseNotifications = notificationMap.WEEKLY;
-
-        firebaseTask.editSettings(myHInfo, true, (hInfo1, success, errorMessage) -> {
+        firebaseTask.editSettings(hInfo, !hInfo.displayName.equals(this.hInfo.displayName), (hInfo1, success, errorMessage) -> {
             Log.d("editSettings:", "Returned with success: " + success);
-            //Do stuff here ...
+
+            // Notify observers
+            String updateInfo = "editSettings";
+            setChanged();
+            notifyObservers(updateInfo);
         });
     }
 
