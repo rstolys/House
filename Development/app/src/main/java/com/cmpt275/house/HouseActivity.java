@@ -103,7 +103,10 @@ public class HouseActivity extends AppCompatActivity implements Observer {
 
         Button joinHouseButton = findViewById(R.id.my_houses_join_house_button);
         joinHouseButton.setOnClickListener(v->{
+            fragmentTransaction = fm.beginTransaction();
 
+            HouseJoinHouseFrag joinHouseFrag = HouseJoinHouseFrag.newInstance(this, uInfo);
+            joinHouseFrag.show(fm, "fragment_house_join");
         });
     }
 

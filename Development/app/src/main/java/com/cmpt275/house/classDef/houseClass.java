@@ -1,5 +1,6 @@
 package com.cmpt275.house.classDef;
 
+import android.app.role.RoleManager;
 import android.content.Context;
 import android.util.Log;
 
@@ -23,8 +24,9 @@ public class houseClass extends taskClass implements house {
     //
     // Class Variables
     //
-    public ArrayList<houseInfo> hInfos;
-    public houseInfo hInfo;
+    public ArrayList<houseInfo> hInfos; // Store data for hInfos pertaining to specific uInfo
+    public ArrayList<houseInfo> hInfosAll; // Store data for all hInfos in db
+    public houseInfo hInfo; // Store data to specific hInfo needed at that time
     private userInfo uInfo;
     public votingInfo[] vInfos;
 
@@ -87,14 +89,14 @@ public class houseClass extends taskClass implements house {
         });
     }
 
-    public void joinHouse(String house_id, userInfo uInfo) {}
+    public void joinHouse(houseInfo hInfo, userInfo uInfo) {
+        this.addMember(uInfo, hInfo, roleMap.REQUEST);
+    }
 
     public void viewYourHouses(userInfo uInfo) {
         Log.d("viewCurrentHouses:", "In viewYourHouses");
 
-        userInfo myUInfo = uInfo;
-
-        firebaseTask.getCurrentHouses(myUInfo, (hInfos, success, errorMessage) -> {
+        firebaseTask.getCurrentHouses(uInfo, (hInfos, success, errorMessage) -> {
             Log.d("getCurrentHouses:", "Returned with success: " + success);
 
             // Convert hInfos list into an hInfo array
@@ -125,18 +127,34 @@ public class houseClass extends taskClass implements house {
         });
     }
 
+    public void viewAllHouses(){
+        firebaseTask.getAllHouses( (hInfos, success, errorMessage) -> {
+            if(success){
+                // Convert hInfos list into an hInfo array
+                ArrayList<houseInfo> houseInfoList = new ArrayList<>();
+                Collections.addAll(houseInfoList, hInfos);
+
+                this.hInfosAll = houseInfoList;
+
+                String updateInfo = "viewAllHouses";
+                setChanged();
+                notifyObservers(updateInfo);
+            }
+        });
+    }
+
     public void approveMember(String house_id, String user_id) {}
 
-    public void addMember(String userEmail) {
-
-        houseInfo myHInfo = new houseInfo();
-
-        myHInfo.id = "TfB0rlNBEuj9dSMzA1OM";    //Ryan Stolys user_id
-        myHInfo.members.put("w4OFKQrvL28T3WlXVP4X", new houseMemberInfoObj("Ryan Stolys", roleMap.ADMIN));
-
-        firebaseTask.addMember(myHInfo, "TestAddMember", roleMap.MEMBER, "Jayden Cole", (hInfo, success, errorMessage) -> {
+    public void addMember(userInfo uInfo, houseInfo hInfo, String role) {
+        firebaseTask.addMember(hInfo, uInfo.id, role, uInfo.displayName, (hInfoReturned, success, errorMessage) -> {
             Log.d("addMember:", "Returned with success: " + success);
-            //Do stuff here ...
+            if(success) {
+                if (role.equals(roleMap.REQUEST)) {
+                    String updateInfo = "joinHouseRequest";
+                    setChanged();
+                    notifyObservers(updateInfo);
+                }
+            }
         });
     }
 
