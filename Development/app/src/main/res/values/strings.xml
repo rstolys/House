@@ -104,7 +104,7 @@
     <string name="feedback_hint">Help Us Improve! Provide Feedback Here</string>
     <string name="give_feedback_button">Submit Feedback</string>
 
-    <string name="add_house_button_title">Add House</string>
+    <string name="add_house_button_title">Build New House</string>
 
     <!-- Strings related to Tasks Page -->
     <string name="my_tasks_title">My Tasks</string>
@@ -154,5 +154,6 @@
     <string name="edit_house_punishment_multiplier">Punishment Multiplier:</string>
     <string name="edit_house_punishment_mult_default">1</string>
     <string name="edit_house_max_members_default">0</string>
+    <string name="my_houses_join_house_button">Join A House</string>
 
 </resources>

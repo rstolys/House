@@ -19,10 +19,11 @@
 
             <TextView
                 android:id="@+id/house1_name"
-                android:gravity="center_vertical|center|center_horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
+                android:gravity="center_vertical|center|center_horizontal"
                 android:text="@string/house1_name"
+                android:textColor="#673AB7"
                 android:textIsSelectable="false"
                 android:textSize="18sp" />
         </TableRow>
@@ -50,9 +51,10 @@
 
             <TextView
                 android:id="@+id/house1_members_list_title"
-                android:layout_width="wrap_content"
+                android:layout_width="74dp"
                 android:layout_height="wrap_content"
-                android:text="@string/house1_members_title" />
+                android:text="@string/house1_members_title"
+                android:textColor="#673AB7" />
 
             <TextView
                 android:id="@+id/house1_members_list"
@@ -72,7 +74,8 @@
                 android:id="@+id/house1_task1_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/house1_task1_title" />
+                android:text="@string/house1_task1_title"
+                android:textColor="#673AB7" />
 
             <TextView
                 android:id="@+id/house1_task1_name"
@@ -86,7 +89,8 @@
                 android:id="@+id/house1_due_date_title"
                 android:layout_width="71dp"
                 android:layout_height="wrap_content"
-                android:text="@string/house1_due_date_title" />
+                android:text="@string/house1_due_date_title"
+                android:textColor="#673AB7" />
 
             <TextView
                 android:id="@+id/house1_task1_due_date"
@@ -106,7 +110,8 @@
                 android:id="@+id/house1_task2_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/house1_task2_title" />
+                android:text="@string/house1_task2_title"
+                android:textColor="#673AB7" />
 
             <TextView
                 android:id="@+id/house1_task2_name"
@@ -120,7 +125,8 @@
                 android:id="@+id/house1_due_date_title2"
                 android:layout_width="71dp"
                 android:layout_height="wrap_content"
-                android:text="@string/house1_due_date_title" />
+                android:text="@string/house1_due_date_title"
+                android:textColor="#673AB7" />
 
             <TextView
                 android:id="@+id/house1_task2_due_date2"
@@ -141,7 +147,8 @@
                 android:id="@+id/house1_task3_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/house1_task3_title" />
+                android:text="@string/house1_task3_title"
+                android:textColor="#673AB7" />
 
             <TextView
                 android:id="@+id/house1_task3_name"
@@ -155,7 +162,8 @@
                 android:id="@+id/house1_due_date_title3"
                 android:layout_width="71dp"
                 android:layout_height="wrap_content"
-                android:text="@string/house1_due_date_title" />
+                android:text="@string/house1_due_date_title"
+                android:textColor="#673AB7" />
 
             <TextView
                 android:id="@+id/house1_task3_due_date"

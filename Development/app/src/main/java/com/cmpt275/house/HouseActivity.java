@@ -15,7 +15,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.cmpt275.house.classDef.houseClass;
-import com.cmpt275.house.classDef.infoClass.houseInfo;
 import com.cmpt275.house.classDef.infoClass.userInfo;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -74,8 +73,8 @@ public class HouseActivity extends AppCompatActivity implements Observer {
         navView.setSelectedItemId(R.id.navBar_houses);
         navView.setOnNavigationItemSelectedListener(navListener); //so we can implement it outside onCreate
 
-        Button addHouseButton = findViewById(R.id.add_house_button);
-        addHouseButton.setOnClickListener(v -> {
+        Button newHouseButton = findViewById(R.id.new_house_button);
+        newHouseButton.setOnClickListener(v -> {
             // Remove all current houses there
             try {
                 int numBackStack = fm.getBackStackEntryCount();
@@ -100,6 +99,11 @@ public class HouseActivity extends AppCompatActivity implements Observer {
             }
 
             fragmentTransaction.commit();
+        });
+
+        Button joinHouseButton = findViewById(R.id.my_houses_join_house_button);
+        joinHouseButton.setOnClickListener(v->{
+
         });
     }
 
