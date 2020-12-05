@@ -24,7 +24,7 @@ public class houseClass extends taskClass implements house {
     // Class Variables
     //
     public ArrayList<houseInfo> hInfos;
-    //public houseInfo[] hInfos;
+    public houseInfo hInfo;
     private userInfo uInfo;
     public votingInfo[] vInfos;
 
@@ -37,17 +37,6 @@ public class houseClass extends taskClass implements house {
     private final roleMapping roleMap;
     private final notificationMapping notificationMap;
     private final voteTypeMapping voteMap;
-
-    //
-    // Observable pattern update hInfo
-    //
-    public void sethInfos(ArrayList<houseInfo> hInfos){
-        // For every observer in observer list, notify them
-        this.hInfos = hInfos;
-        String updateInfo = "";
-        setChanged();
-        notifyObservers(updateInfo);
-    }
 
     //
     // Class Functions
@@ -91,7 +80,9 @@ public class houseClass extends taskClass implements house {
             // If successful, the new house is created and displayed to screen with the rest of the houes
             if( success ){
                 this.hInfos.add(hInfo1);
-                sethInfos(this.hInfos);
+                String updateInfo = "createHouses";
+                setChanged();
+                notifyObservers(updateInfo);
             } // Else we should display error message
         });
     }
@@ -105,10 +96,17 @@ public class houseClass extends taskClass implements house {
 
         firebaseTask.getCurrentHouses(myUInfo, (hInfos, success, errorMessage) -> {
             Log.d("getCurrentHouses:", "Returned with success: " + success);
-            ArrayList<houseInfo> houseInfoList = new ArrayList<houseInfo>();
+
+            // Convert hInfos list into an hInfo array
+            ArrayList<houseInfo> houseInfoList = new ArrayList<>();
             Collections.addAll(houseInfoList, hInfos);
 
-            this.sethInfos( houseInfoList );
+            this.hInfos = houseInfoList;
+
+            // Update observers
+            String updateInfo = "viewHouses";
+            setChanged();
+            notifyObservers(updateInfo);
             Log.d("viewYourHouses", "Done getting houses set up");
         });
     }
@@ -117,9 +115,13 @@ public class houseClass extends taskClass implements house {
 
         firebaseTask.getHouseInfo(house_id, (hInfo, success, errorMessage) -> {
             Log.d("getHouseInfo:", "Returned with success: " + success);
+
             // Notify HouseActivity that viewHouse all requested on this hInfo
+            this.hInfo = hInfo;
+
+            String updateInfo = "viewHouse";
             setChanged();
-            notifyObservers(hInfo);
+            notifyObservers(updateInfo);
         });
     }
 
@@ -150,7 +152,6 @@ public class houseClass extends taskClass implements house {
         //myHInfo.members.put("DummyUser", new houseMemberObj("Jayden Cole", true, roleMap.mapStringToInt("Administrator")));
         myHInfo.members.put("w4OFKQrvL28T3WlXVP4X", new houseMemberInfoObj("Ryan Stolys", roleMap.ADMIN));
 
-
         //Set Ryan Stolys to a regular house member
         firebaseTask.setUserRole(myHInfo, "w4OFKQrvL28T3WlXVP4X", roleMap.mapIntToString(1), (hInfo, success, errorMessage) -> {
             Log.d("setUserRole:", "Returned with success: " + success);
@@ -163,6 +164,10 @@ public class houseClass extends taskClass implements house {
         firebaseTask.getHouseVotes("TfB0rlNBEuj9dSMzA1OM", (vInfos, success, errorMessage) -> {
             Log.d("getHouseVotes:", "Returned with success: " + success);
             //Do stuff here ...
+            this.vInfos = vInfos;
+            String updateInfo = "viewVoting";
+            setChanged();
+            notifyObservers(updateInfo);
         });
     }
 
@@ -182,27 +187,15 @@ public class houseClass extends taskClass implements house {
     public void viewSettings(String house_id) {}
 
     public void editSettings(houseInfo hInfo) {
+        // Update the settings information for this house
 
-        houseInfo myHInfo = new houseInfo();
-
-        myHInfo.id = "TfB0rlNBEuj9dSMzA1OM";
-        myHInfo.displayName = "Cowichan  9";
-        //myHInfo.displayName = hInfo.displayName;
-        myHInfo.voting_ids = null;
-        myHInfo.tasks = null;
-
-        myHInfo.members.put("w4OFKQrvL28T3WlXVP4X", new houseMemberInfoObj("Ryan Stolys", roleMap.ADMIN));
-        //**when creating a house the first member must be role "2" meaning admin
-
-        myHInfo.description = "This the SFU Golf townhouse. It contains 4 people. We are all on the golf team";
-        //myHInfo.description = hInfo.description;
-        myHInfo.punishmentMultiplier = 3;
-        myHInfo.maxMembers = 5;
-        myHInfo.houseNotifications = notificationMap.WEEKLY;
-
-        firebaseTask.editSettings(myHInfo, true, (hInfo1, success, errorMessage) -> {
+        firebaseTask.editSettings(hInfo, !hInfo.displayName.equals(this.hInfo.displayName), (hInfo1, success, errorMessage) -> {
             Log.d("editSettings:", "Returned with success: " + success);
-            //Do stuff here ...
+
+            // Notify observers
+            String updateInfo = "editSettings";
+            setChanged();
+            notifyObservers(updateInfo);
         });
     }
 

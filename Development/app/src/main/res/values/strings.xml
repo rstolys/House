@@ -148,5 +148,11 @@
     <string name="view_house_member_amount_owed">Amount Owed</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="edit_house_name">Name</string>
+    <string name="edit_house_admin_status_title">Admin Status</string>
+    <string name="view_house_max_members_in_house">Max Members in house:</string>
+    <string name="edit_house_punishment_multiplier">Punishment Multiplier:</string>
+    <string name="edit_house_punishment_mult_default">1</string>
+    <string name="edit_house_max_members_default">0</string>
 
 </resources>

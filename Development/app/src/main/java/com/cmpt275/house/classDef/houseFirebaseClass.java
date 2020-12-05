@@ -705,15 +705,15 @@ public class houseFirebaseClass implements HouseBE {
                     }
 
                     //Add all the votes to update the display name
-                    for(int i = 0; i < hInfo.voting_ids.size(); i++) {
-                        Map<String,Object> updates = new HashMap<>();
-                        updates.put("houseName", hInfo.displayName);
+                    if( hInfo.voting_ids != null){
+                        for(int i = 0; i < hInfo.voting_ids.size(); i++) {
+                            Map<String,Object> updates = new HashMap<>();
+                            updates.put("houseName", hInfo.displayName);
 
-                        DocumentReference voteToUpdate = db.collection("voting").document(hInfo.voting_ids.get(i));
-                        batch.update(voteToUpdate, updates);
+                            DocumentReference voteToUpdate = db.collection("voting").document(hInfo.voting_ids.get(i));
+                            batch.update(voteToUpdate, updates);
+                        }
                     }
-
-
                 }
 
                 //Add the updates settings to the batch

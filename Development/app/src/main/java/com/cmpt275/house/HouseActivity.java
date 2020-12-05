@@ -184,19 +184,19 @@ public class HouseActivity extends AppCompatActivity implements Observer {
     @Override
     public void update(Observable o, Object obj) {
         // Observer pattern to update houses or start a new activity
-        // Update screen with new houses
+
         Log.d("UPDATE", "Object is: " + obj);
         String passedParam = String.valueOf(obj);
-        if(passedParam == ""){
+        if(passedParam == "createHouses" || passedParam == "viewHouses"){ // View houses after adding one
             Log.d("UPDATE", "In update to update houses");
             this.updateHouses();
-        } else {
-            houseInfo hInfo = (houseInfo) obj;
+        } else if(passedParam == "viewHouse"){
+            // Or start a new activity after clicking on "View a house"
             String serializedUserInfo = serializeUserInfo();
 
             newIntent = new Intent(HouseActivity.this, HouseViewActivity.class);
             newIntent.putExtra("userInfo", serializedUserInfo);
-            newIntent.putExtra("houseId", hInfo.id );
+            newIntent.putExtra("houseId", myHouseClass.hInfo.id );
             startActivity(newIntent);
         }
     }

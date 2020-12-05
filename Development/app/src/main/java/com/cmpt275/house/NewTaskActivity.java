@@ -164,7 +164,7 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
             newTaskInfo.displayName = String.valueOf(taskTitle.getText());
 
             EditText taskDescription = findViewById(R.id.new_task_description);
-            newTaskInfo.description = String.valueOf(taskDescription);
+            newTaskInfo.description = String.valueOf(taskDescription.getText());
 
             Date dueDate =  new GregorianCalendar(datePicker.getYear(), datePicker.getMonth(),
                     datePicker.getDayOfMonth(), timePicker.getCurrentHour(),timePicker.getCurrentMinute()).getTime();
