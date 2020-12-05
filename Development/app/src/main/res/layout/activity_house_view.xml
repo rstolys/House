@@ -91,6 +91,13 @@
                     android:textColor="#673AB7"
                     android:textSize="18sp" />
 
+                <EditText
+                    android:id="@+id/view_house_spacer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="textPersonName" />
+
             </TableRow>
 
             <TableRow
@@ -105,13 +112,26 @@
                     android:orientation="vertical"></LinearLayout>
             </TableRow>
 
-            <TextView
-                android:id="@+id/view_house_votes_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/voting"
-                android:textColor="#673AB7"
-                android:textSize="18sp" />
+            <TableRow
+                android:id="@+id/view_house_row3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/view_house_votes_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/voting"
+                    android:textColor="#673AB7"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/view_house_spacer2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="textPersonName" />
+            </TableRow>
 
             <LinearLayout
                 android:id="@+id/view_house_votes"
@@ -120,27 +140,61 @@
                 android:orientation="vertical"></LinearLayout>
 
             <TableRow
-                android:id="@+id/view_house_my_tasks"
+                android:id="@+id/view_house_row4"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
                 <TextView
                     android:id="@+id/view_house_my_tasks_title"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/my_tasks"
                     android:textColor="#673AB7"
                     android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/view_house_spacer3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="textPersonName" />
             </TableRow>
 
-            <TextView
-                android:id="@+id/view_house_description"
+            <TableRow
+                android:id="@+id/view_house_row5"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/house_description"
-                android:textColor="#673AB7"
-                android:textSize="18sp" />
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/view_house_description_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/house_description"
+                    android:textColor="#673AB7"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/view_house_spacer4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="textPersonName" />
+
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/view_house_row6"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/view_house_description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Description" />
+            </TableRow>
 
         </LinearLayout>
     </ScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

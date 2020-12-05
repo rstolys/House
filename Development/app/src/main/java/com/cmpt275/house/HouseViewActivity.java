@@ -177,6 +177,7 @@ public class HouseViewActivity extends AppCompatActivity implements Observer {
 
         Log.d("UPDATE HOUSE_VIEW_ACT:", "Object passed: " + obj);
         if(String.valueOf(obj) == "viewVoting"){
+            // Need to work on to update voting
             this.vInfos = this.hClass.vInfos;
         } else if(String.valueOf(obj) == "viewHouse"){
             // Load house data that is not on a callback (title, members, description)
@@ -191,7 +192,7 @@ public class HouseViewActivity extends AppCompatActivity implements Observer {
             }
 
             TextView houseDescription = findViewById(R.id.view_house_description);
-            houseDescription.setText("House Description: " + this.hInfo.description);
+            houseDescription.setText(this.hInfo.description);
         }
 
         ft.commit();
