@@ -51,7 +51,7 @@
             android:background="@color/purple_200">
 
             <TextView
-                android:layout_width="225dp"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
                 android:textSize="18sp"
@@ -72,7 +72,7 @@
             android:background="@color/purple_200">
 
             <TextView
-                android:layout_width="225dp"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
                 android:textSize="18sp"
@@ -98,8 +98,8 @@
                 style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="68dp"
-                android:layout_marginEnd="80dp"
+                android:layout_marginStart="60dp"
+                android:layout_marginEnd="65dp"
                 android:text="Complete" />
 
             <Button
@@ -111,6 +111,10 @@
                 android:layout_marginEnd="15dp"/>
 
         </TableRow>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:background="@color/white" />
 
     </LinearLayout>
 

@@ -14,7 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="30dp"
         android:layout_marginEnd="16dp"
         android:ems="10"
         android:hint="@string/email_placeholder"
@@ -41,7 +41,7 @@
         android:id="@+id/SignInTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="25dp"
         android:fontFamily="sans-serif-medium"
         android:hint="@string/signIn_title"
         android:textColor="@color/black"
@@ -54,7 +54,7 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="90dp"
         android:fontFamily="sans-serif-black"
         android:text="House"
         android:textColor="#4CAF50"
@@ -85,6 +85,22 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="75dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="75dp"
+        android:layout_marginBottom="25dp"
+        android:onClick="forgotPassword"
+        android:text="@string/forgotPassword_login"
+        app:layout_constraintBottom_toTopOf="@+id/textView4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.484"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button3" />
 
     <Button
         android:id="@+id/button"

@@ -4,9 +4,9 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.cmpt275.house.classDef.databaseObjects.houseMemberObj;
 import com.cmpt275.house.classDef.databaseObjects.voterObj;
 import com.cmpt275.house.classDef.documentClass.firebaseHouseDocument;
+import com.cmpt275.house.classDef.documentClass.firebaseUserDocument;
 import com.cmpt275.house.classDef.documentClass.firebaseVotingDocument;
 import com.cmpt275.house.classDef.infoClass.houseInfo;
 import com.cmpt275.house.classDef.infoClass.houseMemberInfoObj;
@@ -43,17 +43,12 @@ public class houseFirebaseClass implements HouseBE {
     private final String TAG = "FirebaseHouseAction";
 
     private final String NO_ERROR = "";
+    private final String INVALID_PERMISSIONS_MESSAGE = "Looks like you don't have permission to do that. Sorry!";
     private final String INVALID_PARAMETER_MESSAGE = "Looks like we couldn't access your information. Try signing in again";
     private final String DATABASE_ERROR_MESSAGE = "Oops! Looks like there was an error on our end. Sorry about that. Please try again";
     private final String UNKNOWN_ERROR_MESSAGE = "Oops! Looks something went wrong there. Sorry about that. Please try again";
 
-
-    // TODO: add variables below to documentation
     private final roleMapping roleMap;
-
-
-    //Also need to update documentation with new version of callbacks
-
 
 
     //
@@ -116,6 +111,48 @@ public class houseFirebaseClass implements HouseBE {
                         }
                     });
             }
+        }
+        catch(Exception e) {
+            Log.e(TAG, "ERROR: Exception caught: " + e.getMessage());
+            callback.onReturn(null, false, UNKNOWN_ERROR_MESSAGE);
+        }
+    }
+
+
+    ////////////////////////////////////////////////////////////
+    //
+    // Get list of houses in system
+    //
+    ////////////////////////////////////////////////////////////
+    public void getAllHouses(hInfoArrayCallback callback) {
+        try{
+            db.collection("houses").get()
+                .addOnCompleteListener(queryResult -> {
+                    if(queryResult.isSuccessful()) {
+                        Log.d(TAG, "Successfully Query in getAllHouses");
+
+                        List<houseInfo> houseInfoList = new ArrayList<houseInfo>();
+                        for(QueryDocumentSnapshot document : Objects.requireNonNull(queryResult.getResult())) {
+
+                            firebaseHouseDocument houseData = document.toObject(firebaseHouseDocument.class);
+                            houseInfoList.add(houseData.toHouseInfo(document.getId()));
+
+                            Log.d(TAG, "Collected Task Document: " + document.getId());
+                        }
+
+                        //Convert list to array and return
+                        houseInfo[] houseInfoArray = new houseInfo[houseInfoList.size()];
+                        houseInfoList.toArray(houseInfoArray);
+                        callback.onReturn(houseInfoArray, true, NO_ERROR);
+
+                    }
+                    else {
+                        Log.d(TAG, "getAllHouses: Error getting houses for user: ", queryResult.getException());
+
+                        //Call function to return task value
+                        callback.onReturn(null, false, DATABASE_ERROR_MESSAGE);
+                    }
+                });
         }
         catch(Exception e) {
             Log.e(TAG, "ERROR: Exception caught: " + e.getMessage());
@@ -228,7 +265,7 @@ public class houseFirebaseClass implements HouseBE {
                 if(!Objects.requireNonNull(hInfo.members.get(user_id)).role.equals(roleMap.ADMIN)) {
                     Log.d(TAG, "deleteHouse cannot be done by a non-admin member");
 
-                    callback.onReturn(false, "Sorry. You don't have permission to delete this house.");
+                    callback.onReturn(false, INVALID_PERMISSIONS_MESSAGE);
                 }
                 else {
                     WriteBatch batch = db.batch();
@@ -321,6 +358,10 @@ public class houseFirebaseClass implements HouseBE {
                             }
                         }
                     }
+                    else {
+                        stillAnAdmin = true;
+                        //There  will still be an admin since this change won't impact the admin members
+                    }
 
                     if(stillAnAdmin) {
                         //change the role for the specified user
@@ -354,7 +395,7 @@ public class houseFirebaseClass implements HouseBE {
                 else {
                     Log.d(TAG, "User: " + user_id + " is not a member of this house");
 
-                    callback.onReturn(null, false, INVALID_PARAMETER_MESSAGE);
+                    callback.onReturn(null, false, "The user you changed role of is not a member of this house");
                 }
 
             }
@@ -381,26 +422,34 @@ public class houseFirebaseClass implements HouseBE {
             }
             else {
                 Log.d(TAG, "addMember called for user: " + user_id + " and role of: " + role);
-                //Add the user to the map
-                hInfo.members.put(user_id, new houseMemberInfoObj(userName, role));
 
-                //Convert info class to document
-                firebaseHouseDocument houseData = new firebaseHouseDocument(hInfo);
+                if(hInfo.members.size() >= hInfo.maxMembers) {
+                    Log.d(TAG, "House is already full");
 
-                //Update this information in the house document
-                db.collection("houses").document(hInfo.id).update("members", houseData.getMembers())
-                    .addOnSuccessListener(documentReference -> {
-                        Log.d(TAG, "User successfully added to house: " + hInfo.id);
+                    callback.onReturn(null, false, "Looks like the house is already full. Sorry!");
+                }
+                else {
+                    //Add the user to the map
+                    hInfo.members.put(user_id, new houseMemberInfoObj(userName, role));
 
-                        //hInfo updated successfully, return updated hInfo
-                        callback.onReturn(hInfo, true, NO_ERROR);
-                    })
-                    .addOnFailureListener(e -> {
-                        Log.w(TAG, "Error updating document", e);
+                    //Convert info class to document
+                    firebaseHouseDocument houseData = new firebaseHouseDocument(hInfo);
 
-                        //IndicateError
-                        callback.onReturn(null, false, DATABASE_ERROR_MESSAGE);
-                    });
+                    //Update this information in the house document
+                    db.collection("houses").document(hInfo.id).update("members", houseData.getMembers())
+                        .addOnSuccessListener(documentReference -> {
+                            Log.d(TAG, "User successfully added to house: " + hInfo.id);
+
+                            //hInfo updated successfully, return updated hInfo
+                            callback.onReturn(hInfo, true, NO_ERROR);
+                        })
+                        .addOnFailureListener(e -> {
+                            Log.w(TAG, "Error updating document", e);
+
+                            //IndicateError
+                            callback.onReturn(null, false, DATABASE_ERROR_MESSAGE);
+                        });
+                }
             }
         }
         catch(Exception e) {
@@ -428,7 +477,7 @@ public class houseFirebaseClass implements HouseBE {
                 //Verify that the caller is either the user to be removed or an admin of the house and the user is not an admin
                 if(user_id.equals(callerID) || Objects.requireNonNull(hInfo.members.get(callerID)).role.equals(roleMap.ADMIN)) {
                     //Make sure the user being removed is not an admin as well
-                    if(user_id.equals(callerID) || !hInfo.members.get(user_id).role.equals(roleMap.ADMIN)) {
+                    if(user_id.equals(callerID) || !Objects.requireNonNull(hInfo.members.get(user_id)).role.equals(roleMap.ADMIN)) {
 
                         WriteBatch batch = db.batch();
 
@@ -473,7 +522,7 @@ public class houseFirebaseClass implements HouseBE {
                 else {
                     Log.d(TAG, "removeMember: This caller: " + callerID + " does not have permission to remove the house member");
 
-                    callback.onReturn(false, "Sorry. You don't have permission to remove " + hInfo.members.get(user_id).getName() + "from this house");
+                    callback.onReturn(false, INVALID_PERMISSIONS_MESSAGE);
                 }
             }
         }
@@ -668,6 +717,100 @@ public class houseFirebaseClass implements HouseBE {
                         callback.onReturn(null, false, DATABASE_ERROR_MESSAGE);
                     }
                 });
+            }
+        }
+        catch(Exception e) {
+            Log.e(TAG, "ERROR: Exception caught: " + e.getMessage());
+            callback.onReturn(null, false, UNKNOWN_ERROR_MESSAGE);
+        }
+    }
+
+
+    ////////////////////////////////////////////////////////////
+    //
+    // Invite user to join house
+    //
+    ////////////////////////////////////////////////////////////
+    public void inviteUserToHouse(String newUserID, String newUserEmail, houseInfo hInfo, userInfo uInfo, hInfoCallback callback) {
+
+        try {
+            //Check that the user making the call is an admin user
+            if(!Objects.requireNonNull(hInfo.members.get(uInfo.id)).role.equals(roleMap.ADMIN)) {
+                Log.d(TAG, "inviteUserToHouse: user is not admin");
+
+                callback.onReturn(null, false, INVALID_PERMISSIONS_MESSAGE);
+            }
+            //Check that the house has not reached its maximum members
+            else if (hInfo.members.size() >= hInfo.maxMembers) {
+                Log.d(TAG, "inviteUserToHouse: House has already reached maximum members");
+
+                callback.onReturn(null, false, "Looks like the house is already full. Try changing the house settings first");
+            }
+            else if(newUserID == null) {
+                Log.d(TAG, "inviteUserToHouse: new userID was null");
+
+                callback.onReturn(null, false, INVALID_PARAMETER_MESSAGE);
+            }
+            else {
+                //Get the new users information to add to system
+                db.collection("users").document(newUserID).get()
+                    .addOnSuccessListener(documentReference -> {
+                        Log.d(TAG, "get() of user document successful for inviteUserToHouse");
+
+                        //Convert User to userInfo class
+                        firebaseUserDocument newUserData = documentReference.toObject(firebaseUserDocument.class);
+                        assert newUserData != null;
+                        userInfo newUInfo = newUserData.toUserInfo(newUserID, newUserEmail);
+
+                        //Add house to user account
+                        newUInfo.houses.put(hInfo.id, hInfo.displayName);
+
+                        //Add user to house
+                        hInfo.members.put(newUserID, new houseMemberInfoObj(newUInfo.displayName, roleMap.MEMBER));
+
+
+                        //Convert user and house Info to database objects
+                        newUserData = new firebaseUserDocument(newUInfo);
+                        firebaseHouseDocument houseData = new firebaseHouseDocument(hInfo);
+
+                        //Write new userInfo and houseInfo to database in batch
+                        WriteBatch batch = db.batch();
+
+                        //Add userUpdate to write batch
+                        Map<String,Object> userUpdate = new HashMap<>();
+                        userUpdate.put("houses", newUserData.getHouses());
+
+                        DocumentReference userDocRef = db.collection("users").document(newUInfo.id);
+                        batch.update(userDocRef, userUpdate);
+
+                        //Add houseUpdate to write batch
+                        Map<String,Object> houseUpdate = new HashMap<>();
+                        houseUpdate.put("members", houseData.getMembers());
+
+                        DocumentReference houseDocRef = db.collection("houses").document(hInfo.id);
+                        batch.update(houseDocRef, houseUpdate);
+
+                        //Commit the writes to the database and wait for completion
+                        batch.commit().addOnCompleteListener(task -> {
+                            if(task.isSuccessful()) {
+                                Log.d(TAG, "House member " + newUserID + " successfully added to house " + hInfo.id);
+
+                                callback.onReturn(hInfo, true, NO_ERROR);
+                            }
+                            else {
+                                Log.d(TAG, "House member wasn't added successfully");
+
+                                callback.onReturn(null, false, DATABASE_ERROR_MESSAGE);
+                            }
+                        });
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.w(TAG, "inviteUserToHouse: user does not exist", e);
+
+                        //Call function to return task value
+                        callback.onReturn(hInfo, false, "Looks like that user does not exist. Try adding a someone else.");
+
+                    });
             }
         }
         catch(Exception e) {
