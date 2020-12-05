@@ -358,6 +358,10 @@ public class houseFirebaseClass implements HouseBE {
                             }
                         }
                     }
+                    else {
+                        stillAnAdmin = true;
+                        //There  will still be an admin since this change won't impact the admin members
+                    }
 
                     if(stillAnAdmin) {
                         //change the role for the specified user
@@ -391,7 +395,7 @@ public class houseFirebaseClass implements HouseBE {
                 else {
                     Log.d(TAG, "User: " + user_id + " is not a member of this house");
 
-                    callback.onReturn(null, false, INVALID_PARAMETER_MESSAGE);
+                    callback.onReturn(null, false, "The user you changed role of is not a member of this house");
                 }
 
             }
@@ -418,26 +422,34 @@ public class houseFirebaseClass implements HouseBE {
             }
             else {
                 Log.d(TAG, "addMember called for user: " + user_id + " and role of: " + role);
-                //Add the user to the map
-                hInfo.members.put(user_id, new houseMemberInfoObj(userName, role));
 
-                //Convert info class to document
-                firebaseHouseDocument houseData = new firebaseHouseDocument(hInfo);
+                if(hInfo.members.size() >= hInfo.maxMembers) {
+                    Log.d(TAG, "House is already full");
 
-                //Update this information in the house document
-                db.collection("houses").document(hInfo.id).update("members", houseData.getMembers())
-                    .addOnSuccessListener(documentReference -> {
-                        Log.d(TAG, "User successfully added to house: " + hInfo.id);
+                    callback.onReturn(null, false, "Looks like the house is already full. Sorry!");
+                }
+                else {
+                    //Add the user to the map
+                    hInfo.members.put(user_id, new houseMemberInfoObj(userName, role));
 
-                        //hInfo updated successfully, return updated hInfo
-                        callback.onReturn(hInfo, true, NO_ERROR);
-                    })
-                    .addOnFailureListener(e -> {
-                        Log.w(TAG, "Error updating document", e);
+                    //Convert info class to document
+                    firebaseHouseDocument houseData = new firebaseHouseDocument(hInfo);
 
-                        //IndicateError
-                        callback.onReturn(null, false, DATABASE_ERROR_MESSAGE);
-                    });
+                    //Update this information in the house document
+                    db.collection("houses").document(hInfo.id).update("members", houseData.getMembers())
+                        .addOnSuccessListener(documentReference -> {
+                            Log.d(TAG, "User successfully added to house: " + hInfo.id);
+
+                            //hInfo updated successfully, return updated hInfo
+                            callback.onReturn(hInfo, true, NO_ERROR);
+                        })
+                        .addOnFailureListener(e -> {
+                            Log.w(TAG, "Error updating document", e);
+
+                            //IndicateError
+                            callback.onReturn(null, false, DATABASE_ERROR_MESSAGE);
+                        });
+                }
             }
         }
         catch(Exception e) {
@@ -465,7 +477,7 @@ public class houseFirebaseClass implements HouseBE {
                 //Verify that the caller is either the user to be removed or an admin of the house and the user is not an admin
                 if(user_id.equals(callerID) || Objects.requireNonNull(hInfo.members.get(callerID)).role.equals(roleMap.ADMIN)) {
                     //Make sure the user being removed is not an admin as well
-                    if(user_id.equals(callerID) || !hInfo.members.get(user_id).role.equals(roleMap.ADMIN)) {
+                    if(user_id.equals(callerID) || !Objects.requireNonNull(hInfo.members.get(user_id)).role.equals(roleMap.ADMIN)) {
 
                         WriteBatch batch = db.batch();
 
@@ -723,7 +735,7 @@ public class houseFirebaseClass implements HouseBE {
 
         try {
             //Check that the user making the call is an admin user
-            if(!hInfo.members.get(uInfo.id).role.equals(roleMap.ADMIN)) {
+            if(!Objects.requireNonNull(hInfo.members.get(uInfo.id)).role.equals(roleMap.ADMIN)) {
                 Log.d(TAG, "inviteUserToHouse: user is not admin");
 
                 callback.onReturn(null, false, INVALID_PERMISSIONS_MESSAGE);

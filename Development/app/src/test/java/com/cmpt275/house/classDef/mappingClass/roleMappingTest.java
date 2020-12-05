@@ -8,11 +8,10 @@ import java.util.List;
 
 public class roleMappingTest {
 
-    /////////////////////////////////////////////////////////
-    //
-    // Test map of string to inetger
-    //
-    /////////////////////////////////////////////////////////
+
+    ////////////////////////////////////////////////////////////
+    // Automated Test 5
+    ////////////////////////////////////////////////////////////
     @Test
     public void testMapOfStringToInt() {
 
@@ -25,12 +24,9 @@ public class roleMappingTest {
         Assert.assertEquals(startValue, finalValue);
     }
 
-
-    /////////////////////////////////////////////////////////
-    //
-    // Test map of integer to string
-    //
-    /////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////
+    // Automated Test 6
+    ////////////////////////////////////////////////////////////
     @Test
     public void testMapOfIntToString() {
 
@@ -44,13 +40,30 @@ public class roleMappingTest {
     }
 
 
-    /////////////////////////////////////////////////////////
-    //
-    // Test map of list of integers to strings
-    //
-    /////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////
+    // Automated Test 7
+    ////////////////////////////////////////////////////////////
     @Test
-    public void testListOfIntToStringAndBack() {
+    public void testListOfStringToInt() {
+
+        notificationMapping notify = new notificationMapping();
+
+        List<String> startValue = new ArrayList<String>();
+        startValue.add(notify.NONE);
+        startValue.add(notify.WEEKLY);
+        startValue.add(notify.MONTHLY);
+
+        List<String> finalValue = notify.mapList_IntToString(notify.mapList_StringToInt(startValue));
+
+        Assert.assertEquals(startValue, finalValue);
+    }
+
+
+    ////////////////////////////////////////////////////////////
+    // Automated Test 8
+    ////////////////////////////////////////////////////////////
+    @Test
+    public void testListOfIntToString() {
 
         roleMapping roleMap = new roleMapping();
 
@@ -62,28 +75,5 @@ public class roleMappingTest {
         List<Integer> finalValue = roleMap.mapList_StringToInt(roleMap.mapList_IntToString(startValue));
 
         Assert.assertEquals(startValue, finalValue);
-
     }
-
-
-    /////////////////////////////////////////////////////////
-    //
-    // Test map of list of strings to inetgers
-    //
-    /////////////////////////////////////////////////////////
-    @Test
-    public void testListOfStringToIntAndBack() {
-
-        roleMapping roleMap = new roleMapping();
-
-        List<String> startValue = new ArrayList<String>();
-        startValue.add(roleMap.ADMIN);
-        startValue.add(roleMap.MEMBER);
-        startValue.add(roleMap.REQUEST);
-
-        List<String> finalValue = roleMap.mapList_IntToString(roleMap.mapList_StringToInt(startValue));
-
-        Assert.assertEquals(startValue, finalValue);
-    }
-
 }
