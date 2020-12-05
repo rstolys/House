@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -196,5 +198,19 @@ public class HouseViewActivity extends AppCompatActivity implements Observer {
         }
 
         ft.commit();
+    }
+
+    /////////////////////////////////////////////////
+    //
+    // Will hide the keyboard on the call
+    //
+    /////////////////////////////////////////////////
+    public void hideKeyboard(View view) {
+
+        //Hide  the keyboard from the user
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getSystemService(this.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 }
