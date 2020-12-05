@@ -14,6 +14,10 @@ import androidx.fragment.app.FragmentManager;
 
 import com.cmpt275.house.classDef.displayMessage;
 import com.cmpt275.house.classDef.houseClass;
+import com.cmpt275.house.classDef.houseFirebaseClass;
+import com.cmpt275.house.classDef.infoClass.houseInfo;
+import com.cmpt275.house.classDef.infoClass.houseMemberInfoObj;
+import com.cmpt275.house.classDef.infoClass.userInfo;
 import com.cmpt275.house.classDef.notifications;
 import com.cmpt275.house.classDef.settingsClass;
 import com.cmpt275.house.classDef.signInClass;
@@ -29,12 +33,9 @@ import java.io.ObjectOutputStream;
 
 public class MainActivity extends AppCompatActivity implements updateUI {
 
-    private signInClass auth = new signInClass(this, this);
-    private task taskAction = new taskClass(this);
-    private house houseAction = new houseClass(this);
-    private settings settingsAction = new settingsClass(this);
-    private displayMessage display = new displayMessage();
-    private notifications notify = new notifications();
+    private final signInClass auth = new signInClass(this, this);
+    private final displayMessage display = new displayMessage();
+    private final notifications notify = new notifications();
 
     private createAccountDialogFrag createAccountDialog;
 
@@ -108,11 +109,36 @@ public class MainActivity extends AppCompatActivity implements updateUI {
         EditText password = findViewById(R.id.passwordOfUser);
 
         //Show a message to the user
-        display.showToastMessage(this, "Signing In", display.LONG);
+        display.showToastMessage(this, "Signing In", display.SHORT);
 
         //Call function to signIn the user
         auth.signInUser(email.getText().toString(), password.getText().toString());
     }
+
+
+    ////////////////////////////////////////////////
+    /// Will be called on click of forgot password button
+    ////////////////////////////////////////////////
+    public void forgotPassword(View view) {
+
+        //Get the entered email for the user
+        EditText emailInput = findViewById(R.id.emailOfUser);
+        String email = emailInput.getText().toString();
+
+        //Get confirmation from the user to reset the password
+        display.createTwoBtnAlert(this, "Password Reset", "Do you want to send a reset email to: " + email + "?", "Send", "Cancel",
+            (result, errorMessage) -> {
+                Log.d("resetPasswordBtnClicked", "Password Reset Dialogue selected with value: " + result);
+
+                if (result) {
+                    Log.d("resetPasswordBtnClicked", "Sending reset password email for: " + email);
+
+                    //Reset the password for the user
+                    auth.forgotPassword(email);
+                }
+            });
+    }
+
 
     ////////////////////////////////////////////////
     /// Will be called at end of async functions that need to update the ui

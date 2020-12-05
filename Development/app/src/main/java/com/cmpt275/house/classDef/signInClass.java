@@ -130,12 +130,10 @@ public class signInClass implements signIn {
         if(email == null || email.length() < 1) {
             Log.d("forgotPassword", "email provided is null or empty");
 
-            display.showToastMessage(mContext, "Oops. Looks like we ran into an issue. Try signing in again", display.LONG);
-
-            //We should send user to signIn again since we are missing information we should have
+            display.showToastMessage(mContext, "Oops. We don't see an email to send a reset link to. Try entering your email again", display.LONG);
         }
         else {
-            firebaseUserTask.resetPassword("ryanstolys@gmail.com", (result, errorMessage) -> {
+            firebaseUserTask.resetPassword(email, (result, errorMessage) -> {
                 Log.d("resetPassword:", "Returned with result: " + result);
 
                 if(result) {

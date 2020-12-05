@@ -8,6 +8,7 @@
     <string name="password_placeholder">Enter Password</string>
     <string name="button_signIn">Sign In</string>
     <string name="signIn_title">Sign In</string>
+
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
@@ -17,6 +18,7 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
+    <string name="forgotPassword_login"><u>Forgot Password?</u></string>
 
     <!-- Strings related to Home Page -->
     <string name="welcome_home">Welcome Home!</string>

@@ -31,7 +31,6 @@ public class userFirebaseClass implements UsersBE {
     private final String DATABASE_ERROR_MESSAGE = "Oops! Looks like there was an error on our end. Sorry about that. Please try again";
     private final String UNKNOWN_ERROR_MESSAGE = "Oops! Looks something went wrong there. Sorry about that. Please try again";
 
-    //TODO: Add attributes to documentation
     private final FirebaseAuth firebaseAuth;
 
     //
@@ -359,7 +358,7 @@ public class userFirebaseClass implements UsersBE {
                             //Log the error result
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
 
-                            callback.onReturn(null, false, "Looks like the information you provided was incorrect. Please try againj");
+                            callback.onReturn(null, false, "Looks like the information you provided was incorrect. Please try again");
                         }
                     });
             }
