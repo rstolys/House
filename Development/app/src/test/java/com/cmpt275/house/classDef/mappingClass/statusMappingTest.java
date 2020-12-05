@@ -8,11 +8,9 @@ import java.util.List;
 
 public class statusMappingTest {
 
-    /////////////////////////////////////////////////////////
-    //
-    // Test map of string to integer
-    //
-    /////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////
+    // Automated Test 9
+    ////////////////////////////////////////////////////////////
     @Test
     public void testMapOfStringToInt() {
 
@@ -26,11 +24,9 @@ public class statusMappingTest {
     }
 
 
-    /////////////////////////////////////////////////////////
-    //
-    // Test map of integer to string
-    //
-    /////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////
+    // Automated Test 10
+    ////////////////////////////////////////////////////////////
     @Test
     public void testMapOfIntToString() {
 
@@ -44,37 +40,11 @@ public class statusMappingTest {
     }
 
 
-    /////////////////////////////////////////////////////////
-    //
-    // Test map of list of integers to strings
-    //
-    /////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////
+    // Automated Test 11
+    ////////////////////////////////////////////////////////////
     @Test
-    public void testListOfIntToStringAndBack() {
-
-        statusMapping statusMap = new statusMapping();
-
-        List<Integer> startValue = new ArrayList<Integer>();
-        startValue.add(statusMap.COMPLETED_NUM);
-        startValue.add(statusMap.DISPUTE_NUM);
-        startValue.add(statusMap.LATE_NUM);
-        startValue.add(statusMap.NOT_COMPLETE_NUM);
-        startValue.add(statusMap.NOT_SET_NUM);
-
-        List<Integer> finalValue = statusMap.mapList_StringToInt(statusMap.mapList_IntToString(startValue));
-
-        Assert.assertEquals(startValue, finalValue);
-
-    }
-
-
-    /////////////////////////////////////////////////////////
-    //
-    // Test map of list of strings to inetgers
-    //
-    /////////////////////////////////////////////////////////
-    @Test
-    public void testListOfStringToIntAndBack() {
+    public void testListOfStringToInt() {
 
         statusMapping statusMap = new statusMapping();
 
@@ -90,4 +60,24 @@ public class statusMappingTest {
         Assert.assertEquals(startValue, finalValue);
     }
 
+
+    ////////////////////////////////////////////////////////////
+    // Automated Test 12
+    ////////////////////////////////////////////////////////////
+    @Test
+    public void testListOfIntToString() {
+
+        statusMapping statusMap = new statusMapping();
+
+        List<Integer> startValue = new ArrayList<Integer>();
+        startValue.add(statusMap.COMPLETED_NUM);
+        startValue.add(statusMap.DISPUTE_NUM);
+        startValue.add(statusMap.LATE_NUM);
+        startValue.add(statusMap.NOT_COMPLETE_NUM);
+        startValue.add(statusMap.NOT_SET_NUM);
+
+        List<Integer> finalValue = statusMap.mapList_StringToInt(statusMap.mapList_IntToString(startValue));
+
+        Assert.assertEquals(startValue, finalValue);
+    }
 }

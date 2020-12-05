@@ -14,6 +14,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.cmpt275.house.classDef.homeClass;
 import com.cmpt275.house.classDef.taskClass;
 import com.cmpt275.house.classDef.infoClass.taskInfo;
 import com.cmpt275.house.classDef.infoClass.userInfo;
@@ -29,12 +30,11 @@ import java.util.Observer;
 
 public class TaskActivity extends AppCompatActivity implements Observer {
 
-    taskInfo tInfo;
     userInfo uInfo;
 
     private taskClass myTaskClass = new taskClass(this);
     private Intent newIntent;
-    private Intent buttonIntent;
+    private Intent addButtonIntent;
     FragmentTransaction fragmentTransaction;
 
     @Override
@@ -67,10 +67,10 @@ public class TaskActivity extends AppCompatActivity implements Observer {
 
         myTaskClass.addObserver(this);
 
-        // Update the tasks in the houseClass from the database
-        Log.d("OnCreate House Activity", "Before call to view your houses" );
+        // Update the tasks in the taskClass from the database
+        Log.d("OnCreate Task Activity", "Before call to view your tasks" );
         myTaskClass.viewUserTasks(uInfo.id);
-        Log.d("OnCreate House Activity", "After call to view your houses" );
+        Log.d("OnCreate Task Activity", "After call to view your tasks" );
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
         navView.setSelectedItemId(R.id.navBar_tasks);
@@ -81,25 +81,13 @@ public class TaskActivity extends AppCompatActivity implements Observer {
             @Override
             public void onClick(View v) {
                 // First prepare the userInfo to pass to next activity
-                String serializedUserInfo = "";
-                try {
-                    // Convert object data to encoded string
-                    ByteArrayOutputStream bo = new ByteArrayOutputStream();
-                    ObjectOutputStream so = new ObjectOutputStream(bo);
-                    so.writeObject(uInfo);
-                    so.flush();
-                    final byte[] byteArray = bo.toByteArray();
-                    serializedUserInfo = Base64.encodeToString(byteArray, Base64.DEFAULT);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                String serializedUserInfo = getSerializedUserInfo();
 
-                buttonIntent = new Intent(TaskActivity.this, NewTaskActivity.class);
-                buttonIntent.putExtra("userInfo", serializedUserInfo);
-                startActivity( buttonIntent );
+                addButtonIntent = new Intent(TaskActivity.this, NewTaskActivity.class);
+                addButtonIntent.putExtra("userInfo", serializedUserInfo);
+                startActivity(addButtonIntent);
             }
         });
-
     }
 
 
@@ -108,18 +96,7 @@ public class TaskActivity extends AppCompatActivity implements Observer {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                     // First prepare the userInfo to pass to next activity
-                    String serializedUserInfo = "";
-                    try {
-                        // Convert object data to encoded string
-                        ByteArrayOutputStream bo = new ByteArrayOutputStream();
-                        ObjectOutputStream so = new ObjectOutputStream(bo);
-                        so.writeObject(uInfo);
-                        so.flush();
-                        final byte[] byteArray = bo.toByteArray();
-                        serializedUserInfo = Base64.encodeToString(byteArray, Base64.DEFAULT);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    String serializedUserInfo = getSerializedUserInfo();
 
                     // Now start appropriate activity
                     switch (item.getItemId()){
@@ -129,8 +106,10 @@ public class TaskActivity extends AppCompatActivity implements Observer {
                             startActivity( newIntent );
                             break;
                         case R.id.navBar_tasks:
-                            break;
-                        case R.id.navBar_houses:
+                            newIntent = new Intent(TaskActivity.this, TaskActivity.class);
+                            newIntent.putExtra("userInfo", serializedUserInfo);
+                            startActivity( newIntent );
+                            break;                        case R.id.navBar_houses:
                             newIntent = new Intent(TaskActivity.this, HouseActivity.class);
                             newIntent.putExtra("userInfo", serializedUserInfo);
                             startActivity( newIntent );
@@ -196,16 +175,14 @@ public class TaskActivity extends AppCompatActivity implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        Log.d("UPDATE", "In update to update tasks");
         this.updateTasks();
     }
 
     private void updateTasks() {
 
-        // First check if there are any houses on the screen
+        // First check if there are any tasks on the screen
         FragmentManager fm = getSupportFragmentManager();
         fragmentTransaction = fm.beginTransaction();
-        Log.d("UPDATE_tASKS", "I am removing old tasks from the screen");
 
         try {
             Log.d("UPDATE_TASKS", "There are " + fm.getBackStackEntryCount() + " backEntry");
@@ -226,4 +203,25 @@ public class TaskActivity extends AppCompatActivity implements Observer {
 
         fragmentTransaction.commit();
     }
+
+    private String getSerializedUserInfo() {
+
+        String serializedUserInfo = "";
+        try {
+            // Convert object data to encoded string
+            ByteArrayOutputStream bo = new ByteArrayOutputStream();
+            ObjectOutputStream so = new ObjectOutputStream(bo);
+            so.writeObject(uInfo);
+            so.flush();
+            final byte[] byteArray = bo.toByteArray();
+            serializedUserInfo = Base64.encodeToString(byteArray, Base64.DEFAULT);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+            serializedUserInfo = "";
+        }
+
+        return serializedUserInfo;
+    }
+
 }

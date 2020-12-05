@@ -16,6 +16,7 @@ public interface UsersBE {
     public void updateNotificationSettings(userInfo uInfo, boolean newNotificationSettings, uInfoCallback callback);
     public void signInUser(String email, String password, uInfoCallback callback);
     public void getUserInfo(String user_id, uInfoCallback callback);
+    public void getUserInfo_firebaseID(String firebase_id, uInfoCallback callback);
     public void submitFeedback(feedbackInfo fInfo, booleanCallback callback);
     public void logout(userInfo uInfo, booleanCallback callback);
 }
