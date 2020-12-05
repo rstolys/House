@@ -230,9 +230,11 @@ public class HouseActivity extends AppCompatActivity implements Observer {
         // Now add back the updated houses
         Log.d("UPDATE_HOUSES", "I am putting my houses to screen");
         for(int i = 0; i < myHouseClass.hInfos.size(); i++ ){
-            HouseFrag houseFrag = new HouseFrag(myHouseClass.hInfos.get(i), myHouseClass);
-            fragmentTransaction.add(R.id.my_houses_list, houseFrag);
-            fragmentTransaction.addToBackStack(null);
+            if(! myHouseClass.hInfos.get(i).members.get(uInfo.id).role.equals("Request To Join")){
+                HouseFrag houseFrag = new HouseFrag(myHouseClass.hInfos.get(i), myHouseClass);
+                fragmentTransaction.add(R.id.my_houses_list, houseFrag);
+                fragmentTransaction.addToBackStack(null);
+            }
         }
 
         fragmentTransaction.commit();
