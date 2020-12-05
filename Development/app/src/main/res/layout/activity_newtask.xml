@@ -94,7 +94,11 @@
                     android:layout_height="wrap_content"
                     android:importantForAutofill="no"
                     android:maxLength="10000"
+<<<<<<< Updated upstream
                     android:hint="@string/new_task_description" />
+=======
+                    android:hint ="@string/new_task_description" />
+>>>>>>> Stashed changes
             </TableRow>
 
 
