@@ -28,6 +28,8 @@ import java.io.ObjectOutputStream;
 import java.util.Observable;
 import java.util.Observer;
 
+import static java.lang.Integer.parseInt;
+
 public class HouseEditActivity extends AppCompatActivity implements Observer {
 
     private Intent newIntent;
@@ -91,6 +93,26 @@ public class HouseEditActivity extends AppCompatActivity implements Observer {
             startActivity(newIntent);
         });
 
+        // Get references to where the data is
+        EditText houseTitle = findViewById(R.id.edit_house_house_name);
+        EditText houseMaxMembers = findViewById(R.id.edit_house_max_members_int);
+        EditText notificationSched = findViewById(R.id.edit_house_notification_schedule);
+        EditText punishMult = findViewById(R.id.edit_houes_punishment_mult);
+        EditText houseDescrp = findViewById(R.id.edit_house_description);
+
+        Button saveButton = findViewById(R.id.edit_house_save_button);
+        saveButton.setOnClickListener(v->{
+            // Scrape data off UI
+            this.hInfo.displayName = String.valueOf(houseTitle.getText());
+            this.hInfo.maxMembers  = parseInt(String.valueOf(houseMaxMembers.getText()));
+            this.hInfo.houseNotifications = String.valueOf(notificationSched.getText());
+            this.hInfo.punishmentMultiplier = parseInt(String.valueOf(punishMult.getText()));
+            this.hInfo.description = String.valueOf(houseDescrp.getText());
+
+            // Update data in backend and exit activity
+            hClass.editSettings(this.hInfo);
+        });
+
         BottomNavigationView navView = findViewById(R.id.nav_view);
         navView.setOnNavigationItemSelectedListener(navListener); //so we can implement it outside onCreate
     }
@@ -151,8 +173,21 @@ public class HouseEditActivity extends AppCompatActivity implements Observer {
             // Correctly returned object with hInfo attached
             this.hInfo = this.hClass.hInfo;
 
+            // Set hInfo data to screen
             EditText houseTitle = findViewById(R.id.edit_house_house_name);
             houseTitle.setText(hInfo.displayName);
+
+            EditText houseMaxMembers = findViewById(R.id.edit_house_max_members_int);
+            houseMaxMembers.setText(String.valueOf(hInfo.maxMembers));
+
+            EditText notificationSched = findViewById(R.id.edit_house_notification_schedule);
+            notificationSched.setText(hInfo.houseNotifications);
+
+            EditText punishMult = findViewById(R.id.edit_houes_punishment_mult);
+            punishMult.setText(String.valueOf(hInfo.punishmentMultiplier));
+
+            EditText houseDescrp = findViewById(R.id.edit_house_description);
+            houseDescrp.setText(String.valueOf(hInfo.description));
 
             for(houseMemberInfoObj houseMember : hInfo.members.values()) {
                 HouseViewMemberFrag hvmf = new HouseViewMemberFrag("editHouse", houseMember.name, houseMember.role);
@@ -168,6 +203,26 @@ public class HouseEditActivity extends AppCompatActivity implements Observer {
             }
 
             ft.commit();
+        } else if( arg == "editSettings" ) {
+            // Call to edit settings has passed and back end updated
+
+            String serializedUserInfo = "";
+            try {
+                // Convert object data to encoded string
+                ByteArrayOutputStream bo = new ByteArrayOutputStream();
+                ObjectOutputStream so = new ObjectOutputStream(bo);
+                so.writeObject(uInfo);
+                so.flush();
+                final byte[] byteArray = bo.toByteArray();
+                serializedUserInfo = Base64.encodeToString(byteArray, Base64.DEFAULT);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            newIntent = new Intent(HouseEditActivity.this, HouseViewActivity.class);
+            newIntent.putExtra("userInfo", serializedUserInfo);
+            newIntent.putExtra("houseId", hClass.hInfo.id);
+            startActivity(newIntent);
         }
     }
 }

@@ -162,21 +162,12 @@ public class HouseViewActivity extends AppCompatActivity implements Observer {
                 }
             };
 
-//    @Override
-//    protected void onStop() {
-//        super.onStop();
-//        //Our activity is no longer visible to the user
-//        //Next callback will be onRestart() or onDestroy()
-//        // When stopping the activity ensure all fragments are deleted
-//        try {
-//            int numBackStack = fm.getBackStackEntryCount();
-//            for(; numBackStack>0; numBackStack--) {
-//                fm.popBackStack();
-//            }
-//        } catch (Exception e){
-//            e.printStackTrace();
-//        }
-//    }
+    @Override
+    protected void onStop() {
+        super.onStop();
+        //Our activity is no longer visible to the user
+        //Next callback will be onRestart() or onDestroy()
+    }
 
     @Override
     public void update(Observable o, Object obj) {
