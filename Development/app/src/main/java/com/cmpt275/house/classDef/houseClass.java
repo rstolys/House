@@ -14,6 +14,7 @@ import com.cmpt275.house.classDef.mappingClass.notificationMapping;
 import com.cmpt275.house.classDef.mappingClass.roleMapping;
 import com.cmpt275.house.classDef.mappingClass.voteTypeMapping;
 import com.cmpt275.house.interfaceDef.Callbacks.booleanCallback;
+import com.cmpt275.house.interfaceDef.Callbacks.vInfoCallback;
 import com.cmpt275.house.interfaceDef.house;
 
 import java.util.ArrayList;
@@ -41,8 +42,7 @@ public class houseClass extends taskClass implements house {
     private final roleMapping roleMap;
     private final notificationMapping notificationMap;
     private final voteTypeMapping voteMap;
-
-    private displayMessage display;
+    private final displayMessage display;
 
     //
     // Class Functions
@@ -191,9 +191,9 @@ public class houseClass extends taskClass implements house {
         });
     }
 
-    public void viewVoting(String voting_id) {
+    public void getVotes(String house_id) {
 
-        firebaseTask.getHouseVotes("TfB0rlNBEuj9dSMzA1OM", (vInfos, success, errorMessage) -> {
+        firebaseTask.getHouseVotes(house_id, (vInfos, success, errorMessage) -> {
             Log.d("getHouseVotes:", "Returned with success: " + success);
 
             this.vInfos = vInfos;
@@ -203,17 +203,47 @@ public class houseClass extends taskClass implements house {
         });
     }
 
-    public void submitVote(String voting_id, int voteType, userInfo uInfo) {
 
-        votingInfo myVInfo = new votingInfo();
+    ////////////////////////////////////////////////////////////
+    //
+    // Will submit vote to backend
+    //
+    ////////////////////////////////////////////////////////////
+    public void submitVote(votingInfo vInfo, userInfo uInfo, boolean yesVote, int voteIndex, vInfoCallback callback) {
 
-        myVInfo.id = "gviuevFrurw2DsVdkGuD";
-        myVInfo.type = voteMap.DISPUTE_COMPLETION;
+        if(vInfo == null || uInfo == null) {
+            Log.d("submitVote:", "null votingInfo or userInfo ");
 
-        firebaseTask.submitVote(myVInfo, "Ryan Stolys", "w4OFKQrvL28T3WlXVP4X", true, (vInfo, success, errorMessage) -> {
-            Log.d("submitVote:", "Returned with success: " + success);
-            //Do stuff  here ...
-        });
+            display.showToastMessage(mContext, "Oops, Looks like something went wrong there sorry!", display.LONG);
+        }
+        else {
+            firebaseTask.submitVote(vInfo, uInfo.displayName, uInfo.id, yesVote, (vInfoRet, success, errorMessage) -> {
+                Log.d("submitVote:", "Returned with success: " + success);
+
+                if(success) {
+                    display.showToastMessage(mContext, "Vote Successfully Submitted", display.LONG);
+
+                    //Update vInfo array -- if it is a valid index
+                    try {
+                        if(voteIndex != -1)
+                            vInfos[voteIndex] = vInfoRet;
+                    }
+                    catch (Exception e) {
+                        //Likely an array out of index. Don't want to crash on this. Just let array get out of sync
+                        Log.e("submitVote", "Error adding vote to voting array", e);
+                    }
+
+                    //Return result to fragment for updating UI
+                    callback.onReturn(vInfoRet, true, "");
+                }
+                else {
+                    Log.d("submitVote:", "Error occured. Message: " + errorMessage);
+                    display.showToastMessage(mContext, "Error Submitting vote. Please Try Again", display.LONG);
+
+                    callback.onReturn(null, false, "");
+                }
+            });
+        }
     }
 
     public void viewSettings(String house_id) {}

@@ -6,6 +6,7 @@ import android.util.Log;
 import com.cmpt275.house.classDef.infoClass.houseInfo;
 import com.cmpt275.house.classDef.infoClass.taskInfo;
 import com.cmpt275.house.classDef.infoClass.userInfo;
+import com.cmpt275.house.interfaceDef.Callbacks.booleanCallback;
 import com.cmpt275.house.interfaceDef.home;
 import com.cmpt275.house.interfaceDef.updateUI;
 
@@ -14,16 +15,11 @@ public class homeClass implements home {
     // Class Variables
     //
     private final userFirebaseClass firebaseUserTask;
-    private final taskFirebaseClass firebaseTaskTask;
-    private final houseFirebaseClass firebaseHouseTask;
     private final displayMessage display;
 
     private final Context mContext;
 
     public userInfo uInfo;
-    public taskInfo tInfos [];
-    public houseInfo hInfos [];
-
 
     //
     // Class Functions
@@ -36,12 +32,37 @@ public class homeClass implements home {
     ////////////////////////////////////////////////////////////
     public homeClass(Context mContext) {
         display = new displayMessage();
-
         firebaseUserTask = new userFirebaseClass();
-        firebaseTaskTask = new taskFirebaseClass();
-        firebaseHouseTask = new houseFirebaseClass();
-
         this.mContext = mContext;
+    }
+
+    ////////////////////////////////////////////////////////////
+    //
+    // Constructor
+    //
+    ////////////////////////////////////////////////////////////
+    public void updateUserInfo(String user_id, booleanCallback callback) {
+
+        if (!user_id.equals(null)) {
+            //Get new userInfo to update
+            firebaseUserTask.getUserInfo(user_id, (uInfo, success, errorMessage) -> {
+                Log.d("getUserInfo", "Returned with success: " + success);
+
+                if(success) {
+                    //Update the userInfo
+                    this.uInfo = uInfo;
+
+                    callback.onReturn(true, "");
+                }
+                else {
+                    display.showToastMessage(mContext, "Could not load task and house info. Try loading page again", display.LONG);
+                    callback.onReturn(false, "");
+                }
+            });
+
+        } else {
+            Log.d("updateUserInfo", "user_id provided was null");
+        }
     }
 
 
@@ -60,61 +81,5 @@ public class homeClass implements home {
 
             callback.stateChanged(0);
         });
-    }
-
-
-    ////////////////////////////////////////////////////////////
-    //
-    // Will get the current tasks to display for the user
-    //
-    ////////////////////////////////////////////////////////////
-    public void viewTasks(String user_id) {
-
-        //Make sure  the user_id is valid
-        if(user_id == null) {
-            display.showToastMessage(mContext, "Oops. Looks like something went wrong", display.LONG);
-            //This should not occur, we should probably logout the user if this happens
-        }
-        else {
-            firebaseTaskTask.getCurrentTasks(uInfo, (tInfos, success, errorMessage) -> {
-                Log.d("getCurrentTasks:", "Returned with success " + success);
-
-                if(success) {
-                    this.tInfos = tInfos;
-                    //Do stuff here...
-                }
-                else {
-                    display.showToastMessage(mContext, errorMessage, display.LONG);
-                }
-            });
-        }
-    }
-
-
-    ////////////////////////////////////////////////////////////
-    //
-    // Will get the current houses to display for the user
-    //
-    ////////////////////////////////////////////////////////////
-    public void viewHouses(String user_id) {
-
-        //Make sure  the user_id is valid
-        if(user_id == null) {
-            display.showToastMessage(mContext, "Oops. Looks like something went wrong.", display.LONG);
-            //This should not occur, we should probably logout the user if this happens
-        }
-        else {
-            firebaseHouseTask.getCurrentHouses(uInfo, (hInfos, success, errorMessage) -> {
-                Log.d("getCurrentTasks:", "Returned with success " + success);
-
-                if(success) {
-                    this.hInfos = hInfos;
-                    //Do stuff here...
-                }
-                else {
-                    display.showToastMessage(mContext, errorMessage, display.LONG);
-                }
-            });
-        }
     }
 }

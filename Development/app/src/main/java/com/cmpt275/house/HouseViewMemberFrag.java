@@ -2,17 +2,14 @@ package com.cmpt275.house;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.VerifiedInputEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 
 import com.cmpt275.house.classDef.infoClass.houseMemberInfoObj;
-import com.cmpt275.house.classDef.infoClass.userInfo;
 import com.cmpt275.house.classDef.mappingClass.roleMapping;
 
 public class HouseViewMemberFrag extends Fragment {
@@ -34,7 +31,7 @@ public class HouseViewMemberFrag extends Fragment {
         View view = inflater.inflate(R.layout.fragment_view_house_member, container, false);
 
         if(this.context == "viewHouse") {
-            TextView name = view.findViewById(R.id.view_house_member_name);
+            TextView name = view.findViewById(R.id.view_house_voteType);
             name.setText(this.member.name);
 
             Button changeMemberRoleButton = view.findViewById(R.id.view_house_member_button);
@@ -44,7 +41,7 @@ public class HouseViewMemberFrag extends Fragment {
             // TODO: Get user $$$ amount added to houseMemberInfoObj
             bonusInfo.setText("0");
         } else if(this.context == "editHouse"){
-            TextView name = view.findViewById(R.id.view_house_member_name);
+            TextView name = view.findViewById(R.id.view_house_voteType);
             name.setText(this.member.name);
 
             TextView bonusInfo = view.findViewById(R.id.view_house_member_amount_owed);

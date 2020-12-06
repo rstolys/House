@@ -12,8 +12,8 @@ public class voteTypeMapping implements mapping {
     private Map<Integer, String> voteTypeIntToString;
 
     //String Tags
-    public final String DISPUTE_COMPLETION = "Disputing Task Completion";
-    public final String DEADLINE_EXTENSION = "Requesting Deadline Extension";
+    public final String DISPUTE_COMPLETION = "Disputed";
+    public final String DEADLINE_EXTENSION = "Extension";
 
     //Integer Tags
     public final Integer DISPUTE_COMPLETION_NUM = 0;

@@ -44,7 +44,7 @@ public class HouseActivity extends AppCompatActivity implements Observer {
         Intent lastIntent = getIntent();
         String serializedObject = lastIntent.getStringExtra("userInfo");
 
-        if(serializedObject == ""){
+        if(serializedObject.equals("")){
             // If the serialized object is empty, error!
             Log.e("OnCreate Home", "userInfo not passed from last activity");
         } else {
