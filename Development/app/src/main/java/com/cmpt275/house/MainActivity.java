@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements updateUI {
         notify.createNotificationChannel(this);
 
         //Check if the user is already signed in
-        //auth.checkAuthStatus();
+        auth.checkAuthStatus();
     }
 
     @Override
@@ -112,12 +112,7 @@ public class MainActivity extends AppCompatActivity implements updateUI {
         display.showToastMessage(this, "Signing In", display.SHORT);
 
         //Call function to signIn the user
-        //auth.signInUser(email.getText().toString(), password.getText().toString());
-
-        houseFirebaseClass houseAction = new houseFirebaseClass();
-        houseAction.inviteUserToHouse("rstolys@sfu.ca", null, null, (hInfo, success, errorMessage) -> {
-            Log.d("inviteUserToHouse", "Returned with success: " + success);
-        });
+        auth.signInUser(email.getText().toString(), password.getText().toString());
     }
 
 
@@ -212,6 +207,9 @@ public class MainActivity extends AppCompatActivity implements updateUI {
 
         //Close the dialog window
         createAccountDialog.dismiss();
+
+        //Check if the user is already signed in
+        auth.checkAuthStatus();
     }
 
 

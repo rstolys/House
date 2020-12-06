@@ -94,7 +94,7 @@ public class signInClass implements signIn {
         else if(email == null || email.length() < 1) {
             display.showToastMessage(mContext, "You email name must be at least 1 character long", display.LONG);
         }
-        else if(password == null || password.length() < 5) {
+        else if(password == null || password.length() <= 5) {
             //Firebase has minimum on password length. Will avoid error later if the password is short than 6 characters
             display.showToastMessage(mContext, "You password name must be at least 6 characters long", display.LONG);
         }
@@ -112,7 +112,7 @@ public class signInClass implements signIn {
                     //Maybe we can automatically log the user in
                 }
                 else {
-                    Log.d("createAccount:", "Error Messaage " + errorMessage);
+                    Log.d("createAccount:", "Error Message " + errorMessage);
                     display.showToastMessage(mContext, errorMessage, display.LONG);
                 }
             });

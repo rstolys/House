@@ -203,7 +203,12 @@ public class SettingsActivity extends AppCompatActivity {
         EditText feedback = findViewById(R.id.feedback_provided);
 
         //Reset the password for the user
-        setting.provideFeedback(feedback.getText().toString());
+        setting.provideFeedback(feedback.getText().toString(), (result, errorMessage) -> {
+            if(result) {
+                feedback.setText("");
+            }
+        });
+
     }
 
 
