@@ -94,11 +94,7 @@
                     android:layout_height="wrap_content"
                     android:importantForAutofill="no"
                     android:maxLength="10000"
-<<<<<<< Updated upstream
                     android:hint="@string/new_task_description" />
-=======
-                    android:hint ="@string/new_task_description" />
->>>>>>> Stashed changes
             </TableRow>
 
 
@@ -212,6 +208,29 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="@android:drawable/btn_dropdown"
+                    android:spinnerMode="dropdown"/>
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/new_task_row10"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/purple_200">
+
+                <TextView
+                    android:id="@+id/tag_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:text="Tag"/>
+                <Spinner
+                    android:id="@+id/tags_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="87dp"
                     android:layout_marginEnd="10dp"
                     android:background="@android:drawable/btn_dropdown"
                     android:spinnerMode="dropdown"/>

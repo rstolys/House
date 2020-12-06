@@ -58,6 +58,7 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
     Spinner houseDropdown;
     Spinner memberDropdown;
     Spinner notifDropdown;
+    Spinner tagDropdown;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,7 +101,10 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
 
             notifDropdown = findViewById(R.id.notifications_spinner);
 
-            //create a list of items for the spinner.
+            tagDropdown = findViewById(R.id.tags_spinner);
+
+
+            //create a list of items for the notifications spinner.
             ArrayList<String> nOptions =new ArrayList<String>();
 
             nOptions.add("None");
@@ -110,9 +114,21 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
             nOptions.add("1 month before due date");
 
             ArrayAdapter<String> adapter2 = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, nOptions);
-//set the spinners adapter to the previously created one.
+            //set the spinners adapter to the previously created one.
             notifDropdown.setAdapter(adapter2);
             notifDropdown.setSelection(0);
+
+
+            //create a list of items for the notifications spinner.
+            /*ArrayList<String> tagOptions =new ArrayList<String>();
+
+            tagOptions.add("1 month before due date");
+            Map<Integer, String> tagIntToString;
+
+            tagOptions.add(ta);
+            for()
+            tagOptions.add("1 month before due date");*/
+
 
 
 
@@ -125,7 +141,6 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
                     ArrayList<String> memOptions = new ArrayList<String>();
 
                     Log.d("UPDATE MEMBER DROPDOWN", "I am putting members in dropdown");
-
 
                     StringBuilder membersListString = new StringBuilder(" ");
                     for (Map.Entry<String, houseMemberInfoObj> entry : myHouseClass.hInfos.get(position).members.entrySet()){
@@ -177,7 +192,6 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
             newTaskInfo.houseName = myHouseClass.hInfos.get(houseDropdown.getSelectedItemPosition()).displayName;
             newTaskInfo.house_id = myHouseClass.hInfos.get(houseDropdown.getSelectedItemPosition()).id;
 
-
                     //create a list of items from hashmap
                     ArrayList<String> namesMem = new ArrayList<String>();
                     ArrayList<String> idMem = new ArrayList<String>();
@@ -193,7 +207,6 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
                         idMem.add(entry.getKey());
                     }
 
-
             newTaskInfo.assignedTo.put(idMem.get(memberDropdown.getSelectedItemPosition()),
                     new taskAssignObj(namesMem.get(memberDropdown.getSelectedItemPosition()), true, true));
             Log.d("NEW TASK", "onCreate: ASSIGNED ID "+ idMem.get(memberDropdown.getSelectedItemPosition()));
@@ -203,7 +216,7 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
             newTaskInfo.createdBy_id = uInfo.id;
 
             mapping statusMap = new statusMapping();
-            newTaskInfo.status = statusMap.mapIntToString(5);
+            newTaskInfo.status = statusMap.mapIntToString(1);
 
             newTaskInfo.costAssociated = 0.0;
             newTaskInfo.difficultyScore  = 1;

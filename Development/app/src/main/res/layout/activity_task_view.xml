@@ -167,21 +167,21 @@
                 android:layout_height="match_parent">
 
                 <Button
-                    android:id="@+id/dispute_task_button"
+                    android:id="@+id/complete_taskButton"
                     style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="38dp"
-                    android:layout_marginEnd="90dp"
-                    android:text="Dispute" />
+                    android:layout_marginEnd="60dp"
+                    android:text="Complete" />
 
                 <Button
-                    android:id="@+id/swap_task_button"
+                    android:id="@+id/extend_task_button"
                     style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginEnd="15dp"
-                    android:text="Swap" />
+                    android:text="Extend" />
 
             </TableRow>
 
