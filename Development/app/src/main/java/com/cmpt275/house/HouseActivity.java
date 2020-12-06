@@ -16,6 +16,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.cmpt275.house.classDef.houseClass;
 import com.cmpt275.house.classDef.infoClass.userInfo;
+import com.cmpt275.house.classDef.mappingClass.roleMapping;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.ByteArrayInputStream;
@@ -230,6 +231,7 @@ public class HouseActivity extends AppCompatActivity implements Observer {
         // Now add back the updated houses
         Log.d("UPDATE_HOUSES", "I am putting my houses to screen");
         for(int i = 0; i < myHouseClass.hInfos.size(); i++ ){
+            // User must be a member or an admin to see the house details
             if(! myHouseClass.hInfos.get(i).members.get(uInfo.id).role.equals("Request To Join")){
                 HouseFrag houseFrag = new HouseFrag(myHouseClass.hInfos.get(i), myHouseClass);
                 fragmentTransaction.add(R.id.my_houses_list, houseFrag);

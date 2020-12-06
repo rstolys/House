@@ -20,6 +20,7 @@ import com.cmpt275.house.classDef.infoClass.houseInfo;
 import com.cmpt275.house.classDef.infoClass.houseMemberInfoObj;
 import com.cmpt275.house.classDef.infoClass.userInfo;
 import com.cmpt275.house.classDef.infoClass.votingInfo;
+import com.cmpt275.house.classDef.mappingClass.roleMapping;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.ByteArrayInputStream;
@@ -38,6 +39,8 @@ public class HouseEditActivity extends AppCompatActivity implements Observer {
     userInfo uInfo;
     houseInfo hInfo;
     houseClass hClass;
+    private roleMapping rm = new roleMapping();
+    private boolean viewerIsAdmin = false;
     votingInfo[] vInfos;
 
     @Override
@@ -110,6 +113,18 @@ public class HouseEditActivity extends AppCompatActivity implements Observer {
             this.hInfo.houseNotifications = String.valueOf(notificationSched.getText());
             this.hInfo.punishmentMultiplier = parseInt(String.valueOf(punishMult.getText()));
             this.hInfo.description = String.valueOf(houseDescrp.getText());
+
+            FragmentManager fm = getSupportFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+
+            if(viewerIsAdmin){
+                // Each house member has a view member fragment to their name. Scrape off their new details
+                    int numBackStack = fm.getBackStackEntryCount();
+                    for(; numBackStack>0; numBackStack--) {
+                        fm.popBackStack();
+                    }
+            }
+
 
             // Update data in backend and exit activity
             hClass.editSettings(this.hInfo);
@@ -191,22 +206,31 @@ public class HouseEditActivity extends AppCompatActivity implements Observer {
             EditText houseDescrp = findViewById(R.id.edit_house_description);
             houseDescrp.setText(String.valueOf(hInfo.description));
 
+            houseMemberInfoObj viewingMember = hInfo.members.get(uInfo.id);
+
+            // Dynamically populate the house members to the screen
             for(houseMemberInfoObj houseMember : hInfo.members.values()) {
-                HouseViewMemberFrag hvmf = new HouseViewMemberFrag("editHouse", houseMember.name, houseMember.role);
+                HouseViewMemberFrag hvmf = new HouseViewMemberFrag("editHouse", houseMember, viewingMember );
 
                 // Determine if this user is authorized to make changes to house settings
                 if( houseMember.name.equals(uInfo.displayName) ){
                     Button saveButton = findViewById(R.id.edit_house_save_button);
-                    saveButton.setEnabled(houseMember.role == "Administrator");
+                    viewerIsAdmin = houseMember.role == rm.ADMIN;
+                    if (viewerIsAdmin) {
+                        saveButton.setVisibility(View.VISIBLE);
+                    } else {
+                        saveButton.setVisibility(View.GONE);
+                    }
                 }
 
                 ft.add(R.id.edit_house_member_list, hvmf);
                 ft.addToBackStack(null);
             }
 
+            // Commit the fragment changes needed
             ft.commit();
         } else if( arg == "editSettings" ) {
-            // Call to edit settings has passed and back end updated
+            // Call to edit settings has passed and back end is updated
 
             String serializedUserInfo = "";
             try {
