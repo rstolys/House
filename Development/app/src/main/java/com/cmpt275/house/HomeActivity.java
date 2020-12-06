@@ -17,6 +17,8 @@ import com.cmpt275.house.classDef.homeClass;
 import com.cmpt275.house.classDef.infoClass.userInfo;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -61,21 +63,31 @@ public class HomeActivity extends AppCompatActivity {
         }
 
 
-        //Get reference to recycler view in activity layout
-        RecyclerView rvTaskList = (RecyclerView) findViewById(R.id.taskList_home);
-        RecyclerView rvHouseList = (RecyclerView) findViewById(R.id.houseList_home);
+        //Get the updated userInfo and load the info to the pages
+        home.updateUserInfo(home.uInfo.id, (result, errorMessage) -> {
+            if(result) {
+                //Update the title
+                TextView homeTitle = findViewById(R.id.home_title);
+                homeTitle.setText("Welcome Home " + home.uInfo.displayName + "!");
 
-        //Create adapter by passing in data
-        recyclerListAdaptor taskList = new recyclerListAdaptor(home.uInfo.tasks);
-        recyclerListAdaptor houseList = new recyclerListAdaptor(home.uInfo.houses);
 
-        //Attach the adapter to the recyclerview to populate items
-        rvTaskList.setAdapter(taskList);
-        rvHouseList.setAdapter(houseList);
+                //Get reference to recycler view in activity layout
+                RecyclerView rvTaskList = (RecyclerView) findViewById(R.id.taskList_home);
+                RecyclerView rvHouseList = (RecyclerView) findViewById(R.id.houseList_home);
 
-        //Set layout manager to position the items -- do we need this?
-        rvTaskList.setLayoutManager(new LinearLayoutManager(this));
-        rvHouseList.setLayoutManager(new LinearLayoutManager(this));
+                //Create adapter by passing in data
+                recyclerListAdaptor taskList = new recyclerListAdaptor(home.uInfo.tasks);
+                recyclerListAdaptor houseList = new recyclerListAdaptor(home.uInfo.houses);
+
+                //Attach the adapter to the recyclerview to populate items
+                rvTaskList.setAdapter(taskList);
+                rvHouseList.setAdapter(houseList);
+
+                //Set layout manager to position the items -- do we need this?
+                rvTaskList.setLayoutManager(new LinearLayoutManager(this));
+                rvHouseList.setLayoutManager(new LinearLayoutManager(this));
+            }
+        });
 
 
         //Set the navigation bar
@@ -85,7 +97,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
-    private BottomNavigationView.OnNavigationItemSelectedListener navListener = item -> {
+    private final BottomNavigationView.OnNavigationItemSelectedListener navListener = item -> {
             // First prepare the userInfo to pass to next activity
             String serializedUserInfo = getSerializedUserInfo();
 
@@ -247,16 +259,16 @@ public class HomeActivity extends AppCompatActivity {
     // Will fill recycler views
     //
     /////////////////////////////////////////////////
-    public class recyclerListAdaptor extends RecyclerView.Adapter<recyclerListAdaptor.ViewHolder> {
+    public static class recyclerListAdaptor extends RecyclerView.Adapter<recyclerListAdaptor.ViewHolder> {
 
-        private String[] localData;
+        private final String[] localData;
 
 
         /////////////////////////////////////////////////
         // Provide a direct reference to each of the views within a data item
         // Used to cache the views within the item layout for fast access
         /////////////////////////////////////////////////
-        public class ViewHolder extends RecyclerView.ViewHolder {
+        public static class ViewHolder extends RecyclerView.ViewHolder {
 
             private final TextView textView;        //Will hold the value to be set
 
@@ -297,6 +309,7 @@ public class HomeActivity extends AppCompatActivity {
         /////////////////////////////////////////////////
         // Create new views (invoked by the layout manager)
         /////////////////////////////////////////////////
+        @NotNull
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
             //Create a new view, which defines the UI of the list item
