@@ -10,11 +10,9 @@ import static org.junit.Assert.*;
 
 public class voteTypeMappingTest {
 
-    /////////////////////////////////////////////////////////
-    //
-    // Test map of string to integer
-    //
-    /////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////
+    // Automated Test 17
+    ////////////////////////////////////////////////////////////
     @Test
     public void testMapOfStringToInt() {
 
@@ -28,11 +26,9 @@ public class voteTypeMappingTest {
     }
 
 
-    /////////////////////////////////////////////////////////
-    //
-    // Test map of integer to string
-    //
-    /////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////
+    // Automated Test 18
+    ////////////////////////////////////////////////////////////
     @Test
     public void testMapOfIntToString() {
 
@@ -46,34 +42,11 @@ public class voteTypeMappingTest {
     }
 
 
-    /////////////////////////////////////////////////////////
-    //
-    // Test map of list of integers to strings
-    //
-    /////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////
+    // Automated Test 19
+    ////////////////////////////////////////////////////////////
     @Test
-    public void testListOfIntToStringAndBack() {
-
-        voteTypeMapping voteMap = new voteTypeMapping();
-
-        List<Integer> startValue = new ArrayList<Integer>();
-        startValue.add(voteMap.DISPUTE_COMPLETION_NUM);
-        startValue.add(voteMap.DEADLINE_EXTENSION_NUM);
-
-        List<Integer> finalValue = voteMap.mapList_StringToInt(voteMap.mapList_IntToString(startValue));
-
-        Assert.assertEquals(startValue, finalValue);
-
-    }
-
-
-    /////////////////////////////////////////////////////////
-    //
-    // Test map of list of strings to integers
-    //
-    /////////////////////////////////////////////////////////
-    @Test
-    public void testListOfStringToIntAndBack() {
+    public void testListOfStringToInt() {
 
         voteTypeMapping voteMap = new voteTypeMapping();
 
@@ -82,6 +55,24 @@ public class voteTypeMappingTest {
         startValue.add(voteMap.DEADLINE_EXTENSION);
 
         List<String> finalValue = voteMap.mapList_IntToString(voteMap.mapList_StringToInt(startValue));
+
+        Assert.assertEquals(startValue, finalValue);
+    }
+
+
+    ////////////////////////////////////////////////////////////
+    // Automated Test 20
+    ////////////////////////////////////////////////////////////
+    @Test
+    public void testListOfIntToString() {
+
+        voteTypeMapping voteMap = new voteTypeMapping();
+
+        List<Integer> startValue = new ArrayList<Integer>();
+        startValue.add(voteMap.DISPUTE_COMPLETION_NUM);
+        startValue.add(voteMap.DEADLINE_EXTENSION_NUM);
+
+        List<Integer> finalValue = voteMap.mapList_StringToInt(voteMap.mapList_IntToString(startValue));
 
         Assert.assertEquals(startValue, finalValue);
     }

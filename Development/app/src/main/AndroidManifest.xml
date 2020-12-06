@@ -46,6 +46,10 @@
             android:name=".TaskViewActivity"
             android:label="House">
         </activity>
+        <activity
+            android:name=".HouseEditActivity"
+            android:label="House">
+        </activity>
         <receiver android:name=".classDef.notifications" />
     </application>
 

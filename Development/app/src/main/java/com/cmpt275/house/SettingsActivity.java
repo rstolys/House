@@ -29,8 +29,8 @@ import java.io.ObjectOutputStream;
 public class SettingsActivity extends AppCompatActivity {
 
     private Intent newIntent;
-    private settingsClass setting = new settingsClass(this);
-    private displayMessage display = new displayMessage();
+    private final settingsClass setting = new settingsClass(this);
+    private final displayMessage display = new displayMessage();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -203,7 +203,12 @@ public class SettingsActivity extends AppCompatActivity {
         EditText feedback = findViewById(R.id.feedback_provided);
 
         //Reset the password for the user
-        setting.provideFeedback(feedback.getText().toString());
+        setting.provideFeedback(feedback.getText().toString(), (result, errorMessage) -> {
+            if(result) {
+                feedback.setText("");
+            }
+        });
+
     }
 
 

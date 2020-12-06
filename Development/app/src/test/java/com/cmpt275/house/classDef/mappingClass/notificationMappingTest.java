@@ -8,11 +8,9 @@ import java.util.List;
 
 public class notificationMappingTest {
 
-    /////////////////////////////////////////////////////////
-    //
-    // Test map of string to inetger
-    //
-    /////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////
+    // Automated Test 1
+    ////////////////////////////////////////////////////////////
     @Test
     public void testMapOfStringToInt() {
 
@@ -26,11 +24,9 @@ public class notificationMappingTest {
     }
 
 
-    /////////////////////////////////////////////////////////
-    //
-    // Test map of integer to string
-    //
-    /////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////
+    // Automated Test 2
+    ////////////////////////////////////////////////////////////
     @Test
     public void testMapOfIntToString() {
 
@@ -44,33 +40,9 @@ public class notificationMappingTest {
     }
 
 
-    /////////////////////////////////////////////////////////
-    //
-    // Test map of list of integers to strings
-    //
-    /////////////////////////////////////////////////////////
-    @Test
-    public void testListOfIntToString() {
-
-        notificationMapping notify = new notificationMapping();
-
-        List<Integer> startValue = new ArrayList<Integer>();
-        startValue.add(notify.NONE_NUM);
-        startValue.add(notify.WEEKLY_NUM);
-        startValue.add(notify.MONTHLY_NUM);
-
-        List<Integer> finalValue = notify.mapList_StringToInt(notify.mapList_IntToString(startValue));
-
-        Assert.assertEquals(startValue, finalValue);
-
-    }
-
-
-    /////////////////////////////////////////////////////////
-    //
-    // Test map of list of strings to inetgers
-    //
-    /////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////
+    // Automated Test 3
+    ////////////////////////////////////////////////////////////
     @Test
     public void testListOfStringToInt() {
 
@@ -87,4 +59,22 @@ public class notificationMappingTest {
     }
 
 
+    ////////////////////////////////////////////////////////////
+    // Automated Test 4
+    ////////////////////////////////////////////////////////////
+    @Test
+    public void testListOfIntToString() {
+
+        notificationMapping notify = new notificationMapping();
+
+        List<Integer> startValue = new ArrayList<Integer>();
+        startValue.add(notify.NONE_NUM);
+        startValue.add(notify.WEEKLY_NUM);
+        startValue.add(notify.MONTHLY_NUM);
+
+        List<Integer> finalValue = notify.mapList_StringToInt(notify.mapList_IntToString(startValue));
+
+        Assert.assertEquals(startValue, finalValue);
+
+    }
 }

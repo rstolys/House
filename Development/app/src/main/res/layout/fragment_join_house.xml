@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="1dp"
+    android:layout_marginLeft="40dp"
+    tools:context=".HouseJoinHouseFrag">
+
+    <TextView
+        android:id="@+id/join_house_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="Choose House:"
+        android:textColor="#673AB7"
+        android:textSize="24sp" />
+
+    <Spinner
+        android:id="@+id/join_house_spinner"
+        android:layout_width="314dp"
+        android:layout_height="54dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginRight="100dp" />
+
+    <Button
+        android:id="@+id/join_house_confirmation"
+        android:layout_width="314dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="120dp"
+        android:text="Move In" />
+
+    <TextView
+        android:id="@+id/join_house_spacer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="300dp"
+        android:text="             " />
+
+</FrameLayout>

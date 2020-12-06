@@ -8,6 +8,7 @@
     <string name="password_placeholder">Enter Password</string>
     <string name="button_signIn">Sign In</string>
     <string name="signIn_title">Sign In</string>
+
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
@@ -15,8 +16,9 @@
     <string name="action_sign_in_short">Sign in</string>
     <string name="welcome">"Welcome!"</string>
     <string name="invalid_username">Not a valid username</string>
-    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="invalid_password">Password must be >6 characters</string>
     <string name="login_failed">"Login failed"</string>
+    <string name="forgotPassword_login"><u>Forgot Password?</u></string>
 
     <!-- Strings related to Home Page -->
     <string name="welcome_home">Welcome Home!</string>
@@ -38,7 +40,7 @@
     <string name="createAccount_email_prompt">Enter Email</string>
     <string name="createAccount_password">Password:</string>
     <string name="createAccount_password_prompt">Enter Password</string>
-    <string name="createAccount_password_rule">Password Must be at least 5 characters</string>
+    <string name="createAccount_password_rule">Password Must be at least 6 characters</string>
     <string name="createAccount_submit">Create Account</string>
     <string name="createAccount_cancel">Cancel</string>
 
@@ -102,7 +104,7 @@
     <string name="feedback_hint">Help Us Improve! Provide Feedback Here</string>
     <string name="give_feedback_button">Submit Feedback</string>
 
-    <string name="add_house_button_title">Add House</string>
+    <string name="add_house_button_title">Build New House</string>
 
     <!-- Strings related to Tasks Page -->
     <string name="my_tasks_title">My Tasks</string>
@@ -146,5 +148,12 @@
     <string name="view_house_member_amount_owed">Amount Owed</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="edit_house_name">Name</string>
+    <string name="edit_house_admin_status_title">Admin Status</string>
+    <string name="view_house_max_members_in_house">Max Members in house:</string>
+    <string name="edit_house_punishment_multiplier">Punishment Multiplier:</string>
+    <string name="edit_house_punishment_mult_default">1</string>
+    <string name="edit_house_max_members_default">0</string>
+    <string name="my_houses_join_house_button">Join A House</string>
 
 </resources>

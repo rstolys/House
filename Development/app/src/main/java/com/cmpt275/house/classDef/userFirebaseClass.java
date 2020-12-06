@@ -358,7 +358,7 @@ public class userFirebaseClass implements UsersBE {
                             //Log the error result
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
 
-                            callback.onReturn(null, false, "Looks like the information you provided was incorrect. Please try againj");
+                            callback.onReturn(null, false, "Looks like the information you provided was incorrect. Please try again");
                         }
                     });
             }

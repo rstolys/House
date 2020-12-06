@@ -10,11 +10,9 @@ import static org.junit.Assert.*;
 
 public class tagMappingTest {
 
-    /////////////////////////////////////////////////////////
-    //
-    // Test map of string to integer
-    //
-    /////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////
+    // Automated Test 13
+    ////////////////////////////////////////////////////////////
     @Test
     public void testMapOfStringToInt() {
 
@@ -28,11 +26,9 @@ public class tagMappingTest {
     }
 
 
-    /////////////////////////////////////////////////////////
-    //
-    // Test map of integer to string
-    //
-    /////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////
+    // Automated Test 14
+    ////////////////////////////////////////////////////////////
     @Test
     public void testMapOfIntToString() {
 
@@ -46,37 +42,11 @@ public class tagMappingTest {
     }
 
 
-    /////////////////////////////////////////////////////////
-    //
-    // Test map of list of integers to strings
-    //
-    /////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////
+    // Automated Test 15
+    ////////////////////////////////////////////////////////////
     @Test
-    public void testListOfIntToStringAndBack() {
-
-        tagMapping tagMap = new tagMapping();
-
-        List<Integer> startValue = new ArrayList<Integer>();
-        startValue.add(tagMap.CLEANING_NUM);
-        startValue.add(tagMap.BATHROOM_NUM);
-        startValue.add(tagMap.COOKING_NUM);
-        startValue.add(tagMap.GARAGE_NUM);
-        startValue.add(tagMap.GROCERIES_NUM);
-
-        List<Integer> finalValue = tagMap.mapList_StringToInt(tagMap.mapList_IntToString(startValue));
-
-        Assert.assertEquals(startValue, finalValue);
-
-    }
-
-
-    /////////////////////////////////////////////////////////
-    //
-    // Test map of list of strings to integers
-    //
-    /////////////////////////////////////////////////////////
-    @Test
-    public void testListOfStringToIntAndBack() {
+    public void testListOfStringToInt() {
 
         tagMapping tagMap = new tagMapping();
 
@@ -92,4 +62,24 @@ public class tagMappingTest {
         Assert.assertEquals(startValue, finalValue);
     }
 
+    
+    ////////////////////////////////////////////////////////////
+    // Automated Test 16
+    ////////////////////////////////////////////////////////////
+    @Test
+    public void testListOfIntToString() {
+
+        tagMapping tagMap = new tagMapping();
+
+        List<Integer> startValue = new ArrayList<Integer>();
+        startValue.add(tagMap.CLEANING_NUM);
+        startValue.add(tagMap.BATHROOM_NUM);
+        startValue.add(tagMap.COOKING_NUM);
+        startValue.add(tagMap.GARAGE_NUM);
+        startValue.add(tagMap.GROCERIES_NUM);
+
+        List<Integer> finalValue = tagMap.mapList_StringToInt(tagMap.mapList_IntToString(startValue));
+
+        Assert.assertEquals(startValue, finalValue);
+    }
 }

@@ -115,6 +115,31 @@ public class MainActivity extends AppCompatActivity implements updateUI {
         auth.signInUser(email.getText().toString(), password.getText().toString());
     }
 
+
+    ////////////////////////////////////////////////
+    /// Will be called on click of forgot password button
+    ////////////////////////////////////////////////
+    public void forgotPassword(View view) {
+
+        //Get the entered email for the user
+        EditText emailInput = findViewById(R.id.emailOfUser);
+        String email = emailInput.getText().toString();
+
+        //Get confirmation from the user to reset the password
+        display.createTwoBtnAlert(this, "Password Reset", "Do you want to send a reset email to: " + email + "?", "Send", "Cancel",
+            (result, errorMessage) -> {
+                Log.d("resetPasswordBtnClicked", "Password Reset Dialogue selected with value: " + result);
+
+                if (result) {
+                    Log.d("resetPasswordBtnClicked", "Sending reset password email for: " + email);
+
+                    //Reset the password for the user
+                    auth.forgotPassword(email);
+                }
+            });
+    }
+
+
     ////////////////////////////////////////////////
     /// Will be called at end of async functions that need to update the ui
     ////////////////////////////////////////////////
@@ -182,6 +207,9 @@ public class MainActivity extends AppCompatActivity implements updateUI {
 
         //Close the dialog window
         createAccountDialog.dismiss();
+
+        //Check if the user is already signed in
+        auth.checkAuthStatus();
     }
 
 
