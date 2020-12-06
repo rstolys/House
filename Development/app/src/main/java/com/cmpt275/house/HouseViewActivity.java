@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -177,23 +179,43 @@ public class HouseViewActivity extends AppCompatActivity implements Observer {
 
         Log.d("UPDATE HOUSE_VIEW_ACT:", "Object passed: " + obj);
         if(String.valueOf(obj) == "viewVoting"){
+            //TODO: Put voting once it is loaded onto the screen
             this.vInfos = this.hClass.vInfos;
+
         } else if(String.valueOf(obj) == "viewHouse"){
             // Load house data that is not on a callback (title, members, description)
             this.hInfo = this.hClass.hInfo;
             TextView houseTitle = findViewById(R.id.view_house_house_name);
             houseTitle.setText(this.hInfo.displayName);
 
+            // Find the information for the caller of this view house
+            houseMemberInfoObj viewingMember = hInfo.members.get(uInfo.id);
+
+            // Go through each member of the house and dynamically populate a fragment with their information
             for(houseMemberInfoObj houseMember : hInfo.members.values()) {
-                HouseViewMemberFrag hvmf = new HouseViewMemberFrag("viewHouse", houseMember.name, "0");
+                HouseViewMemberFrag hvmf = new HouseViewMemberFrag("viewHouse", houseMember, viewingMember );
                 ft.add(R.id.view_house_members, hvmf);
                 ft.addToBackStack(null);
             }
 
             TextView houseDescription = findViewById(R.id.view_house_description);
-            houseDescription.setText("House Description: " + this.hInfo.description);
+            houseDescription.setText(this.hInfo.description);
         }
 
         ft.commit();
+    }
+
+    /////////////////////////////////////////////////
+    //
+    // Will hide the keyboard on the call
+    //
+    /////////////////////////////////////////////////
+    public void hideKeyboard(View view) {
+
+        //Hide  the keyboard from the user
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getSystemService(this.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 }

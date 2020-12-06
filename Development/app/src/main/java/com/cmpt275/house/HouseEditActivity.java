@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -18,6 +20,7 @@ import com.cmpt275.house.classDef.infoClass.houseInfo;
 import com.cmpt275.house.classDef.infoClass.houseMemberInfoObj;
 import com.cmpt275.house.classDef.infoClass.userInfo;
 import com.cmpt275.house.classDef.infoClass.votingInfo;
+import com.cmpt275.house.classDef.mappingClass.roleMapping;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.ByteArrayInputStream;
@@ -36,6 +39,8 @@ public class HouseEditActivity extends AppCompatActivity implements Observer {
     userInfo uInfo;
     houseInfo hInfo;
     houseClass hClass;
+    private roleMapping rm = new roleMapping();
+    private boolean viewerIsAdmin = false;
     votingInfo[] vInfos;
 
     @Override
@@ -102,12 +107,25 @@ public class HouseEditActivity extends AppCompatActivity implements Observer {
 
         Button saveButton = findViewById(R.id.edit_house_save_button);
         saveButton.setOnClickListener(v->{
-            // Scrape data off UI
-            this.hInfo.displayName = String.valueOf(houseTitle.getText());
-            this.hInfo.maxMembers  = parseInt(String.valueOf(houseMaxMembers.getText()));
-            this.hInfo.houseNotifications = String.valueOf(notificationSched.getText());
-            this.hInfo.punishmentMultiplier = parseInt(String.valueOf(punishMult.getText()));
-            this.hInfo.description = String.valueOf(houseDescrp.getText());
+            // Scrape data off UI only if it has been modified
+            if( !houseTitle.getText().toString().equals("") ){
+                this.hInfo.displayName = String.valueOf(houseTitle.getText().toString());
+            }
+            if( !houseMaxMembers.getText().toString().equals("") ){
+                this.hInfo.maxMembers  = parseInt(String.valueOf(houseMaxMembers.getText().toString()));
+            }
+            if( !notificationSched.getText().toString().equals("") ){
+                this.hInfo.houseNotifications = String.valueOf(notificationSched.getText().toString());
+            }
+            if( !punishMult.getText().toString().equals("") ){
+                this.hInfo.punishmentMultiplier = parseInt(String.valueOf(punishMult.getText().toString()));
+            }
+            if( !houseDescrp.getText().toString().equals("") ) {
+                this.hInfo.description = String.valueOf(houseDescrp.getText().toString());
+            }
+
+            FragmentManager fm = getSupportFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
 
             // Update data in backend and exit activity
             hClass.editSettings(this.hInfo);
@@ -175,36 +193,49 @@ public class HouseEditActivity extends AppCompatActivity implements Observer {
 
             // Set hInfo data to screen
             EditText houseTitle = findViewById(R.id.edit_house_house_name);
-            houseTitle.setText(hInfo.displayName);
+            houseTitle.setText(null);
+            houseTitle.setHint(hInfo.displayName);
 
             EditText houseMaxMembers = findViewById(R.id.edit_house_max_members_int);
-            houseMaxMembers.setText(String.valueOf(hInfo.maxMembers));
+            houseMaxMembers.setText(null);
+            houseMaxMembers.setHint(String.valueOf(hInfo.maxMembers));
 
             EditText notificationSched = findViewById(R.id.edit_house_notification_schedule);
-            notificationSched.setText(hInfo.houseNotifications);
+            notificationSched.setText(null);
+            notificationSched.setHint(hInfo.houseNotifications);
 
             EditText punishMult = findViewById(R.id.edit_houes_punishment_mult);
-            punishMult.setText(String.valueOf(hInfo.punishmentMultiplier));
+            punishMult.setText(null);
+            punishMult.setHint(String.valueOf(hInfo.punishmentMultiplier));
 
             EditText houseDescrp = findViewById(R.id.edit_house_description);
             houseDescrp.setText(String.valueOf(hInfo.description));
 
+            houseMemberInfoObj viewingMember = hInfo.members.get(uInfo.id);
+
+            // Dynamically populate the house members to the screen
             for(houseMemberInfoObj houseMember : hInfo.members.values()) {
-                HouseViewMemberFrag hvmf = new HouseViewMemberFrag("editHouse", houseMember.name, houseMember.role);
+                HouseViewMemberFrag hvmf = new HouseViewMemberFrag("editHouse", houseMember, viewingMember );
 
                 // Determine if this user is authorized to make changes to house settings
                 if( houseMember.name.equals(uInfo.displayName) ){
                     Button saveButton = findViewById(R.id.edit_house_save_button);
-                    saveButton.setEnabled(houseMember.role == "Administrator");
+                    viewerIsAdmin = houseMember.role == rm.ADMIN;
+                    if (viewerIsAdmin) {
+                        saveButton.setVisibility(View.VISIBLE);
+                    } else {
+                        saveButton.setVisibility(View.GONE);
+                    }
                 }
 
                 ft.add(R.id.edit_house_member_list, hvmf);
                 ft.addToBackStack(null);
             }
 
+            // Commit the fragment changes needed
             ft.commit();
         } else if( arg == "editSettings" ) {
-            // Call to edit settings has passed and back end updated
+            // Call to edit settings has passed and back end is updated
 
             String serializedUserInfo = "";
             try {
@@ -223,6 +254,20 @@ public class HouseEditActivity extends AppCompatActivity implements Observer {
             newIntent.putExtra("userInfo", serializedUserInfo);
             newIntent.putExtra("houseId", hClass.hInfo.id);
             startActivity(newIntent);
+        }
+    }
+
+    /////////////////////////////////////////////////
+    //
+    // Will hide the keyboard on the call
+    //
+    /////////////////////////////////////////////////
+    public void hideKeyboard(View view) {
+
+        //Hide  the keyboard from the user
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getSystemService(this.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
 }

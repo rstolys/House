@@ -5,11 +5,11 @@ import com.cmpt275.house.classDef.infoClass.houseInfo;
 
 public interface house extends task {
     public void createHouse(houseInfo hInfo);
-    public void joinHouse(String house_id, userInfo uInfo);
+    public void joinHouse(houseInfo hInfo, userInfo uInfo);
     public void viewYourHouses(userInfo uInfo);
     public void viewHouse(String house_id);
     public void approveMember(String house_id, String user_id);
-    public void addMember(String userEmail);
+    public void addMember(userInfo uInfo, houseInfo hInfo, String role);
     public void viewMember(String user_id);
     public void removeMember(String user_id);
     public void makeMemberAdmin(userInfo uInfo);
