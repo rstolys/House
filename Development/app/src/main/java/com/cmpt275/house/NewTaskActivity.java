@@ -122,7 +122,7 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
             notifDropdown.setSelection(0);
 
 
-            //create a list of items for the notifications spinner.
+            //create a list of items for the tags spinner.
             /*ArrayList<String> tagOptions =new ArrayList<String>();
 
             tagOptions.add("1 month before due date");
@@ -155,7 +155,7 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
                     }
 
                     ArrayAdapter<String> adapter1 = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, memOptions);
-//set the spinners adapter to the previously created one.
+                //set the spinners adapter to the previously created one.
                     memberDropdown.setAdapter(adapter1);
                     if(myHouseClass.hInfos.get(position).members.size()>0)
                         memberDropdown.setSelection(0);
@@ -166,7 +166,6 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
                     //
                 }
             });
-
         }
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
@@ -188,9 +187,6 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
                     datePicker.getDayOfMonth(), timePicker.getCurrentHour(),timePicker.getCurrentMinute()).getTime();
             newTaskInfo.dueDate = dueDate;
 
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
-            String strDate = dateFormat.format(dueDate);
-            Log.d("NEW_TASK_ACTIVITY", "new task date " + strDate );
 
             newTaskInfo.houseName = myHouseClass.hInfos.get(houseDropdown.getSelectedItemPosition()).displayName;
             newTaskInfo.house_id = myHouseClass.hInfos.get(houseDropdown.getSelectedItemPosition()).id;
@@ -212,8 +208,6 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
 
             newTaskInfo.assignedTo.put(idMem.get(memberDropdown.getSelectedItemPosition()),
                     new taskAssignObj(namesMem.get(memberDropdown.getSelectedItemPosition()), true, true));
-            Log.d("NEW TASK", "onCreate: ASSIGNED ID "+ idMem.get(memberDropdown.getSelectedItemPosition()));
-            Log.d("NEW TASK", "onCreate: ASSIGNED NAME "+ namesMem.get(memberDropdown.getSelectedItemPosition()));
 
             newTaskInfo.createdBy = uInfo.displayName;
             newTaskInfo.createdBy_id = uInfo.id;
@@ -258,7 +252,6 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
                     break;
             }
             newTaskInfo.notificationTime= notifDate;
-            Log.d("createTaskButton", "Creating task in db with NOTIF DATE: " + newTaskInfo.notificationTime);
 
             //sanitizing input
             if(TextUtils.isEmpty(taskTitle.getText().toString()))
