@@ -135,13 +135,13 @@ public class houseFirebaseClassTest {
     ////////////////////////////////////////////////////////////
     // Automated Test 39
     ////////////////////////////////////////////////////////////
-    @Test @Ignore("Async")
+    @Test //@Ignore("Async")
     public void inviteUserToHouse() {
         CountDownLatch latch = new CountDownLatch(2);
 
         //Define house info to be created
         houseInfo hInfo = new houseInfo();
-        hInfo.id = "nA64NO8sC8GCIP1HkEQx";
+        hInfo.id = "m6BYJ7yePCokRcmTTvsO";
         hInfo.displayName = "Unit Test House";
         hInfo.voting_ids = null;
         hInfo.tasks = null;
@@ -154,12 +154,9 @@ public class houseFirebaseClassTest {
         hInfo.maxMembers = 4;
         hInfo.houseNotifications = notifyMap.WEEKLY;
 
-        userInfo uInfo = new userInfo();
-        uInfo.id = "heCbONKnDl2LVojcPVgc";      //only info needed
-
 
         //Test normal operation -- Add user to this house -- Will add developers account
-        firebaseHouseAction.inviteUserToHouse("i0y3NfFnQZaKTG8WY68r", "miller_solis_sanchez@sfu.ca", hInfo, uInfo, (hInfoRet, success, errorMessage) -> {
+        firebaseHouseAction.inviteUserToHouse("miller_solis_sanchez@sfu.ca", hInfo, "heCbONKnDl2LVojcPVgc", (hInfoRet, success, errorMessage) -> {
             Log.d("inviteUserToHouse", "Normal error message: " + errorMessage);
 
             assertTrue(success);
@@ -168,8 +165,8 @@ public class houseFirebaseClassTest {
         });
 
 
-        //Test boundary operation -- member does not exist
-        firebaseHouseAction.inviteUserToHouse("i0y3NfFnQZaKTG8WY68r", "miller_solis_sanchez@sfu.ca", hInfo, uInfo, (hInfoRet, success, errorMessage) -> {
+        //Test boundary operation -- user to be added does not exist
+        firebaseHouseAction.inviteUserToHouse("invalidEmail@sfu.ca", hInfo, "heCbONKnDl2LVojcPVgc", (hInfoRet, success, errorMessage) -> {
             Log.d("inviteUserToHouse", "Expected error message: " + errorMessage);
 
             assertFalse(success);

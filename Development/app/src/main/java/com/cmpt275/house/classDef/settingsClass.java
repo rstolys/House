@@ -3,8 +3,10 @@ package com.cmpt275.house.classDef;
 import android.content.Context;
 import android.util.Log;
 
+import com.cmpt275.house.R;
 import com.cmpt275.house.classDef.infoClass.feedbackInfo;
 import com.cmpt275.house.classDef.infoClass.userInfo;
+import com.cmpt275.house.interfaceDef.Callbacks.booleanCallback;
 import com.cmpt275.house.interfaceDef.settings;
 import com.cmpt275.house.interfaceDef.updateUI;
 import com.google.android.gms.common.api.internal.IStatusCallback;
@@ -75,11 +77,7 @@ public class settingsClass implements settings {
     /////////////////////////////////////////////////
     public void viewSettings(String user_id) {
 
-        if(uInfo.id.equals(user_id)) {
-            //The user already has there info available.
-            //Indicate to UI to display information
-        }
-        else if(user_id == null) {          //Make sure  the user_id is valid
+        if(user_id == null) {          //Make sure  the user_id is valid
                 display.showToastMessage(mContext, "Oops. Looks like something went wrong", display.LONG);
                 //This should not occur, we should probably logout the user if this happens
         }
@@ -223,7 +221,7 @@ public class settingsClass implements settings {
     // Will submit user generated feedback
     //
     /////////////////////////////////////////////////
-    public void provideFeedback(String feedback) {
+    public void provideFeedback(String feedback, booleanCallback callback) {
 
         if(feedback == null || feedback.length() < 1) {
             Log.d("provideFeedback", "Feedback provided is null or empty");
@@ -243,10 +241,14 @@ public class settingsClass implements settings {
 
                 if(result) {
                     display.showToastMessage(mContext, "Feedback successfully submitted. Thanks for helping make this app better!", display.LONG);
+
+                    callback.onReturn(true, "");
                 }
                 else {
                     Log.d("submitFeedback:", "Error Message: " + errorMessage);
                     display.showToastMessage(mContext, errorMessage, display.LONG);
+
+                    callback.onReturn(false, "");
                 }
             });
         }

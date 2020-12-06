@@ -667,6 +667,11 @@ public class taskFirebaseClass implements TaskBE {
             Map<String, Object> updateField = getUpdatedTaskField(tInfo, parameter);
 
             if(updateField == null) {
+                Log.w(TAG, "setTaskInfo(param) resulted in null field");
+                //Return error
+                callback.onReturn(null, false, INVALID_PARAMETER_MESSAGE);
+            }
+            else if(tInfo.id == null) {
                 Log.w(TAG, "setTaskInfo(param) called with null task_id");
                 //Return error
                 callback.onReturn(null, false, INVALID_PARAMETER_MESSAGE);
