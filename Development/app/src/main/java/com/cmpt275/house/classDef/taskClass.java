@@ -108,17 +108,10 @@ public class taskClass extends Observable implements task {
     }
 
     public void requestExtension(taskInfo tInfo) {
-        String task_id = "6PBXbr63dg8XaMK9w3gV";
 
-        firebaseTask.getTaskInfo(task_id, (tInfoRet, success, errorMessage) -> {
-            Log.d("getTaskInfo:", "Returned with success " + success);
-
-            if(success) {
-                firebaseTask.requestExtension(tInfoRet, (tInfoRet2, success2, errorMessage2) -> {
-                    Log.d("requestExtension:", "Returned with success " + success);
-                    //Do stuff here...
-                });
-            }
+        firebaseTask.requestExtension(tInfo, (tInfoRet, success, errorMessage2) -> {
+            Log.d("requestExtension:", "Returned with success " + success);
+            //Do stuff here...
         });
     }
 
