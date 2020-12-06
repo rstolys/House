@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -25,6 +26,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.Date;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -80,6 +82,13 @@ public class TaskActivity extends AppCompatActivity implements Observer {
         addTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                //Check if the user belongs to a house
+                if( uInfo.houses.isEmpty()){
+                    Toast.makeText(getApplicationContext(),"Join a house first!", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
                 // First prepare the userInfo to pass to next activity
                 String serializedUserInfo = getSerializedUserInfo();
 
@@ -197,6 +206,7 @@ public class TaskActivity extends AppCompatActivity implements Observer {
         Log.d("UPDATE_TASKS", "I am putting my tasks to screen");
         for(int i = 0; i < myTaskClass.tInfos.size(); i++ ){
             TaskFrag taskFrag = new TaskFrag(myTaskClass.tInfos.get(i));
+            //if(myTaskClass.tInfos.get(i).dueDate.after(new Date()))
             fragmentTransaction.add(R.id.due_today_tasks_list, taskFrag);
             fragmentTransaction.addToBackStack(null);
         }

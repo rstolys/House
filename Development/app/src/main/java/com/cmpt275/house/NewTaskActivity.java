@@ -2,6 +2,7 @@ package com.cmpt275.house;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
@@ -9,6 +10,7 @@ import android.view.MenuItem;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 import android.view.View;
@@ -19,6 +21,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -221,43 +224,59 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
             newTaskInfo.costAssociated = 0.0;
             newTaskInfo.difficultyScore  = 1;
 
-            Date notifDate = new Date();
+            Date notifDate = null;
+            Calendar calendar = Calendar.getInstance();
+
 
             switch (notifDropdown.getSelectedItemPosition()){
                 case 0:
                     //no notifications
                     break;
                 case 1:
-                    notifDate=  new GregorianCalendar(datePicker.getYear(), datePicker.getMonth(),
-                        datePicker.getDayOfMonth(), timePicker.getCurrentHour()-1,
-                            timePicker.getCurrentMinute()).getTime();
+                    notifDate=  dueDate;
+                    calendar.setTime(notifDate);
+                    calendar.add(Calendar.HOUR_OF_DAY, -1);
+                    notifDate= calendar.getTime();
                     break;
                 case 2:
-                    notifDate=  new GregorianCalendar(datePicker.getYear(), datePicker.getMonth(),
-                            datePicker.getDayOfMonth()-1, timePicker.getCurrentHour(),
-                            timePicker.getCurrentMinute()).getTime();
+                    notifDate=  dueDate;
+                    calendar.setTime(notifDate);
+                    calendar.add(Calendar.DAY_OF_YEAR, -1);
+                    notifDate= calendar.getTime();
                     break;
                 case 3:
-                    notifDate=  new GregorianCalendar(datePicker.getYear(), datePicker.getMonth(),
-                            datePicker.getDayOfMonth()-7, timePicker.getCurrentHour(),
-                            timePicker.getCurrentMinute()).getTime();
+                    notifDate=  dueDate;
+                    calendar.setTime(notifDate);
+                    calendar.add(Calendar.WEEK_OF_YEAR, -1);
+                    notifDate= calendar.getTime();
                     break;
                 case 4:
-                    notifDate=  new GregorianCalendar(datePicker.getYear(), datePicker.getMonth()-1,
-                            datePicker.getDayOfMonth(), timePicker.getCurrentHour(),
-                            timePicker.getCurrentMinute()).getTime();
+                    notifDate=  dueDate;
+                    calendar.setTime(notifDate);
+                    calendar.add(Calendar.MONTH, -1);
+                    notifDate= calendar.getTime();
                     break;
             }
             newTaskInfo.notificationTime= notifDate;
+            Log.d("createTaskButton", "Creating task in db with NOTIF DATE: " + newTaskInfo.notificationTime);
 
-            Log.d("createTaskButton", "Creating task in db with name: " + newTaskInfo.displayName);
-            theTaskClass.createTask(newTaskInfo);
+            //sanitizing input
+            if(TextUtils.isEmpty(taskTitle.getText().toString()))
+                Toast.makeText(getApplicationContext(),"Give your task a name!", Toast.LENGTH_LONG).show();
+            else if(newTaskInfo.dueDate.before(new Date())  ||newTaskInfo.dueDate.equals(new Date() ))
+                Toast.makeText(getApplicationContext(),"Due date must be in the future!", Toast.LENGTH_LONG).show();
+            else if(newTaskInfo.notificationTime.before(new Date())  ||newTaskInfo.notificationTime.equals(new Date() ))
+                Toast.makeText(getApplicationContext(),"Notification time has passed already!", Toast.LENGTH_LONG).show();
+            else{
+                Log.d("createTaskButton", "Creating task in db with name: " + newTaskInfo.displayName);
+                theTaskClass.createTask(newTaskInfo);
+                // First prepare the userInfo to pass to next activity
+                String serializedUserInfo = getSerializedUserInfo();
+                newIntent = new Intent(NewTaskActivity.this, TaskActivity.class);
+                newIntent.putExtra("userInfo", serializedUserInfo);
+                startActivity( newIntent );
+            }
 
-            // First prepare the userInfo to pass to next activity
-            String serializedUserInfo = getSerializedUserInfo();
-            newIntent = new Intent(NewTaskActivity.this, TaskActivity.class);
-            newIntent.putExtra("userInfo", serializedUserInfo);
-            startActivity( newIntent );
         });
     }
 
