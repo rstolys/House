@@ -76,9 +76,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
+                    android:hint="@string/new_task_name"
                     android:importantForAutofill="no"
-                    android:inputType="textPersonName"
-                    android:text="@string/new_task_name" />
+                    android:inputType="textPersonName" />
 
             </TableRow>
 

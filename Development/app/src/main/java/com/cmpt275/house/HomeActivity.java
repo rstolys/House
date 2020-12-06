@@ -60,7 +60,6 @@ public class HomeActivity extends AppCompatActivity {
             }
         }
 
-
         //Get reference to recycler view in activity layout
         RecyclerView rvTaskList = (RecyclerView) findViewById(R.id.taskList_home);
         RecyclerView rvHouseList = (RecyclerView) findViewById(R.id.houseList_home);

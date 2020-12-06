@@ -207,6 +207,9 @@ public class MainActivity extends AppCompatActivity implements updateUI {
 
         //Close the dialog window
         createAccountDialog.dismiss();
+
+        //Check if the user is already signed in
+        auth.checkAuthStatus();
     }
 
 

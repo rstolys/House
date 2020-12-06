@@ -16,7 +16,7 @@
     <string name="action_sign_in_short">Sign in</string>
     <string name="welcome">"Welcome!"</string>
     <string name="invalid_username">Not a valid username</string>
-    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="invalid_password">Password must be >6 characters</string>
     <string name="login_failed">"Login failed"</string>
     <string name="forgotPassword_login"><u>Forgot Password?</u></string>
 
@@ -40,7 +40,7 @@
     <string name="createAccount_email_prompt">Enter Email</string>
     <string name="createAccount_password">Password:</string>
     <string name="createAccount_password_prompt">Enter Password</string>
-    <string name="createAccount_password_rule">Password Must be at least 5 characters</string>
+    <string name="createAccount_password_rule">Password Must be at least 6 characters</string>
     <string name="createAccount_submit">Create Account</string>
     <string name="createAccount_cancel">Cancel</string>
 

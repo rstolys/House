@@ -22,5 +22,5 @@ public interface HouseBE {
     public void getHouseVotes(String house_id, vInfoArrayCallback callback);
     public void submitVote(votingInfo vInfo, String userName, String user_id, boolean yesVote, vInfoCallback callback);
     public void editSettings(houseInfo hInfo, boolean displayNameChanges, hInfoCallback callback);
-    public void inviteUserToHouse(String newUserID, String newUserEmail, houseInfo hInfo, userInfo uInfo, hInfoCallback callback);
+    public void inviteUserToHouse(String newUserEmail, houseInfo hInfo, String callerID, hInfoCallback callback);
 }

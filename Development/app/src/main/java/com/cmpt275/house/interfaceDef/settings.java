@@ -1,5 +1,7 @@
 package com.cmpt275.house.interfaceDef;
 
+import com.cmpt275.house.interfaceDef.Callbacks.booleanCallback;
+
 public interface settings {
     public void logout(updateUI callback);
     public void viewLegal();
@@ -8,5 +10,5 @@ public interface settings {
     public void changeEmail(String email);
     public void changeNotifications(boolean allowNotifications);
     public void resetPassword(String email);
-    public void provideFeedback(String feedback);
+    public void provideFeedback(String feedback, booleanCallback callback);
 }
