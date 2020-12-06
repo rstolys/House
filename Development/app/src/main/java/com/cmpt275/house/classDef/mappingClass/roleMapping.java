@@ -13,13 +13,15 @@ public class roleMapping implements mapping {
 
     //String Tags
     public final String REQUEST = "Request To Join";
-    public final String MEMBER = "Member";
-    public final String ADMIN = "Administrator";
+    public final String MEMBER  = "Member";
+    public final String ADMIN   = "Administrator";
+    public final String REMOVE  = "Remove";
 
     //Integer Tags
-    public final Integer REQUEST_NUM = 0;
-    public final Integer MEMBER_NUM = 1;
-    public final Integer ADMIN_NUM = 2;
+    public final Integer REMOVE_NUM  = -1;
+    public final Integer REQUEST_NUM =  0;
+    public final Integer MEMBER_NUM  =  1;
+    public final Integer ADMIN_NUM   =  2;
 
 
     ////////////////////////////////////////////////////////////
@@ -33,6 +35,7 @@ public class roleMapping implements mapping {
         roleStringToInt.put(REQUEST, REQUEST_NUM);
         roleStringToInt.put(MEMBER, MEMBER_NUM);
         roleStringToInt.put(ADMIN, ADMIN_NUM);
+        roleStringToInt.put(REMOVE, REMOVE_NUM);
 
         //Setup the Int to String Map
         roleIntToString = new HashMap<Integer, String>();

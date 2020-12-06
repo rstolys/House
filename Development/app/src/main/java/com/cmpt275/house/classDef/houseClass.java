@@ -3,6 +3,7 @@ package com.cmpt275.house.classDef;
 import android.app.role.RoleManager;
 import android.content.Context;
 import android.util.Log;
+import android.view.Display;
 
 import com.cmpt275.house.HouseActivity;
 import com.cmpt275.house.classDef.infoClass.houseInfo;
@@ -12,6 +13,7 @@ import com.cmpt275.house.classDef.infoClass.votingInfo;
 import com.cmpt275.house.classDef.mappingClass.notificationMapping;
 import com.cmpt275.house.classDef.mappingClass.roleMapping;
 import com.cmpt275.house.classDef.mappingClass.voteTypeMapping;
+import com.cmpt275.house.interfaceDef.Callbacks.booleanCallback;
 import com.cmpt275.house.interfaceDef.house;
 
 import java.util.ArrayList;
@@ -40,6 +42,8 @@ public class houseClass extends taskClass implements house {
     private final notificationMapping notificationMap;
     private final voteTypeMapping voteMap;
 
+    private displayMessage display;
+
     //
     // Class Functions
     //
@@ -54,6 +58,7 @@ public class houseClass extends taskClass implements house {
         roleMap = new roleMapping();
         notificationMap = new notificationMapping();
         voteMap = new voteTypeMapping();
+        display = new displayMessage();
     }
 
 
@@ -160,20 +165,29 @@ public class houseClass extends taskClass implements house {
 
     public void viewMember(String user_id) {}
 
-    public void removeMember(String user_id) {}
+    public void removeMember(houseInfo hInfo, String removedMemberID, String authorizorID) {
 
-    public void makeMemberAdmin(userInfo uInfo) {
+        firebaseTask.removeMember(hInfo, authorizorID, removedMemberID, ( success, errorMessage) ->{
+            // Do stuff here...
+            Log.d("removeMember:", "Returned with success: " + success);
 
-        houseInfo myHInfo = new houseInfo();
+            String updateInfo = "removeMember";
+            setChanged();
+            notifyObservers(updateInfo);
+        });
+    }
 
-        myHInfo.id = "TfB0rlNBEuj9dSMzA1OM";    //Ryan Stolys user_id
-        //myHInfo.members.put("DummyUser", new houseMemberObj("Jayden Cole", true, roleMap.mapStringToInt("Administrator")));
-        myHInfo.members.put("w4OFKQrvL28T3WlXVP4X", new houseMemberInfoObj("Ryan Stolys", roleMap.ADMIN));
-
-        //Set Ryan Stolys to a regular house member
-        firebaseTask.setUserRole(myHInfo, "w4OFKQrvL28T3WlXVP4X", roleMap.mapIntToString(1), (hInfo, success, errorMessage) -> {
+    public void setMemberRole(String user_id, houseInfo hInfo, String role) {
+        //Set user_id in hInfo to the given role
+        firebaseTask.setUserRole(hInfo, user_id, role, (hInfoReturned, success, errorMessage) -> {
             Log.d("setUserRole:", "Returned with success: " + success);
-            //Do Stuff here ...
+            if(success) {
+                this.hInfo = hInfoReturned;
+
+                String updateInfo = "setMemberRole";
+                setChanged();
+                notifyObservers(updateInfo);
+            } // else display.log the toast message on failure
         });
     }
 
@@ -181,7 +195,7 @@ public class houseClass extends taskClass implements house {
 
         firebaseTask.getHouseVotes("TfB0rlNBEuj9dSMzA1OM", (vInfos, success, errorMessage) -> {
             Log.d("getHouseVotes:", "Returned with success: " + success);
-            //Do stuff here ...
+
             this.vInfos = vInfos;
             String updateInfo = "viewVoting";
             setChanged();

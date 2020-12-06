@@ -11,8 +11,8 @@ public interface house extends task {
     public void approveMember(String house_id, String user_id);
     public void addMember(userInfo uInfo, houseInfo hInfo, String role);
     public void viewMember(String user_id);
-    public void removeMember(String user_id);
-    public void makeMemberAdmin(userInfo uInfo);
+    public void removeMember(houseInfo hInfo, String removedMemberID, String authorizorID);
+    public void setMemberRole(String user_id, houseInfo hInfo, String role);
     public void viewVoting(String voting_id);
     public void submitVote(String voting_id, int voteType, userInfo uInfo);
     public void viewSettings(String house_id);

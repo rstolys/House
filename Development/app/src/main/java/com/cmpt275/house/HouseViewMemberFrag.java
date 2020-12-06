@@ -75,17 +75,20 @@ public class HouseViewMemberFrag extends Fragment {
                 // If button is clicked change the text on the button and the bonus info. This will only be saved on "save button" click
                 String action = changeMemberRoleButton.getText().toString();
 
-                // Get the associated activity for this for the fragment
-                HouseEditActivity activity = (HouseEditActivity) getActivity();
                 if (action == "Let Join" || action == "Make Member"){
                     bonusInfo.setText(rm.MEMBER);
                     changeMemberRoleButton.setText("Make Admin");
+                    member.role = rm.MEMBER;
+
                 } else if( action == "Make Admin" ){
                     bonusInfo.setText(rm.ADMIN);
                     changeMemberRoleButton.setText("Remove");
+                    member.role = rm.ADMIN;
+
                 } else if( action == "Leave" || action == "Remove"){
                     changeMemberRoleButton.setText("Make Member");
                     bonusInfo.setText("Removed");
+                    member.role = rm.REMOVE;
                 }
             });
         }
