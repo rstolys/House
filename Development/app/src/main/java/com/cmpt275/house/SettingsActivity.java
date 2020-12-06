@@ -29,8 +29,8 @@ import java.io.ObjectOutputStream;
 public class SettingsActivity extends AppCompatActivity {
 
     private Intent newIntent;
-    private settingsClass setting = new settingsClass(this);
-    private displayMessage display = new displayMessage();
+    private final settingsClass setting = new settingsClass(this);
+    private final displayMessage display = new displayMessage();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

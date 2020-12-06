@@ -13,7 +13,7 @@ public class signInClass implements signIn {
     // Class Variables
     //
     private final userFirebaseClass firebaseUserTask;
-    private displayMessage display;
+    private final displayMessage display;
 
     private final Context mContext;
 

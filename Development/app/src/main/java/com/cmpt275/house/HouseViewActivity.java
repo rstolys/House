@@ -71,7 +71,7 @@ public class HouseViewActivity extends AppCompatActivity implements Observer {
         hClass = new houseClass( this );
         hClass.addObserver(this);
         hClass.viewHouse(houseId);
-        hClass.viewVoting(houseId);
+        hClass.getVotes(houseId);
 
         Button backButton = findViewById(R.id.view_house_back_button);
         backButton.setOnClickListener(v->{
@@ -178,11 +178,17 @@ public class HouseViewActivity extends AppCompatActivity implements Observer {
         FragmentTransaction ft = fm.beginTransaction();
 
         Log.d("UPDATE HOUSE_VIEW_ACT:", "Object passed: " + obj);
-        if(String.valueOf(obj) == "viewVoting"){
-            //TODO: Put voting once it is loaded onto the screen
+        if(String.valueOf(obj).equals("viewVoting")){
             this.vInfos = this.hClass.vInfos;
 
-        } else if(String.valueOf(obj) == "viewHouse"){
+            for(int voteIndex = 0; voteIndex < vInfos.length; voteIndex++) {
+                //HouseViewVotingFrag(Context mContext, votingInfo vInfo, int voteIndex, userInfo uInfo, houseClass houseAction)
+                HouseViewVotingFrag votingFrag = new HouseViewVotingFrag(this, vInfos[voteIndex], voteIndex, uInfo, hClass);
+                ft.add(R.id.view_house_votes, votingFrag);
+                ft.addToBackStack(null);
+            }
+        }
+        else if(String.valueOf(obj).equals("viewHouse")){
             // Load house data that is not on a callback (title, members, description)
             this.hInfo = this.hClass.hInfo;
             TextView houseTitle = findViewById(R.id.view_house_house_name);
