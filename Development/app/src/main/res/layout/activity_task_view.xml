@@ -41,26 +41,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="16dp"
         android:text="Task Title"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/screen_container"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
-        android:layout_width="326dp"
-        android:layout_height="509dp"
+        android:layout_width="306dp"
+        android:layout_height="569dp"
         android:layout_marginStart="40dp"
+        android:layout_marginTop="35dp"
         android:layout_marginEnd="40dp"
-        android:layout_marginBottom="16dp"
         android:background="@color/white"
         android:clickable="false"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/nav_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/task_title">
@@ -70,7 +68,6 @@
             android:layout_height="wrap_content"
             android:background="@color/purple_200"
             android:orientation="vertical">
-
 
 
             <TableRow
@@ -83,8 +80,8 @@
                     android:id="@+id/new_task_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="18sp"
-                    android:text="@string/new_task_description" />
+                    android:text="@string/new_task_description"
+                    android:textSize="18sp" />
             </TableRow>
 
 
@@ -97,15 +94,16 @@
                 <TextView
                     android:layout_width="190dp"
                     android:layout_height="wrap_content"
+                    android:text="@string/new_task_due_date"
                     android:textColor="@color/black"
-                    android:textSize="18sp"
-                    android:text="@string/new_task_due_date" />
+                    android:textSize="18sp" />
+
                 <TextView
                     android:id="@+id/new_task_due_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="18sp"
-                    android:text="@string/new_task_due_date" />
+                    android:text="@string/new_task_due_date"
+                    android:textSize="18sp" />
 
             </TableRow>
 
@@ -118,15 +116,16 @@
                 <TextView
                     android:layout_width="190dp"
                     android:layout_height="wrap_content"
+                    android:text="@string/house_name"
                     android:textColor="@color/black"
-                    android:textSize="18sp"
-                    android:text="@string/house_name" />
+                    android:textSize="18sp" />
+
                 <TextView
                     android:id="@+id/house_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="18sp"
-                    android:text="@string/house_name" />
+                    android:text="@string/house_name"
+                    android:textSize="18sp" />
 
             </TableRow>
 
@@ -139,15 +138,16 @@
                 <TextView
                     android:layout_width="190dp"
                     android:layout_height="wrap_content"
+                    android:text="Task Assignee"
                     android:textColor="@color/black"
-                    android:textSize="18sp"
-                    android:text="Task Assignee" />
+                    android:textSize="18sp" />
+
                 <TextView
                     android:id="@+id/assignee_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="18sp"
-                    android:text="Assignee" />
+                    android:text="Assignee"
+                    android:textSize="18sp" />
 
             </TableRow>
 
@@ -160,15 +160,16 @@
                 <TextView
                     android:layout_width="190dp"
                     android:layout_height="wrap_content"
+                    android:text="Assigned by"
                     android:textColor="@color/black"
-                    android:textSize="18sp"
-                    android:text="Assigned by" />
+                    android:textSize="18sp" />
+
                 <TextView
                     android:id="@+id/assigned_by_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="18sp"
-                    android:text="Admin User" />
+                    android:text="Admin User"
+                    android:textSize="18sp" />
 
             </TableRow>
 
@@ -211,10 +212,10 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/black"
                     android:gravity="center"
-                    android:textSize="18sp"
-                    android:text="Voting" />
+                    android:text="Voting"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
 
 
             </TableRow>
