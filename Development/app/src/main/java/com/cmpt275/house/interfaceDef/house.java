@@ -6,7 +6,7 @@ import com.cmpt275.house.classDef.infoClass.votingInfo;
 import com.cmpt275.house.interfaceDef.Callbacks.booleanCallback;
 import com.cmpt275.house.interfaceDef.Callbacks.vInfoCallback;
 
-public interface house extends task {
+public interface house {
     public void createHouse(houseInfo hInfo);
     public void joinHouse(houseInfo hInfo, userInfo uInfo);
     public void viewYourHouses(userInfo uInfo);

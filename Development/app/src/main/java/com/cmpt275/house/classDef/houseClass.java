@@ -20,9 +20,10 @@ import com.cmpt275.house.interfaceDef.house;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Observable;
 import java.util.Set;
 
-public class houseClass extends taskClass implements house {
+public class houseClass extends Observable implements house {
 
     //
     // Class Variables
