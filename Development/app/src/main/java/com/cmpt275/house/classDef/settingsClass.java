@@ -3,13 +3,10 @@ package com.cmpt275.house.classDef;
 import android.content.Context;
 import android.util.Log;
 
-import com.cmpt275.house.R;
 import com.cmpt275.house.classDef.infoClass.feedbackInfo;
 import com.cmpt275.house.classDef.infoClass.userInfo;
-import com.cmpt275.house.interfaceDef.Callbacks.booleanCallback;
+import com.cmpt275.house.interfaceDef.Callbacks.updateCallback;
 import com.cmpt275.house.interfaceDef.settings;
-import com.cmpt275.house.interfaceDef.updateUI;
-import com.google.android.gms.common.api.internal.IStatusCallback;
 
 import java.util.Date;
 
@@ -47,7 +44,7 @@ public class settingsClass implements settings {
     // Will Logout the user
     //
     /////////////////////////////////////////////////
-    public void logout(updateUI callback) {
+    public void logout(updateCallback callback) {
         //Show we are logging out
         display.showToastMessage(mContext, "Logging out", display.LONG);
 
@@ -55,7 +52,7 @@ public class settingsClass implements settings {
         firebaseUserTask.logout(uInfo, (result, errorMessage) -> {
             Log.d("logout:", "User " + uInfo.displayName + " is logged out");
 
-            callback.stateChanged(0);
+            callback.onReturn(true);
         });
     }
 
@@ -221,7 +218,7 @@ public class settingsClass implements settings {
     // Will submit user generated feedback
     //
     /////////////////////////////////////////////////
-    public void provideFeedback(String feedback, booleanCallback callback) {
+    public void provideFeedback(String feedback, updateCallback callback) {
 
         if(feedback == null || feedback.length() < 1) {
             Log.d("provideFeedback", "Feedback provided is null or empty");
@@ -242,13 +239,13 @@ public class settingsClass implements settings {
                 if(result) {
                     display.showToastMessage(mContext, "Feedback successfully submitted. Thanks for helping make this app better!", display.LONG);
 
-                    callback.onReturn(true, "");
+                    callback.onReturn(true);
                 }
                 else {
                     Log.d("submitFeedback:", "Error Message: " + errorMessage);
                     display.showToastMessage(mContext, errorMessage, display.LONG);
 
-                    callback.onReturn(false, "");
+                    callback.onReturn(false);
                 }
             });
         }

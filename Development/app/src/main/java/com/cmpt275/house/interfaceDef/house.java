@@ -21,5 +21,6 @@ public interface house {
     public void viewSettings(String house_id);
     public void editSettings(houseInfo hInfo);
     public void deleteHouse(houseInfo hInfo);
+
 }
 
