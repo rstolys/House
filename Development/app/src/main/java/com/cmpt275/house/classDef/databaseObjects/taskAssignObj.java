@@ -1,6 +1,8 @@
 package com.cmpt275.house.classDef.databaseObjects;
 
-public class taskAssignObj {
+import java.io.Serializable;
+
+public class taskAssignObj implements Serializable {
 
     //
     // Class Attributes

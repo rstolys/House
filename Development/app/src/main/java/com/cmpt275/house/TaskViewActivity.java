@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.fragment.app.FragmentTransaction;
 
@@ -29,8 +32,7 @@ public class TaskViewActivity extends AppCompatActivity {
 
     private taskClass myTaskClass = new taskClass(this);
     private Intent newIntent;
-    private Intent buttonIntent;
-    FragmentTransaction fragmentTransaction;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +42,6 @@ public class TaskViewActivity extends AppCompatActivity {
         // Get userInfo from last activity
         Intent lastIntent = getIntent();
         String serializedObject = lastIntent.getStringExtra("userInfo");
-
         if(serializedObject == ""){
             // If the serialized object is empty, error!
             Log.e("OnCreate Task View", "userInfo not passed from last activity");
@@ -58,6 +59,55 @@ public class TaskViewActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+
+        String serializedObject2 = lastIntent.getStringExtra("taskInfo");
+        if(serializedObject2 == ""){
+            // If the serialized object is empty, error!
+            Log.e("OnCreate Task View", "userInfo not passed from last activity");
+        } else {
+            try {
+                // Decode the string into a byte array
+                byte b[] = Base64.decode( serializedObject2, Base64.DEFAULT );
+
+                // Convert byte array into taskInfo object
+                ByteArrayInputStream bi = new ByteArrayInputStream(b);
+                ObjectInputStream si = new ObjectInputStream(bi);
+                tInfo = (taskInfo) si.readObject();
+                Log.d("TASK_ACTIVITY", "taskInfo.displayName passed: " + tInfo.displayName );
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        Button completeTaskButton = (Button) findViewById(R.id.complete_taskButton);
+        completeTaskButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myTaskClass.completeTask(tInfo);
+                Toast.makeText(getApplicationContext(),"Task Completed!", Toast.LENGTH_LONG).show();
+                return;
+            }
+         });
+
+        Button extendTaskButton = (Button) findViewById(R.id.extend_task_button);
+        extendTaskButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myTaskClass.requestExtension(tInfo);
+                Toast.makeText(getApplicationContext(),"Task Extension Requested", Toast.LENGTH_LONG).show();
+                return;
+            }
+        });
+
+        Button deleteTaskButton = (Button) findViewById(R.id.delete_task_button);
+        deleteTaskButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myTaskClass.deleteTask(tInfo);
+                Toast.makeText(getApplicationContext(),"Task Deleted", Toast.LENGTH_LONG).show();
+                return;
+            }
+        });
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
         navView.setSelectedItemId(R.id.navBar_tasks);

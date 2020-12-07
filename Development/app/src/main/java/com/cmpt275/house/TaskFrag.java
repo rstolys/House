@@ -12,10 +12,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cmpt275.house.classDef.infoClass.houseInfo;
 import com.cmpt275.house.classDef.infoClass.taskInfo;
 import com.cmpt275.house.classDef.infoClass.userInfo;
+import com.cmpt275.house.classDef.taskClass;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -35,6 +37,7 @@ public class TaskFrag extends Fragment {
 
     userInfo uInfo;
     private final taskInfo tInfo;
+    taskClass myTaskClass;
 
     public TaskFrag(taskInfo taskInfo) {
         this.tInfo = taskInfo;
@@ -95,7 +98,10 @@ public class TaskFrag extends Fragment {
         completeTaskButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                myTaskClass.completeTask(tInfo);
+                Toast.makeText(getActivity().getApplicationContext(),"Task Completed!", Toast.LENGTH_LONG).show();
                 completeTaskButton.setText("Task Completed");
+                return;
             }
         });
 
@@ -106,9 +112,11 @@ public class TaskFrag extends Fragment {
             public void onClick(View v) {
                 // First prepare the userInfo to pass to next activity
                 String serializedUserInfo = getSerializedUserInfo();
+                String serializedTaskInfo = getSerializedTaskInfo();
 
                 Intent buttonIntent = new Intent(getActivity(), TaskViewActivity.class);
                 buttonIntent.putExtra("userInfo", serializedUserInfo);
+                buttonIntent.putExtra("taskInfo", serializedTaskInfo);
                 startActivity( buttonIntent );
             }
         });
@@ -134,5 +142,25 @@ public class TaskFrag extends Fragment {
         }
 
         return serializedUserInfo;
+    }
+
+    private String getSerializedTaskInfo() {
+
+        String serializedTaskInfo = "";
+        try {
+            // Convert object data to encoded string
+            ByteArrayOutputStream bo = new ByteArrayOutputStream();
+            ObjectOutputStream so = new ObjectOutputStream(bo);
+            so.writeObject(tInfo);
+            so.flush();
+            final byte[] byteArray = bo.toByteArray();
+            serializedTaskInfo = Base64.encodeToString(byteArray, Base64.DEFAULT);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+            serializedTaskInfo = "";
+        }
+
+        return serializedTaskInfo;
     }
 }

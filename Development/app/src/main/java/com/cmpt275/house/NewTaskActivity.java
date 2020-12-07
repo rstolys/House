@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.cmpt275.house.classDef.databaseObjects.taskAssignObj;
 import com.cmpt275.house.classDef.houseClass;
@@ -46,6 +47,7 @@ import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Set;
+import java.util.TimeZone;
 
 public class NewTaskActivity extends AppCompatActivity implements Observer {
 
@@ -53,6 +55,7 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
     public taskInfo newTaskInfo = new taskInfo();
     private houseClass myHouseClass = new houseClass(this);
     private taskClass theTaskClass = new taskClass(this);
+    FragmentTransaction fragmentTransaction;
 
     userInfo uInfo;
 
@@ -105,6 +108,11 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
             notifDropdown = findViewById(R.id.notifications_spinner);
 
             tagDropdown = findViewById(R.id.tags_spinner);
+
+            FieldFrag field = new FieldFrag();
+
+            fragmentTransaction.add(R.id.tasks_list_container, field);
+            fragmentTransaction.addToBackStack(null);
 
 
             //create a list of items for the notifications spinner.
@@ -235,13 +243,13 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
                 case 2:
                     notifDate=  dueDate;
                     calendar.setTime(notifDate);
-                    calendar.add(Calendar.DAY_OF_YEAR, -1);
+                    calendar.add(Calendar.DATE, -1);
                     notifDate= calendar.getTime();
                     break;
                 case 3:
                     notifDate=  dueDate;
                     calendar.setTime(notifDate);
-                    calendar.add(Calendar.WEEK_OF_YEAR, -1);
+                    calendar.add(Calendar.DATE, -7);
                     notifDate= calendar.getTime();
                     break;
                 case 4:
@@ -401,4 +409,17 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
 
         return serializedUserInfo;
     }
+    //String Tags
+    public final String NO_TAG = "No Tag";
+    public final String CLEANING = "Cleaning";
+    public final String KITCHEN = "Kitchen";
+    public final String COOKING = "Cooking";
+    public final String BATHROOM = "Bathroom";
+    public final String GARBAGE = "Garbage";
+    public final String GROCERIES = "Groceries";
+    public final String SHOPPING = "Shopping";
+    public final String IN_MAINTENANCE = "Indoor Maintenance";
+    public final String OUT_MAINTENANCE = "Outdoor Maintenance";
+    public final String GARAGE = "Garage";
+    public final String OTHER = "Other";
 }

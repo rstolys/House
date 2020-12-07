@@ -235,6 +235,26 @@
                     android:background="@android:drawable/btn_dropdown"
                     android:spinnerMode="dropdown"/>
             </TableRow>
+            <TableRow
+                android:id="@+id/new_task_row102"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/purple_200">
+
+                <TextView
+                    android:id="@+id/list_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:text="List"/>
+                <LinearLayout
+                    android:id="@+id/tasks_list_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                </LinearLayout>
+            </TableRow>
 
             <TableRow
                 android:id="@+id/new_task_row6"

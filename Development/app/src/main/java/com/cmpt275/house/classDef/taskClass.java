@@ -125,6 +125,21 @@ public class taskClass extends Observable implements task {
 
     public void assignTask(taskInfo tInfo) {}
 
+    public void completeTask(taskInfo tInfo) {
+
+        //Set status value
+        mapping statusMap = new statusMapping();
+        tInfo.status = statusMap.mapIntToString(2);
+
+        //Set Parameter
+        String paramToChange = "status";
+
+        firebaseTask.setTaskInfo(tInfo, paramToChange, (tInfo1, success, errorMessage) -> {
+            Log.d("setTaskInfo:", "Returned with success " + success);
+            //Do stuff here ...
+        });
+    }
+
     public void editTask(taskInfo tInfo) {
 
         //Do Stuff First

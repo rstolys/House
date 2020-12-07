@@ -30,6 +30,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -41,6 +42,8 @@ public class TaskActivity extends AppCompatActivity implements Observer {
     private Intent newIntent;
     private Intent addButtonIntent;
     FragmentTransaction fragmentTransaction;
+
+    public final String COMPLETED = "Completed";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -206,30 +209,39 @@ public class TaskActivity extends AppCompatActivity implements Observer {
             e.printStackTrace();
         }
 
-        Calendar calendar = Calendar.getInstance();
+        Calendar calendar = new GregorianCalendar();
+
         Date now=  new Date();
 
         //constants for sorting tasks in screen
         calendar.setTime(now);
         calendar.add(Calendar.DAY_OF_YEAR, 1);
-        Date dueToday= calendar.getTime();
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
-        String strDate = dateFormat.format(dueToday);
+        Date dueToday=   new Date();
 
-        //Log.d("UPDATE_TASKS", "I am putting my tasks to screen"+ strDate);
 
-        calendar.setTime(now);
+       calendar.setTime(now);
         calendar.add(Calendar.WEEK_OF_YEAR, 1);
-        Date dueWeek= calendar.getTime();
+        Date dueWeek=  calendar.getTime();
 
-        calendar.setTime(now);
+        //calendar.setTime(now);
         calendar.add(Calendar.MONTH, 1);
         Date dueMonth= calendar.getTime();
 
         for(int i = 0; i < myTaskClass.tInfos.size(); i++ ){
             TaskFrag taskFrag = new TaskFrag(myTaskClass.tInfos.get(i));
 
-            if(myTaskClass.tInfos.get(i).dueDate.before(now))
+            //sorting tasks
+
+            /*DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+            String strDate = dateFormat.format(dueMonth);
+            String dueDate = dateFormat.format(myTaskClass.tInfos.get(i).dueDate);
+
+            Log.d("UPDATE_TASKS", "dueToday constant"+ strDate);
+            Log.d("UPDATE_TASKS", "due date"+ dueDate);*/
+
+            if(myTaskClass.tInfos.get(i).status == COMPLETED)
+                fragmentTransaction.add(R.id.completed_tasks_list, taskFrag);
+            else if(myTaskClass.tInfos.get(i).dueDate.before(now))
                 fragmentTransaction.add(R.id.overdue_tasks_list, taskFrag);
             else if(myTaskClass.tInfos.get(i).dueDate.before(dueToday))
                 fragmentTransaction.add(R.id.due_today_tasks_list, taskFrag);
