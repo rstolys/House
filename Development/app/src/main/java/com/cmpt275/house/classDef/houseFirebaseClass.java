@@ -282,25 +282,23 @@ public class houseFirebaseClass implements HouseBE {
             if(hInfo.id != null && user_id != null){
                 Log.d(TAG, "deleteHouse called for house: " + hInfo.id);
 
-                //Make sure the user trying to delete the task is an admin
-                if(!Objects.requireNonNull(hInfo.members.get(user_id)).role.equals(roleMap.ADMIN)) {
-                    Log.d(TAG, "deleteHouse cannot be done by a non-admin member");
-
-                    callback.onReturn(false, INVALID_PERMISSIONS_MESSAGE);
-                }
-                else {
+                {
                     WriteBatch batch = db.batch();
 
                     //Add all tasks to delete to the batch
-                    for(String task_id : hInfo.tasks.keySet()) {
-                        DocumentReference deleteTask = db.collection("tasks").document(task_id);
-                        batch.delete(deleteTask);
+                    if(hInfo.tasks != null){
+                        for(String task_id : hInfo.tasks.keySet()) {
+                            DocumentReference deleteTask = db.collection("tasks").document(task_id);
+                            batch.delete(deleteTask);
+                        }
                     }
 
                     //Add all the votes to delete to the batch
-                    for(int i = 0; i < hInfo.voting_ids.size(); i++) {
-                        DocumentReference deleteVote = db.collection("voting").document(hInfo.voting_ids.get(i));
-                        batch.delete(deleteVote);
+                    if(hInfo.voting_ids != null){
+                        for(int i = 0; i < hInfo.voting_ids.size(); i++) {
+                            DocumentReference deleteVote = db.collection("voting").document(hInfo.voting_ids.get(i));
+                            batch.delete(deleteVote);
+                        }
                     }
 
                     //Add all the users to remove this house from their account
@@ -315,7 +313,6 @@ public class houseFirebaseClass implements HouseBE {
                     //Add the house to the batch to delete
                     DocumentReference deleteHouse = db.collection("houses").document(hInfo.id);
                     batch.delete(deleteHouse);
-
 
                     //Commit all the writes and await completion
                     batch.commit().addOnCompleteListener(task -> {

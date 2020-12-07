@@ -16,12 +16,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.cmpt275.house.classDef.displayMessage;
 import com.cmpt275.house.classDef.houseClass;
 import com.cmpt275.house.classDef.infoClass.houseInfo;
 import com.cmpt275.house.classDef.infoClass.houseMemberInfoObj;
 import com.cmpt275.house.classDef.infoClass.userInfo;
 import com.cmpt275.house.classDef.infoClass.votingInfo;
 import com.cmpt275.house.classDef.mappingClass.roleMapping;
+import com.cmpt275.house.classDef.userFirebaseClass;
+import com.cmpt275.house.interfaceDef.Callbacks.updateCallback;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.ByteArrayInputStream;
@@ -43,6 +46,8 @@ public class HouseEditActivity extends AppCompatActivity implements Observer {
     houseInfo hInfo;
     public Map<String, String> membersRoleCopy = new HashMap<String, String>();
     houseClass hClass;
+    private userFirebaseClass firebaseUserTask;
+    public displayMessage display;
 
     // Additional maps
     private final roleMapping rm = new roleMapping();
@@ -53,6 +58,8 @@ public class HouseEditActivity extends AppCompatActivity implements Observer {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_house_edit);
+
+        display = new displayMessage();
 
         // Get userInfo from last activity
         Intent lastIntent = getIntent();
@@ -118,7 +125,13 @@ public class HouseEditActivity extends AppCompatActivity implements Observer {
                 this.hInfo.displayName = houseTitle.getText().toString();
             }
             if( !houseMaxMembers.getText().toString().equals("") ){
-                this.hInfo.maxMembers  = parseInt(houseMaxMembers.getText().toString());
+                // Sanity check input
+                Integer maxMems = parseInt(houseMaxMembers.getText().toString());
+                if(maxMems < this.hInfo.members.size()){
+                    // Check number of members in house
+                    maxMems = this.hInfo.members.size();
+                }
+                this.hInfo.maxMembers = maxMems;
             }
             if( !notificationSched.getText().toString().equals("") ){
                 this.hInfo.houseNotifications = notificationSched.getText().toString();
@@ -268,8 +281,8 @@ public class HouseEditActivity extends AppCompatActivity implements Observer {
             // Commit the fragment changes needed
             ft.commit();
         } else if( arg == "editSettings" ) {
-            // Call to edit settings has passed and back end is updated
-
+            // Call to edit settings has passed and back end is updated (edit settings can remove and
+            // delete members and delete a house
             //TODO: Make toast message to say it was saved
 
             String serializedUserInfo = "";
@@ -299,6 +312,24 @@ public class HouseEditActivity extends AppCompatActivity implements Observer {
                 // All members statuses changed, save settings
                 hClass.editSettings(this.hInfo);
             }
+        } else if( arg == "deleteHouse"){
+            // Go to houses page after deleting this hInfo
+            String serializedUserInfo = "";
+            try {
+                // Convert object data to encoded string
+                ByteArrayOutputStream bo = new ByteArrayOutputStream();
+                ObjectOutputStream so = new ObjectOutputStream(bo);
+                so.writeObject(uInfo);
+                so.flush();
+                final byte[] byteArray = bo.toByteArray();
+                serializedUserInfo = Base64.encodeToString(byteArray, Base64.DEFAULT);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            newIntent = new Intent(HouseEditActivity.this, HouseActivity.class);
+            newIntent.putExtra("userInfo", serializedUserInfo);
+            startActivity(newIntent);
         }
     }
 
@@ -315,4 +346,5 @@ public class HouseEditActivity extends AppCompatActivity implements Observer {
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
+
 }

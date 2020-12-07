@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="120dp"
-        android:text="Move In" />
+        android:text="Request To Move In" />
 
     <TextView
         android:id="@+id/join_house_spacer"

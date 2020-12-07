@@ -30,8 +30,8 @@
                 android:ems="10"
                 android:importantForAutofill="no"
                 android:inputType="textPersonName"
-                android:text="@string/new_house_name"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:hint="New House Name"/>
 
         </TableRow>
 
@@ -48,7 +48,7 @@
                 android:ems="10"
                 android:importantForAutofill="no"
                 android:inputType="textPersonName"
-                android:text="@string/new_house_description"
+                android:hint="@string/new_house_description"
                 android:textSize="14sp" />
         </TableRow>
 
@@ -68,7 +68,7 @@
                 android:id="@+id/new_house_members_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/newHouse_members" />
+                android:hint="@string/newHouse_members" />
         </TableRow>
 
         <TableRow
@@ -90,7 +90,7 @@
                 android:ems="10"
                 android:importantForAutofill="no"
                 android:inputType="number"
-                android:text="@string/new_house_punish_mult"
+                android:hint="@string/new_house_punish_mult"
                 android:textSize="14sp" />
         </TableRow>
 
