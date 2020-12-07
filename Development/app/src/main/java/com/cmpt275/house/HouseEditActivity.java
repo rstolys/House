@@ -1,5 +1,6 @@
 package com.cmpt275.house;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Base64;
@@ -28,6 +29,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -38,10 +41,13 @@ public class HouseEditActivity extends AppCompatActivity implements Observer {
     private Intent newIntent;
     userInfo uInfo;
     houseInfo hInfo;
+    public Map<String, String> membersRoleCopy = new HashMap<String, String>();
     houseClass hClass;
-    private roleMapping rm = new roleMapping();
+
+    // Additional maps
+    private final roleMapping rm = new roleMapping();
     private boolean viewerIsAdmin = false;
-    votingInfo[] vInfos;
+    public int hInfoMemberStatusChange = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +65,7 @@ public class HouseEditActivity extends AppCompatActivity implements Observer {
         } else {
             try {
                 // Decode the userInfo string into a byte array
-                byte b[] = Base64.decode(serializedObject, Base64.DEFAULT);
+                byte[] b = Base64.decode(serializedObject, Base64.DEFAULT);
 
                 // Convert byte array into userInfo object
                 ByteArrayInputStream bi = new ByteArrayInputStream(b);
@@ -107,35 +113,52 @@ public class HouseEditActivity extends AppCompatActivity implements Observer {
 
         Button saveButton = findViewById(R.id.edit_house_save_button);
         saveButton.setOnClickListener(v->{
-            // Scrape data off UI only if it has been modified
+            // Scrape data off UI only if it has been modified and is not null
             if( !houseTitle.getText().toString().equals("") ){
-                this.hInfo.displayName = String.valueOf(houseTitle.getText().toString());
+                this.hInfo.displayName = houseTitle.getText().toString();
             }
             if( !houseMaxMembers.getText().toString().equals("") ){
-                this.hInfo.maxMembers  = parseInt(String.valueOf(houseMaxMembers.getText().toString()));
+                this.hInfo.maxMembers  = parseInt(houseMaxMembers.getText().toString());
             }
             if( !notificationSched.getText().toString().equals("") ){
-                this.hInfo.houseNotifications = String.valueOf(notificationSched.getText().toString());
+                this.hInfo.houseNotifications = notificationSched.getText().toString();
             }
             if( !punishMult.getText().toString().equals("") ){
-                this.hInfo.punishmentMultiplier = parseInt(String.valueOf(punishMult.getText().toString()));
+                this.hInfo.punishmentMultiplier = parseInt(punishMult.getText().toString());
             }
             if( !houseDescrp.getText().toString().equals("") ) {
-                this.hInfo.description = String.valueOf(houseDescrp.getText().toString());
+                this.hInfo.description = houseDescrp.getText().toString();
             }
 
-            FragmentManager fm = getSupportFragmentManager();
-            FragmentTransaction ft = fm.beginTransaction();
+            // Check if members have status change. Do those first and call edit settings in callback
+            for(String key : hInfo.members.keySet()){
+                if(hInfo.members.get(key).role ==  membersRoleCopy.get(key) ){
+                    // No change to this users status when editing.
+                } else {
+                    ++hInfoMemberStatusChange;
+                    // Some change in status has happened, determine what BE function to call
+                    if(hInfo.members.get(key).role == rm.MEMBER || hInfo.members.get(key).role == rm.ADMIN){
+                        hClass.setMemberRole(key, hInfo, hInfo.members.get(key).role );
+                    } else if( hInfo.members.get(key).role == rm.REMOVE ){
+                        hClass.removeMember(hInfo, key, uInfo.id);
+                    }
+                }
+            }
 
-            // Update data in backend and exit activity
-            hClass.editSettings(this.hInfo);
+            // If some members statuses are not updated yet, will update data on last callback
+            if(hInfoMemberStatusChange > 0){
+                // Will update settings in last callback
+            } else {
+                // Update data in backend and exit activity
+                hClass.editSettings(this.hInfo);
+            }
         });
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
         navView.setOnNavigationItemSelectedListener(navListener); //so we can implement it outside onCreate
     }
 
-    private BottomNavigationView.OnNavigationItemSelectedListener navListener =
+    private final BottomNavigationView.OnNavigationItemSelectedListener navListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -213,6 +236,16 @@ public class HouseEditActivity extends AppCompatActivity implements Observer {
 
             houseMemberInfoObj viewingMember = hInfo.members.get(uInfo.id);
 
+            // Make copy of the members and their roles in the house (to check against when saved)
+            for(String key : hInfo.members.keySet()){
+                if(hInfo.members.get(key).role == rm.REQUEST)
+                    membersRoleCopy.put(key, rm.REQUEST);
+                else if(hInfo.members.get(key).role == rm.ADMIN)
+                    membersRoleCopy.put(key, rm.ADMIN);
+                else if(hInfo.members.get(key).role == rm.MEMBER)
+                    membersRoleCopy.put(key, rm.MEMBER);
+            }
+
             // Dynamically populate the house members to the screen
             for(houseMemberInfoObj houseMember : hInfo.members.values()) {
                 HouseViewMemberFrag hvmf = new HouseViewMemberFrag("editHouse", houseMember, viewingMember );
@@ -237,6 +270,8 @@ public class HouseEditActivity extends AppCompatActivity implements Observer {
         } else if( arg == "editSettings" ) {
             // Call to edit settings has passed and back end is updated
 
+            //TODO: Make toast message to say it was saved
+
             String serializedUserInfo = "";
             try {
                 // Convert object data to encoded string
@@ -254,6 +289,16 @@ public class HouseEditActivity extends AppCompatActivity implements Observer {
             newIntent.putExtra("userInfo", serializedUserInfo);
             newIntent.putExtra("houseId", hClass.hInfo.id);
             startActivity(newIntent);
+        } else if(arg == "removeMember" || arg == "setMemberRole"){
+            // Call back on updating members
+            --hInfoMemberStatusChange;
+
+            if( hInfoMemberStatusChange > 0){
+                // There are still more members that need their status updated
+            } else {
+                // All members statuses changed, save settings
+                hClass.editSettings(this.hInfo);
+            }
         }
     }
 
@@ -266,7 +311,7 @@ public class HouseEditActivity extends AppCompatActivity implements Observer {
 
         //Hide  the keyboard from the user
         if (view != null) {
-            InputMethodManager imm = (InputMethodManager)getSystemService(this.INPUT_METHOD_SERVICE);
+            InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
