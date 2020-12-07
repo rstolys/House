@@ -15,7 +15,9 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.cmpt275.house.classDef.displayMessage;
 import com.cmpt275.house.classDef.homeClass;
+import com.cmpt275.house.classDef.mappingClass.statusMapping;
 import com.cmpt275.house.classDef.taskClass;
 import com.cmpt275.house.classDef.infoClass.taskInfo;
 import com.cmpt275.house.classDef.infoClass.userInfo;
@@ -31,19 +33,21 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Objects;
 import java.util.Observable;
 import java.util.Observer;
 
 public class TaskActivity extends AppCompatActivity implements Observer {
 
-    userInfo uInfo;
 
-    private taskClass myTaskClass = new taskClass(this);
+    private final taskClass myTaskClass = new taskClass(this);
+    private final displayMessage display = new displayMessage();
+
     private Intent newIntent;
     private Intent addButtonIntent;
     FragmentTransaction fragmentTransaction;
 
-    public final String COMPLETED = "Completed";
+    private final statusMapping statusMap = new statusMapping();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,19 +58,19 @@ public class TaskActivity extends AppCompatActivity implements Observer {
         Intent lastIntent = getIntent();
         String serializedObject = lastIntent.getStringExtra("userInfo");
 
-        if(serializedObject == ""){
+        if(serializedObject.equals("")){
             // If the serialized object is empty, error!
             Log.e("OnCreate Task", "userInfo not passed from last activity");
         } else {
             try {
                 // Decode the string into a byte array
-                byte b[] = Base64.decode( serializedObject, Base64.DEFAULT );
+                byte[] b = Base64.decode( serializedObject, Base64.DEFAULT );
 
                 // Convert byte array into userInfo object
                 ByteArrayInputStream bi = new ByteArrayInputStream(b);
                 ObjectInputStream si = new ObjectInputStream(bi);
-                uInfo = (userInfo) si.readObject();
-                Log.d("TASK_ACTIVITY", "Userinfo.displayName passed: " + uInfo.displayName );
+                myTaskClass.uInfo = (userInfo) si.readObject();
+                Log.d("TASK_ACTIVITY", "Userinfo.displayName passed: " + myTaskClass.uInfo.displayName );
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -76,25 +80,23 @@ public class TaskActivity extends AppCompatActivity implements Observer {
         myTaskClass.addObserver(this);
 
         // Update the tasks in the taskClass from the database
-        Log.d("OnCreate Task Activity", "Before call to view your tasks" );
-        myTaskClass.viewUserTasks(uInfo.id);
-        Log.d("OnCreate Task Activity", "After call to view your tasks" );
+        myTaskClass.getTasks(myTaskClass.uInfo.id, result -> {
+            updateTasks();
+        });
+
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
         navView.setSelectedItemId(R.id.navBar_tasks);
         navView.setOnNavigationItemSelectedListener(navListener); //so we can implement it outside onCreate
 
         Button addTask = (Button) findViewById(R.id.addTaskButton);
-        addTask.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        addTask.setOnClickListener(v -> {
 
-                //Check if the user belongs to a house
-                if( uInfo.houses.isEmpty()){
-                    Toast.makeText(getApplicationContext(),"Join a house first!", Toast.LENGTH_LONG).show();
-                    return;
-                }
-
+            //Check if the user belongs to a house
+            if( myTaskClass.uInfo.houses.isEmpty()) {
+                display.showToastMessage(this, "You need to join a house first", display.LONG);
+            }
+            else {
                 // First prepare the userInfo to pass to next activity
                 String serializedUserInfo = getSerializedUserInfo();
 
@@ -104,6 +106,7 @@ public class TaskActivity extends AppCompatActivity implements Observer {
             }
         });
     }
+
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
@@ -124,7 +127,8 @@ public class TaskActivity extends AppCompatActivity implements Observer {
                             newIntent = new Intent(TaskActivity.this, TaskActivity.class);
                             newIntent.putExtra("userInfo", serializedUserInfo);
                             startActivity( newIntent );
-                            break;                        case R.id.navBar_houses:
+                            break;
+                        case R.id.navBar_houses:
                             newIntent = new Intent(TaskActivity.this, HouseActivity.class);
                             newIntent.putExtra("userInfo", serializedUserInfo);
                             startActivity( newIntent );
@@ -140,7 +144,7 @@ public class TaskActivity extends AppCompatActivity implements Observer {
                 }
             };
 
-
+    /*
     @Override
     protected void onStart() {
         super.onStart();
@@ -187,13 +191,27 @@ public class TaskActivity extends AppCompatActivity implements Observer {
         //System invokes this before the app is destroyed
         //Usually ensures all the activities resources are released
     }
+     */
 
+
+    /////////////////////////////////////////////////
+    //
+    // Observer listener for changes from task class
+    //      **Not used
+    //
+    /////////////////////////////////////////////////
     @Override
     public void update(Observable o, Object arg) {
         this.updateTasks();
     }
 
-    private void updateTasks() {
+
+    /////////////////////////////////////////////////
+    //
+    // Update the tasks to the screen
+    //
+    /////////////////////////////////////////////////
+    public void updateTasks() {
 
         // First check if there are any tasks on the screen
         FragmentManager fm = getSupportFragmentManager();
@@ -211,24 +229,24 @@ public class TaskActivity extends AppCompatActivity implements Observer {
 
         Calendar calendar = new GregorianCalendar();
 
-        Date now=  new Date();
+        Date now = new Date();
 
         //constants for sorting tasks in screen
         calendar.setTime(now);
         calendar.add(Calendar.DAY_OF_YEAR, 1);
-        Date dueToday=   new Date();
+        Date dueToday = new Date();
 
 
-       calendar.setTime(now);
+        calendar.setTime(now);
         calendar.add(Calendar.WEEK_OF_YEAR, 1);
-        Date dueWeek=  calendar.getTime();
+        Date dueWeek = calendar.getTime();
 
         //calendar.setTime(now);
         calendar.add(Calendar.MONTH, 1);
         Date dueMonth= calendar.getTime();
 
-        for(int i = 0; i < myTaskClass.tInfos.size(); i++ ){
-            TaskFrag taskFrag = new TaskFrag(myTaskClass.tInfos.get(i));
+        for(int i = 0; i < myTaskClass.tInfos.length; i++ ){
+            TaskFrag taskFrag = new TaskFrag(myTaskClass.tInfos[i], myTaskClass.uInfo, i, myTaskClass);
 
             //sorting tasks
 
@@ -238,16 +256,17 @@ public class TaskActivity extends AppCompatActivity implements Observer {
 
             Log.d("UPDATE_TASKS", "dueToday constant"+ strDate);
             Log.d("UPDATE_TASKS", "due date"+ dueDate);*/
-
-            if(myTaskClass.tInfos.get(i).status == COMPLETED)
+            if(!Objects.requireNonNull(myTaskClass.tInfos[i].assignedTo.get(myTaskClass.uInfo.id)).approved)
+                fragmentTransaction.add(R.id.toApprove_task_list, taskFrag);
+            else if(myTaskClass.tInfos[i].status.equals(statusMap.COMPLETED))
                 fragmentTransaction.add(R.id.completed_tasks_list, taskFrag);
-            else if(myTaskClass.tInfos.get(i).dueDate.before(now))
+            else if(myTaskClass.tInfos[i].dueDate.before(now))
                 fragmentTransaction.add(R.id.overdue_tasks_list, taskFrag);
-            else if(myTaskClass.tInfos.get(i).dueDate.before(dueToday))
+            else if(myTaskClass.tInfos[i].dueDate.before(dueToday))
                 fragmentTransaction.add(R.id.due_today_tasks_list, taskFrag);
-            else if(myTaskClass.tInfos.get(i).dueDate.before(dueWeek))
+            else if(myTaskClass.tInfos[i].dueDate.before(dueWeek))
                 fragmentTransaction.add(R.id.due_this_week_tasks_list, taskFrag);
-            else if(myTaskClass.tInfos.get(i).dueDate.before(dueMonth))
+            else if(myTaskClass.tInfos[i].dueDate.before(dueMonth))
                 fragmentTransaction.add(R.id.due_this_month_tasks_list, taskFrag);
             else
                 fragmentTransaction.add(R.id.due_later_tasks_list, taskFrag);
@@ -259,6 +278,12 @@ public class TaskActivity extends AppCompatActivity implements Observer {
         fragmentTransaction.commit();
     }
 
+
+    /////////////////////////////////////////////////
+    //
+    // Get the serialized user info to pass between activities
+    //
+    /////////////////////////////////////////////////
     private String getSerializedUserInfo() {
 
         String serializedUserInfo = "";
@@ -266,7 +291,7 @@ public class TaskActivity extends AppCompatActivity implements Observer {
             // Convert object data to encoded string
             ByteArrayOutputStream bo = new ByteArrayOutputStream();
             ObjectOutputStream so = new ObjectOutputStream(bo);
-            so.writeObject(uInfo);
+            so.writeObject(myTaskClass.uInfo);
             so.flush();
             final byte[] byteArray = bo.toByteArray();
             serializedUserInfo = Base64.encodeToString(byteArray, Base64.DEFAULT);

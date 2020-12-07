@@ -256,6 +256,12 @@
                 </LinearLayout>
             </TableRow>
 
+            <LinearLayout
+                android:id="@+id/newTask_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"></LinearLayout>
+
             <TableRow
                 android:id="@+id/new_task_row6"
                 android:layout_width="match_parent"

@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.cmpt275.house.classDef.displayMessage;
+import com.cmpt275.house.classDef.mappingClass.statusMapping;
 import com.cmpt275.house.classDef.taskClass;
 import com.cmpt275.house.classDef.infoClass.taskInfo;
 import com.cmpt275.house.classDef.infoClass.userInfo;
@@ -32,8 +33,11 @@ public class TaskViewActivity extends AppCompatActivity {
     userInfo uInfo;
 
     private taskClass myTaskClass = new taskClass(this);
+
     private Intent newIntent;
-    private displayMessage display = new displayMessage();
+
+    private final displayMessage display = new displayMessage();
+    private final statusMapping statusMap = new statusMapping();
 
 
     @Override
@@ -41,78 +45,102 @@ public class TaskViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_view);
 
-        // Get userInfo from last activity
+        // Get userInfo and taskInfo from last activity
         Intent lastIntent = getIntent();
         String serializedObject = lastIntent.getStringExtra("userInfo");
-        if(serializedObject == ""){
+        if(serializedObject.equals("")){
             // If the serialized object is empty, error!
             Log.e("OnCreate Task View", "userInfo not passed from last activity");
-        } else {
+        }
+        else {
             try {
                 // Decode the string into a byte array
-                byte b[] = Base64.decode( serializedObject, Base64.DEFAULT );
+                byte[] b = Base64.decode( serializedObject, Base64.DEFAULT );
 
                 // Convert byte array into userInfo object
                 ByteArrayInputStream bi = new ByteArrayInputStream(b);
                 ObjectInputStream si = new ObjectInputStream(bi);
                 uInfo = (userInfo) si.readObject();
                 Log.d("TASK_ACTIVITY", "Userinfo.displayName passed: " + uInfo.displayName );
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
         String serializedObject2 = lastIntent.getStringExtra("taskInfo");
-        if(serializedObject2 == ""){
+        if(serializedObject2.equals("")){
             // If the serialized object is empty, error!
             Log.e("OnCreate Task View", "userInfo not passed from last activity");
-        } else {
+        }
+        else {
             try {
                 // Decode the string into a byte array
-                byte b[] = Base64.decode( serializedObject2, Base64.DEFAULT );
+                byte[] b = Base64.decode( serializedObject2, Base64.DEFAULT );
 
                 // Convert byte array into taskInfo object
                 ByteArrayInputStream bi = new ByteArrayInputStream(b);
                 ObjectInputStream si = new ObjectInputStream(bi);
                 tInfo = (taskInfo) si.readObject();
                 Log.d("TASK_ACTIVITY", "taskInfo.displayName passed: " + tInfo.displayName );
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
+        //Setup Complete task and extend task buttons
         Button completeTaskButton = (Button) findViewById(R.id.complete_taskButton);
-        completeTaskButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                myTaskClass.completeTask(tInfo);
-                Toast.makeText(getApplicationContext(),"Task Completed!", Toast.LENGTH_LONG).show();
-                return;
-            }
-         });
-
         Button extendTaskButton = (Button) findViewById(R.id.extend_task_button);
-        extendTaskButton.setOnClickListener(v -> {
-            display.showToastMessage(this, "Requesting extension", display.SHORT);
-            myTaskClass.requestExtension(tInfo, result -> {
-                //Do stuff here...
+
+        if(tInfo.status.equals(statusMap.COMPLETED)) {
+            completeTaskButton.setText("Completed");
+            extendTaskButton.setEnabled(false);
+        }
+        else {
+            //Setup complete task click listener
+            completeTaskButton.setOnClickListener(v -> {
+                display.showToastMessage(this, "Completing Task...", display.SHORT);
+                myTaskClass.completeTask(tInfo, -1, result -> {
+                    completeTaskButton.setText("Completed");
+                });
             });
+
+            //Setup request extension click listener
+            extendTaskButton.setOnClickListener(v -> {
+                display.showToastMessage(this, "Requesting extension...", display.SHORT);
+                myTaskClass.requestExtension(tInfo);
+            });
+        }
+
+
+
+
+        //Setup delete task click listener
+        Button deleteTaskButton = (Button) findViewById(R.id.delete_task_button);
+        deleteTaskButton.setOnClickListener(v -> {
+
+            //Confirm with user before deleting the task
+            display.createTwoBtnAlert(this, "Delete Task", "Are you sure  you want to delete this task", "Yes", "Cancel",
+                    (result, errorMessage) -> {
+                        if(result) {
+                            display.showToastMessage(this, "Deleting Task...", display.SHORT);
+                            myTaskClass.deleteTask(tInfo, deleted -> {
+                                if(deleted) {
+                                    //Move back to tasks activity
+                                    newIntent = new Intent(TaskViewActivity.this, TaskActivity.class);
+                                    newIntent.putExtra("userInfo", getSerializedUserInfo());
+                                    startActivity( newIntent );
+                                }
+                            });
+                        }
+                    });
         });
 
-        Button deleteTaskButton = (Button) findViewById(R.id.delete_task_button);
-        deleteTaskButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                myTaskClass.deleteTask(tInfo);
-                Toast.makeText(getApplicationContext(),"Task Deleted", Toast.LENGTH_LONG).show();
-                return;
-            }
-        });
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
         navView.setSelectedItemId(R.id.navBar_tasks);
         navView.setOnNavigationItemSelectedListener(navListener); //so we can implement it outside onCreate
-
     }
 
 
@@ -152,6 +180,7 @@ public class TaskViewActivity extends AppCompatActivity {
             };
 
 
+    /*
     @Override
     protected void onStart() {
         super.onStart();
@@ -198,7 +227,14 @@ public class TaskViewActivity extends AppCompatActivity {
         //System invokes this before the app is destroyed
         //Usually ensures all the activities resources are released
     }
+     */
 
+
+    /////////////////////////////////////////////////
+    //
+    // Get the serialized user info to pass between activities
+    //
+    /////////////////////////////////////////////////
     private String getSerializedUserInfo() {
 
         String serializedUserInfo = "";

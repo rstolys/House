@@ -829,7 +829,7 @@ public class taskFirebaseClass implements TaskBE {
                 //Remove the task from the task list in the task's assignees
                 for(String taskAssignee_id : tInfo.assignedTo.keySet()) {
                     DocumentReference userRef = db.collection("users").document(taskAssignee_id);
-                    batch.update(houseRef, removeTask);
+                    batch.update(userRef, removeTask);
                 }
 
                 //If the task has an ongoing vote

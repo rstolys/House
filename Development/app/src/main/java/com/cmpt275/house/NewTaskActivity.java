@@ -25,14 +25,17 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.cmpt275.house.classDef.databaseObjects.taskAssignObj;
+import com.cmpt275.house.classDef.displayMessage;
 import com.cmpt275.house.classDef.houseClass;
 import com.cmpt275.house.classDef.infoClass.houseMemberInfoObj;
 import com.cmpt275.house.classDef.infoClass.taskInfo;
 import com.cmpt275.house.classDef.infoClass.userInfo;
 import com.cmpt275.house.classDef.mappingClass.statusMapping;
+import com.cmpt275.house.classDef.mappingClass.tagMapping;
 import com.cmpt275.house.classDef.taskClass;
 import com.cmpt275.house.interfaceDef.mapping;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -51,20 +54,24 @@ import java.util.TimeZone;
 
 public class NewTaskActivity extends AppCompatActivity implements Observer {
 
-    public Intent newIntent;
-    public taskInfo newTaskInfo = new taskInfo();
-    private houseClass myHouseClass = new houseClass(this);
-    private taskClass theTaskClass = new taskClass(this);
-    FragmentTransaction fragmentTransaction;
+    private final taskInfo newTaskInfo = new taskInfo();
+    private userInfo uInfo;
 
-    userInfo uInfo;
+    private final houseClass myHouseClass = new houseClass(this);
+    private final taskClass theTaskClass = new taskClass(this);
+    private final displayMessage display = new displayMessage();
 
-    DatePicker datePicker;
-    TimePicker timePicker;
-    Spinner houseDropdown;
-    Spinner memberDropdown;
-    Spinner notifDropdown;
-    Spinner tagDropdown;
+    private Intent newIntent;
+    private FragmentTransaction fragmentTransaction;
+
+
+    private DatePicker datePicker;
+    private TimePicker timePicker;
+    private Spinner houseDropdown;
+    private Spinner memberDropdown;
+    private Spinner notifDropdown;
+    private Spinner tagDropdown;        //See comment at bottom about using tagMap
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,63 +82,88 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
         Intent lastIntent = getIntent();
         String serializedObject = lastIntent.getStringExtra("userInfo");
 
-        if(serializedObject == ""){
+        if(serializedObject.equals("")){
             // If the serialized object is empty, error!
             Log.e("OnCreate New Task", "userInfo not passed from last activity");
-        } else {
+        }
+        else {
             try {
                 // Decode the string into a byte array
-                byte b[] = Base64.decode( serializedObject, Base64.DEFAULT );
+                byte[] b = Base64.decode( serializedObject, Base64.DEFAULT );
 
                 // Convert byte array into userInfo object
                 ByteArrayInputStream bi = new ByteArrayInputStream(b);
                 ObjectInputStream si = new ObjectInputStream(bi);
                 uInfo = (userInfo) si.readObject();
-                Log.d("NEW_TASK_ACTIVITY", "Userinfo.displayName passed: " + uInfo.displayName );
-            } catch (IOException | ClassNotFoundException e) {
+                Log.d("NEW_TASK_ACTIVITY", "userInfo.displayName passed: " + uInfo.displayName );
+            }
+            catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
 
-            // Observe the instance of the houseClass
-            myHouseClass.addObserver(this);
-            // Update the tasks in the houseClass from the database
-            myHouseClass.viewYourHouses(uInfo);
+            setupNewTaskPage();
+        }
 
-            datePicker = (DatePicker)findViewById(R.id.datePicker1);
-            timePicker = (TimePicker)findViewById(R.id.timePicker1);
-
-            //get the spinner from the xml.
-            houseDropdown = findViewById(R.id.houses_spinner);
-
-            memberDropdown = findViewById(R.id.assignee_spinner);
-
-            notifDropdown = findViewById(R.id.notifications_spinner);
-
-            tagDropdown = findViewById(R.id.tags_spinner);
-
-            FieldFrag field = new FieldFrag();
-
-            fragmentTransaction.add(R.id.tasks_list_container, field);
-            fragmentTransaction.addToBackStack(null);
+        BottomNavigationView navView = findViewById(R.id.nav_view);
+        navView.setSelectedItemId(R.id.navBar_tasks);
+        navView.setOnNavigationItemSelectedListener(navListener); //so we can implement it outside onCreate
 
 
-            //create a list of items for the notifications spinner.
-            ArrayList<String> nOptions =new ArrayList<String>();
-
-            nOptions.add("None");
-            nOptions.add("1 hour before due date");
-            nOptions.add("1 day before due date");
-            nOptions.add("1 week before due date");
-            nOptions.add("1 month before due date");
-
-            ArrayAdapter<String> adapter2 = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, nOptions);
-            //set the spinners adapter to the previously created one.
-            notifDropdown.setAdapter(adapter2);
-            notifDropdown.setSelection(0);
+        Button saveButton = findViewById(R.id.new_task_save_button);
+        saveButton.setOnClickListener(this::createNewTask);
+    }
 
 
-            //create a list of items for the tags spinner.
-            /*ArrayList<String> tagOptions =new ArrayList<String>();
+    /////////////////////////////////////////////////
+    //
+    // Setup all the input options for creating a new task
+    //
+    /////////////////////////////////////////////////
+    private void setupNewTaskPage() {
+
+        FragmentManager fm = getSupportFragmentManager();
+        fragmentTransaction = fm.beginTransaction();
+
+        // Observe the instance of the houseClass
+        myHouseClass.addObserver(this);
+
+        // Update the houses in the houseClass from the database
+        myHouseClass.viewYourHouses(uInfo);
+
+        datePicker = (DatePicker)findViewById(R.id.datePicker1);
+        timePicker = (TimePicker)findViewById(R.id.timePicker1);
+
+        //get the spinner from the xml.
+        houseDropdown = findViewById(R.id.houses_spinner);
+
+        memberDropdown = findViewById(R.id.assignee_spinner);
+
+        notifDropdown = findViewById(R.id.notifications_spinner);
+
+        tagDropdown = findViewById(R.id.tags_spinner);
+
+        FieldFrag field = new FieldFrag();
+        fragmentTransaction.add(R.id.newTask_list, field);
+        fragmentTransaction.addToBackStack(null);
+
+
+        //create a list of items for the notifications spinner.
+        ArrayList<String> nOptions =new ArrayList<String>();
+
+        nOptions.add("None");
+        nOptions.add("1 hour before due date");
+        nOptions.add("1 day before due date");
+        nOptions.add("1 week before due date");
+        nOptions.add("1 month before due date");
+
+        ArrayAdapter<String> adapter2 = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, nOptions);
+        //set the spinners adapter to the previously created one.
+        notifDropdown.setAdapter(adapter2);
+        notifDropdown.setSelection(0);
+
+
+        //create a list of items for the tags spinner.
+            /*ArrayList<String> tagOptions = new ArrayList<String>();
 
             tagOptions.add("1 month before due date");
             Map<Integer, String> tagIntToString;
@@ -143,145 +175,44 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
 
 
 
-            houseDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        houseDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                //create a list of items for the spinner.
+                ArrayList<String> memOptions = new ArrayList<String>();
 
-                    //create a list of items for the spinner.
-                    ArrayList<String> memOptions = new ArrayList<String>();
+                Log.d("UPDATE MEMBER DROPDOWN", "I am putting members in dropdown");
 
-                    Log.d("UPDATE MEMBER DROPDOWN", "I am putting members in dropdown");
+                StringBuilder membersListString = new StringBuilder(" ");
+                for (Map.Entry<String, houseMemberInfoObj> entry : myHouseClass.hInfos.get(position).members.entrySet()){
+                    houseMemberInfoObj hMemberObj = entry.getValue();
 
-                    StringBuilder membersListString = new StringBuilder(" ");
-                    for (Map.Entry<String, houseMemberInfoObj> entry : myHouseClass.hInfos.get(position).members.entrySet()){
-                        houseMemberInfoObj hMemberObj = entry.getValue();
+                    membersListString.append(", ");
+                    membersListString.append(hMemberObj.name);
+                    memOptions.add(hMemberObj.getName());
+                }
 
-                        membersListString.append(", ");
-                        membersListString.append(hMemberObj.name);
-                        memOptions.add(hMemberObj.getName());
-                    }
-
-                    ArrayAdapter<String> adapter1 = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, memOptions);
+                ArrayAdapter<String> adapter1 = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, memOptions);
                 //set the spinners adapter to the previously created one.
-                    memberDropdown.setAdapter(adapter1);
-                    if(myHouseClass.hInfos.get(position).members.size()>0)
-                        memberDropdown.setSelection(0);
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> arg0) {
-                    //
-                }
-            });
-        }
-
-        BottomNavigationView navView = findViewById(R.id.nav_view);
-        navView.setSelectedItemId(R.id.navBar_tasks);
-        navView.setOnNavigationItemSelectedListener(navListener); //so we can implement it outside onCreate
-
-
-        Button saveButton = findViewById(R.id.new_task_save_button);
-        saveButton.setOnClickListener(v -> {
-
-            // Scrape data off UI
-            EditText taskTitle = findViewById(R.id.new_task_name);
-            newTaskInfo.displayName = String.valueOf(taskTitle.getText());
-
-            EditText taskDescription = findViewById(R.id.new_task_description);
-            newTaskInfo.description = String.valueOf(taskDescription.getText());
-
-            Date dueDate =  new GregorianCalendar(datePicker.getYear(), datePicker.getMonth(),
-                    datePicker.getDayOfMonth(), timePicker.getCurrentHour(),timePicker.getCurrentMinute()).getTime();
-            newTaskInfo.dueDate = dueDate;
-
-
-            newTaskInfo.houseName = myHouseClass.hInfos.get(houseDropdown.getSelectedItemPosition()).displayName;
-            newTaskInfo.house_id = myHouseClass.hInfos.get(houseDropdown.getSelectedItemPosition()).id;
-
-                    //create a list of items from hashmap
-                    ArrayList<String> namesMem = new ArrayList<String>();
-                    ArrayList<String> idMem = new ArrayList<String>();
-
-                    StringBuilder membersListString = new StringBuilder(" ");
-                    for (Map.Entry<String, houseMemberInfoObj> entry :
-                            myHouseClass.hInfos.get(houseDropdown.getSelectedItemPosition()).members.entrySet()){
-                        houseMemberInfoObj hMemberObj = entry.getValue();
-
-                        membersListString.append(", ");
-                        membersListString.append(hMemberObj.name);
-                        namesMem.add(hMemberObj.getName());
-                        idMem.add(entry.getKey());
-                    }
-
-            newTaskInfo.assignedTo.put(idMem.get(memberDropdown.getSelectedItemPosition()),
-                    new taskAssignObj(namesMem.get(memberDropdown.getSelectedItemPosition()), true, true));
-
-            newTaskInfo.createdBy = uInfo.displayName;
-            newTaskInfo.createdBy_id = uInfo.id;
-
-            mapping statusMap = new statusMapping();
-            newTaskInfo.status = statusMap.mapIntToString(1);
-
-            newTaskInfo.costAssociated = 0.0;
-            newTaskInfo.difficultyScore  = 1;
-
-            Date notifDate = null;
-            Calendar calendar = Calendar.getInstance();
-
-
-            switch (notifDropdown.getSelectedItemPosition()){
-                case 0:
-                    //no notifications
-                    break;
-                case 1:
-                    notifDate=  dueDate;
-                    calendar.setTime(notifDate);
-                    calendar.add(Calendar.HOUR_OF_DAY, -1);
-                    notifDate= calendar.getTime();
-                    break;
-                case 2:
-                    notifDate=  dueDate;
-                    calendar.setTime(notifDate);
-                    calendar.add(Calendar.DATE, -1);
-                    notifDate= calendar.getTime();
-                    break;
-                case 3:
-                    notifDate=  dueDate;
-                    calendar.setTime(notifDate);
-                    calendar.add(Calendar.DATE, -7);
-                    notifDate= calendar.getTime();
-                    break;
-                case 4:
-                    notifDate=  dueDate;
-                    calendar.setTime(notifDate);
-                    calendar.add(Calendar.MONTH, -1);
-                    notifDate= calendar.getTime();
-                    break;
-            }
-            newTaskInfo.notificationTime= notifDate;
-
-            //sanitizing input
-            if(TextUtils.isEmpty(taskTitle.getText().toString()))
-                Toast.makeText(getApplicationContext(),"Give your task a name!", Toast.LENGTH_LONG).show();
-            else if(newTaskInfo.dueDate.before(new Date())  ||newTaskInfo.dueDate.equals(new Date() ))
-                Toast.makeText(getApplicationContext(),"Due date must be in the future!", Toast.LENGTH_LONG).show();
-            else if(newTaskInfo.notificationTime.before(new Date())  ||newTaskInfo.notificationTime.equals(new Date() ))
-                Toast.makeText(getApplicationContext(),"Notification time has passed already!", Toast.LENGTH_LONG).show();
-            else{
-                Log.d("createTaskButton", "Creating task in db with name: " + newTaskInfo.displayName);
-                theTaskClass.createTask(newTaskInfo);
-                // First prepare the userInfo to pass to next activity
-                String serializedUserInfo = getSerializedUserInfo();
-                newIntent = new Intent(NewTaskActivity.this, TaskActivity.class);
-                newIntent.putExtra("userInfo", serializedUserInfo);
-                startActivity( newIntent );
+                memberDropdown.setAdapter(adapter1);
+                if(myHouseClass.hInfos.get(position).members.size()>0)
+                    memberDropdown.setSelection(0);
             }
 
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+                //Do we need to do anything here...?
+            }
         });
     }
 
 
+    /////////////////////////////////////////////////
+    //
+    // Define navigation bar behaviour
+    //
+    /////////////////////////////////////////////////
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
@@ -318,6 +249,7 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
             };
 
 
+    /*
     @Override
     protected void onStart() {
         super.onStart();
@@ -364,32 +296,159 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
         //System invokes this before the app is destroyed
         //Usually ensures all the activities resources are released
     }
+    */
 
+
+    /////////////////////////////////////////////////
+    //
+    // Observer update call
+    //
+    /////////////////////////////////////////////////
     @Override
     public void update(Observable o, Object arg) {
         Log.d("UPDATE", "In update to update tasks");
         this.updateHouses();
     }
 
+    /////////////////////////////////////////////////
+    //
+    // Will create a new task based on user input
+    //
+    /////////////////////////////////////////////////
+    private void createNewTask(View v){
+        // Scrape data off UI
+        EditText taskTitle = findViewById(R.id.new_task_name);
+        newTaskInfo.displayName = taskTitle.getText().toString();
+
+        EditText taskDescription = findViewById(R.id.new_task_description);
+        newTaskInfo.description = taskDescription.getText().toString();
+
+        Date dueDate =  new GregorianCalendar(datePicker.getYear(), datePicker.getMonth(),
+                datePicker.getDayOfMonth(), timePicker.getCurrentHour(),timePicker.getCurrentMinute()).getTime();
+        newTaskInfo.dueDate = dueDate;
+
+
+        newTaskInfo.houseName = myHouseClass.hInfos.get(houseDropdown.getSelectedItemPosition()).displayName;
+        newTaskInfo.house_id = myHouseClass.hInfos.get(houseDropdown.getSelectedItemPosition()).id;
+
+        //create a list of items from hash map
+        ArrayList<String> namesMem = new ArrayList<String>();
+        ArrayList<String> idMem = new ArrayList<String>();
+
+        StringBuilder membersListString = new StringBuilder(" ");
+        for (Map.Entry<String, houseMemberInfoObj> entry :
+                myHouseClass.hInfos.get(houseDropdown.getSelectedItemPosition()).members.entrySet()){
+            houseMemberInfoObj hMemberObj = entry.getValue();
+
+            membersListString.append(", ");
+            membersListString.append(hMemberObj.name);
+            namesMem.add(hMemberObj.getName());
+            idMem.add(entry.getKey());
+        }
+
+        newTaskInfo.assignedTo.put(idMem.get(memberDropdown.getSelectedItemPosition()),
+                new taskAssignObj(namesMem.get(memberDropdown.getSelectedItemPosition()), true, true));
+
+        newTaskInfo.createdBy = uInfo.displayName;
+        newTaskInfo.createdBy_id = uInfo.id;
+
+        mapping statusMap = new statusMapping();
+        newTaskInfo.status = statusMap.mapIntToString(1);
+
+        newTaskInfo.costAssociated = 0.0;
+        newTaskInfo.difficultyScore  = 1;
+
+        Date notifDate = null;
+        Calendar calendar = Calendar.getInstance();
+
+
+        switch (notifDropdown.getSelectedItemPosition()){
+            case 0:
+                //no notifications
+                break;
+            case 1:
+                notifDate=  dueDate;
+                calendar.setTime(notifDate);
+                calendar.add(Calendar.HOUR_OF_DAY, -1);
+                notifDate= calendar.getTime();
+                break;
+            case 2:
+                notifDate=  dueDate;
+                calendar.setTime(notifDate);
+                calendar.add(Calendar.DATE, -1);
+                notifDate= calendar.getTime();
+                break;
+            case 3:
+                notifDate=  dueDate;
+                calendar.setTime(notifDate);
+                calendar.add(Calendar.DATE, -7);
+                notifDate= calendar.getTime();
+                break;
+            case 4:
+                notifDate=  dueDate;
+                calendar.setTime(notifDate);
+                calendar.add(Calendar.MONTH, -1);
+                notifDate= calendar.getTime();
+                break;
+        }
+        newTaskInfo.notificationTime= notifDate;
+
+        //sanitizing input
+        if(TextUtils.isEmpty(taskTitle.getText().toString()))
+            display.showToastMessage(this, "Your task doesn't have a name. It needs one", display.LONG);
+        else if(newTaskInfo.dueDate.before(new Date())  ||newTaskInfo.dueDate.equals(new Date() ))
+            display.showToastMessage(this, "The due date has already passed. Choose one in the future", display.LONG);
+        else {
+            Log.d("createTaskButton", "Creating task in db with name: " + newTaskInfo.displayName);
+
+            display.showToastMessage(this, "Creating Task...", display.SHORT);
+
+            theTaskClass.createTask(newTaskInfo, result -> {
+                if(result) {
+                    // Prepare the userInfo to pass to next activity
+                    String serializedUserInfo = getSerializedUserInfo();
+
+                    //Send user back to task activity
+                    newIntent = new Intent(NewTaskActivity.this, TaskActivity.class);
+                    newIntent.putExtra("userInfo", serializedUserInfo);
+                    startActivity( newIntent );
+                }
+                //else -- error message already displayed
+            });
+        }
+    }
+
+
+    /////////////////////////////////////////////////
+    //
+    // Will add the houses to the houses dropdown
+    //
+    /////////////////////////////////////////////////
     private void updateHouses() {
 
-//create a list of items for the spinner.
-        ArrayList<String> hOptions =new ArrayList<String>();
-//create an adapter to describe how the items are displayed
+        //create a list of items for the spinner.
+        ArrayList<String> hOptions = new ArrayList<String>();
 
-       Log.d("UPDATE HOUSE DROPDOWN", "I am putting houses in dropdown");
-        for(int i = 0; i < myHouseClass.hInfos.size(); i++ ){
+        //create an adapter to describe how the items are displayed
+       for(int i = 0; i < myHouseClass.hInfos.size(); i++) {
             hOptions.add(myHouseClass.hInfos.get(i).displayName);
         }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, hOptions);
-//set the spinners adapter to the previously created one.
+
+        //set the spinners adapter to the previously created one.
         houseDropdown.setAdapter(adapter);
-        if(myHouseClass.hInfos.size()>0)
-        houseDropdown.setSelection(0);
+        if(myHouseClass.hInfos.size() > 0)
+            houseDropdown.setSelection(0);
 
     }
 
+
+    /////////////////////////////////////////////////
+    //
+    // Get the serialized user info to pass between activities
+    //
+    /////////////////////////////////////////////////
     private String getSerializedUserInfo() {
 
         String serializedUserInfo = "";
@@ -409,7 +468,9 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
 
         return serializedUserInfo;
     }
-    //String Tags
+
+    //String Tags -- just create an instance of the string tag class....
+    //private final tagMapping tagMap = new tagMapping(); //**Use this**
     public final String NO_TAG = "No Tag";
     public final String CLEANING = "Cleaning";
     public final String KITCHEN = "Kitchen";

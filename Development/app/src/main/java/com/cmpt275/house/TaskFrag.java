@@ -14,9 +14,11 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cmpt275.house.classDef.displayMessage;
 import com.cmpt275.house.classDef.infoClass.houseInfo;
 import com.cmpt275.house.classDef.infoClass.taskInfo;
 import com.cmpt275.house.classDef.infoClass.userInfo;
+import com.cmpt275.house.classDef.mappingClass.statusMapping;
 import com.cmpt275.house.classDef.taskClass;
 
 import java.io.ByteArrayInputStream;
@@ -35,38 +37,61 @@ import java.util.Date;
  */
 public class TaskFrag extends Fragment {
 
-    userInfo uInfo;
-    private final taskInfo tInfo;
-    taskClass myTaskClass;
+    private userInfo uInfo;
+    private taskInfo tInfo;
+    private int taskIndex = -1;
 
-    public TaskFrag(taskInfo taskInfo) {
+    private taskClass myTaskClass;
+
+    private displayMessage display = new displayMessage();
+    private statusMapping statusMap = new statusMapping();
+
+
+    /////////////////////////////////////////////////
+    //
+    // Task fragment constructor
+    //
+    /////////////////////////////////////////////////
+    public TaskFrag(taskInfo taskInfo, userInfo uInfo, int taskIndex, taskClass myTaskClass) {
         this.tInfo = taskInfo;
-        this.uInfo = null;
+        this.uInfo = uInfo;
+        this.taskIndex = taskIndex;
+        this.myTaskClass = myTaskClass;
     }
 
 
-    public void TaskFrag(){
-        // Empty constructor
-        this.uInfo = null;
-    }
+    /////////////////////////////////////////////////
+    //
+    // Required empty constructor
+    //
+    /////////////////////////////////////////////////
+    public void TaskFrag() {}
 
 
+    ////////////////////////////////////////////////////////////
+    //
+    // Will specify the layout for the fragment
+    //
+    ////////////////////////////////////////////////////////////
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_task, container, false);
+
+        /*
         // Get userInfo from last activity
         Intent lastIntent = getActivity().getIntent();
         String serializedObject = lastIntent.getStringExtra("userInfo");
 
-        if(serializedObject == ""){
+        if(serializedObject.equals("")){
             // If the serialized object is empty, error!
             Log.e("OnCreate Task", "userInfo not passed from last activity");
-        } else {
+        }
+        else {
             try {
                 // Decode the string into a byte array
-                byte b[] = Base64.decode( serializedObject, Base64.DEFAULT );
+                byte[] b = Base64.decode( serializedObject, Base64.DEFAULT );
 
                 // Convert byte array into userInfo object
                 ByteArrayInputStream bi = new ByteArrayInputStream(b);
@@ -77,8 +102,9 @@ public class TaskFrag extends Fragment {
                 e.printStackTrace();
             }
         }
+         */
 
-        //populating with db data
+        //populating screen with task information
         TextView title = view.findViewById(R.id.task_name);
         title.setText(tInfo.displayName);
 
@@ -95,35 +121,45 @@ public class TaskFrag extends Fragment {
 
         //complete task button
         Button completeTaskButton = view.findViewById(R.id.complete_task_button);
-        completeTaskButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                myTaskClass.completeTask(tInfo);
-                Toast.makeText(getActivity().getApplicationContext(),"Task Completed!", Toast.LENGTH_LONG).show();
-                completeTaskButton.setText("Task Completed");
-                return;
-            }
-        });
+        if(tInfo.status.equals(statusMap.COMPLETED)) {
+            completeTaskButton.setText("Completed");
+        }
+        else {
+            completeTaskButton.setOnClickListener(v -> {
+                display.showToastMessage(getActivity().getApplicationContext(), "Completing Task...", display.LONG);
+
+                myTaskClass.completeTask(tInfo, taskIndex, result -> {
+                    completeTaskButton.setText("Completed");
+                    ((TaskActivity)getActivity()).updateTasks();
+                });
+            });
+        }
+
+
 
         //view task button
         Button viewTask = view.findViewById(R.id.view_task_button);
-        viewTask.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // First prepare the userInfo to pass to next activity
-                String serializedUserInfo = getSerializedUserInfo();
-                String serializedTaskInfo = getSerializedTaskInfo();
+        viewTask.setOnClickListener(v -> {
 
-                Intent buttonIntent = new Intent(getActivity(), TaskViewActivity.class);
-                buttonIntent.putExtra("userInfo", serializedUserInfo);
-                buttonIntent.putExtra("taskInfo", serializedTaskInfo);
-                startActivity( buttonIntent );
-            }
+            // First prepare the userInfo to pass to next activity
+            String serializedUserInfo = getSerializedUserInfo();
+            String serializedTaskInfo = getSerializedTaskInfo();
+
+            Intent buttonIntent = new Intent(getActivity(), TaskViewActivity.class);
+            buttonIntent.putExtra("userInfo", serializedUserInfo);
+            buttonIntent.putExtra("taskInfo", serializedTaskInfo);
+            startActivity( buttonIntent );
         });
 
         return view;
     }
 
+
+    /////////////////////////////////////////////////
+    //
+    // Get the serialized user info to pass between activities
+    //
+    /////////////////////////////////////////////////
     private String getSerializedUserInfo() {
 
         String serializedUserInfo = "";
@@ -144,6 +180,12 @@ public class TaskFrag extends Fragment {
         return serializedUserInfo;
     }
 
+
+    /////////////////////////////////////////////////
+    //
+    // Get the serialized task info to pass between activities
+    //
+    /////////////////////////////////////////////////
     private String getSerializedTaskInfo() {
 
         String serializedTaskInfo = "";

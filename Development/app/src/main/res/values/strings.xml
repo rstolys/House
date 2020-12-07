@@ -109,10 +109,13 @@
     <!-- Strings related to Tasks Page -->
     <string name="my_tasks_title">My Tasks</string>
     <string name="new_task_title">New Task</string>
+    <string name="toApprove_title">To Approve</string>
+    <string name="overdue_title">Overdue</string>
     <string name="due_today_title">Due today</string>
     <string name="due_this_week_title">Due this week</string>
     <string name="due_this_month_title">Due this month</string>
     <string name="due_later_title">Due later</string>
+    <string name="completed_title">Completed</string>
     <string name="due_date_1">Nov 6</string>
     <string name="due_date_2">Nov 16</string>
     <string name="due_date_3">Nov 26</string>

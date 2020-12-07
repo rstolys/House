@@ -26,50 +26,57 @@ public class taskClass extends Observable implements task {
     //
     // Class Variables
     //
-  // private taskInfo[] tInfos;
-    public ArrayList<taskInfo> tInfos;
-    private Context mContext;
-    private taskFirebaseClass firebaseTask;
-    private final displayMessage display = new displayMessage();
+    public taskInfo[] tInfos;
+    public userInfo uInfo;
 
-    //
-    // Observable pattern update tInfo
-    //
-    public void settInfos(ArrayList<taskInfo> tInfos){
-        this.tInfos = tInfos;
-        setChanged();
-        notifyObservers();
-    }
+    private final Context mContext;
+    private final taskFirebaseClass firebaseTask;
+
+    private final displayMessage display = new displayMessage();
+    private final statusMapping statusMap = new statusMapping();
+
 
     //
     // Class Functions
     //
-    public taskClass() {}
 
+    /////////////////////////////////////////////////
+    //
+    // Class constructor
+    //
+    /////////////////////////////////////////////////
     public taskClass(Context mContext) {
         firebaseTask = new taskFirebaseClass();
         this.mContext = mContext;
     }
 
 
-    public void viewUserTasks(String user_id){
+    /////////////////////////////////////////////////
+    //
+    // Will get the users task to display to the screen
+    //
+    /////////////////////////////////////////////////
+    public void getTasks(String user_id, updateCallback callback) {
 
-        Log.d("viewCurrentTasks:", "In viewUserTasks");
-        userInfo myUInfo = new userInfo();
+        if(user_id == null) {
+            display.showToastMessage(mContext, "Something went wrong loading your data. Try reloading the page", display.LONG);
 
-        //myUInfo.id = "w4OFKQrvL28T3WlXVP4X";    //Ryan Stolys user_id
-        myUInfo.id= user_id;
+            callback.onReturn(false);
+        }
+        else {
+            firebaseTask.getCurrentTasks(uInfo, (tInfos, success, errorMessage) -> {
+                Log.d("getCurrentTasks:", "Returned with success: " + success);
 
-        firebaseTask.getCurrentTasks(myUInfo, (tInfos, success, errorMessage) -> {
-            Log.d("getCurrentTasks:", "Returned with success: " + success);
-            ArrayList<taskInfo> taskInfoList = new ArrayList<taskInfo>();
-            Collections.addAll(taskInfoList, tInfos);
-
-            this.settInfos( taskInfoList );
-            Log.d("viewUserTasks", "Done getting tasks set up");
-        });
-
-        Log.d("viewCurrentTasks", "After call to viewUserTasks should be before asynchronous call");
+                if(success) {
+                    this.tInfos = tInfos;
+                    callback.onReturn(true);
+                }
+                else {
+                    display.showToastMessage(mContext, "There was an error loading your data. Please try again", display.LONG);
+                    callback.onReturn(true);
+                }
+            });
+        }
     }
 
     public void viewTask(String task_id) {
@@ -109,7 +116,7 @@ public class taskClass extends Observable implements task {
         });
     }
 
-    public void requestExtension(taskInfo tInfo, updateCallback callback) {
+    public void requestExtension(taskInfo tInfo) {
 
         if(tInfo.id != null) {
             firebaseTask.requestExtension(tInfo, (tInfoRet, success, errorMessage) -> {
@@ -117,8 +124,32 @@ public class taskClass extends Observable implements task {
 
                 if(success) {
                     display.showToastMessage(mContext, "Extension requested successfully", display.LONG);
+                }
+                else {
+                    display.showToastMessage(mContext, errorMessage, display.LONG);
+                }
+            });
+        }
+        else {
+            display.showToastMessage(mContext, "Looks like somethinig went wrong, try again", display.LONG);
+        }
 
-                    //this.tInfos[getTaskIndex(tInfo.id)] = tInfoRet;
+
+    }
+
+    public void createTask(taskInfo tInfo, updateCallback callback) {
+
+        if(tInfo == null) {
+            display.showToastMessage(mContext, "Something went wrong, try reloading the page", display.LONG);
+        }
+        else {
+            firebaseTask.createTask(tInfo, (tInfoRet, success, errorMessage) -> {
+                Log.d("createTask:", "Returned with success " + success);
+
+                if(success) {
+                    display.showToastMessage(mContext, "Task successfully created!", display.LONG);
+
+                    //Should update tInfo -- will change activities and it will be reloaded anyways
                     callback.onReturn(true);
                 }
                 else {
@@ -128,37 +159,47 @@ public class taskClass extends Observable implements task {
                 }
             });
         }
-        else {
-            display.showToastMessage(mContext, "Looks like somethinig went wrong, try again", display.LONG);
-            callback.onReturn(false);
-        }
 
-
-    }
-
-    public void createTask(taskInfo tInfo) {
-
-        firebaseTask.createTask(tInfo, (tInfo1, success, errorMessage) -> {
-            Log.d("createTask:", "Returned with success " + success);
-            //Do stuff here ...
-        });
     }
 
     public void assignTask(taskInfo tInfo) {}
 
-    public void completeTask(taskInfo tInfo) {
 
-        //Set status value
-        mapping statusMap = new statusMapping();
-        tInfo.status = statusMap.mapIntToString(2);
+    /////////////////////////////////////////////////
+    //
+    // Will complete the task for the uswer
+    //
+    /////////////////////////////////////////////////
+    public void completeTask(taskInfo tInfo, int taskIndex, updateCallback callback) {
 
-        //Set Parameter
-        String paramToChange = "status";
+        if(tInfo == null) {
+            display.showToastMessage(mContext, "Looks like something went wrong there. Try reloading the page", display.LONG);
+        }
+        else {
+            //Set status value
+            tInfo.status = statusMap.COMPLETED;
 
-        firebaseTask.setTaskInfo(tInfo, paramToChange, (tInfo1, success, errorMessage) -> {
-            Log.d("setTaskInfo:", "Returned with success " + success);
-            //Do stuff here ...
-        });
+            //Set Parameter to change
+            String paramToChange = "status";
+
+            firebaseTask.setTaskInfo(tInfo, paramToChange, (tInfoRet, success, errorMessage) -> {
+                Log.d("setTaskInfo:", "Returned with success " + success);
+
+                if(success) {
+                    if(taskIndex != -1)
+                        this.tInfos[taskIndex] = tInfoRet;
+
+                    display.showToastMessage(mContext, "Task Completed! Well Done!", display.LONG);
+
+                    callback.onReturn(true);
+                }
+                else {
+                    display.showToastMessage(mContext, errorMessage, display.LONG);
+
+                    callback.onReturn(false);
+                }
+            });
+        }
     }
 
     public void editTask(taskInfo tInfo) {
@@ -201,24 +242,34 @@ public class taskClass extends Observable implements task {
         });
     }
 
-    public void deleteTask(taskInfo tInfo) {
-        taskInfo myTInfo = new taskInfo();
+    /////////////////////////////////////////////////
+    //
+    // Will delete the task from the user's DB
+    //
+    /////////////////////////////////////////////////
+    public void deleteTask(taskInfo tInfo, updateCallback callback) {
 
-        //Each of these parameters are required to remove a task
-        myTInfo.id = "4W9wvRhStX55SKEFYSqJ";
-        myTInfo.createdBy_id = "SOME_IDS_ARE_SET";
+        if(tInfo == null) {
+            display.showToastMessage(mContext, "Looks like somethig went wrong. Try reloading the page", display.LONG);
+        }
+        else {
+            firebaseTask.deleteTask(tInfo, (result, errorMessage) -> {
+                Log.d("deleteTask:", "Returned with result " + result);
 
-        //Set status value
-        mapping statusMap = new statusMapping();
-        myTInfo.status = statusMap.mapIntToString(2);
+                if(result) {
+                    display.showToastMessage(mContext, "Task Successfully Deleted", display.LONG);
 
-        myTInfo.assignedTo.put("NO_ID", new taskAssignObj("Ryan Stolys", true, false));
-        myTInfo.house_id = "NO_IDs_HAVE_BEEN_SET";
+                    callback.onReturn(true);
+                }
+                else {
+                    display.showToastMessage(mContext, errorMessage, display.LONG);
 
-        firebaseTask.deleteTask(myTInfo, (result, errorMessage) -> {
-            Log.d("deleteTask:", "Returned with result " + result);
-            //Do stuff here...
-        });
+                    callback.onReturn(false);
+                }
+            });
+        }
+
+
     }
 
     public void displayTask(String task_id) {
