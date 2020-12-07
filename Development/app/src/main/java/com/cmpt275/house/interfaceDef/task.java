@@ -4,16 +4,16 @@ import com.cmpt275.house.classDef.infoClass.taskInfo;
 import com.cmpt275.house.classDef.infoClass.userInfo;
 
 public interface task {
-    public void viewTask(String task_id);
-    public void createTask(taskInfo tInfo);
-    public void assignTask(taskInfo tInfo);
-    public void editTask(taskInfo tInfo);
-    public void deleteTask(taskInfo tInfo);
-    public void displayTask(String task_id);
-    public void approveTask(String task_id, userInfo uInfo);
-    public void disputeTask(taskInfo tInfo);
-    public void requestExtension(taskInfo tInfo);
-    public void getTaskVotes(String task_id);
-    public void sortTasks(int sortType);
+    void viewTask(String task_id);
+    void createTask(taskInfo tInfo);
+    void assignTask(taskInfo tInfo);
+    void editTask(taskInfo tInfo);
+    void deleteTask(taskInfo tInfo);
+    void displayTask(String task_id);
+    void approveTask(String task_id, userInfo uInfo);
+    void disputeTask(taskInfo tInfo);
+    void requestExtension(taskInfo tInfo);
+    void getTaskVotes(String task_id);
+    void sortTasks(int sortType);
 
 }

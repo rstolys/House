@@ -17,6 +17,8 @@ import com.cmpt275.house.classDef.homeClass;
 import com.cmpt275.house.classDef.infoClass.userInfo;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -28,9 +30,14 @@ import java.util.Map;
 public class HomeActivity extends AppCompatActivity {
 
     private final homeClass home = new homeClass(this);
-
     private Intent newIntent;
 
+
+    /////////////////////////////////////////////////
+    //
+    // Called when the activity is first created
+    //
+    /////////////////////////////////////////////////
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,21 +67,32 @@ public class HomeActivity extends AppCompatActivity {
             }
         }
 
-        //Get reference to recycler view in activity layout
-        RecyclerView rvTaskList = (RecyclerView) findViewById(R.id.taskList_home);
-        RecyclerView rvHouseList = (RecyclerView) findViewById(R.id.houseList_home);
 
-        //Create adapter by passing in data
-        recyclerListAdaptor taskList = new recyclerListAdaptor(home.uInfo.tasks);
-        recyclerListAdaptor houseList = new recyclerListAdaptor(home.uInfo.houses);
+        //Get the updated userInfo and load the info to the pages
+        home.updateUserInfo(home.uInfo.id, result -> {
+            if(result) {
+                //Update the title
+                TextView homeTitle = findViewById(R.id.home_title);
+                homeTitle.setText("Welcome Home " + home.uInfo.displayName + "!");
 
-        //Attach the adapter to the recyclerview to populate items
-        rvTaskList.setAdapter(taskList);
-        rvHouseList.setAdapter(houseList);
 
-        //Set layout manager to position the items -- do we need this?
-        rvTaskList.setLayoutManager(new LinearLayoutManager(this));
-        rvHouseList.setLayoutManager(new LinearLayoutManager(this));
+                //Get reference to recycler view in activity layout
+                RecyclerView rvTaskList = (RecyclerView) findViewById(R.id.taskList_home);
+                RecyclerView rvHouseList = (RecyclerView) findViewById(R.id.houseList_home);
+
+                //Create adapter by passing in data
+                recyclerListAdaptor taskList = new recyclerListAdaptor(home.uInfo.tasks);
+                recyclerListAdaptor houseList = new recyclerListAdaptor(home.uInfo.houses);
+
+                //Attach the adapter to the recyclerview to populate items
+                rvTaskList.setAdapter(taskList);
+                rvHouseList.setAdapter(houseList);
+
+                //Set layout manager to position the items -- do we need this?
+                rvTaskList.setLayoutManager(new LinearLayoutManager(this));
+                rvHouseList.setLayoutManager(new LinearLayoutManager(this));
+            }
+        });
 
 
         //Set the navigation bar
@@ -84,7 +102,12 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
-    private BottomNavigationView.OnNavigationItemSelectedListener navListener = item -> {
+    /////////////////////////////////////////////////
+    //
+    // Defines the navigation bar behaviour
+    //
+    /////////////////////////////////////////////////
+    private final BottomNavigationView.OnNavigationItemSelectedListener navListener = item -> {
             // First prepare the userInfo to pass to next activity
             String serializedUserInfo = getSerializedUserInfo();
 
@@ -112,53 +135,6 @@ public class HomeActivity extends AppCompatActivity {
             return true;
         };
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        //Will be called after onCreate -- activity is now visible to the user
-        // Should contain final preparations before becoming interactive
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        //App will capture all of the users input
-        // Most the core functionality should be implemented here (of the signIn Page)
-        // onPause will always follow onResume()
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        //App has lost focus and entered the paused state
-        //Occurs when user taps back or recents button
-        //Do NOT save application user data, make network calls or execute database transactions from here
-
-        //Next callback will either be onResume() or onStop()
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        //Our activity is no longer visible to the user
-        //Next callback will be onRestart() or onDestroy()
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        //When app in stopped state is about to restart
-        // Should restore the state of the activity
-        //Next callback will always be onStart()
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        //System invokes this before the app is destroyed
-        //Usually ensures all the activities resources are released
-    }
-
 
     /////////////////////////////////////////////////
     //
@@ -167,11 +143,11 @@ public class HomeActivity extends AppCompatActivity {
     /////////////////////////////////////////////////
     public void logoutOfApp(View view) {
         //Logout of app
-        home.logout((typeOfChange -> {
+        home.logout( result -> {
             //Send user to the main activity
             newIntent =  new Intent(HomeActivity.this, MainActivity.class);
             startActivity(newIntent);
-        }));
+        });
     }
 
 
@@ -246,16 +222,16 @@ public class HomeActivity extends AppCompatActivity {
     // Will fill recycler views
     //
     /////////////////////////////////////////////////
-    public class recyclerListAdaptor extends RecyclerView.Adapter<recyclerListAdaptor.ViewHolder> {
+    public static class recyclerListAdaptor extends RecyclerView.Adapter<recyclerListAdaptor.ViewHolder> {
 
-        private String[] localData;
+        private final String[] localData;
 
 
         /////////////////////////////////////////////////
         // Provide a direct reference to each of the views within a data item
         // Used to cache the views within the item layout for fast access
         /////////////////////////////////////////////////
-        public class ViewHolder extends RecyclerView.ViewHolder {
+        public static class ViewHolder extends RecyclerView.ViewHolder {
 
             private final TextView textView;        //Will hold the value to be set
 
@@ -296,6 +272,7 @@ public class HomeActivity extends AppCompatActivity {
         /////////////////////////////////////////////////
         // Create new views (invoked by the layout manager)
         /////////////////////////////////////////////////
+        @NotNull
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
             //Create a new view, which defines the UI of the list item

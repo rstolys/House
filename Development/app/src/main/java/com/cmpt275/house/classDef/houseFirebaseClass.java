@@ -393,7 +393,7 @@ public class houseFirebaseClass implements HouseBE {
                         firebaseHouseDocument houseData = new firebaseHouseDocument(hInfo);
 
                         //Update this information in the house document
-                        db.collection("houses").document(hInfo.id).update("members." + user_id, newRole)
+                        db.collection("houses").document(hInfo.id).update("members." + user_id, houseData.getMembers().get(user_id))
                             .addOnSuccessListener(documentReference -> {
                                 Log.d(TAG, "House Document successfully updated!");
 

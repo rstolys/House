@@ -1,14 +1,14 @@
 package com.cmpt275.house.interfaceDef;
 
-import com.cmpt275.house.interfaceDef.Callbacks.booleanCallback;
+import com.cmpt275.house.interfaceDef.Callbacks.updateCallback;
 
 public interface settings {
-    public void logout(updateUI callback);
-    public void viewLegal();
-    public void viewSettings(String user_id);
-    public void changeDisplayName(String displayName);
-    public void changeEmail(String email);
-    public void changeNotifications(boolean allowNotifications);
-    public void resetPassword(String email);
-    public void provideFeedback(String feedback, booleanCallback callback);
+    void logout(updateCallback callback);
+    void viewLegal();
+    void viewSettings(String user_id);
+    void changeDisplayName(String displayName);
+    void changeEmail(String email);
+    void changeNotifications(boolean allowNotifications);
+    void resetPassword(String email);
+    void provideFeedback(String feedback, updateCallback callback);
 }

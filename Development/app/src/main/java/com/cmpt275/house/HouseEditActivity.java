@@ -1,10 +1,13 @@
 package com.cmpt275.house;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -18,6 +21,7 @@ import com.cmpt275.house.classDef.infoClass.houseInfo;
 import com.cmpt275.house.classDef.infoClass.houseMemberInfoObj;
 import com.cmpt275.house.classDef.infoClass.userInfo;
 import com.cmpt275.house.classDef.infoClass.votingInfo;
+import com.cmpt275.house.classDef.mappingClass.roleMapping;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.ByteArrayInputStream;
@@ -25,6 +29,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -35,8 +41,13 @@ public class HouseEditActivity extends AppCompatActivity implements Observer {
     private Intent newIntent;
     userInfo uInfo;
     houseInfo hInfo;
+    public Map<String, String> membersRoleCopy = new HashMap<String, String>();
     houseClass hClass;
-    votingInfo[] vInfos;
+
+    // Additional maps
+    private final roleMapping rm = new roleMapping();
+    private boolean viewerIsAdmin = false;
+    public int hInfoMemberStatusChange = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +65,7 @@ public class HouseEditActivity extends AppCompatActivity implements Observer {
         } else {
             try {
                 // Decode the userInfo string into a byte array
-                byte b[] = Base64.decode(serializedObject, Base64.DEFAULT);
+                byte[] b = Base64.decode(serializedObject, Base64.DEFAULT);
 
                 // Convert byte array into userInfo object
                 ByteArrayInputStream bi = new ByteArrayInputStream(b);
@@ -102,22 +113,52 @@ public class HouseEditActivity extends AppCompatActivity implements Observer {
 
         Button saveButton = findViewById(R.id.edit_house_save_button);
         saveButton.setOnClickListener(v->{
-            // Scrape data off UI
-            this.hInfo.displayName = String.valueOf(houseTitle.getText());
-            this.hInfo.maxMembers  = parseInt(String.valueOf(houseMaxMembers.getText()));
-            this.hInfo.houseNotifications = String.valueOf(notificationSched.getText());
-            this.hInfo.punishmentMultiplier = parseInt(String.valueOf(punishMult.getText()));
-            this.hInfo.description = String.valueOf(houseDescrp.getText());
+            // Scrape data off UI only if it has been modified and is not null
+            if( !houseTitle.getText().toString().equals("") ){
+                this.hInfo.displayName = houseTitle.getText().toString();
+            }
+            if( !houseMaxMembers.getText().toString().equals("") ){
+                this.hInfo.maxMembers  = parseInt(houseMaxMembers.getText().toString());
+            }
+            if( !notificationSched.getText().toString().equals("") ){
+                this.hInfo.houseNotifications = notificationSched.getText().toString();
+            }
+            if( !punishMult.getText().toString().equals("") ){
+                this.hInfo.punishmentMultiplier = parseInt(punishMult.getText().toString());
+            }
+            if( !houseDescrp.getText().toString().equals("") ) {
+                this.hInfo.description = houseDescrp.getText().toString();
+            }
 
-            // Update data in backend and exit activity
-            hClass.editSettings(this.hInfo);
+            // Check if members have status change. Do those first and call edit settings in callback
+            for(String key : hInfo.members.keySet()){
+                if(hInfo.members.get(key).role ==  membersRoleCopy.get(key) ){
+                    // No change to this users status when editing.
+                } else {
+                    ++hInfoMemberStatusChange;
+                    // Some change in status has happened, determine what BE function to call
+                    if(hInfo.members.get(key).role == rm.MEMBER || hInfo.members.get(key).role == rm.ADMIN){
+                        hClass.setMemberRole(key, hInfo, hInfo.members.get(key).role );
+                    } else if( hInfo.members.get(key).role == rm.REMOVE ){
+                        hClass.removeMember(hInfo, key, uInfo.id);
+                    }
+                }
+            }
+
+            // If some members statuses are not updated yet, will update data on last callback
+            if(hInfoMemberStatusChange > 0){
+                // Will update settings in last callback
+            } else {
+                // Update data in backend and exit activity
+                hClass.editSettings(this.hInfo);
+            }
         });
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
         navView.setOnNavigationItemSelectedListener(navListener); //so we can implement it outside onCreate
     }
 
-    private BottomNavigationView.OnNavigationItemSelectedListener navListener =
+    private final BottomNavigationView.OnNavigationItemSelectedListener navListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -175,36 +216,61 @@ public class HouseEditActivity extends AppCompatActivity implements Observer {
 
             // Set hInfo data to screen
             EditText houseTitle = findViewById(R.id.edit_house_house_name);
-            houseTitle.setText(hInfo.displayName);
+            houseTitle.setText(null);
+            houseTitle.setHint(hInfo.displayName);
 
             EditText houseMaxMembers = findViewById(R.id.edit_house_max_members_int);
-            houseMaxMembers.setText(String.valueOf(hInfo.maxMembers));
+            houseMaxMembers.setText(null);
+            houseMaxMembers.setHint(String.valueOf(hInfo.maxMembers));
 
             EditText notificationSched = findViewById(R.id.edit_house_notification_schedule);
-            notificationSched.setText(hInfo.houseNotifications);
+            notificationSched.setText(null);
+            notificationSched.setHint(hInfo.houseNotifications);
 
             EditText punishMult = findViewById(R.id.edit_houes_punishment_mult);
-            punishMult.setText(String.valueOf(hInfo.punishmentMultiplier));
+            punishMult.setText(null);
+            punishMult.setHint(String.valueOf(hInfo.punishmentMultiplier));
 
             EditText houseDescrp = findViewById(R.id.edit_house_description);
             houseDescrp.setText(String.valueOf(hInfo.description));
 
+            houseMemberInfoObj viewingMember = hInfo.members.get(uInfo.id);
+
+            // Make copy of the members and their roles in the house (to check against when saved)
+            for(String key : hInfo.members.keySet()){
+                if(hInfo.members.get(key).role == rm.REQUEST)
+                    membersRoleCopy.put(key, rm.REQUEST);
+                else if(hInfo.members.get(key).role == rm.ADMIN)
+                    membersRoleCopy.put(key, rm.ADMIN);
+                else if(hInfo.members.get(key).role == rm.MEMBER)
+                    membersRoleCopy.put(key, rm.MEMBER);
+            }
+
+            // Dynamically populate the house members to the screen
             for(houseMemberInfoObj houseMember : hInfo.members.values()) {
-                HouseViewMemberFrag hvmf = new HouseViewMemberFrag("editHouse", houseMember.name, houseMember.role);
+                HouseViewMemberFrag hvmf = new HouseViewMemberFrag("editHouse", houseMember, viewingMember );
 
                 // Determine if this user is authorized to make changes to house settings
                 if( houseMember.name.equals(uInfo.displayName) ){
                     Button saveButton = findViewById(R.id.edit_house_save_button);
-                    saveButton.setEnabled(houseMember.role == "Administrator");
+                    viewerIsAdmin = houseMember.role == rm.ADMIN;
+                    if (viewerIsAdmin) {
+                        saveButton.setVisibility(View.VISIBLE);
+                    } else {
+                        saveButton.setVisibility(View.GONE);
+                    }
                 }
 
                 ft.add(R.id.edit_house_member_list, hvmf);
                 ft.addToBackStack(null);
             }
 
+            // Commit the fragment changes needed
             ft.commit();
         } else if( arg == "editSettings" ) {
-            // Call to edit settings has passed and back end updated
+            // Call to edit settings has passed and back end is updated
+
+            //TODO: Make toast message to say it was saved
 
             String serializedUserInfo = "";
             try {
@@ -223,6 +289,30 @@ public class HouseEditActivity extends AppCompatActivity implements Observer {
             newIntent.putExtra("userInfo", serializedUserInfo);
             newIntent.putExtra("houseId", hClass.hInfo.id);
             startActivity(newIntent);
+        } else if(arg == "removeMember" || arg == "setMemberRole"){
+            // Call back on updating members
+            --hInfoMemberStatusChange;
+
+            if( hInfoMemberStatusChange > 0){
+                // There are still more members that need their status updated
+            } else {
+                // All members statuses changed, save settings
+                hClass.editSettings(this.hInfo);
+            }
+        }
+    }
+
+    /////////////////////////////////////////////////
+    //
+    // Will hide the keyboard on the call
+    //
+    /////////////////////////////////////////////////
+    public void hideKeyboard(View view) {
+
+        //Hide  the keyboard from the user
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
 }

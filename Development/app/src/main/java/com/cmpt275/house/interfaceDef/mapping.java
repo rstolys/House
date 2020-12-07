@@ -9,7 +9,7 @@ public interface mapping {
     // Will map an entire list from String to Integer
     //
     ////////////////////////////////////////////////////////////
-    public List<Integer> mapList_StringToInt(List<String> stringTags);
+    List<Integer> mapList_StringToInt(List<String> stringTags);
 
 
     ////////////////////////////////////////////////////////////
@@ -17,19 +17,19 @@ public interface mapping {
     // Will map an entire list from Integer to String
     //
     ////////////////////////////////////////////////////////////
-    public List<String> mapList_IntToString(List<Integer> intTags);
+    List<String> mapList_IntToString(List<Integer> intTags);
 
     ////////////////////////////////////////////////////////////
     //
     // Will map an single value from String to Integer
     //
     ////////////////////////////////////////////////////////////
-    public Integer mapStringToInt(String stringTag);
+    Integer mapStringToInt(String stringTag);
 
     ////////////////////////////////////////////////////////////
     //
     // Will map an single value from Integer to String
     //
     ////////////////////////////////////////////////////////////
-    public String mapIntToString(Integer intTag);
+    String mapIntToString(Integer intTag);
 }

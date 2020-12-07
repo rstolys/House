@@ -1,6 +1,5 @@
 package com.cmpt275.house;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Base64;
@@ -13,33 +12,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
 import com.cmpt275.house.classDef.displayMessage;
-import com.cmpt275.house.classDef.houseClass;
-import com.cmpt275.house.classDef.houseFirebaseClass;
-import com.cmpt275.house.classDef.infoClass.houseInfo;
-import com.cmpt275.house.classDef.infoClass.houseMemberInfoObj;
-import com.cmpt275.house.classDef.infoClass.userInfo;
 import com.cmpt275.house.classDef.notifications;
-import com.cmpt275.house.classDef.settingsClass;
 import com.cmpt275.house.classDef.signInClass;
-import com.cmpt275.house.classDef.taskClass;
-import com.cmpt275.house.interfaceDef.house;
-import com.cmpt275.house.interfaceDef.settings;
-import com.cmpt275.house.interfaceDef.task;
-import com.cmpt275.house.interfaceDef.updateUI;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 
-public class MainActivity extends AppCompatActivity implements updateUI {
+public class MainActivity extends AppCompatActivity {
 
-    private final signInClass auth = new signInClass(this, this);
+    private final signInClass auth = new signInClass(this);
     private final displayMessage display = new displayMessage();
-    private final notifications notify = new notifications();
 
     private createAccountDialogFrag createAccountDialog;
-
-    private String userInfoString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,57 +32,14 @@ public class MainActivity extends AppCompatActivity implements updateUI {
         setContentView(R.layout.activity_main);
 
         //Create notification channel
-        notify.createNotificationChannel(this);
+        notifications.createNotificationChannel(this);
 
         //Check if the user is already signed in
-        auth.checkAuthStatus();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        //Will be called after onCreate -- activity is now visible to the user
-        // Should contain final preparations before becoming interactive
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        //App will capture all of the users input
-        // Most the core functionality should be implemented here (of the signIn Page)
-        // onPause will always follow onResume()
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        //App has lost focus and entered the paused state
-        //Occurs when user taps back or recents button
-        //Do NOT save application user data, make network calls or execute database transactions from here
-
-        //Next callback will either be onResume() or onStop()
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        //Our activity is no longer visible to the user
-        //Next callback will be onRestart() or onDestroy()
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        //When app in stopped state is about to restart
-        // Should restore the state of the activity
-        //Next callback will always be onStart()
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        //System invokes this before the app is destroyed
-        //Usually ensures all the activities resources are released
+        auth.checkAuthStatus(result -> {
+            if(result) {
+                signInUser();
+            }
+        });
     }
 
     ////////////////////////////////////////////////
@@ -112,7 +54,12 @@ public class MainActivity extends AppCompatActivity implements updateUI {
         display.showToastMessage(this, "Signing In", display.SHORT);
 
         //Call function to signIn the user
-        auth.signInUser(email.getText().toString(), password.getText().toString());
+        auth.signInUser(email.getText().toString(), password.getText().toString(), result -> {
+            if(result) {
+                signInUser();
+            }
+        });
+
     }
 
 
@@ -143,10 +90,9 @@ public class MainActivity extends AppCompatActivity implements updateUI {
     ////////////////////////////////////////////////
     /// Will be called at end of async functions that need to update the ui
     ////////////////////////////////////////////////
-    public void stateChanged(int typeOfChange) {
-        // Will be called by functions required to update the ui
+    private void signInUser() {
 
-        // Check if the user is signed in -- open home page
+        // Double check if the user is signed in -- open home page
         if(auth.isUserSignedIn()) {
 
             // Create new intent to go to Home Page
@@ -201,6 +147,7 @@ public class MainActivity extends AppCompatActivity implements updateUI {
     /////////////////////////////////////////////////
     //
     // Will close the dialog since it is no longer needed
+    //      will check userAuthStatus
     //
     /////////////////////////////////////////////////
     public void closeCreateAccountDialog(View view) {
@@ -209,7 +156,11 @@ public class MainActivity extends AppCompatActivity implements updateUI {
         createAccountDialog.dismiss();
 
         //Check if the user is already signed in
-        auth.checkAuthStatus();
+        auth.checkAuthStatus( result -> {
+            if(result) {
+                signInUser();
+            }
+        });
     }
 
 
@@ -226,8 +177,5 @@ public class MainActivity extends AppCompatActivity implements updateUI {
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
-
-
-
 }
 
