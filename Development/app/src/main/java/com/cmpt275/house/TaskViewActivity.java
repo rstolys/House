@@ -14,6 +14,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.cmpt275.house.classDef.displayMessage;
 import com.cmpt275.house.classDef.taskClass;
 import com.cmpt275.house.classDef.infoClass.taskInfo;
 import com.cmpt275.house.classDef.infoClass.userInfo;
@@ -32,6 +33,7 @@ public class TaskViewActivity extends AppCompatActivity {
 
     private taskClass myTaskClass = new taskClass(this);
     private Intent newIntent;
+    private displayMessage display = new displayMessage();
 
 
     @Override
@@ -90,13 +92,11 @@ public class TaskViewActivity extends AppCompatActivity {
          });
 
         Button extendTaskButton = (Button) findViewById(R.id.extend_task_button);
-        extendTaskButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                myTaskClass.requestExtension(tInfo);
-                Toast.makeText(getApplicationContext(),"Task Extension Requested", Toast.LENGTH_LONG).show();
-                return;
-            }
+        extendTaskButton.setOnClickListener(v -> {
+            display.showToastMessage(this, "Requesting extension", display.SHORT);
+            myTaskClass.requestExtension(tInfo, result -> {
+                //Do stuff here...
+            });
         });
 
         Button deleteTaskButton = (Button) findViewById(R.id.delete_task_button);

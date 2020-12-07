@@ -12,6 +12,7 @@ import com.cmpt275.house.classDef.mappingClass.statusMapping;
 import com.cmpt275.house.interfaceDef.Callbacks.booleanCallback;
 import com.cmpt275.house.interfaceDef.Callbacks.tInfoArrayCallback;
 import com.cmpt275.house.interfaceDef.Callbacks.tInfoCallback;
+import com.cmpt275.house.interfaceDef.Callbacks.updateCallback;
 import com.cmpt275.house.interfaceDef.mapping;
 import com.cmpt275.house.interfaceDef.task;
 
@@ -29,6 +30,7 @@ public class taskClass extends Observable implements task {
     public ArrayList<taskInfo> tInfos;
     private Context mContext;
     private taskFirebaseClass firebaseTask;
+    private final displayMessage display = new displayMessage();
 
     //
     // Observable pattern update tInfo
@@ -107,12 +109,31 @@ public class taskClass extends Observable implements task {
         });
     }
 
-    public void requestExtension(taskInfo tInfo) {
+    public void requestExtension(taskInfo tInfo, updateCallback callback) {
 
-        firebaseTask.requestExtension(tInfo, (tInfoRet, success, errorMessage2) -> {
-            Log.d("requestExtension:", "Returned with success " + success);
-            //Do stuff here...
-        });
+        if(tInfo.id != null) {
+            firebaseTask.requestExtension(tInfo, (tInfoRet, success, errorMessage) -> {
+                Log.d("requestExtension:", "Returned with success " + success);
+
+                if(success) {
+                    display.showToastMessage(mContext, "Extension requested successfully", display.LONG);
+
+                    //this.tInfos[getTaskIndex(tInfo.id)] = tInfoRet;
+                    callback.onReturn(true);
+                }
+                else {
+                    display.showToastMessage(mContext, errorMessage, display.LONG);
+
+                    callback.onReturn(false);
+                }
+            });
+        }
+        else {
+            display.showToastMessage(mContext, "Looks like somethinig went wrong, try again", display.LONG);
+            callback.onReturn(false);
+        }
+
+
     }
 
     public void createTask(taskInfo tInfo) {
@@ -260,6 +281,17 @@ public class taskClass extends Observable implements task {
     }
 
     public void sortTasks(int sortType) {}
+
+    private int getTaskIndex(String user_id) {
+        int index = 0;
+        /*
+        for( ; index < tInfos.size(); index++) {
+            if(tInfos.at(index).id.equals(user_id))
+                break;
+        }
+        */
+        return index;
+    }
 
 
 }
