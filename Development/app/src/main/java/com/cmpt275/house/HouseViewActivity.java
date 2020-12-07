@@ -15,11 +15,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.cmpt275.house.classDef.displayMessage;
 import com.cmpt275.house.classDef.houseClass;
 import com.cmpt275.house.classDef.infoClass.houseInfo;
 import com.cmpt275.house.classDef.infoClass.houseMemberInfoObj;
 import com.cmpt275.house.classDef.infoClass.userInfo;
 import com.cmpt275.house.classDef.infoClass.votingInfo;
+import com.cmpt275.house.classDef.userFirebaseClass;
+import com.cmpt275.house.interfaceDef.Callbacks.updateCallback;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.ByteArrayInputStream;
@@ -37,6 +40,9 @@ public class HouseViewActivity extends AppCompatActivity implements Observer {
     houseInfo hInfo;
     houseClass hClass;
     votingInfo[] vInfos;
+
+    private userFirebaseClass firebaseUserTask;
+    public displayMessage display;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

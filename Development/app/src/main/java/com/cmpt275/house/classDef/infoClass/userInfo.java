@@ -17,5 +17,5 @@ public class userInfo implements Serializable {
     public boolean notificationsAllowed;
     public Map<String, String> houses = new HashMap<String, String>();
     public Map<String, String> tasks = new HashMap<String, String>();
-    public Map<String, Double> moneyBalance = new HashMap<String, Double>();
+    public Map<String, Double> moneyBalance = new HashMap<String, Double>();    // House id, money value
 }

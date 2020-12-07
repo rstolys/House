@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,24 +15,29 @@ import com.cmpt275.house.classDef.houseClass;
 import com.cmpt275.house.classDef.infoClass.houseInfo;
 import com.cmpt275.house.classDef.databaseObjects.houseMemberObj;
 import com.cmpt275.house.classDef.infoClass.houseMemberInfoObj;
+import com.cmpt275.house.classDef.infoClass.userInfo;
 import com.google.android.gms.common.data.DataBufferObserver;
 
 import java.util.Map;
 import java.util.Observable;
+import java.util.Observer;
 
 /*
  * A simple {@link Fragment} subclass.
  * Use the {@link HouseFrag#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HouseFrag extends Fragment {
+public class HouseFrag extends Fragment implements Observer {
     private houseInfo hInfo;
-    private final int NUM_DISPLAYED_TASKS = 3;
     private houseClass hClass; // No context here to pass, this could end up being a bug
+    private userInfo uInfo;
 
-    public HouseFrag(houseInfo hInfo, houseClass houseClass) {
+    public HouseFrag(houseInfo hInfo, houseClass houseClass, userInfo uInfo) {
         this.hInfo = hInfo;
         this.hClass = houseClass;
+        this.uInfo = uInfo;
+
+        hClass.addObserver(this);
     }
 
     @Override
@@ -68,8 +74,21 @@ public class HouseFrag extends Fragment {
         });
 
         Button leaveHouseButton = view.findViewById(R.id.house1_leave_house_button);
-        leaveHouseButton.setOnClickListener(v -> leaveHouseButton.setText("Leaving house"));
+        leaveHouseButton.setOnClickListener(v -> {
+            leaveHouseButton.setText("Leaving house");
+            hClass.removeMember(hInfo, uInfo.id, uInfo.id);
+        });
 
         return view;
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        if(arg == "deleteHouse" || arg == "removeMember"){
+            getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
+            hClass.updateUserInfo(uInfo.id, (success)->{
+                Log.d("LEAVING HOUSE", "Updated userInfo on house leave");
+            });
+        }
     }
 }

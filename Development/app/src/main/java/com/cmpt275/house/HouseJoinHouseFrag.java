@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 
+import com.cmpt275.house.classDef.displayMessage;
 import com.cmpt275.house.classDef.houseClass;
 import com.cmpt275.house.classDef.infoClass.houseInfo;
 import com.cmpt275.house.classDef.infoClass.userInfo;
@@ -31,6 +32,7 @@ public class HouseJoinHouseFrag extends DialogFragment implements Observer {
     private houseClass hClass;
     private userInfo uInfo;
     ArrayList<houseInfo> housesNotIn = new ArrayList<>();
+    private final displayMessage display;
 
     public Spinner houseSelectionSpinner;
 
@@ -38,6 +40,7 @@ public class HouseJoinHouseFrag extends DialogFragment implements Observer {
         hClass = new houseClass(null);
         hClass.addObserver(this);
         this.uInfo = uInfo;
+        display = new displayMessage();
     }
 
     public static HouseJoinHouseFrag newInstance(Context mContext, userInfo uInfo) {
@@ -105,6 +108,7 @@ public class HouseJoinHouseFrag extends DialogFragment implements Observer {
             }
         } else if( returnString.equals( "joinHouseRequest" ) ){
             // Join house request succeeded, close fragment
+            display.showToastMessage(getActivity(), "Requested to Join House", display.LONG);
             this.dismiss();
         }
     }

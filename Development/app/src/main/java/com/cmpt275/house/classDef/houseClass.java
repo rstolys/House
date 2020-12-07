@@ -14,6 +14,7 @@ import com.cmpt275.house.classDef.mappingClass.notificationMapping;
 import com.cmpt275.house.classDef.mappingClass.roleMapping;
 import com.cmpt275.house.classDef.mappingClass.voteTypeMapping;
 import com.cmpt275.house.interfaceDef.Callbacks.booleanCallback;
+import com.cmpt275.house.interfaceDef.Callbacks.updateCallback;
 import com.cmpt275.house.interfaceDef.Callbacks.vInfoCallback;
 import com.cmpt275.house.interfaceDef.house;
 
@@ -39,6 +40,7 @@ public class houseClass extends Observable implements house {
 
     //TODO: Add member attributes to documentation
     private final houseFirebaseClass firebaseTask;
+    private final userFirebaseClass firebaseUserTask;
     private final Context mContext;
     private final roleMapping roleMap;
     private final notificationMapping notificationMap;
@@ -60,6 +62,7 @@ public class houseClass extends Observable implements house {
         notificationMap = new notificationMapping();
         voteMap = new voteTypeMapping();
         display = new displayMessage();
+        firebaseUserTask = new userFirebaseClass();
     }
 
 
@@ -69,29 +72,23 @@ public class houseClass extends Observable implements house {
     //
     ////////////////////////////////////////////////////////////
     public void createHouse(houseInfo hInfo) {
-        houseInfo myHInfo = new houseInfo();
 
-        myHInfo.id = null;
-        myHInfo.displayName = hInfo.displayName;
-        myHInfo.voting_ids = null;
-        myHInfo.tasks = null;
+        hInfo.id = null;
+        hInfo.voting_ids = null;
+        hInfo.tasks = null;
+        hInfo.maxMembers = 4;
 
-        myHInfo.members = hInfo.members;
-
-        myHInfo.description = hInfo.description;
-        myHInfo.punishmentMultiplier = hInfo.punishmentMultiplier;
-        myHInfo.maxMembers = 4;
-        myHInfo.houseNotifications = hInfo.houseNotifications;
-
-        firebaseTask.createNewHouse(myHInfo, (hInfo1, success, errorMessage) -> {
+        firebaseTask.createNewHouse(hInfo, (hInfoReturned, success, errorMessage) -> {
             Log.d("createNewHouse:", "Returned with success: " + success);
             // If successful, the new house is created and displayed to screen with the rest of the houes
             if( success ){
-                this.hInfos.add(hInfo1);
+                this.hInfos.add(hInfoReturned);
                 String updateInfo = "createHouses";
                 setChanged();
                 notifyObservers(updateInfo);
-            } // Else we should display error message
+            } else {
+                display.showToastMessage(mContext, errorMessage, display.LONG);
+            }
         });
     }
 
@@ -105,17 +102,20 @@ public class houseClass extends Observable implements house {
         firebaseTask.getCurrentHouses(uInfo, (hInfos, success, errorMessage) -> {
             Log.d("getCurrentHouses:", "Returned with success: " + success);
 
-            // Convert hInfos list into an hInfo array
-            ArrayList<houseInfo> houseInfoList = new ArrayList<>();
-            Collections.addAll(houseInfoList, hInfos);
+            if(success) {
+                // Convert hInfos list into an hInfo array
+                ArrayList<houseInfo> houseInfoList = new ArrayList<>();
+                Collections.addAll(houseInfoList, hInfos);
 
-            this.hInfos = houseInfoList;
+                this.hInfos = houseInfoList;
 
-            // Update observers
-            String updateInfo = "viewHouses";
-            setChanged();
-            notifyObservers(updateInfo);
-            Log.d("viewYourHouses", "Done getting houses set up");
+                // Update observers
+                String updateInfo = "viewHouses";
+                setChanged();
+                notifyObservers(updateInfo);
+            } else {
+                display.showToastMessage(mContext, errorMessage, display.LONG);
+            }
         });
     }
 
@@ -124,12 +124,16 @@ public class houseClass extends Observable implements house {
         firebaseTask.getHouseInfo(house_id, (hInfo, success, errorMessage) -> {
             Log.d("getHouseInfo:", "Returned with success: " + success);
 
-            // Notify HouseActivity that viewHouse all requested on this hInfo
-            this.hInfo = hInfo;
+            if(success) {
+                // Notify HouseActivity that viewHouse all requested on this hInfo
+                this.hInfo = hInfo;
 
-            String updateInfo = "viewHouse";
-            setChanged();
-            notifyObservers(updateInfo);
+                String updateInfo = "viewHouse";
+                setChanged();
+                notifyObservers(updateInfo);
+            } else {
+                display.showToastMessage(mContext, errorMessage, display.LONG);
+            }
         });
     }
 
@@ -145,11 +149,11 @@ public class houseClass extends Observable implements house {
                 String updateInfo = "viewAllHouses";
                 setChanged();
                 notifyObservers(updateInfo);
+            } else{
+                display.showToastMessage(mContext, errorMessage, display.LONG);
             }
         });
     }
-
-    public void approveMember(String house_id, String user_id) {}
 
     public void addMember(userInfo uInfo, houseInfo hInfo, String role) {
         firebaseTask.addMember(hInfo, uInfo.id, role, uInfo.displayName, (hInfoReturned, success, errorMessage) -> {
@@ -160,22 +164,30 @@ public class houseClass extends Observable implements house {
                     setChanged();
                     notifyObservers(updateInfo);
                 }
+            } else {
+                display.showToastMessage(mContext, errorMessage, display.LONG);
             }
         });
     }
 
-    public void viewMember(String user_id) {}
-
     public void removeMember(houseInfo hInfo, String removedMemberID, String authorizorID) {
 
-        firebaseTask.removeMember(hInfo, authorizorID, removedMemberID, ( success, errorMessage) ->{
-            // Do stuff here...
-            Log.d("removeMember:", "Returned with success: " + success);
+        if(hInfo.members.size() == 1){
+            this.deleteHouse(hInfo, authorizorID);
+        } else {
+            firebaseTask.removeMember(hInfo, authorizorID, removedMemberID, ( success, errorMessage) ->{
+                Log.d("removeMember:", "Returned with success: " + success);
 
-            String updateInfo = "removeMember";
-            setChanged();
-            notifyObservers(updateInfo);
-        });
+                if(success){
+                    String updateInfo = "removeMember";
+                    setChanged();
+                    notifyObservers(updateInfo);
+                    display.showToastMessage(mContext, "You have moved out!", display.LONG);
+                } else {
+                    display.showToastMessage(mContext, errorMessage, display.LONG);
+                }
+            });
+        }
     }
 
     public void setMemberRole(String user_id, houseInfo hInfo, String role) {
@@ -188,7 +200,9 @@ public class houseClass extends Observable implements house {
                 String updateInfo = "setMemberRole";
                 setChanged();
                 notifyObservers(updateInfo);
-            } // else display.log the toast message on failure
+            } else {
+                display.showToastMessage(mContext, errorMessage, display.LONG);
+            }
         });
     }
 
@@ -247,20 +261,63 @@ public class houseClass extends Observable implements house {
         }
     }
 
-    public void viewSettings(String house_id) {}
-
     public void editSettings(houseInfo hInfo) {
         // Update the settings information for this house
 
         firebaseTask.editSettings(hInfo, !hInfo.displayName.equals(this.hInfo.displayName), (hInfo1, success, errorMessage) -> {
             Log.d("editSettings:", "Returned with success: " + success);
 
-            // Notify observers
-            String updateInfo = "editSettings";
-            setChanged();
-            notifyObservers(updateInfo);
+            if(success){
+                display.showToastMessage(mContext, "Settings Successfully Updated", display.LONG);
+
+                // Notify observers
+                String updateInfo = "editSettings";
+                setChanged();
+                notifyObservers(updateInfo);
+            } else{
+                display.showToastMessage(mContext, errorMessage, display.LONG);
+            }
+
         });
     }
 
-    public void deleteHouse(houseInfo hInfo) {}
+    public void deleteHouse(houseInfo hInfo, String uInfoID) {
+        firebaseTask.deleteHouse(hInfo, uInfoID, (success, errorMessage)->{
+            Log.d("deleteHouse:", "Returned with success: " + success);
+
+            if (success){
+                display.showToastMessage(mContext, "House Successfully Deleted", display.LONG);
+
+                String updateInfo = "deleteHouse";
+                setChanged();
+                notifyObservers(updateInfo);
+            } else {
+                display.showToastMessage(mContext, errorMessage, display.LONG);
+            }
+        });
+    }
+
+    public void updateUserInfo(String user_id, updateCallback callback) {
+
+        if (!user_id.equals(null)) {
+            //Get new userInfo to update
+            firebaseUserTask.getUserInfo(user_id, (uInfo, success, errorMessage) -> {
+                Log.d("getUserInfo", "Returned with success: " + success);
+
+                if(success) {
+                    //Update the userInfo
+                    this.uInfo = uInfo;
+
+                    callback.onReturn(true);
+                }
+                else {
+                    display.showToastMessage(mContext, "Could not load task and house info. Try loading page again", display.LONG);
+                    callback.onReturn(false);
+                }
+            });
+
+        } else {
+            Log.d("updateUserInfo", "user_id provided was null");
+        }
+    }
 }
