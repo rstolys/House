@@ -74,6 +74,7 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
     private Spinner tagDropdown;        //See comment at bottom about using tagMap
 
     private ArrayList<FieldFrag> fields = new ArrayList<FieldFrag>();
+    private final tagMapping tagMap = new tagMapping(); //**Use this**
 
 
     @Override
@@ -328,6 +329,12 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
         EditText taskDescription = findViewById(R.id.new_task_description);
         newTaskInfo.description = taskDescription.getText().toString();
 
+        EditText penalty = findViewById(R.id.new_task_penalty);
+        newTaskInfo.difficultyScore = Integer.parseInt(penalty.getText().toString());
+
+        EditText cost = findViewById(R.id.new_task_associated_cost);
+        newTaskInfo.costAssociated = Double.parseDouble(penalty.getText().toString());
+
         Date dueDate =  new GregorianCalendar(datePicker.getYear(), datePicker.getMonth(),
                 datePicker.getDayOfMonth(), timePicker.getCurrentHour(),timePicker.getCurrentMinute()).getTime();
         newTaskInfo.dueDate = dueDate;
@@ -360,12 +367,10 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
         mapping statusMap = new statusMapping();
         newTaskInfo.status = statusMap.mapIntToString(1);
 
-        newTaskInfo.costAssociated = 0.0;
-        newTaskInfo.difficultyScore  = 1;
+        newTaskInfo.itemList = getItemList();
 
         Date notifDate = null;
         Calendar calendar = Calendar.getInstance();
-
 
         switch (notifDropdown.getSelectedItemPosition()){
             case 0:
@@ -484,4 +489,23 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         ft.commit();
     }
+
+    private ArrayList<String> getItemList(){
+
+        ArrayList<String> itemList = new ArrayList<String>();
+
+        if(TextUtils.isEmpty(fields.get(0).getItem())){
+            return itemList;
+        }
+
+        for(int i =0; i<fields.size();i++){
+            if(TextUtils.isEmpty(fields.get(i).getItem()))
+                continue;
+            else
+                itemList.add(fields.get(i).getItem());
+        }
+
+        return itemList;
+    }
+
 }

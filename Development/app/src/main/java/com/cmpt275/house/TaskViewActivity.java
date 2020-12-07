@@ -112,6 +112,25 @@ public class TaskViewActivity extends AppCompatActivity {
         TextView assignedBy =(TextView) findViewById(R.id.assigned_by_name);
         assignedBy.setText(tInfo.createdBy);
 
+        TextView cost =(TextView) findViewById(R.id.task_cost);
+        cost.setText(Double.toString(tInfo.costAssociated));
+
+        TextView penalty =(TextView) findViewById(R.id.task_penalty);
+        penalty.setText(Integer.toString(tInfo.difficultyScore));
+
+        TextView list =(TextView) findViewById(R.id.task_list);
+
+        String listString = "";
+        for(int i=0 ; i< tInfo.itemList.size(); i++){
+            listString += tInfo.itemList.get(i);
+            if(tInfo.itemList.size()>1 && i!=tInfo.itemList.size()-1)
+                listString+= ", ";
+        }
+
+
+        list.setText(listString);
+
+
 
         //Setup Complete task and extend task buttons
         Button completeTaskButton = (Button) findViewById(R.id.complete_taskButton);
