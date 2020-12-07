@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.FragmentTransaction;
@@ -26,6 +27,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 public class TaskViewActivity extends AppCompatActivity {
 
@@ -88,6 +91,27 @@ public class TaskViewActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+
+        //displaying actual data
+        TextView title = (TextView) findViewById(R.id.task_title);
+        title.setText(tInfo.displayName);
+
+        TextView description = (TextView) findViewById(R.id.task_description);
+        description.setText(tInfo.description);
+
+        TextView dueDate = (TextView) findViewById(R.id.task_due_date);
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+        dueDate.setText(dateFormat.format(tInfo.dueDate));
+
+        TextView house = (TextView) findViewById(R.id.house_name);
+        house.setText(tInfo.houseName);
+
+        TextView assignee =  (TextView) findViewById(R.id.assignee_name);
+        assignee.setText(uInfo.displayName);
+
+        TextView assignedBy =(TextView) findViewById(R.id.assigned_by_name);
+        assignedBy.setText(tInfo.createdBy);
+
 
         //Setup Complete task and extend task buttons
         Button completeTaskButton = (Button) findViewById(R.id.complete_taskButton);

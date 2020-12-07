@@ -1,5 +1,6 @@
 package com.cmpt275.house;
 
+import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -72,6 +73,8 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
     private Spinner notifDropdown;
     private Spinner tagDropdown;        //See comment at bottom about using tagMap
 
+    private ArrayList<FieldFrag> fields = new ArrayList<FieldFrag>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,10 +145,7 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
 
         tagDropdown = findViewById(R.id.tags_spinner);
 
-        FieldFrag field = new FieldFrag();
-        fragmentTransaction.add(R.id.newTask_list, field);
-        fragmentTransaction.addToBackStack(null);
-
+        addField();
 
         //create a list of items for the notifications spinner.
         ArrayList<String> nOptions =new ArrayList<String>();
@@ -173,6 +173,11 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
             tagOptions.add("1 month before due date");*/
 
 
+        //Setup add field click listener
+        Button addFieldBtn = (Button) findViewById(R.id.add_item_button);
+        addFieldBtn.setOnClickListener(v -> {
+            addField();
+        });
 
 
         houseDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -469,18 +474,14 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
         return serializedUserInfo;
     }
 
-    //String Tags -- just create an instance of the string tag class....
-    //private final tagMapping tagMap = new tagMapping(); //**Use this**
-    public final String NO_TAG = "No Tag";
-    public final String CLEANING = "Cleaning";
-    public final String KITCHEN = "Kitchen";
-    public final String COOKING = "Cooking";
-    public final String BATHROOM = "Bathroom";
-    public final String GARBAGE = "Garbage";
-    public final String GROCERIES = "Groceries";
-    public final String SHOPPING = "Shopping";
-    public final String IN_MAINTENANCE = "Indoor Maintenance";
-    public final String OUT_MAINTENANCE = "Outdoor Maintenance";
-    public final String GARAGE = "Garage";
-    public final String OTHER = "Other";
+    private void addField(){
+        FieldFrag field = new FieldFrag();
+        fields.add(field);
+        
+        FragmentTransaction ft = getSupportFragmentManager()
+                .beginTransaction();
+        ft.add(R.id.newTask_list, field);
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        ft.commit();
+    }
 }

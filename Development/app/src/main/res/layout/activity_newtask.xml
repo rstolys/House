@@ -252,16 +252,41 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/new_task_list"
+                        android:layout_marginEnd="10dp"
                         android:textColor="@color/black"
                         android:textSize="18sp" />
+
+                    <Button
+                        android:id="@+id/add_item_button"
+                        android:layout_width="55dp"
+                        android:layout_height="38dp"
+                        android:textSize="9.5dp"
+                        android:layout_marginStart="210dp"
+                        android:layout_marginTop="0dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginBottom="0dp"
+                        android:background="#9000DDFF"
+                        android:text="Add" />
+
+
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/new_task_row12"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/purple_200">
 
                     <LinearLayout
                         android:id="@+id/newTask_list"
                         android:layout_width="match_parent"
+                        android:layout_marginStart="30dp"
+                        android:layout_marginEnd="30dp"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"></LinearLayout>
 
                 </TableRow>
+
 
                 <TableRow
                     android:id="@+id/new_task_row6"
