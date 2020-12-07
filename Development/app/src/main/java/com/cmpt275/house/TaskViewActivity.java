@@ -109,7 +109,11 @@ public class TaskViewActivity extends AppCompatActivity {
             //Setup request extension click listener
             extendTaskButton.setOnClickListener(v -> {
                 display.showToastMessage(this, "Requesting extension...", display.SHORT);
-                myTaskClass.requestExtension(tInfo);
+                myTaskClass.requestExtension(tInfo, result -> {
+                    if(result) {
+                        extendTaskButton.setEnabled(false);
+                    }
+                });
             });
         }
 

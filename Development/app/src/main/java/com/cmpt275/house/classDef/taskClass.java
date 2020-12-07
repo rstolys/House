@@ -116,7 +116,8 @@ public class taskClass extends Observable implements task {
         });
     }
 
-    public void requestExtension(taskInfo tInfo) {
+    public void requestExtension(taskInfo tInfo,
+                                 updateCallback callback) {
 
         if(tInfo.id != null) {
             firebaseTask.requestExtension(tInfo, (tInfoRet, success, errorMessage) -> {
@@ -124,14 +125,18 @@ public class taskClass extends Observable implements task {
 
                 if(success) {
                     display.showToastMessage(mContext, "Extension requested successfully", display.LONG);
+
+                    callback.onReturn(true);
                 }
                 else {
                     display.showToastMessage(mContext, errorMessage, display.LONG);
+                    callback.onReturn(false);
                 }
             });
         }
         else {
             display.showToastMessage(mContext, "Looks like somethinig went wrong, try again", display.LONG);
+            callback.onReturn(false);
         }
 
 
@@ -236,7 +241,7 @@ public class taskClass extends Observable implements task {
         //Set Parameter
         String paramToChange = "status";
 
-        firebaseTask.setTaskInfo(myTInfo, paramToChange, (tInfo1, success, errorMessage) -> {
+        firebaseTask.setTaskInfo(myTInfo, (tInfo1, success, errorMessage) -> {
             Log.d("setTaskInfo:", "Returned with success " + success);
             //Do stuff here ...
         });

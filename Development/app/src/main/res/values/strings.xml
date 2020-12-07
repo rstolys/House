@@ -133,6 +133,7 @@
 
     <!-- Strings related to New Task -->
     <string name="save_new_task_button_title">CREATE</string>
+    <string name="task_delete">Delete</string>
     <string name="new_task_hint_title">Title</string>
     <string name="new_task_description">Description</string>
     <string name="new_task_hint_description">Description</string>
