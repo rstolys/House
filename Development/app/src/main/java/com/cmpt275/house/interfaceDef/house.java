@@ -7,19 +7,19 @@ import com.cmpt275.house.interfaceDef.Callbacks.booleanCallback;
 import com.cmpt275.house.interfaceDef.Callbacks.vInfoCallback;
 
 public interface house extends task {
-    public void createHouse(houseInfo hInfo);
-    public void joinHouse(houseInfo hInfo, userInfo uInfo);
-    public void viewYourHouses(userInfo uInfo);
-    public void viewHouse(String house_id);
-    public void approveMember(String house_id, String user_id);
-    public void addMember(userInfo uInfo, houseInfo hInfo, String role);
-    public void viewMember(String user_id);
-    public void removeMember(String user_id);
-    public void makeMemberAdmin(userInfo uInfo);
-    public void getVotes(String house_id);
-    public void submitVote(votingInfo vInfo, userInfo uInfo, boolean yesVote, int voteIndex, vInfoCallback callback);
-    public void viewSettings(String house_id);
-    public void editSettings(houseInfo hInfo);
-    public void deleteHouse(houseInfo hInfo);
+    void createHouse(houseInfo hInfo);
+    void joinHouse(houseInfo hInfo, userInfo uInfo);
+    void viewYourHouses(userInfo uInfo);
+    void viewHouse(String house_id);
+    void approveMember(String house_id, String user_id);
+    void addMember(userInfo uInfo, houseInfo hInfo, String role);
+    void viewMember(String user_id);
+    void removeMember(String user_id);
+    void makeMemberAdmin(userInfo uInfo);
+    void getVotes(String house_id);
+    void submitVote(votingInfo vInfo, userInfo uInfo, boolean yesVote, int voteIndex, vInfoCallback callback);
+    void viewSettings(String house_id);
+    void editSettings(houseInfo hInfo);
+    void deleteHouse(houseInfo hInfo);
 }
 

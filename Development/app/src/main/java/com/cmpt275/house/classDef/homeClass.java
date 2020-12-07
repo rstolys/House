@@ -3,12 +3,10 @@ package com.cmpt275.house.classDef;
 import android.content.Context;
 import android.util.Log;
 
-import com.cmpt275.house.classDef.infoClass.houseInfo;
-import com.cmpt275.house.classDef.infoClass.taskInfo;
 import com.cmpt275.house.classDef.infoClass.userInfo;
-import com.cmpt275.house.interfaceDef.Callbacks.booleanCallback;
+import com.cmpt275.house.interfaceDef.Callbacks.updateCallback;
 import com.cmpt275.house.interfaceDef.home;
-import com.cmpt275.house.interfaceDef.updateUI;
+
 
 public class homeClass implements home {
     //
@@ -41,7 +39,7 @@ public class homeClass implements home {
     // Constructor
     //
     ////////////////////////////////////////////////////////////
-    public void updateUserInfo(String user_id, booleanCallback callback) {
+    public void updateUserInfo(String user_id, updateCallback callback) {
 
         if (!user_id.equals(null)) {
             //Get new userInfo to update
@@ -52,11 +50,11 @@ public class homeClass implements home {
                     //Update the userInfo
                     this.uInfo = uInfo;
 
-                    callback.onReturn(true, "");
+                    callback.onReturn(true);
                 }
                 else {
                     display.showToastMessage(mContext, "Could not load task and house info. Try loading page again", display.LONG);
-                    callback.onReturn(false, "");
+                    callback.onReturn(false);
                 }
             });
 
@@ -71,7 +69,7 @@ public class homeClass implements home {
     // Will Logout the user
     //
     /////////////////////////////////////////////////
-    public void logout(updateUI callback) {
+    public void logout(updateCallback callback) {
         //Show we are logging out
         display.showToastMessage(mContext, "Logging out", display.LONG);
 
@@ -79,7 +77,7 @@ public class homeClass implements home {
         firebaseUserTask.logout(uInfo, (result, errorMessage) -> {
             Log.d("logout:", "User " + uInfo.displayName + " is logged out");
 
-            callback.stateChanged(0);
+            callback.onReturn(true);
         });
     }
 }

@@ -30,9 +30,14 @@ import java.util.Map;
 public class HomeActivity extends AppCompatActivity {
 
     private final homeClass home = new homeClass(this);
-
     private Intent newIntent;
 
+
+    /////////////////////////////////////////////////
+    //
+    // Called when the activity is first created
+    //
+    /////////////////////////////////////////////////
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,7 +69,7 @@ public class HomeActivity extends AppCompatActivity {
 
 
         //Get the updated userInfo and load the info to the pages
-        home.updateUserInfo(home.uInfo.id, (result, errorMessage) -> {
+        home.updateUserInfo(home.uInfo.id, result -> {
             if(result) {
                 //Update the title
                 TextView homeTitle = findViewById(R.id.home_title);
@@ -97,6 +102,11 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
+    /////////////////////////////////////////////////
+    //
+    // Defines the navigation bar behaviour
+    //
+    /////////////////////////////////////////////////
     private final BottomNavigationView.OnNavigationItemSelectedListener navListener = item -> {
             // First prepare the userInfo to pass to next activity
             String serializedUserInfo = getSerializedUserInfo();
@@ -125,53 +135,6 @@ public class HomeActivity extends AppCompatActivity {
             return true;
         };
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        //Will be called after onCreate -- activity is now visible to the user
-        // Should contain final preparations before becoming interactive
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        //App will capture all of the users input
-        // Most the core functionality should be implemented here (of the signIn Page)
-        // onPause will always follow onResume()
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        //App has lost focus and entered the paused state
-        //Occurs when user taps back or recents button
-        //Do NOT save application user data, make network calls or execute database transactions from here
-
-        //Next callback will either be onResume() or onStop()
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        //Our activity is no longer visible to the user
-        //Next callback will be onRestart() or onDestroy()
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        //When app in stopped state is about to restart
-        // Should restore the state of the activity
-        //Next callback will always be onStart()
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        //System invokes this before the app is destroyed
-        //Usually ensures all the activities resources are released
-    }
-
 
     /////////////////////////////////////////////////
     //
@@ -180,11 +143,11 @@ public class HomeActivity extends AppCompatActivity {
     /////////////////////////////////////////////////
     public void logoutOfApp(View view) {
         //Logout of app
-        home.logout((typeOfChange -> {
+        home.logout( result -> {
             //Send user to the main activity
             newIntent =  new Intent(HomeActivity.this, MainActivity.class);
             startActivity(newIntent);
-        }));
+        });
     }
 
 

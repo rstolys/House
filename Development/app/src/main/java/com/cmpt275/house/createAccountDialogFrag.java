@@ -25,7 +25,6 @@ import com.cmpt275.house.interfaceDef.signIn;
 
 public class createAccountDialogFrag extends DialogFragment {
 
-    private static final String TITLE = "Create Account";
     private static signIn auth;
 
 
@@ -45,7 +44,7 @@ public class createAccountDialogFrag extends DialogFragment {
     //
     /////////////////////////////////////////////////
     public static createAccountDialogFrag newInstance(Context mContext) {
-        auth = new signInClass(null, mContext);
+        auth = new signInClass(mContext);
 
         createAccountDialogFrag fragment = new createAccountDialogFrag();
         Bundle args = new Bundle();

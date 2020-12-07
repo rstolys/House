@@ -4,9 +4,8 @@ import android.content.Context;
 import android.util.Log;
 
 import com.cmpt275.house.classDef.infoClass.userInfo;
+import com.cmpt275.house.interfaceDef.Callbacks.updateCallback;
 import com.cmpt275.house.interfaceDef.signIn;
-
-import com.cmpt275.house.interfaceDef.updateUI;
 
 public class signInClass implements signIn {
     //
@@ -16,8 +15,6 @@ public class signInClass implements signIn {
     private final displayMessage display;
 
     private final Context mContext;
-
-    private final updateUI ui;            //Interface to update the UI state
 
     private boolean userLoggedIn;
     public userInfo uInfo;
@@ -32,12 +29,11 @@ public class signInClass implements signIn {
     // Constructor
     //
     ////////////////////////////////////////////////////////////
-    public signInClass(updateUI ui, Context mContext) {
+    public signInClass(Context mContext) {
         firebaseUserTask = new userFirebaseClass();
         display = new displayMessage();
 
         this.mContext = mContext;
-        this.ui = ui;       //Set the class implementing our ui updates
         userLoggedIn = false;
     }
 
@@ -47,7 +43,7 @@ public class signInClass implements signIn {
     // Will sign in the user using firebase auth
     //
     ////////////////////////////////////////////////////////////
-    public void signInUser(String email, String password) {
+    public void signInUser(String email, String password, updateCallback callback) {
 
         //Can remove these in production
         email = email; //"rstolys@sfu.ca"
@@ -73,8 +69,7 @@ public class signInClass implements signIn {
                     display.showToastMessage(mContext, errorMessage, display.LONG);
                 }
 
-                //Tell ui to check if it needs to be updated
-                ui.stateChanged(0);
+                callback.onReturn(userLoggedIn);
             });
         }
     }
@@ -153,7 +148,7 @@ public class signInClass implements signIn {
     // Will automatically check the users auth state and move to home page if needed
     //
     ////////////////////////////////////////////////////////////
-    public void checkAuthStatus() {
+    public void checkAuthStatus(updateCallback callback) {
         //Check to see if user already has valid authentication
         firebaseUserTask.getUserAuthStatus( (firebase_id, success, errorMessage) -> {
             if(success) {
@@ -166,7 +161,6 @@ public class signInClass implements signIn {
                         this.uInfo = uInfo;     //Set the uInfo to be passed
 
                         userLoggedIn = true;                      //Indicate user is signed in already
-                        ui.stateChanged(0);         //Tell UI to check user state
                     }
                     else {
                         Log.d("getUserInfo_firebaseID:", "User info could not be collected");
@@ -174,11 +168,14 @@ public class signInClass implements signIn {
 
                         userLoggedIn = false;                      //Force user to signIn and collect information again
                     }
+
+                    callback.onReturn(userLoggedIn);
                 });
             }
             else {
                 Log.d("getUserAuthStatus:", "User is NOT currently signed in");
                 userLoggedIn = false;
+                callback.onReturn(userLoggedIn);
             }
         });
     }

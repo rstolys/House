@@ -32,6 +32,11 @@ public class SettingsActivity extends AppCompatActivity {
     private final settingsClass setting = new settingsClass(this);
     private final displayMessage display = new displayMessage();
 
+    /////////////////////////////////////////////////
+    //
+    // Called when the activity is first called
+    //
+    /////////////////////////////////////////////////
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,7 +72,13 @@ public class SettingsActivity extends AppCompatActivity {
         navView.setOnNavigationItemSelectedListener(navListener);       //so we can implement it outside onCreate
     }
 
-    private BottomNavigationView.OnNavigationItemSelectedListener navListener =
+
+    /////////////////////////////////////////////////
+    //
+    // Defining the navigation bar behaviour
+    //
+    /////////////////////////////////////////////////
+    private final BottomNavigationView.OnNavigationItemSelectedListener navListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -112,11 +123,15 @@ public class SettingsActivity extends AppCompatActivity {
             };
 
 
+    /////////////////////////////////////////////////
+    //
+    // Will be called after onCreate -- activity is now visible to the user
+    // Should contain final preparations before becoming interactive
+    //
+    /////////////////////////////////////////////////
     @Override
     protected void onStart() {
         super.onStart();
-        //Will be called after onCreate -- activity is now visible to the user
-        // Should contain final preparations before becoming interactive
 
         //Load the values into the page
         TextView displayNameInput = (TextView) findViewById(R.id.settings_displayName);
@@ -127,46 +142,6 @@ public class SettingsActivity extends AppCompatActivity {
 
         ToggleButton notificationToggleBtn = (ToggleButton) findViewById(R.id.notification_choice);
         notificationToggleBtn.setChecked(setting.uInfo.notificationsAllowed);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        //App will capture all of the users input
-        // Most the core functionality should be implemented here (of the signIn Page)
-        // onPause will always follow onResume()
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        //App has lost focus and entered the paused state
-        //Occurs when user taps back or recents button
-        //Do NOT save application user data, make network calls or execute database transactions from here
-
-        //Next callback will either be onResume() or onStop()
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        //Our activity is no longer visible to the user
-        //Next callback will be onRestart() or onDestroy()
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        //When app in stopped state is about to restart
-        // Should restore the state of the activity
-        //Next callback will always be onStart()
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        //System invokes this before the app is destroyed
-        //Usually ensures all the activities resources are released
     }
 
 
@@ -203,7 +178,7 @@ public class SettingsActivity extends AppCompatActivity {
         EditText feedback = findViewById(R.id.feedback_provided);
 
         //Reset the password for the user
-        setting.provideFeedback(feedback.getText().toString(), (result, errorMessage) -> {
+        setting.provideFeedback(feedback.getText().toString(), result -> {
             if(result) {
                 feedback.setText("");
             }
@@ -280,7 +255,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         //Hide  the keyboard from the user
         if (view != null) {
-            InputMethodManager imm = (InputMethodManager)getSystemService(this.INPUT_METHOD_SERVICE);
+            InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
