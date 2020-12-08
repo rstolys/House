@@ -74,10 +74,12 @@
                 android:id="@+id/task_row2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:layout_marginTop="4dp"
                 android:background="@color/purple_200">
 
                 <TextView
-                    android:id="@+id/new_task_description"
+                    android:id="@+id/task_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/new_task_description"
@@ -89,17 +91,19 @@
                 android:id="@+id/task_row3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:layout_marginTop="4dp"
                 android:background="@color/purple_200">
 
                 <TextView
-                    android:layout_width="190dp"
+                    android:layout_width="130dp"
                     android:layout_height="wrap_content"
                     android:text="@string/new_task_due_date"
                     android:textColor="@color/black"
                     android:textSize="18sp" />
 
                 <TextView
-                    android:id="@+id/new_task_due_date"
+                    android:id="@+id/task_due_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/new_task_due_date"
@@ -111,10 +115,12 @@
                 android:id="@+id/task_row4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:layout_marginTop="4dp"
                 android:background="@color/purple_200">
 
                 <TextView
-                    android:layout_width="190dp"
+                    android:layout_width="130dp"
                     android:layout_height="wrap_content"
                     android:text="@string/house_name"
                     android:textColor="@color/black"
@@ -133,10 +139,12 @@
                 android:id="@+id/task_row5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:layout_marginTop="4dp"
                 android:background="@color/purple_200">
 
                 <TextView
-                    android:layout_width="190dp"
+                    android:layout_width="130dp"
                     android:layout_height="wrap_content"
                     android:text="Task Assignee"
                     android:textColor="@color/black"
@@ -155,10 +163,12 @@
                 android:id="@+id/task_row6"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:layout_marginTop="4dp"
                 android:background="@color/purple_200">
 
                 <TextView
-                    android:layout_width="190dp"
+                    android:layout_width="130dp"
                     android:layout_height="wrap_content"
                     android:text="Assigned by"
                     android:textColor="@color/black"
@@ -168,11 +178,83 @@
                     android:id="@+id/assigned_by_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Admin User"
+                    android:text="User"
                     android:textSize="18sp" />
 
             </TableRow>
 
+            <TableRow
+                android:id="@+id/task_row60"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:layout_marginTop="4dp"
+                android:background="@color/purple_200">
+
+                <TextView
+                    android:layout_width="130dp"
+                    android:layout_height="wrap_content"
+                    android:text="Cost Associated"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/task_cost"
+                    android:layout_width="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_height="wrap_content"
+                    android:text="Cost"
+                    android:textSize="18sp" />
+
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/task_row620"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:layout_marginTop="4dp"
+                android:background="@color/purple_200">
+
+                <TextView
+                    android:layout_width="130dp"
+                    android:layout_height="wrap_content"
+                    android:text="Penalty"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/task_penalty"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Penalty"
+                    android:textSize="18sp" />
+
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/task_row62"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:layout_marginTop="4dp"
+                android:background="@color/purple_200">
+
+                <TextView
+                    android:layout_width="130dp"
+                    android:layout_height="wrap_content"
+                    android:text="List"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/task_list"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="List"
+                    android:textSize="18sp" />
+
+            </TableRow>
 
             <TableRow
                 android:id="@+id/task_row7"
@@ -185,7 +267,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="38dp"
-                    android:layout_marginEnd="60dp"
+                    android:layout_marginEnd="50dp"
                     android:text="Complete" />
 
                 <Button

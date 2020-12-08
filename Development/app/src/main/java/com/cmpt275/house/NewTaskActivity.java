@@ -1,5 +1,6 @@
 package com.cmpt275.house;
 
+import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -73,6 +74,9 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
     private Spinner notifDropdown;
     private Spinner tagDropdown;        //See comment at bottom about using tagMap
 
+    private ArrayList<FieldFrag> fields = new ArrayList<FieldFrag>();
+    private final tagMapping tagMap = new tagMapping(); //**Use this**
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,10 +147,7 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
 
         tagDropdown = findViewById(R.id.tags_spinner);
 
-        FieldFrag field = new FieldFrag();
-        fragmentTransaction.add(R.id.newTask_list, field);
-        fragmentTransaction.addToBackStack(null);
-
+        addField();
 
         //create a list of items for the notifications spinner.
         ArrayList<String> nOptions =new ArrayList<String>();
@@ -174,6 +175,11 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
             tagOptions.add("1 month before due date");*/
 
 
+        //Setup add field click listener
+        Button addFieldBtn = (Button) findViewById(R.id.add_item_button);
+        addFieldBtn.setOnClickListener(v -> {
+            addField();
+        });
 
 
         houseDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -324,6 +330,12 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
         EditText taskDescription = findViewById(R.id.new_task_description);
         newTaskInfo.description = taskDescription.getText().toString();
 
+        EditText penalty = findViewById(R.id.new_task_penalty);
+        newTaskInfo.difficultyScore = Integer.parseInt(penalty.getText().toString());
+
+        EditText cost = findViewById(R.id.new_task_associated_cost);
+        newTaskInfo.costAssociated = Double.parseDouble(penalty.getText().toString());
+
         Date dueDate =  new GregorianCalendar(datePicker.getYear(), datePicker.getMonth(),
                 datePicker.getDayOfMonth(), timePicker.getCurrentHour(),timePicker.getCurrentMinute()).getTime();
         newTaskInfo.dueDate = dueDate;
@@ -356,12 +368,10 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
         mapping statusMap = new statusMapping();
         newTaskInfo.status = statusMap.mapIntToString(1);
 
-        newTaskInfo.costAssociated = 0.0;
-        newTaskInfo.difficultyScore  = 1;
+        newTaskInfo.itemList = getItemList();
 
         Date notifDate = null;
         Calendar calendar = Calendar.getInstance();
-
 
         switch (notifDropdown.getSelectedItemPosition()){
             case 0:
@@ -469,4 +479,34 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
 
         return serializedUserInfo;
     }
+
+    private void addField(){
+        FieldFrag field = new FieldFrag();
+        fields.add(field);
+        
+        FragmentTransaction ft = getSupportFragmentManager()
+                .beginTransaction();
+        ft.add(R.id.newTask_list, field);
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        ft.commit();
+    }
+
+    private ArrayList<String> getItemList(){
+
+        ArrayList<String> itemList = new ArrayList<String>();
+
+        if(TextUtils.isEmpty(fields.get(0).getItem())){
+            return itemList;
+        }
+
+        for(int i =0; i<fields.size();i++){
+            if(TextUtils.isEmpty(fields.get(i).getItem()))
+                continue;
+            else
+                itemList.add(fields.get(i).getItem());
+        }
+
+        return itemList;
+    }
+
 }
