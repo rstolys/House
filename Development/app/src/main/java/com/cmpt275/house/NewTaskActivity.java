@@ -62,6 +62,7 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
     private final houseClass myHouseClass = new houseClass(this);
     private final taskClass theTaskClass = new taskClass(this);
     private final displayMessage display = new displayMessage();
+    private final tagMapping tagMap = new tagMapping();
 
     private Intent newIntent;
     private FragmentTransaction fragmentTransaction;
@@ -75,7 +76,6 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
     private Spinner tagDropdown;
 
     private ArrayList<FieldFrag> fields = new ArrayList<FieldFrag>();
-    private final tagMapping tagMap = new tagMapping();
 
 
     @Override
@@ -165,14 +165,10 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
 
 
         //create a list of items for the tags spinner.
-            /*ArrayList<String> tagOptions = new ArrayList<String>();
-
-            tagOptions.add("1 month before due date");
-            Map<Integer, String> tagIntToString;
-
-            tagOptions.add(ta);
-            for()
-            tagOptions.add("1 month before due date");*/
+        ArrayList<String> tagOptions = new ArrayList<String>();
+        for(int tag = -1; tag <= 10; tag++) {
+            tagOptions.add(tagMap.mapIntToString(tag));
+        }
 
 
         //Setup add field click listener

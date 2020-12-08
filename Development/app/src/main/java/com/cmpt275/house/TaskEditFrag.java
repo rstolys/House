@@ -225,9 +225,9 @@ public class TaskEditFrag extends Fragment implements Observer {
 
         //set the spinners adapter to the previously created one.
         houseDropdown.setAdapter(adapter);
-        if(houseAction.hInfos.size() > 0)
-            houseDropdown.setSelection(0);
 
+
+        houseDropdown.setSelection(0);
     }
 
     
@@ -245,8 +245,8 @@ public class TaskEditFrag extends Fragment implements Observer {
         TextView description = (TextView) view.findViewById(R.id.new_task_description);
         description.setText(tInfo.description);
 
-        //DatePicker dueDate = (DatePicker) view.findViewById(R.id.datePicker1);
-        //TimePicker dueTime = (TimePicker) view.findViewById(R.id.timePicker1);
+        //dueDate
+        //dueTime
 
         TextView house = (TextView) view.findViewById(R.id.house_name);
         house.setText(tInfo.houseName);
