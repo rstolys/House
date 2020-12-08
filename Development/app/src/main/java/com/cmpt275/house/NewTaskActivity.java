@@ -1,8 +1,5 @@
 package com.cmpt275.house;
 
-import android.app.DatePickerDialog;
-import android.app.Dialog;
-import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -10,8 +7,6 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -25,7 +20,6 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -41,7 +35,6 @@ import com.cmpt275.house.classDef.infoClass.userInfo;
 import com.cmpt275.house.classDef.mappingClass.statusMapping;
 import com.cmpt275.house.classDef.mappingClass.tagMapping;
 import com.cmpt275.house.classDef.taskClass;
-import com.cmpt275.house.interfaceDef.mapping;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.ByteArrayInputStream;
@@ -53,8 +46,6 @@ import java.util.GregorianCalendar;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.Set;
-import java.util.TimeZone;
 
 public class NewTaskActivity extends AppCompatActivity implements Observer {
 
@@ -65,6 +56,7 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
     private final taskClass theTaskClass = new taskClass(this);
     private final displayMessage display = new displayMessage();
     private final tagMapping tagMap = new tagMapping();
+    private final statusMapping statusMap = new statusMapping();
 
     private Intent newIntent;
     private FragmentTransaction fragmentTransaction;
@@ -116,7 +108,7 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
         navView.setOnNavigationItemSelectedListener(navListener); //so we can implement it outside onCreate
 
 
-        Button saveButton = findViewById(R.id.new_task_save_button);
+        Button saveButton = findViewById(R.id.edit_task_save_button);
         saveButton.setOnClickListener(this::createNewTask);
     }
 
@@ -136,17 +128,17 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
         // Update the houses in the houseClass from the database
         myHouseClass.viewYourHouses(uInfo);
 
-        datePicker = (DatePicker)findViewById(R.id.datePicker1);
-        timePicker = (TimePicker)findViewById(R.id.timePicker1);
+        datePicker = (DatePicker)findViewById(R.id.edit_datePicker);
+        timePicker = (TimePicker)findViewById(R.id.edit_timePicker);
 
         //get the spinner from the xml.
-        houseDropdown = findViewById(R.id.houses_spinner);
+        houseDropdown = findViewById(R.id.edit_houses_spinner);
 
-        memberDropdown = findViewById(R.id.assignee_spinner);
+        memberDropdown = findViewById(R.id.edit_assignee_spinner);
 
-        notifDropdown = findViewById(R.id.notifications_spinner);
+        notifDropdown = findViewById(R.id.edit_notifications_spinner);
 
-        tagDropdown = findViewById(R.id.tags_spinner);
+        tagDropdown = findViewById(R.id.edit_tags_spinner);
 
         addField();
 
@@ -257,55 +249,6 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
             };
 
 
-    /*
-    @Override
-    protected void onStart() {
-        super.onStart();
-        //Will be called after onCreate -- activity is now visible to the user
-        // Should contain final preparations before becoming interactive
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        //App will capture all of the users input
-        // Most the core functionality should be implemented here (of the signIn Page)
-        // onPause will always follow onResume()
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        //App has lost focus and entered the paused state
-        //Occurs when user taps back or recents button
-        //Do NOT save application user data, make network calls or execute database transactions from here
-
-        //Next callback will either be onResume() or onStop()
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        //Our activity is no longer visible to the user
-        //Next callback will be onRestart() or onDestroy()
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        //When app in stopped state is about to restart
-        // Should restore the state of the activity
-        //Next callback will always be onStart()
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        //System invokes this before the app is destroyed
-        //Usually ensures all the activities resources are released
-    }
-    */
-
 
     /////////////////////////////////////////////////
     //
@@ -325,17 +268,17 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
     /////////////////////////////////////////////////
     private void createNewTask(View v){
         // Scrape data off UI
-        EditText taskTitle = findViewById(R.id.new_task_name);
+        EditText taskTitle = findViewById(R.id.edit_task_name);
         newTaskInfo.displayName = taskTitle.getText().toString();
 
-        EditText taskDescription = findViewById(R.id.new_task_description);
+        EditText taskDescription = findViewById(R.id.edit_task_description);
         newTaskInfo.description = taskDescription.getText().toString();
 
-        EditText penalty = findViewById(R.id.new_task_penalty);
+        EditText penalty = findViewById(R.id.edit_task_penalty);
         newTaskInfo.difficultyScore = Integer.parseInt(penalty.getText().toString());
 
-        EditText cost = findViewById(R.id.new_task_associated_cost);
-        newTaskInfo.costAssociated = Double.parseDouble(penalty.getText().toString());
+        EditText cost = findViewById(R.id.edit_task_associated_cost);
+        newTaskInfo.costAssociated = Double.parseDouble(cost.getText().toString());
 
         Date dueDate =  new GregorianCalendar(datePicker.getYear(), datePicker.getMonth(),
                 datePicker.getDayOfMonth(), timePicker.getCurrentHour(),timePicker.getCurrentMinute()).getTime();
@@ -368,8 +311,7 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
         newTaskInfo.createdBy = uInfo.displayName;
         newTaskInfo.createdBy_id = uInfo.id;
 
-        mapping statusMap = new statusMapping();
-        newTaskInfo.status = statusMap.mapIntToString(1);
+        newTaskInfo.status = statusMap.NOT_COMPLETE;
 
         newTaskInfo.itemList = getItemList();
 
@@ -483,29 +425,39 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
         return serializedUserInfo;
     }
 
+
+    ////////////////////////////////////////////////////////////
+    //
+    // Will add list item to the UI
+    //
+    ////////////////////////////////////////////////////////////
     private void addField(){
         FieldFrag field = new FieldFrag();
         fields.add(field);
         
         FragmentTransaction ft = getSupportFragmentManager()
                 .beginTransaction();
-        ft.add(R.id.newTask_list, field);
+        ft.add(R.id.editTask_list, field);
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         ft.commit();
     }
 
+
+    ////////////////////////////////////////////////////////////
+    //
+    // Will collect items list
+    //
+    ////////////////////////////////////////////////////////////
     private ArrayList<String> getItemList(){
 
         ArrayList<String> itemList = new ArrayList<String>();
 
-        if(TextUtils.isEmpty(fields.get(0).getItem())){
+        if(fields.isEmpty()) {
             return itemList;
         }
 
-        for(int i =0; i<fields.size();i++){
-            if(TextUtils.isEmpty(fields.get(i).getItem()))
-                continue;
-            else
+        for(int i = 0; i < fields.size(); i++) {
+            if(!TextUtils.isEmpty(fields.get(i).getItem()))
                 itemList.add(fields.get(i).getItem());
         }
 

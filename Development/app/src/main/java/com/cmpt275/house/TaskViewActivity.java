@@ -105,7 +105,10 @@ public class TaskViewActivity extends AppCompatActivity {
         dueDate.setText(dateFormat.format(tInfo.dueDate));
 
         TextView notifDate = (TextView) findViewById(R.id.task_notification_date);
-        notifDate.setText(dateFormat.format(tInfo.notificationTime));
+        if(tInfo.notificationTime == null)
+            notifDate.setText("None");
+        else
+            notifDate.setText(dateFormat.format(tInfo.notificationTime));
 
         TextView tag = (TextView) findViewById(R.id.task_tag);
         tag.setText(tInfo.tag.get(0));
@@ -256,7 +259,7 @@ public class TaskViewActivity extends AppCompatActivity {
     // Will fill the view task window with new information
     //
     ////////////////////////////////////////////////////////////
-    private void showTaskInfo(taskInfo localtInfo) {
+    public void showTaskInfo(taskInfo localtInfo) {
         //Set the 'global' tInfo to the updated one
         this.tInfo = localtInfo;
 
@@ -367,16 +370,6 @@ public class TaskViewActivity extends AppCompatActivity {
         });
     }
 
-
-    /////////////////////////////////////////////////
-    //
-    // Will close the edit dialog to show view task
-    //
-    /////////////////////////////////////////////////
-    public void closeEditTaskFrag(View view) {
-        //Close the dialog window
-        editTaskFragment.dismiss();
-    }
 
 
     /////////////////////////////////////////////////

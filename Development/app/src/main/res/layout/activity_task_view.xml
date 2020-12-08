@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="65dp"
-        android:layout_marginEnd="23dp"
+        android:layout_marginEnd="4dp"
         android:text="@string/viewTask_edit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -64,6 +64,7 @@
         android:layout_marginTop="50dp"
         android:layout_marginEnd="16dp"
         android:text="Task Title"
+        android:textColor="@color/black"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -338,12 +339,14 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="38dp"
                     android:layout_marginEnd="50dp"
+                    android:minHeight="50dp"
                     android:text="Complete" />
 
                 <Button
                     android:id="@+id/extend_task_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:minHeight="50dp"
                     android:text="@string/extend_button" />
 
             </TableRow>

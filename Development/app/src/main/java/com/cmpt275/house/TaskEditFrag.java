@@ -1,16 +1,12 @@
 package com.cmpt275.house;
 
 import android.content.Context;
-import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,24 +15,25 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.cmpt275.house.classDef.databaseObjects.taskAssignObj;
 import com.cmpt275.house.classDef.displayMessage;
 import com.cmpt275.house.classDef.houseClass;
 import com.cmpt275.house.classDef.infoClass.houseMemberInfoObj;
 import com.cmpt275.house.classDef.infoClass.taskInfo;
 import com.cmpt275.house.classDef.infoClass.userInfo;
-import com.cmpt275.house.classDef.infoClass.votingInfo;
 import com.cmpt275.house.classDef.mappingClass.statusMapping;
 import com.cmpt275.house.classDef.mappingClass.tagMapping;
-import com.cmpt275.house.classDef.mappingClass.voteTypeMapping;
 import com.cmpt275.house.classDef.taskClass;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
@@ -110,9 +107,9 @@ public class TaskEditFrag extends DialogFragment implements Observer {
     ////////////////////////////////////////////////////////////
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-
         super.onCreateView(inflater, container, savedInstanceState);
+
+        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_task_edit, container, false);
 
         //Assign global elements values
@@ -123,39 +120,65 @@ public class TaskEditFrag extends DialogFragment implements Observer {
 
         //Set back button
         Button backButton = (Button) view.findViewById(R.id.returnToViewTask);
-        backButton.setOnClickListener(v -> {
-            //Close the dialog
-            this.dismiss();
-        });
+        backButton.setOnClickListener(v -> this.dismiss());
 
         //Setup save button
+        Button saveButton = (Button) view.findViewById(R.id.edit_task_save_button);
+        saveButton.setOnClickListener(this::saveEditedTask);
         
         return view;
     }
 
+
+    ////////////////////////////////////////////////////////////
+    //
+    // Will save the task info and return to view activity
+    //
+    ////////////////////////////////////////////////////////////
+    private void saveEditedTask(View v) {
+        //Save task
+        taskInfo newInfo = collectInfo(v);
+
+        //Set task id;
+        newInfo.id = tInfo.id;
+
+        //Sanitize inputs to ensure values are valid
+        if (newInfo.displayName.length() < 1) {
+            display.showToastMessage(mContext, "Your task must have a name", display.SHORT);
+        } else if (newInfo.dueDate.before(new Date()) || newInfo.dueDate.equals(new Date())) {
+            display.showToastMessage(mContext, "The due date has already passed. Choose one in the future", display.SHORT);
+        } else {
+            display.showToastMessage(mContext, "Saving Task...", display.SHORT);
+
+            taskAction.editTask(newInfo, (tInfoRet, success, err) -> {
+                if (success) {
+                    ((TaskViewActivity) getActivity()).showTaskInfo(tInfoRet);
+
+                    //Close the edit task dialog
+                    this.dismiss();
+                }
+            });
+        }
+    }
+
     /////////////////////////////////////////////////
     //
-    // Setup all the input options for creating a new task
+    // Setup global UI elements to be set later
     //
     /////////////////////////////////////////////////
-   // @RequiresApi(api = Build.VERSION_CODES.M)
     private void setupEditTaskPage(View view) {
 
         //Observe the instance of the houseClass
         houseAction.addObserver(this);
 
-
-        dueDate = (DatePicker) view.findViewById(R.id.datePicker1);
-        dueDate.init(2011,7,17, null);
-        dueTime = (TimePicker) view.findViewById(R.id.timePicker1);
-        //dueTime.setHour(7);
-        //dueTime.setMinute(15);
+        dueDate = (DatePicker) view.findViewById(R.id.edit_datePicker);
+        dueTime = (TimePicker) view.findViewById(R.id.edit_timePicker);
 
         //get the spinner from the xml.
-        houseDropdown = view.findViewById(R.id.houses_spinner);
-        memberDropdown = view.findViewById(R.id.assignee_spinner);
-        notifDropdown = view.findViewById(R.id.notifications_spinner);
-        tagDropdown = view.findViewById(R.id.tags_spinner);
+        houseDropdown = view.findViewById(R.id.edit_houses_spinner);
+        memberDropdown = view.findViewById(R.id.edit_assignee_spinner);
+        notifDropdown = view.findViewById(R.id.edit_notifications_spinner);
+        tagDropdown = view.findViewById(R.id.edit_tags_spinner);
 
 
         //Setup add field click listener
@@ -181,28 +204,65 @@ public class TaskEditFrag extends DialogFragment implements Observer {
                 //create a list of items for the spinner.
                 ArrayList<String> memOptions = new ArrayList<String>();
 
-                Log.d("UPDATE MEMBER DROPDOWN", "I am putting members in dropdown");
+                if(!houseAction.hInfos.get(position).id.equals(tInfo.house_id)) {
+                    StringBuilder membersListString = new StringBuilder(" ");
+                    for (Map.Entry<String, houseMemberInfoObj> entry : houseAction.hInfos.get(position).members.entrySet()){
+                        houseMemberInfoObj hMemberObj = entry.getValue();
 
-                StringBuilder membersListString = new StringBuilder(" ");
-                for (Map.Entry<String, houseMemberInfoObj> entry : houseAction.hInfos.get(position).members.entrySet()){
-                    houseMemberInfoObj hMemberObj = entry.getValue();
+                        membersListString.append(", ");
+                        membersListString.append(hMemberObj.name);
+                        memOptions.add(hMemberObj.getName());
+                    }
 
-                    membersListString.append(", ");
-                    membersListString.append(hMemberObj.name);
-                    memOptions.add(hMemberObj.getName());
+                    ArrayAdapter<String> assigneeAdapter = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_dropdown_item, memOptions);
+                    //set the spinners adapter to the previously created one.
+                    memberDropdown.setAdapter(assigneeAdapter);
+                    if(houseAction.hInfos.get(position).members.size() > 0)
+                        memberDropdown.setSelection(0);
                 }
-
-                ArrayAdapter<String> adapter1 = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_dropdown_item, memOptions);
-                //set the spinners adapter to the previously created one.
-                memberDropdown.setAdapter(adapter1);
-                if(houseAction.hInfos.get(position).members.size()>0)
-                    memberDropdown.setSelection(0);
             }
 
 
             @Override
             public void onNothingSelected(AdapterView<?> arg0) {}
         });
+    }
+
+
+    ////////////////////////////////////////////////////////////
+    //
+    // Will fill the view task window with new information
+    //
+    ////////////////////////////////////////////////////////////
+    private void showTaskInfo(View view) {
+
+        //displaying actual data
+        TextView taskName = (TextView) view.findViewById(R.id.edit_task_name);
+        taskName.setText(tInfo.displayName);
+
+        TextView description = (TextView) view.findViewById(R.id.edit_task_description);
+        description.setText(tInfo.description);
+
+        //Set the date pickers
+        setDate();
+
+        //Begin actions to fill houses dropdown and memebers dropdown
+        houseAction.viewYourHouses(uInfo);
+
+        //create a list of items for the notifications spinner.
+        setupNotificationSpinner(view);
+
+        //Setup the tags available
+        setUpTags();
+
+        TextView cost =(TextView) view.findViewById(R.id.edit_task_associated_cost);
+        cost.setText(Double.toString(tInfo.costAssociated));
+
+        TextView penalty =(TextView) view.findViewById(R.id.edit_task_penalty);
+        penalty.setText(Integer.toString(tInfo.difficultyScore));
+
+        //Set the itemList
+        setField(view);
     }
 
 
@@ -253,8 +313,7 @@ public class TaskEditFrag extends DialogFragment implements Observer {
         for(String user_id : houseAction.hInfos.get(houseIndex).members.keySet()) {
             memOptions.add(houseAction.hInfos.get(houseIndex).members.get(user_id).name);
 
-            String member_id = houseAction.hInfos.get(houseIndex).members.get(user_id).name;
-            if(tInfo.assignedTo.containsKey(member_id))
+            if(tInfo.assignedTo.containsKey(user_id))
                 memberArraySelected = memberCount;
 
             memberCount++;
@@ -264,43 +323,6 @@ public class TaskEditFrag extends DialogFragment implements Observer {
         //set the spinners adapter to the previously created one.
         memberDropdown.setAdapter(memberAdapter);
         memberDropdown.setSelection(memberArraySelected);
-    }
-
-    
-    ////////////////////////////////////////////////////////////
-    //
-    // Will fill the view task window with new information
-    //
-    ////////////////////////////////////////////////////////////
-    private void showTaskInfo(View view) {
-
-        //displaying actual data
-        TextView taskName = (TextView) view.findViewById(R.id.new_task_name);
-        taskName.setText(tInfo.displayName);
-
-        TextView description = (TextView) view.findViewById(R.id.new_task_description);
-        description.setText(tInfo.description);
-
-        //dueDate
-        //dueTime
-
-        //Begin actions to fill houses dropdown and memebers dropdown
-        houseAction.viewYourHouses(uInfo);
-
-        //create a list of items for the notifications spinner.
-        setupNotificationSpinner(view);
-
-        //Setup the tags available
-        setUpTags();
-
-        TextView cost =(TextView) view.findViewById(R.id.new_task_associated_cost);
-        cost.setText(Double.toString(tInfo.costAssociated));
-
-        TextView penalty =(TextView) view.findViewById(R.id.new_task_penalty);
-        penalty.setText(Integer.toString(tInfo.difficultyScore));
-
-        //Set the itemList
-        setField(this.getView());
     }
 
 
@@ -320,12 +342,35 @@ public class TaskEditFrag extends DialogFragment implements Observer {
         nOptions.add("1 week before due date");
         nOptions.add("1 month before due date");
 
-        ArrayAdapter<String> adapter2 = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_dropdown_item, nOptions);
+        ArrayAdapter<String> notifyAdapter = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_dropdown_item, nOptions);
         //set the spinners adapter to the previously created one.
-        notifDropdown.setAdapter(adapter2);
+        notifDropdown.setAdapter(notifyAdapter);
 
-        //Need to get time of notifications relative to due date.
-        notifDropdown.setSelection(0);
+        //Determine time for notification
+        final int MS_IN_DAY = 86400000;
+        final int MS_IN_HOUR = 3600000;
+
+        long differenceInDate;
+        if(tInfo.notificationTime == null)
+            differenceInDate = -1;
+        else
+            differenceInDate = tInfo.notificationTime.getTime() - tInfo.dueDate.getTime();
+
+        if(differenceInDate >= MS_IN_DAY*8) {
+            notifDropdown.setSelection(4);      //Notify 1 month before
+        }
+        else if(differenceInDate >= (MS_IN_DAY + 100)) {
+            notifDropdown.setSelection(3);      //Notify 1 week before
+        }
+        else if(differenceInDate >= (MS_IN_DAY - 100)) {
+            notifDropdown.setSelection(2);      //Notify 1 day before
+        }
+        else if(differenceInDate >= (MS_IN_HOUR - 100)) {
+            notifDropdown.setSelection(1);      //Notify 1 hour before
+        }
+        else {
+            notifDropdown.setSelection(0);      //No notification
+        }
     }
 
 
@@ -339,7 +384,7 @@ public class TaskEditFrag extends DialogFragment implements Observer {
         fields.add(field);
 
         FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-        ft.add(R.id.newTask_list, field);
+        ft.add(R.id.editTask_list, field);
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         ft.commit();
     }
@@ -354,14 +399,17 @@ public class TaskEditFrag extends DialogFragment implements Observer {
             FieldFrag field = new FieldFrag();
             fields.add(field);
 
-            FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-            ft.add(R.id.newTask_list, field);
+            FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+            ft.add(R.id.editTask_list, field);
             ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
             ft.commit();
-
-            //Set field item
-            field.setItem(view, tInfo.itemList.get(i));
         }
+
+        //Now that fields have been added lets try to add the elements now
+        for(int i = 0; i < tInfo.itemList.size(); i++) {
+            fields.get(i).setItem(tInfo.itemList.get(i));
+        }
+
     }
 
     ////////////////////////////////////////////////////////////
@@ -380,7 +428,7 @@ public class TaskEditFrag extends DialogFragment implements Observer {
             tagOptions.add(tagToAdd);
 
             if(tInfo.tag.contains(tagToAdd))
-                currentTag = tagNum;
+                currentTag = tagNum + 1;        //plus 1 since its an array and we started at -1
         }
 
         ArrayAdapter<String> tagAdaptor = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_dropdown_item, tagOptions);
@@ -388,6 +436,139 @@ public class TaskEditFrag extends DialogFragment implements Observer {
         //Set the spinner adaptor and current selected
         tagDropdown.setAdapter(tagAdaptor);
         tagDropdown.setSelection(currentTag);
+    }
+
+
+    ////////////////////////////////////////////////////////////
+    //
+    // Will set the date in the date and time pickers
+    //
+    ////////////////////////////////////////////////////////////
+    private void setDate() {
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(tInfo.dueDate);
+
+        //Set day of year
+        dueDate.init(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH),cal.get(Calendar.DAY_OF_MONTH), null);
+
+        //Set time
+        dueTime.setCurrentHour(cal.get(Calendar.HOUR_OF_DAY));
+        dueTime.setCurrentMinute(cal.get(Calendar.MINUTE));
+    }
+
+
+    ////////////////////////////////////////////////////////////
+    //
+    // Will set the date in the date and time pickers
+    //
+    ////////////////////////////////////////////////////////////
+    private taskInfo collectInfo(View view) {
+        taskInfo newTaskInfo =  new taskInfo();
+
+        // Scrape data off UI EditText
+        EditText taskTitle = getView().findViewById(R.id.edit_task_name);
+        newTaskInfo.displayName = taskTitle.getText().toString();
+
+        EditText taskDescription = getView().findViewById(R.id.edit_task_description);
+        newTaskInfo.description = taskDescription.getText().toString();
+
+        EditText penalty = getView().findViewById(R.id.edit_task_penalty);
+        newTaskInfo.difficultyScore = Integer.parseInt(penalty.getText().toString());
+
+        EditText cost = getView().findViewById(R.id.edit_task_associated_cost);
+        newTaskInfo.costAssociated = Double.parseDouble(cost.getText().toString());
+
+        Date setDueDate =  new GregorianCalendar(dueDate.getYear(), dueDate.getMonth(),
+                dueDate.getDayOfMonth(), dueTime.getCurrentHour(),dueTime.getCurrentMinute()).getTime();
+        newTaskInfo.dueDate = setDueDate;
+
+
+        newTaskInfo.tag.add(0,tagDropdown.getSelectedItem().toString());
+
+        newTaskInfo.houseName = houseAction.hInfos.get(houseDropdown.getSelectedItemPosition()).displayName;
+        newTaskInfo.house_id = houseAction.hInfos.get(houseDropdown.getSelectedItemPosition()).id;
+
+        //create a list of items from hash map
+        ArrayList<String> namesMem = new ArrayList<String>();
+        ArrayList<String> idMem = new ArrayList<String>();
+
+        StringBuilder membersListString = new StringBuilder(" ");
+        for (Map.Entry<String, houseMemberInfoObj> entry :
+                houseAction.hInfos.get(houseDropdown.getSelectedItemPosition()).members.entrySet()){
+            houseMemberInfoObj hMemberObj = entry.getValue();
+
+            membersListString.append(", ");
+            membersListString.append(hMemberObj.name);
+            namesMem.add(hMemberObj.getName());
+            idMem.add(entry.getKey());
+        }
+
+        newTaskInfo.assignedTo.put(idMem.get(memberDropdown.getSelectedItemPosition()),
+                new taskAssignObj(namesMem.get(memberDropdown.getSelectedItemPosition()), true, true));
+
+        newTaskInfo.createdBy = uInfo.displayName;
+        newTaskInfo.createdBy_id = uInfo.id;
+        
+        newTaskInfo.status = statusMap.NOT_COMPLETE;
+
+        newTaskInfo.itemList = getItemList();
+
+        Date notifDate = setDueDate;
+        Calendar calendar = Calendar.getInstance();
+
+        switch (notifDropdown.getSelectedItemPosition()) {
+            case 0:
+                //no notifications -- notify date will be null
+                notifDate = null;
+                break;
+            case 1:
+                calendar.setTime(notifDate);
+                calendar.add(Calendar.HOUR_OF_DAY, -1);
+                notifDate = calendar.getTime();
+                break;
+            case 2:
+                calendar.setTime(notifDate);
+                calendar.add(Calendar.DATE, -1);
+                notifDate = calendar.getTime();
+                break;
+            case 3:
+                calendar.setTime(notifDate);
+                calendar.add(Calendar.DATE, -7);
+                notifDate = calendar.getTime();
+                break;
+            case 4:
+                calendar.setTime(notifDate);
+                calendar.add(Calendar.MONTH, -1);
+                notifDate = calendar.getTime();
+                break;
+        }
+        newTaskInfo.notificationTime = notifDate;
+
+        //Return updated task
+        return newTaskInfo;
+    }
+
+
+    ////////////////////////////////////////////////////////////
+    //
+    // Will collect items list
+    //
+    ////////////////////////////////////////////////////////////
+    private ArrayList<String> getItemList(){
+
+        ArrayList<String> itemList = new ArrayList<String>();
+
+        if(fields.isEmpty()) {
+            return itemList;
+        }
+
+        for(int i = 0; i < fields.size(); i++) {
+            if(!TextUtils.isEmpty(fields.get(i).getItem()))
+                itemList.add(fields.get(i).getItem());
+        }
+
+        return itemList;
     }
 
 }

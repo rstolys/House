@@ -632,7 +632,7 @@ public class taskFirebaseClass implements TaskBE {
                 firebaseTaskDocument updatedTask = new firebaseTaskDocument(tInfo);
 
                 //Update the task document
-                db.collection("tasks").document(tInfo.id).set(updatedTask, SetOptions.merge())
+                db.collection("tasks").document(tInfo.id).set(updatedTask)
                     .addOnSuccessListener(documentReference -> {
                         Log.d(TAG, "Task Document successfully updated!");
 

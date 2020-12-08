@@ -135,6 +135,7 @@
     <!-- Strings related to New Task -->
     <string name="viewTask_back">Back</string>
     <string name="viewTask_edit">Edit</string>
+    <string name="editTask_title">Edit Task</string>
     <string name="save_new_task_button_title">CREATE</string>
     <string name="task_delete">Delete</string>
     <string name="new_task_hint_title">Title</string>

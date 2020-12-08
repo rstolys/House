@@ -1,6 +1,7 @@
 package com.cmpt275.house;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,12 +64,19 @@ public class FieldFrag extends Fragment {
     // Will access the item from the text field
     //
     ////////////////////////////////////////////////////////////
-    public void setItem(View view, String listString) {
-        EditText item = view.findViewById(R.id.new_list_item);
+    public void setItem(String listString) {
 
-        if(item != null) {
-            item.setText(listString);
+        if(getView() == null) {
+            Log.d("setItem-FieldFrag", "View is still null");
         }
+        else {
+            EditText item = getView().findViewById(R.id.new_list_item);
+
+            if(item != null) {
+                item.setText(listString);
+            }
+        }
+
     }
 
 }

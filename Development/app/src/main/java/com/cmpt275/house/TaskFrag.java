@@ -6,29 +6,23 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 
 import android.util.Base64;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.cmpt275.house.classDef.displayMessage;
-import com.cmpt275.house.classDef.infoClass.houseInfo;
 import com.cmpt275.house.classDef.infoClass.taskInfo;
 import com.cmpt275.house.classDef.infoClass.userInfo;
 import com.cmpt275.house.classDef.mappingClass.statusMapping;
 import com.cmpt275.house.classDef.taskClass;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /*
  * A simple {@link Fragment} subclass.
@@ -113,7 +107,7 @@ public class TaskFrag extends Fragment {
         TextView house = view.findViewById(R.id.house_name);
         house.setText(tInfo.houseName);
 
-        TextView description = view.findViewById(R.id.new_task_description);
+        TextView description = view.findViewById(R.id.edit_task_description);
         description.setText(tInfo.description);
 
         TextView dueDate = view.findViewById(R.id.new_task_due_date);

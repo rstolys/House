@@ -171,11 +171,11 @@ public class taskClass extends Observable implements task {
     public void assignTask(taskInfo tInfo) {}
 
 
-    /////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////
     //
-    // Will complete the task for the uswer
+    // Will complete the task for the user
     //
-    /////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////
     public void completeTask(taskInfo tInfo, int taskIndex, updateCallback callback) {
 
         if(tInfo == null) {
@@ -208,44 +208,35 @@ public class taskClass extends Observable implements task {
         }
     }
 
-    public void editTask(taskInfo tInfo) {
 
-        //Do Stuff First
-        //Testing
-        taskInfo myTInfo = new taskInfo();
+    ///////////////////////////////////////////////////////////////
+    //
+    // Will edit the task contents
+    //
+    ///////////////////////////////////////////////////////////////
+    public void editTask(taskInfo tInfo, tInfoCallback callback) {
 
-        //Set parameters for testing
-        myTInfo.id = "4W9wvRhStX55SKEFYSqJ";
-        myTInfo.displayName = "Emulator Test Task";
-        myTInfo.description = "I really hope this works";
-        myTInfo.createdBy = "Ryan Stolys";
-        myTInfo.createdBy_id = "NO_IDs_HAVE_BEEN_SET";
+        if(tInfo == null) {
+            display.showToastMessage(mContext, "Looks like something went wrong. Try reloading the page", display.LONG);
 
-        //Set status value
-        mapping statusMap = new statusMapping();
-        myTInfo.status = statusMap.mapIntToString(3);
+            callback.onReturn(null, false, "");
+        }
+        else {
+            firebaseTask.setTaskInfo(tInfo, (tInfoRet, success, errorMessage) -> {
+                Log.d("setTaskInfo:", "Returned with success " + success);
 
-        myTInfo.assignedTo.put("NO_ID", new taskAssignObj("Ryan Stolys", true, false));
-        myTInfo.houseName = "DevHouse";
-        myTInfo.house_id = "NO_IDs_HAVE_BEEN_SET";
-        myTInfo.costAssociated = 0;
-        myTInfo.difficultyScore = 5;
-        myTInfo.dueDate = new Date();
-        myTInfo.itemList.add("Test1");
-        myTInfo.itemList.add("Test2");
-        myTInfo.itemList.add("Test3");
-        myTInfo.notificationTime = new Date();
-        myTInfo.tag.add("Garbage");
-        myTInfo.tag.add("Kitchen");
-        myTInfo.tag.add("Cleaning");
+                if(success) {
+                    display.showToastMessage(mContext, "Task Successfully Updated!", display.LONG);
 
-        //Set Parameter
-        String paramToChange = "status";
+                    callback.onReturn(tInfoRet, true, "");
+                }
+                else {
+                    display.showToastMessage(mContext, errorMessage, display.LONG);
 
-        firebaseTask.setTaskInfo(myTInfo, (tInfo1, success, errorMessage) -> {
-            Log.d("setTaskInfo:", "Returned with success " + success);
-            //Do stuff here ...
-        });
+                    callback.onReturn(null, false, "");
+                }
+            });
+        }
     }
 
     /////////////////////////////////////////////////
