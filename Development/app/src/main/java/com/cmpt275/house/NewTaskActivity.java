@@ -72,7 +72,7 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
     private Spinner houseDropdown;
     private Spinner memberDropdown;
     private Spinner notifDropdown;
-    private Spinner tagDropdown;        //See comment at bottom about using tagMap
+    private Spinner tagDropdown;
 
     private ArrayList<FieldFrag> fields = new ArrayList<FieldFrag>();
     private final tagMapping tagMap = new tagMapping();

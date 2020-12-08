@@ -79,6 +79,7 @@ public class taskClass extends Observable implements task {
         }
     }
 
+
     public void viewTask(String task_id) {
 
         userInfo myUInfo = new userInfo();

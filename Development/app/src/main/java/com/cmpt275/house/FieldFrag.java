@@ -58,4 +58,14 @@ public class FieldFrag extends Fragment {
         return itemVar;
     }
 
+    ////////////////////////////////////////////////////////////
+    //
+    // Will access the item from the text field
+    //
+    ////////////////////////////////////////////////////////////
+    public void setItem(View view, String listString){
+        EditText item = view.findViewById(R.id.new_list_item);
+        item.setText(listString);
+    }
+
 }
