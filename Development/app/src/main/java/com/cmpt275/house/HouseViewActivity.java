@@ -19,6 +19,7 @@ import com.cmpt275.house.classDef.displayMessage;
 import com.cmpt275.house.classDef.houseClass;
 import com.cmpt275.house.classDef.infoClass.houseInfo;
 import com.cmpt275.house.classDef.infoClass.houseMemberInfoObj;
+import com.cmpt275.house.classDef.infoClass.taskInfo;
 import com.cmpt275.house.classDef.infoClass.userInfo;
 import com.cmpt275.house.classDef.infoClass.votingInfo;
 import com.cmpt275.house.classDef.userFirebaseClass;
@@ -210,8 +211,19 @@ public class HouseViewActivity extends AppCompatActivity implements Observer {
                 ft.addToBackStack(null);
             }
 
+            // Now get the tasks for the updated hInfo
+            hClass.getTasks(hClass.hInfo);
+
             TextView houseDescription = findViewById(R.id.view_house_description);
             houseDescription.setText(this.hInfo.description);
+        } else if(obj == "getTasks"){
+
+            // Go through each task and populate a fragment with its parameters
+            for(taskInfo tInfo : hClass.tInfos){
+                HouseViewTaskFrag hvtf = new HouseViewTaskFrag( tInfo, uInfo.id );
+                ft.add(R.id.view_house_tasks, hvtf);
+            }
+
         }
 
         ft.commit();

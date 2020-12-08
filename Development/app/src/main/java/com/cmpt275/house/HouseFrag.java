@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -78,7 +79,7 @@ public class HouseFrag extends Fragment implements Observer {
         tr6.setVisibility(View.GONE);
 
         // Get all tasks for the user
-        // For all users tasks, compare Id's
+        // For all users tasks, compare Id's, show the user their first three tasks
         int i = 1;
         for( String houseTaskKey : this.hInfo.tasks.keySet() ){
             for( String userTaskKey : uInfo.tasks.keySet() ){
@@ -99,8 +100,9 @@ public class HouseFrag extends Fragment implements Observer {
 
         // If no tasks in the house, display that
         if(i==1){
-            TaskName1.setText(" You have no tasks in this house right now!");
+            TaskName1.setText("You have no tasks in this house right now!");
             TaskName1.setGravity(View.TEXT_ALIGNMENT_CENTER);
+            view.findViewById(R.id.house1_task1_title).setVisibility(View.GONE);
         }
 
         TextView membersList = view.findViewById(R.id.house1_members_list);
