@@ -91,22 +91,6 @@ public class taskClass extends Observable implements task {
         });
     }
 
-    public void disputeTask(taskInfo tInfo) {
-
-        String task_id = "6PBXbr63dg8XaMK9w3gV";
-
-        firebaseTask.getTaskInfo(task_id, (tInfoRet, success, errorMessage) -> {
-            Log.d("getTaskInfo:", "Returned with success " + success);
-
-            if(success) {
-                firebaseTask.disputeTask(tInfoRet, (tInfoRet2, success2, errorMessage2) -> {
-                    Log.d("disputeTask:", "Returned with success " + success);
-                    //Do stuff here...
-                });
-            }
-        });
-    }
-
     public void requestExtension(taskInfo tInfo) {
 
         firebaseTask.requestExtension(tInfo, (tInfoRet, success, errorMessage2) -> {

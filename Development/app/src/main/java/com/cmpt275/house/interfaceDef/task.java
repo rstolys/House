@@ -11,7 +11,6 @@ public interface task {
     void deleteTask(taskInfo tInfo);
     void displayTask(String task_id);
     void approveTask(String task_id, userInfo uInfo);
-    void disputeTask(taskInfo tInfo);
     void requestExtension(taskInfo tInfo);
     void getTaskVotes(String task_id);
     void sortTasks(int sortType);

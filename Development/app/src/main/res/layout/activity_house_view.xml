@@ -158,7 +158,14 @@
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:inputType="textPersonName" />
+
             </TableRow>
+
+            <LinearLayout
+                android:id="@+id/view_house_tasks"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"></LinearLayout>
 
             <TableRow
                 android:id="@+id/view_house_row5"
