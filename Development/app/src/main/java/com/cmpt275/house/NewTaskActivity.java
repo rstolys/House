@@ -1,5 +1,7 @@
 package com.cmpt275.house;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
@@ -118,7 +120,6 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
         saveButton.setOnClickListener(this::createNewTask);
     }
 
-
     /////////////////////////////////////////////////
     //
     // Setup all the input options for creating a new task
@@ -170,6 +171,10 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
             tagOptions.add(tagMap.mapIntToString(tag));
         }
 
+        ArrayAdapter<String> adapter3 = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, tagOptions);
+//set the spinners adapter to the previously created one.
+        tagDropdown.setAdapter(adapter3);
+        tagDropdown.setSelection(0);
 
         //Setup add field click listener
         Button addFieldBtn = (Button) findViewById(R.id.add_item_button);
@@ -336,6 +341,8 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
                 datePicker.getDayOfMonth(), timePicker.getCurrentHour(),timePicker.getCurrentMinute()).getTime();
         newTaskInfo.dueDate = dueDate;
 
+
+        newTaskInfo.tag.add(0,tagDropdown.getSelectedItem().toString());
 
         newTaskInfo.houseName = myHouseClass.hInfos.get(houseDropdown.getSelectedItemPosition()).displayName;
         newTaskInfo.house_id = myHouseClass.hInfos.get(houseDropdown.getSelectedItemPosition()).id;
