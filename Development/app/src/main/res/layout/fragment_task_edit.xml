@@ -18,6 +18,24 @@
         app:layout_constraintRight_toRightOf="parent"
         app:menu="@menu/bottom_nav_menu" />
 
+    <FrameLayout
+        android:id="@+id/back_button_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/nav_view"
+        tools:layout_editor_absoluteX="43dp"
+        tools:layout_editor_absoluteY="397dp">
+
+
+        <Button
+            android:id="@+id/returnToTaskPage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="18dp"
+            android:text="@string/viewTask_back" />
+
+    </FrameLayout>
+
     <TextView
         android:id="@+id/new_task_title"
         android:layout_width="wrap_content"
@@ -25,7 +43,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="25dp"
         android:layout_marginEnd="16dp"
-        android:text="New Task"
+        android:text="Task Title"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -55,14 +73,14 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/purple_200"
+                android:background="#91B2D1CE"
                 android:orientation="vertical">
 
                 <TableRow
                     android:id="@+id/new_task_row1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/purple_200">
+                    android:background="#91B2D1CE">
 
                     <EditText
                         android:id="@+id/new_task_name"
@@ -79,7 +97,7 @@
                     android:id="@+id/new_task_row2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/purple_200">
+                    android:background="#91B2D1CE">
 
                     <EditText
                         android:id="@+id/new_task_description"
@@ -95,7 +113,7 @@
                     android:id="@+id/new_task_row3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/purple_200">
+                    android:background="#91B2D1CE">
 
                     <TextView
                         android:id="@+id/new_task_due_date"
@@ -119,7 +137,7 @@
                     android:id="@+id/new_task_row13"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/purple_200">
+                    android:background="#91B2D1CE">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -142,7 +160,7 @@
                     android:id="@+id/new_task_row4"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/purple_200">
+                    android:background="#91B2D1CE">
 
                     <TextView
                         android:id="@+id/house_name"
@@ -172,7 +190,7 @@
                     android:id="@+id/new_task_row5"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/purple_200">
+                    android:background="#91B2D1CE">
 
                     <TextView
                         android:id="@+id/new_task_assignee"
@@ -196,7 +214,7 @@
                     android:id="@+id/new_task_row8"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/purple_200">
+                    android:background="#91B2D1CE">
 
                     <TextView
                         android:id="@+id/notification_settings"
@@ -220,7 +238,7 @@
                     android:id="@+id/new_task_row10"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/purple_200">
+                    android:background="#91B2D1CE">
 
                     <TextView
                         android:id="@+id/tag_title"
@@ -244,7 +262,7 @@
                     android:id="@+id/new_task_row108"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/purple_200">
+                    android:background="#91B2D1CE">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -269,7 +287,7 @@
                     android:id="@+id/new_task_row08"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/purple_200">
+                    android:background="#91B2D1CE">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -294,7 +312,7 @@
                     android:id="@+id/new_task_row102"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/purple_200">
+                    android:background="#91B2D1CE">
 
                     <TextView
                         android:id="@+id/list_title"
@@ -324,7 +342,7 @@
                     android:id="@+id/new_task_row12"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/purple_200">
+                    android:background="#91B2D1CE">
 
                     <LinearLayout
                         android:id="@+id/newTask_list"
@@ -333,7 +351,6 @@
                         android:layout_marginStart="30dp"
                         android:layout_marginEnd="30dp"
                         android:orientation="vertical"></LinearLayout>
-
                 </TableRow>
 
 
@@ -341,7 +358,7 @@
                     android:id="@+id/new_task_row6"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/purple_200">
+                    android:background="#91B2D1CE">
 
                     <Button
                         android:id="@+id/new_task_save_button"
@@ -352,7 +369,7 @@
                         android:layout_marginEnd="68dp"
                         android:layout_marginBottom="10dp"
                         android:background="@color/purple_200"
-                        android:text="@string/save_new_task_button_title" />
+                        android:text="SAVE" />
 
                 </TableRow>
 

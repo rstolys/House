@@ -103,6 +103,12 @@ public class TaskViewActivity extends AppCompatActivity {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
         dueDate.setText(dateFormat.format(tInfo.dueDate));
 
+        TextView notifDate = (TextView) findViewById(R.id.task_notification_date);
+        notifDate.setText(dateFormat.format(tInfo.notificationTime));
+
+        TextView tag = (TextView) findViewById(R.id.task_tag);
+        tag.setText(tInfo.tag.get(0));
+
         TextView house = (TextView) findViewById(R.id.house_name);
         house.setText(tInfo.houseName);
 
