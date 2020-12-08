@@ -53,6 +53,7 @@ public class HouseEditActivity extends AppCompatActivity implements Observer {
     private final roleMapping rm = new roleMapping();
     private boolean viewerIsAdmin = false;
     public int hInfoMemberStatusChange = 0;
+    boolean displayNameChanged = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,10 +120,12 @@ public class HouseEditActivity extends AppCompatActivity implements Observer {
         EditText houseDescrp = findViewById(R.id.edit_house_description);
 
         Button saveButton = findViewById(R.id.edit_house_save_button);
-        saveButton.setOnClickListener(v->{
+        saveButton.setOnClickListener(v -> {
+            boolean displayNameChanged = false;
             // Scrape data off UI only if it has been modified and is not null
             if( !houseTitle.getText().toString().equals("") ){
                 this.hInfo.displayName = houseTitle.getText().toString();
+                displayNameChanged = true;
             }
             if( !houseMaxMembers.getText().toString().equals("") ){
                 // Sanity check input
@@ -163,11 +166,13 @@ public class HouseEditActivity extends AppCompatActivity implements Observer {
                 // Will update settings in last callback
             } else {
                 // Update data in backend and exit activity
-                hClass.editSettings(this.hInfo);
+                hClass.editSettings(this.hInfo, displayNameChanged);
+                displayNameChanged = false;
             }
         });
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
+        navView.setSelectedItemId(R.id.navBar_houses);
         navView.setOnNavigationItemSelectedListener(navListener); //so we can implement it outside onCreate
     }
 
@@ -302,7 +307,7 @@ public class HouseEditActivity extends AppCompatActivity implements Observer {
             newIntent.putExtra("userInfo", serializedUserInfo);
             newIntent.putExtra("houseId", hClass.hInfo.id);
             startActivity(newIntent);
-        } else if(arg == "removeMember" || arg == "setMemberRole"){
+        } else if(arg == "removeMember" || arg == "setMemberRole") {
             // Call back on updating members
             --hInfoMemberStatusChange;
 
@@ -310,7 +315,8 @@ public class HouseEditActivity extends AppCompatActivity implements Observer {
                 // There are still more members that need their status updated
             } else {
                 // All members statuses changed, save settings
-                hClass.editSettings(this.hInfo);
+                hClass.editSettings(this.hInfo, displayNameChanged);
+                displayNameChanged = false;
             }
         } else if( arg == "deleteHouse"){
             // Go to houses page after deleting this hInfo

@@ -12,10 +12,14 @@ import com.cmpt275.house.interfaceDef.Callbacks.uInfoCallback;
 import com.cmpt275.house.interfaceDef.UsersBE;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.WriteBatch;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class userFirebaseClass implements UsersBE {
@@ -189,24 +193,50 @@ public class userFirebaseClass implements UsersBE {
                 //convert the uInfo class to a database class
                 firebaseUserDocument updatedUser = new firebaseUserDocument(uInfo);
 
+                //Create batch to update all of the tasks and houses with references along with user
+                WriteBatch batch = db.batch();
 
-                //Get documents from the collection that have user_id specified
-                db.collection("users").document(uInfo.id).update("displayName", updatedUser.getDisplayName())
-                    .addOnCompleteListener(task -> {
 
-                        if(task.isSuccessful()) {
-                            Log.d(TAG, "User: " + uInfo.id + " successfully updated their name");
+                //Add all the houses to update the display name
+                for(String house_id : uInfo.houses.keySet()) {
+                    Map<String,Object> updates = new HashMap<>();
+                    updates.put("members." + uInfo.id + ".name", updatedUser.getDisplayName());
 
-                            //return the new userInfo
-                            callback.onReturn(uInfo, true, NO_ERROR);
-                        }
-                        else {
-                            Log.d(TAG, "Error updated the users display name", task.getException());
+                    DocumentReference houseToUpdate = db.collection("houses").document(house_id);
+                    batch.update(houseToUpdate, updates);
+                }
 
-                            //Call function to return task value
-                            callback.onReturn(null, false, DATABASE_ERROR_MESSAGE);
-                        }
-                    });
+                //Add all the tasks to update the display name
+                for(String task_id : uInfo.tasks.keySet()) {
+                    Map<String,Object> updates = new HashMap<>();
+                    updates.put("assignedTo." + uInfo.id + ".name", updatedUser.getDisplayName());
+
+                    DocumentReference taskToUpdate = db.collection("tasks").document(task_id);
+                    batch.update(taskToUpdate, updates);
+                }
+
+
+                //Update the users display name as well
+                Map<String,Object> updates = new HashMap<>();
+                updates.put("displayName", updatedUser.getDisplayName());
+
+                DocumentReference userToUpdate = db.collection("users").document(uInfo.id);
+                batch.update(userToUpdate, updates);
+
+
+                //Commit updates
+                batch.commit().addOnCompleteListener(task -> {
+                    if(task.isSuccessful()) {
+                        Log.d(TAG, "User " + uInfo.id + "display name successfully updated");
+
+                        callback.onReturn(uInfo, true, NO_ERROR);
+                    }
+                    else {
+                        Log.d(TAG, "Update of display for user " + uInfo.id  + " unsuccessful");
+
+                        callback.onReturn(null, false, DATABASE_ERROR_MESSAGE);
+                    }
+                });
             }
         }
         catch(Exception e) {

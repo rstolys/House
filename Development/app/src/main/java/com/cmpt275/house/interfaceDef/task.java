@@ -11,7 +11,7 @@ public interface task {
     void completeTask(taskInfo tInfo, int taskIndex, updateCallback callback);
     void createTask(taskInfo tInfo, updateCallback callback);
     void assignTask(taskInfo tInfo);
-    void editTask(taskInfo tInfo, tInfoCallback callback);
+    void editTask(taskInfo tInfo, boolean reassigned, String oldAssignee_id, tInfoCallback callback);
     void deleteTask(taskInfo tInfo, updateCallback callback);
     void displayTask(String task_id);
     void approveTask(String task_id, userInfo uInfo);

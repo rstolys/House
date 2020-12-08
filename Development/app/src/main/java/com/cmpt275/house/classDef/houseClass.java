@@ -283,10 +283,10 @@ public class houseClass extends Observable implements house {
         }
     }
 
-    public void editSettings(houseInfo hInfo) {
+    public void editSettings(houseInfo hInfoNew, boolean displayNameChanged) {
         // Update the settings information for this house
 
-        firebaseTask.editSettings(hInfo, !hInfo.displayName.equals(this.hInfo.displayName), (hInfo1, success, errorMessage) -> {
+        firebaseTask.editSettings(hInfoNew, displayNameChanged, (hInfo1, success, errorMessage) -> {
             Log.d("editSettings:", "Returned with success: " + success);
 
             if(success){

@@ -698,7 +698,8 @@ public class houseFirebaseClass implements HouseBE {
                 //Create batch to make updates to name
                 WriteBatch batch = db.batch();
 
-                if(displayNameChanged){     //We need to update all of the tasks, votes and users with references
+                if(displayNameChanged) {     //We need to update all of the tasks, votes and users with references
+                    Log.d(TAG, "editSettings: Changing display name for house: " + hInfo.id);
 
                     //Add all the users to update the display name
                     for(String user_id : hInfo.members.keySet()) {

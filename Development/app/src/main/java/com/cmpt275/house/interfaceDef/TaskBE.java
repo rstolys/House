@@ -18,9 +18,8 @@ public interface TaskBE {
     void disputeTask(taskInfo tInfo, tInfoCallback callback);
     void requestExtension(taskInfo tInfo, tInfoCallback callback);
     void getTaskInfo(String task_id, tInfoCallback callback);
-    void setTaskInfo(taskInfo tInfo, tInfoCallback callback);
+    void setTaskInfo(taskInfo tInfo, boolean reassigned, String oldAssignee_id, tInfoCallback callback);
     void setTaskInfo(taskInfo tInfo, String parameter, tInfoCallback callback);
     void createTask(taskInfo tInfo, tInfoCallback callback);
     void deleteTask(taskInfo tInfo, booleanCallback callback);
-    void swapTask(taskInfo tInfoA, taskInfo tInfoB, booleanCallback callback);
 }

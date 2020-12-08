@@ -17,7 +17,7 @@ public interface house {
     public void setMemberRole(String user_id, houseInfo hInfo, String role);
     public void getVotes(String house_id);
     public void submitVote(votingInfo vInfo, userInfo uInfo, boolean yesVote, int voteIndex, vInfoCallback callback);
-    public void editSettings(houseInfo hInfo);
+    public void editSettings(houseInfo hInfo, boolean displayNameChanged);
     public void deleteHouse(houseInfo hInfo, String uInfoID);
     public void disputeTask(taskInfo tInfo);
     public void requestExtension(taskInfo tInfo);

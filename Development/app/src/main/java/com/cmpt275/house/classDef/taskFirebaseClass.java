@@ -616,7 +616,7 @@ public class taskFirebaseClass implements TaskBE {
     // Will update all fields of the document
     //
     ////////////////////////////////////////////////////////////
-    public void setTaskInfo(taskInfo tInfo, tInfoCallback callback) {
+    public void setTaskInfo(taskInfo tInfo, boolean reassigned, String oldAssignee_id, tInfoCallback callback) {
 
         try{
             if(tInfo.id == null) {
@@ -631,20 +631,64 @@ public class taskFirebaseClass implements TaskBE {
                 //Create a custom class updatedTask to modify the document with
                 firebaseTaskDocument updatedTask = new firebaseTaskDocument(tInfo);
 
-                //Update the task document
-                db.collection("tasks").document(tInfo.id).set(updatedTask)
-                    .addOnSuccessListener(documentReference -> {
-                        Log.d(TAG, "Task Document successfully updated!");
+                //Create batch to update all of the tasks and houses with references along with user
+                WriteBatch batch = db.batch();
 
-                        //tInfo updated successfully so we can simply return it
+                //If the task got reassigned
+                if(reassigned) {
+                    //Remove the task from the one user and add to the new user
+                    Map<String,Object> userUpdate1 = new HashMap<>();
+                    userUpdate1.put("tasks." + tInfo.id, FieldValue.delete());
+
+                    DocumentReference userToUpdate1 = db.collection("users").document(oldAssignee_id);
+                    batch.update(userToUpdate1, userUpdate1);
+
+
+                    //Add new user to task
+                    Map<String,Object> userUpdate2 = new HashMap<>();
+                    userUpdate2.put("tasks." + tInfo.id, new nameObj(updatedTask.getDisplayName(), true));
+
+                    DocumentReference userToUpdate2 = db.collection("users").document(oldAssignee_id);
+                    batch.update(userToUpdate2, userUpdate2);
+                }
+
+
+                //Add the house to update the display name
+                Map<String,Object> houseUpdates = new HashMap<>();
+                houseUpdates.put("tasks." + tInfo.id + ".name", updatedTask.getDisplayName());
+
+                DocumentReference houseToUpdate = db.collection("houses").document(updatedTask.getHouse_id());
+                batch.update(houseToUpdate, houseUpdates);
+
+
+                //Add all the tasks to update the display name
+                for(String user_id : tInfo.assignedTo.keySet()) {
+                    Map<String,Object> updates = new HashMap<>();
+                    updates.put("tasks." + tInfo.id + ".name", updatedTask.getDisplayName());
+
+                    DocumentReference userToUpdate = db.collection("users").document(user_id);
+                    batch.update(userToUpdate, updates);
+                }
+
+
+                //Update the task information
+                DocumentReference taskToUpdate = db.collection("tasks").document(tInfo.id);
+                batch.set(taskToUpdate, updatedTask);
+
+
+                //Commit updates
+                batch.commit().addOnCompleteListener(task -> {
+                    if(task.isSuccessful()) {
+                        Log.d(TAG, "Task " + tInfo.id + " successfully updated");
+
                         callback.onReturn(tInfo, true, NO_ERROR);
-                    })
-                    .addOnFailureListener(e -> {
-                        Log.w(TAG, "Error updating document", e);
+                    }
+                    else {
+                        Log.d(TAG, "Update of task " + tInfo.id  + " unsuccessful");
 
-                        //IndicateError
                         callback.onReturn(null, false, DATABASE_ERROR_MESSAGE);
-                    });
+                    }
+                });
             }
         }
         catch(Exception e) {
@@ -676,22 +720,57 @@ public class taskFirebaseClass implements TaskBE {
                 //Return error
                 callback.onReturn(null, false, INVALID_PARAMETER_MESSAGE);
             }
+            else if(parameter.equals("assignedTo")) {
+                Log.w(TAG, "setTaskInfo(param) can't reassign tasks");
+                //Return error
+                callback.onReturn(null, false, "You are not able to reassign tasks this way. Sorry!");
+            }
             else {
-                Log.d(TAG, "setTaskInfo(param) called for task: " + tInfo.id);
-                //Update the task document
-                db.collection("tasks").document(tInfo.id).update(updateField)
-                    .addOnSuccessListener(documentReference -> {
+                //Create batch to do multiple updates -- in case it's needed
+                WriteBatch batch = db.batch();
+
+                if(parameter.equals("displayName")) {
+                    Log.d(TAG, "setTaskInfo(param) called to update displayName for task: " + tInfo.id);
+
+                    //Add the house to update the display name
+                    Map<String,Object> houseUpdates = new HashMap<>();
+                    houseUpdates.put("tasks." + tInfo.id + ".name", tInfo.displayName);
+
+                    DocumentReference houseToUpdate = db.collection("houses").document(tInfo.house_id);
+                    batch.update(houseToUpdate, houseUpdates);
+
+
+                    //Add all the tasks to update the display name
+                    for(String user_id : tInfo.assignedTo.keySet()) {
+                        Map<String,Object> updates = new HashMap<>();
+                        updates.put("tasks." + tInfo.id + ".name", tInfo.displayName);
+
+                        DocumentReference userToUpdate = db.collection("users").document(user_id);
+                        batch.update(userToUpdate, updates);
+                    }
+                }
+                //Tasks won't be re assigned through this method
+
+                //Update the task information
+                DocumentReference taskToUpdate = db.collection("tasks").document(tInfo.id);
+                batch.set(taskToUpdate, updateField);
+
+
+                //Update the documents
+                batch.commit().addOnCompleteListener(task -> {
+                    if(task.isSuccessful()) {
                         Log.d(TAG, "Task Document successfully updated!");
 
                         //tInfo updated successfully so we can simply return it
                         callback.onReturn(tInfo, true, NO_ERROR);
-                    })
-                    .addOnFailureListener(e -> {
-                        Log.w(TAG, "Error updating document", e);
+                    }
+                    else {
+                        Log.w(TAG, "Error updating document");
 
                         //IndicateError
                         callback.onReturn(null, false, DATABASE_ERROR_MESSAGE);
-                    });
+                    }
+                });
             }
         }
         catch(Exception e) {
@@ -890,26 +969,6 @@ public class taskFirebaseClass implements TaskBE {
             callback.onReturn(false, UNKNOWN_ERROR_MESSAGE);
         }
     }
-
-
-    ////////////////////////////////////////////////////////////
-    //
-    // TODO:
-    // Will generate a swap task request
-    // *** Likely will be dropped from requirements available ***
-    //
-    ////////////////////////////////////////////////////////////
-    public void swapTask(taskInfo tInfoA, taskInfo tInfoB, booleanCallback callback) {
-
-        try{
-            //Change the status and who the task is assigned to
-        }
-        catch(Exception e) {
-            Log.e(TAG, "ERROR: Exception caught: " + e.getMessage());
-            callback.onReturn( false, UNKNOWN_ERROR_MESSAGE);
-        }
-    }
-
 
 
     ////////////////////////////////////////////////////////////

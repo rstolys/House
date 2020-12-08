@@ -41,7 +41,7 @@ public class homeClass implements home {
     ////////////////////////////////////////////////////////////
     public void updateUserInfo(String user_id, updateCallback callback) {
 
-        if (!user_id.equals(null)) {
+        if (user_id != null) {
             //Get new userInfo to update
             firebaseUserTask.getUserInfo(user_id, (uInfo, success, errorMessage) -> {
                 Log.d("getUserInfo", "Returned with success: " + success);

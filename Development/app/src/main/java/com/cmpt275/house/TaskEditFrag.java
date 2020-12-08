@@ -150,7 +150,17 @@ public class TaskEditFrag extends DialogFragment implements Observer {
         } else {
             display.showToastMessage(mContext, "Saving Task...", display.SHORT);
 
-            taskAction.editTask(newInfo, (tInfoRet, success, err) -> {
+            boolean reassigned = newInfo.assignedTo.equals(tInfo.assignedTo);
+            String oldAssignee = "";
+
+            if(reassigned) {
+                for(String id : tInfo.assignedTo.keySet()) {
+                    oldAssignee = id;       //This works because  there is only 1 assignee
+                }
+            }
+
+
+            taskAction.editTask(newInfo, reassigned, oldAssignee, (tInfoRet, success, err) -> {
                 if (success) {
                     ((TaskViewActivity) getActivity()).showTaskInfo(tInfoRet);
 
@@ -160,6 +170,7 @@ public class TaskEditFrag extends DialogFragment implements Observer {
             });
         }
     }
+
 
     /////////////////////////////////////////////////
     //

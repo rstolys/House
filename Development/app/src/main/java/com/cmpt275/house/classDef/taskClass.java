@@ -214,7 +214,7 @@ public class taskClass extends Observable implements task {
     // Will edit the task contents
     //
     ///////////////////////////////////////////////////////////////
-    public void editTask(taskInfo tInfo, tInfoCallback callback) {
+    public void editTask(taskInfo tInfo, boolean reassigned, String oldAssignee_id, tInfoCallback callback) {
 
         if(tInfo == null) {
             display.showToastMessage(mContext, "Looks like something went wrong. Try reloading the page", display.LONG);
@@ -222,7 +222,7 @@ public class taskClass extends Observable implements task {
             callback.onReturn(null, false, "");
         }
         else {
-            firebaseTask.setTaskInfo(tInfo, (tInfoRet, success, errorMessage) -> {
+            firebaseTask.setTaskInfo(tInfo, reassigned, oldAssignee_id, (tInfoRet, success, errorMessage) -> {
                 Log.d("setTaskInfo:", "Returned with success " + success);
 
                 if(success) {
