@@ -4,10 +4,12 @@ import android.app.role.RoleManager;
 import android.content.Context;
 import android.util.Log;
 import android.view.Display;
+import android.widget.Toast;
 
 import com.cmpt275.house.HouseActivity;
 import com.cmpt275.house.classDef.infoClass.houseInfo;
 import com.cmpt275.house.classDef.infoClass.houseMemberInfoObj;
+import com.cmpt275.house.classDef.infoClass.taskInfo;
 import com.cmpt275.house.classDef.infoClass.userInfo;
 import com.cmpt275.house.classDef.infoClass.votingInfo;
 import com.cmpt275.house.classDef.mappingClass.notificationMapping;
@@ -41,11 +43,13 @@ public class houseClass extends Observable implements house {
     //TODO: Add member attributes to documentation
     private final houseFirebaseClass firebaseTask;
     private final userFirebaseClass firebaseUserTask;
+    private final taskFirebaseClass taskFirebaseTask;
     private final Context mContext;
     private final roleMapping roleMap;
     private final notificationMapping notificationMap;
     private final voteTypeMapping voteMap;
     private final displayMessage display;
+    public ArrayList<taskInfo> tInfos;
 
     //
     // Class Functions
@@ -63,6 +67,7 @@ public class houseClass extends Observable implements house {
         voteMap = new voteTypeMapping();
         display = new displayMessage();
         firebaseUserTask = new userFirebaseClass();
+        taskFirebaseTask = new taskFirebaseClass();
     }
 
 
@@ -218,6 +223,23 @@ public class houseClass extends Observable implements house {
         });
     }
 
+    public void getTasks(houseInfo hInfo){
+        taskFirebaseTask.getCurrentTasks(hInfo, (tInfos, success, errorMessage)->{
+
+            if(success){
+                // Convert list to array
+                ArrayList<taskInfo> taskInfoList = new ArrayList<>();
+                Collections.addAll(taskInfoList, tInfos);
+
+                // Store array so that observers can see it
+                this.tInfos = taskInfoList;
+
+                String updateInfo = "getTasks";
+                setChanged();
+                notifyObservers(updateInfo);
+            }
+        });
+    }
 
     ////////////////////////////////////////////////////////////
     //
@@ -293,6 +315,32 @@ public class houseClass extends Observable implements house {
                 notifyObservers(updateInfo);
             } else {
                 display.showToastMessage(mContext, errorMessage, display.LONG);
+            }
+        });
+    }
+
+    public void disputeTask(taskInfo tInfo) {
+        taskFirebaseTask.disputeTask(tInfo, (tInfoRet, success, errorMessage) -> {
+            Log.d("disputeTask:", "Returned with success " + success);
+            if(success){
+                String updateInfo = "disputeTask";
+                setChanged();
+                notifyObservers(updateInfo);
+            } else {
+                display.showToastMessage(mContext, errorMessage, Toast.LENGTH_LONG);;
+            }
+        });
+    }
+
+    public void requestExtension(taskInfo tInfo) {
+        taskFirebaseTask.requestExtension(tInfo, (tInfoRet, success, errorMessage) -> {
+            Log.d("requestExtension:", "Returned with success " + success);
+            if(success){
+                String updateInfo = "requestExtension";
+                setChanged();
+                notifyObservers(updateInfo);
+            } else {
+                display.showToastMessage(mContext, errorMessage, Toast.LENGTH_LONG);;
             }
         });
     }

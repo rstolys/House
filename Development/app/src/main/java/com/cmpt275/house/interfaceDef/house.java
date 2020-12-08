@@ -1,5 +1,6 @@
 package com.cmpt275.house.interfaceDef;
 
+import com.cmpt275.house.classDef.infoClass.taskInfo;
 import com.cmpt275.house.classDef.infoClass.userInfo;
 import com.cmpt275.house.classDef.infoClass.houseInfo;
 import com.cmpt275.house.classDef.infoClass.votingInfo;
@@ -18,5 +19,7 @@ public interface house {
     public void submitVote(votingInfo vInfo, userInfo uInfo, boolean yesVote, int voteIndex, vInfoCallback callback);
     public void editSettings(houseInfo hInfo);
     public void deleteHouse(houseInfo hInfo, String uInfoID);
+    public void disputeTask(taskInfo tInfo);
+    public void requestExtension(taskInfo tInfo);
 }
 

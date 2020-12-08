@@ -79,25 +79,12 @@
 
             <TextView
                 android:id="@+id/house1_task1_name"
-                android:layout_width="165dp"
+                android:layout_width="363dp"
                 android:layout_height="match_parent"
                 android:lines="1"
                 android:maxLines="1"
                 android:text="@string/house1_task1_name" />
 
-            <TextView
-                android:id="@+id/house1_due_date_title"
-                android:layout_width="71dp"
-                android:layout_height="wrap_content"
-                android:text="@string/house1_due_date_title"
-                android:textColor="#673AB7" />
-
-            <TextView
-                android:id="@+id/house1_task1_due_date"
-                android:layout_width="45dp"
-                android:layout_height="wrap_content"
-                android:lines="1"
-                android:text="@string/house1_task1_due_date" />
         </TableRow>
 
         <TableRow
@@ -115,25 +102,11 @@
 
             <TextView
                 android:id="@+id/house1_task2_name"
-                android:layout_width="165dp"
+                android:layout_width="369dp"
                 android:layout_height="match_parent"
                 android:lines="1"
                 android:maxLines="1"
                 android:text="@string/house1_task2_name" />
-
-            <TextView
-                android:id="@+id/house1_due_date_title2"
-                android:layout_width="71dp"
-                android:layout_height="wrap_content"
-                android:text="@string/house1_due_date_title"
-                android:textColor="#673AB7" />
-
-            <TextView
-                android:id="@+id/house1_task2_due_date2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:lines="1"
-                android:text="@string/house1_task2_due_date" />
 
         </TableRow>
 
@@ -152,25 +125,11 @@
 
             <TextView
                 android:id="@+id/house1_task3_name"
-                android:layout_width="165dp"
+                android:layout_width="361dp"
                 android:layout_height="match_parent"
                 android:lines="1"
                 android:maxLines="1"
                 android:text="@string/house1_task3_name" />
-
-            <TextView
-                android:id="@+id/house1_due_date_title3"
-                android:layout_width="71dp"
-                android:layout_height="wrap_content"
-                android:text="@string/house1_due_date_title"
-                android:textColor="#673AB7" />
-
-            <TextView
-                android:id="@+id/house1_task3_due_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:lines="1"
-                android:text="@string/house1_task3_due_date" />
 
         </TableRow>
 
