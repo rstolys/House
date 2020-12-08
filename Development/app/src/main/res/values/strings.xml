@@ -116,6 +116,7 @@
     <string name="due_this_month_title">Due this month</string>
     <string name="due_later_title">Due later</string>
     <string name="completed_title">Completed</string>
+    <string name="extend_button">Extend</string>
     <string name="due_date_1">Nov 6</string>
     <string name="due_date_2">Nov 16</string>
     <string name="due_date_3">Nov 26</string>
@@ -132,6 +133,8 @@
     <string name="view_house_button">View House</string>
 
     <!-- Strings related to New Task -->
+    <string name="viewTask_back">Back</string>
+    <string name="viewTask_edit">Edit</string>
     <string name="save_new_task_button_title">CREATE</string>
     <string name="task_delete">Delete</string>
     <string name="new_task_hint_title">Title</string>

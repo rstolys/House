@@ -27,10 +27,7 @@ public class FieldFrag extends Fragment {
     // constructor
     //
     /////////////////////////////////////////////////
-
-    public FieldFrag() {
-
-    }
+    public FieldFrag() {}
 
 
 
@@ -49,6 +46,12 @@ public class FieldFrag extends Fragment {
        return view;
     }
 
+
+    ////////////////////////////////////////////////////////////
+    //
+    // Will access the item from the text field
+    //
+    ////////////////////////////////////////////////////////////
     public String getItem(){
         EditText item = getView().findViewById(R.id.new_list_item);
         itemVar = item.getText().toString();

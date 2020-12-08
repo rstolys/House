@@ -131,6 +131,20 @@ public class TaskViewActivity extends AppCompatActivity {
         list.setText(listString);
 
 
+        //Add back button
+        Button backToTasksButton = (Button) findViewById(R.id.returnToTaskPage);
+        backToTasksButton.setOnClickListener(v -> {
+            newIntent = new Intent(TaskViewActivity.this, TaskActivity.class);
+            newIntent.putExtra("userInfo", getSerializedUserInfo());
+            startActivity( newIntent );
+        });
+
+        //Add edit button
+        Button editTaskButton = (Button) findViewById(R.id.editTask);
+        editTaskButton.setOnClickListener(v -> {
+            //Begin fragment to edit task
+        });
+
 
         //Setup Complete task and extend task buttons
         Button completeTaskButton = (Button) findViewById(R.id.complete_taskButton);

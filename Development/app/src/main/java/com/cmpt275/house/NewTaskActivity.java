@@ -15,6 +15,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -61,7 +62,6 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
     private final houseClass myHouseClass = new houseClass(this);
     private final taskClass theTaskClass = new taskClass(this);
     private final displayMessage display = new displayMessage();
-    private final tagMapping tagMap = new tagMapping();
 
     private Intent newIntent;
     private FragmentTransaction fragmentTransaction;
@@ -75,7 +75,7 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
     private Spinner tagDropdown;        //See comment at bottom about using tagMap
 
     private ArrayList<FieldFrag> fields = new ArrayList<FieldFrag>();
-    private final tagMapping tagMap = new tagMapping(); //**Use this**
+    private final tagMapping tagMap = new tagMapping();
 
 
     @Override
@@ -507,6 +507,21 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
         }
 
         return itemList;
+    }
+
+
+    /////////////////////////////////////////////////
+    //
+    // Will hide the keyboard on the call
+    //
+    /////////////////////////////////////////////////
+    public void hideKeyboard(View view) {
+
+        //Hide  the keyboard from the user
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 
 }
