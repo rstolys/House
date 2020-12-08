@@ -60,6 +60,7 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
     private final houseClass myHouseClass = new houseClass(this);
     private final taskClass theTaskClass = new taskClass(this);
     private final displayMessage display = new displayMessage();
+    private final tagMapping tagMap = new tagMapping();
 
     private Intent newIntent;
     private FragmentTransaction fragmentTransaction;
@@ -468,19 +469,4 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
 
         return serializedUserInfo;
     }
-
-    //String Tags -- just create an instance of the string tag class....
-    //private final tagMapping tagMap = new tagMapping(); //**Use this**
-    public final String NO_TAG = "No Tag";
-    public final String CLEANING = "Cleaning";
-    public final String KITCHEN = "Kitchen";
-    public final String COOKING = "Cooking";
-    public final String BATHROOM = "Bathroom";
-    public final String GARBAGE = "Garbage";
-    public final String GROCERIES = "Groceries";
-    public final String SHOPPING = "Shopping";
-    public final String IN_MAINTENANCE = "Indoor Maintenance";
-    public final String OUT_MAINTENANCE = "Outdoor Maintenance";
-    public final String GARAGE = "Garage";
-    public final String OTHER = "Other";
 }
