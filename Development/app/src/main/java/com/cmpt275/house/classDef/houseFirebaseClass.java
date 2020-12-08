@@ -453,20 +453,36 @@ public class houseFirebaseClass implements HouseBE {
                     //Convert info class to document
                     firebaseHouseDocument houseData = new firebaseHouseDocument(hInfo);
 
-                    //Update this information in the house document
-                    db.collection("houses").document(hInfo.id).update("members", houseData.getMembers())
-                        .addOnSuccessListener(documentReference -> {
+                    WriteBatch batch = db.batch();
+
+                    //Add user to house
+                    Map<String,Object> updateHouse = new HashMap<>();
+                    updateHouse.put("members", houseData.getMembers());
+
+                    DocumentReference houseRef = db.collection("houses").document(hInfo.id);
+                    batch.update(houseRef, updateHouse);
+
+                    //Add house to user
+                    Map<String,Object> updateUser = new HashMap<>();
+                    updateUser.put("houses." + hInfo.id, new nameObj(hInfo.displayName, true));
+
+                    DocumentReference userRef = db.collection("users").document(user_id);
+                    batch.update(userRef, updateUser);
+
+                    batch.commit().addOnCompleteListener(task -> {
+                        if(task.isSuccessful()) {
                             Log.d(TAG, "User successfully added to house: " + hInfo.id);
 
                             //hInfo updated successfully, return updated hInfo
                             callback.onReturn(hInfo, true, NO_ERROR);
-                        })
-                        .addOnFailureListener(e -> {
-                            Log.w(TAG, "Error updating document", e);
+                        }
+                        else {
+                            Log.w(TAG, "Error updating document");
 
                             //IndicateError
                             callback.onReturn(null, false, DATABASE_ERROR_MESSAGE);
-                        });
+                        }
+                    });
                 }
             }
         }
@@ -476,6 +492,7 @@ public class houseFirebaseClass implements HouseBE {
         }
     }
 
+    
     ////////////////////////////////////////////////////////////
     //
     // Will remove a house from the
