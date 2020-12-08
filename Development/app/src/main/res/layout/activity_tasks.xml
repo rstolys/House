@@ -8,7 +8,7 @@
     tools:context=".TaskActivity">
 
     <FrameLayout
-        android:id="@+id/screen_container"
+        android:id="@+id/viewTask_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/nav_view" />
@@ -34,7 +34,7 @@
         android:layout_marginEnd="16dp"
         android:text="@string/my_tasks"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/screen_container"
+        app:layout_constraintBottom_toTopOf="@+id/viewTask_container"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"

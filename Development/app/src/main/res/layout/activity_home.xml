@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <FrameLayout
-        android:id="@+id/screen_container"
+        android:id="@+id/viewTask_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/nav_view">

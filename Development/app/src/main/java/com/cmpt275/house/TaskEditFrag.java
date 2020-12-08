@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -27,6 +28,7 @@ import com.cmpt275.house.classDef.infoClass.taskInfo;
 import com.cmpt275.house.classDef.infoClass.userInfo;
 import com.cmpt275.house.classDef.infoClass.votingInfo;
 import com.cmpt275.house.classDef.mappingClass.statusMapping;
+import com.cmpt275.house.classDef.mappingClass.tagMapping;
 import com.cmpt275.house.classDef.mappingClass.voteTypeMapping;
 import com.cmpt275.house.classDef.taskClass;
 
@@ -38,7 +40,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 
-public class TaskEditFrag extends Fragment implements Observer {
+public class TaskEditFrag extends DialogFragment implements Observer {
     
     private Context mContext; 
     
@@ -49,6 +51,7 @@ public class TaskEditFrag extends Fragment implements Observer {
     
     private displayMessage display;
     private statusMapping statusMap;
+    private tagMapping tagMap;
 
     private DatePicker dueDate;
     private TimePicker dueTime;
@@ -82,6 +85,7 @@ public class TaskEditFrag extends Fragment implements Observer {
 
         display = new displayMessage();
         statusMap = new statusMapping();
+        tagMap = new tagMapping();
     }
 
 
@@ -90,8 +94,8 @@ public class TaskEditFrag extends Fragment implements Observer {
     // Factory Method to create new account dialog
     //
     ////////////////////////////////////////////////////////////
-    public static TaskEditFrag newInstance() {
-        TaskEditFrag fragment = new TaskEditFrag();
+    public static TaskEditFrag newInstance(Context mContext, taskInfo tInfo, userInfo uInfo, taskClass taskAction) {
+        TaskEditFrag fragment = new TaskEditFrag(mContext, tInfo, uInfo, taskAction);
         Bundle args = new Bundle();
         return fragment;
     }
@@ -112,7 +116,13 @@ public class TaskEditFrag extends Fragment implements Observer {
 
         //Load the task information to the page
         showTaskInfo(view);
-        
+
+        //Set back button
+        Button backButton = (Button) view.findViewById(R.id.returnToViewTask);
+        backButton.setOnClickListener(v -> {
+            //Close the dialog
+            this.dismiss();
+        });
         
         return view;
     }
@@ -124,12 +134,9 @@ public class TaskEditFrag extends Fragment implements Observer {
     /////////////////////////////////////////////////
     private void setupEditTaskPage(View view) {
 
-
-        // Observe the instance of the houseClass
+        //Observe the instance of the houseClass
         houseAction.addObserver(this);
 
-        // Update the houses in the houseClass from the database
-        houseAction.viewYourHouses(uInfo);
 
         dueDate = (DatePicker) view.findViewById(R.id.datePicker1);
         dueTime = (TimePicker) view.findViewById(R.id.timePicker1);
@@ -140,8 +147,6 @@ public class TaskEditFrag extends Fragment implements Observer {
         notifDropdown = view.findViewById(R.id.notifications_spinner);
         tagDropdown = view.findViewById(R.id.tags_spinner);
 
-        //Set the itemList
-        setField(view);
 
         //Setup add field click listener
         Button addFieldBtn = (Button) view.findViewById(R.id.add_item_button);
@@ -156,9 +161,6 @@ public class TaskEditFrag extends Fragment implements Observer {
             addField();
         });
          */
-
-        //create a list of items for the notifications spinner.
-        setupNotificationSpinner(view);
 
 
 
@@ -213,21 +215,46 @@ public class TaskEditFrag extends Fragment implements Observer {
     /////////////////////////////////////////////////
     private void updateHouses() {
 
+        //Update the houses options and show the current house
+        int houseIndex = 0;
         //create a list of items for the spinner.
         ArrayList<String> hOptions = new ArrayList<String>();
 
         //create an adapter to describe how the items are displayed
         for(int i = 0; i < houseAction.hInfos.size(); i++) {
             hOptions.add(houseAction.hInfos.get(i).displayName);
+
+            if(tInfo.house_id.equals(houseAction.hInfos.get(i).id)) {
+                houseIndex = i;
+            }
         }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_dropdown_item, hOptions);
 
         //set the spinners adapter to the previously created one.
         houseDropdown.setAdapter(adapter);
+        houseDropdown.setSelection(houseIndex);
 
 
-        houseDropdown.setSelection(0);
+
+        //Show the members of that house
+        int memberCount = 0;
+        int memberArraySelected = 0;
+        ArrayList<String> memOptions = new ArrayList<String>();
+        for(String user_id : houseAction.hInfos.get(houseIndex).members.keySet()) {
+            memOptions.add(houseAction.hInfos.get(houseIndex).members.get(user_id).name);
+
+            String member_id = houseAction.hInfos.get(houseIndex).members.get(user_id).name;
+            if(tInfo.assignedTo.containsKey(member_id))
+                memberArraySelected = memberCount;
+
+            memberCount++;
+        }
+
+        ArrayAdapter<String> memberAdapter = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_dropdown_item, memOptions);
+        //set the spinners adapter to the previously created one.
+        memberDropdown.setAdapter(memberAdapter);
+        memberDropdown.setSelection(memberArraySelected);
     }
 
     
@@ -248,34 +275,23 @@ public class TaskEditFrag extends Fragment implements Observer {
         //dueDate
         //dueTime
 
-        TextView house = (TextView) view.findViewById(R.id.house_name);
-        house.setText(tInfo.houseName);
+        //Begin actions to fill houses dropdown and memebers dropdown
+        houseAction.viewYourHouses(uInfo);
 
-        TextView assignee =  (TextView) view.findViewById(R.id.assignee_name);
-        assignee.setText(uInfo.displayName);
-
+        //create a list of items for the notifications spinner.
         setupNotificationSpinner(view);
 
-        TextView assignedBy =(TextView) view.findViewById(R.id.assigned_by_name);
-        assignedBy.setText(tInfo.createdBy);
+        //Setup the tags available
+        setUpTags();
 
-        TextView cost =(TextView) view.findViewById(R.id.task_cost);
+        TextView cost =(TextView) view.findViewById(R.id.new_task_associated_cost);
         cost.setText(Double.toString(tInfo.costAssociated));
 
-        TextView penalty =(TextView) view.findViewById(R.id.task_penalty);
+        TextView penalty =(TextView) view.findViewById(R.id.new_task_penalty);
         penalty.setText(Integer.toString(tInfo.difficultyScore));
 
-        TextView list =(TextView) view.findViewById(R.id.task_list);
-
-        String listString = "";
-        for(int i=0 ; i< tInfo.itemList.size(); i++){
-            listString += tInfo.itemList.get(i);
-            if(tInfo.itemList.size()>1 && i!=tInfo.itemList.size()-1)
-                listString+= ", ";
-        }
-
-
-        list.setText(listString);
+        //Set the itemList
+        //setField(view);
     }
 
 
@@ -329,14 +345,40 @@ public class TaskEditFrag extends Fragment implements Observer {
             FieldFrag field = new FieldFrag();
             fields.add(field);
 
-            //Set field item
-            field.setItem(view, tInfo.itemList.get(i));
-
             FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
             ft.add(R.id.newTask_list, field);
             ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
             ft.commit();
+
+            //Set field item
+            field.setItem(view, tInfo.itemList.get(i));
         }
+    }
+
+    ////////////////////////////////////////////////////////////
+    //
+    // Will add the tags to the page
+    //
+    ////////////////////////////////////////////////////////////
+    private void setUpTags() {
+
+        int currentTag = -1;
+
+        //create a list of items for the notifications spinner.
+        ArrayList<String> tagOptions = new ArrayList<String>();
+        for(int tagNum = -1; tagNum <= 10; tagNum++) {
+            String tagToAdd = tagMap.mapIntToString(tagNum);
+            tagOptions.add(tagToAdd);
+
+            if(tInfo.tag.contains(tagToAdd))
+                currentTag = tagNum;
+        }
+
+        ArrayAdapter<String> tagAdaptor = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_dropdown_item, tagOptions);
+
+        //Set the spinner adaptor and current selected
+        tagDropdown.setAdapter(tagAdaptor);
+        tagDropdown.setSelection(currentTag);
     }
 
 }

@@ -38,8 +38,8 @@ public class FieldFrag extends Fragment {
     ////////////////////////////////////////////////////////////
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         super.onCreateView(inflater, container, savedInstanceState);
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.task_list_field, container, false);
 
@@ -63,9 +63,12 @@ public class FieldFrag extends Fragment {
     // Will access the item from the text field
     //
     ////////////////////////////////////////////////////////////
-    public void setItem(View view, String listString){
+    public void setItem(View view, String listString) {
         EditText item = view.findViewById(R.id.new_list_item);
-        item.setText(listString);
+
+        if(item != null) {
+            item.setText(listString);
+        }
     }
 
 }

@@ -8,9 +8,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.fragment.app.FragmentTransaction;
+import androidx.fragment.app.FragmentManager;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -41,6 +40,8 @@ public class TaskViewActivity extends AppCompatActivity {
 
     private final displayMessage display = new displayMessage();
     private final statusMapping statusMap = new statusMapping();
+
+    private TaskEditFrag editTaskFragment;
 
 
     @Override
@@ -138,7 +139,7 @@ public class TaskViewActivity extends AppCompatActivity {
 
 
         //Add back button
-        Button backToTasksButton = (Button) findViewById(R.id.returnToTaskPage);
+        Button backToTasksButton = (Button) findViewById(R.id.returnToViewTask);
         backToTasksButton.setOnClickListener(v -> {
             newIntent = new Intent(TaskViewActivity.this, TaskActivity.class);
             newIntent.putExtra("userInfo", getSerializedUserInfo());
@@ -148,7 +149,11 @@ public class TaskViewActivity extends AppCompatActivity {
         //Add edit button
         Button editTaskButton = (Button) findViewById(R.id.editTask);
         editTaskButton.setOnClickListener(v -> {
-            //Begin fragment to edit task
+            FragmentManager fm = getSupportFragmentManager();
+
+            //newInstance(Context mContext, taskInfo tInfo, userInfo uInfo, taskClass taskAction)
+            editTaskFragment = TaskEditFrag.newInstance(this, tInfo, uInfo, myTaskClass);
+            editTaskFragment.show(fm, "fragment_edit_task");
         });
 
 
@@ -179,7 +184,6 @@ public class TaskViewActivity extends AppCompatActivity {
                 });
             });
         }
-
 
 
 
@@ -296,7 +300,7 @@ public class TaskViewActivity extends AppCompatActivity {
 
 
         //Add back button
-        Button backToTasksButton = (Button) findViewById(R.id.returnToTaskPage);
+        Button backToTasksButton = (Button) findViewById(R.id.returnToViewTask);
         backToTasksButton.setOnClickListener(v -> {
             newIntent = new Intent(TaskViewActivity.this, TaskActivity.class);
             newIntent.putExtra("userInfo", getSerializedUserInfo());
@@ -363,54 +367,16 @@ public class TaskViewActivity extends AppCompatActivity {
         });
     }
 
-    /*
-    @Override
-    protected void onStart() {
-        super.onStart();
-        //Will be called after onCreate -- activity is now visible to the user
-        // Should contain final preparations before becoming interactive
-    }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        //App will capture all of the users input
-        // Most the core functionality should be implemented here (of the signIn Page)
-        // onPause will always follow onResume()
+    /////////////////////////////////////////////////
+    //
+    // Will close the edit dialog to show view task
+    //
+    /////////////////////////////////////////////////
+    public void closeEditTaskFrag(View view) {
+        //Close the dialog window
+        editTaskFragment.dismiss();
     }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        //App has lost focus and entered the paused state
-        //Occurs when user taps back or recents button
-        //Do NOT save application user data, make network calls or execute database transactions from here
-
-        //Next callback will either be onResume() or onStop()
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        //Our activity is no longer visible to the user
-        //Next callback will be onRestart() or onDestroy()
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        //When app in stopped state is about to restart
-        // Should restore the state of the activity
-        //Next callback will always be onStart()
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        //System invokes this before the app is destroyed
-        //Usually ensures all the activities resources are released
-    }
-     */
 
 
     /////////////////////////////////////////////////
