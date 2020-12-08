@@ -198,15 +198,6 @@ public class TaskEditFrag extends DialogFragment implements Observer {
             addField();
         });
 
-        //Setup delete field listener as well
-        /*
-        Button removeFieldBtn = (Button) view.findViewById(R.id.add_item_button);
-        addFieldBtn.setOnClickListener(v -> {
-            addField();
-        });
-         */
-
-
 
         houseDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -257,7 +248,7 @@ public class TaskEditFrag extends DialogFragment implements Observer {
         //Set the date pickers
         setDate();
 
-        //Begin actions to fill houses dropdown and memebers dropdown
+        //Begin actions to fill houses dropdown and members dropdown
         houseAction.viewYourHouses(uInfo);
 
         //create a list of items for the notifications spinner.
@@ -273,7 +264,7 @@ public class TaskEditFrag extends DialogFragment implements Observer {
         penalty.setText(Integer.toString(tInfo.difficultyScore));
 
         //Set the itemList
-        setField(view);
+        setField();
     }
 
 
@@ -405,9 +396,9 @@ public class TaskEditFrag extends DialogFragment implements Observer {
     // Will add list elements to the edit task page
     //
     ////////////////////////////////////////////////////////////
-    private void setField(View view) {
+    private void setField() {
         for(int i = 0; i < tInfo.itemList.size(); i++) {
-            FieldFrag field = new FieldFrag();
+            FieldFrag field = new FieldFrag(tInfo.itemList.get(i));
             fields.add(field);
 
             FragmentTransaction ft = getChildFragmentManager().beginTransaction();
@@ -415,12 +406,6 @@ public class TaskEditFrag extends DialogFragment implements Observer {
             ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
             ft.commit();
         }
-
-        //Now that fields have been added lets try to add the elements now
-        for(int i = 0; i < tInfo.itemList.size(); i++) {
-            fields.get(i).setItem(tInfo.itemList.get(i));
-        }
-
     }
 
     ////////////////////////////////////////////////////////////
@@ -518,8 +503,9 @@ public class TaskEditFrag extends DialogFragment implements Observer {
         newTaskInfo.assignedTo.put(idMem.get(memberDropdown.getSelectedItemPosition()),
                 new taskAssignObj(namesMem.get(memberDropdown.getSelectedItemPosition()), true, true));
 
-        newTaskInfo.createdBy = uInfo.displayName;
-        newTaskInfo.createdBy_id = uInfo.id;
+        //Don't change original creator
+        newTaskInfo.createdBy = tInfo.createdBy;
+        newTaskInfo.createdBy_id = tInfo.createdBy_id;
         
         newTaskInfo.status = statusMap.NOT_COMPLETE;
 

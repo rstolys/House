@@ -1,5 +1,6 @@
 package com.cmpt275.house;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -23,6 +24,7 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Objects;
 
 /*
  * A simple {@link Fragment} subclass.
@@ -31,6 +33,7 @@ import java.text.SimpleDateFormat;
  */
 public class TaskFrag extends Fragment {
 
+    Context mContext;
     private userInfo uInfo;
     private taskInfo tInfo;
     private int taskIndex = -1;
@@ -46,7 +49,8 @@ public class TaskFrag extends Fragment {
     // Task fragment constructor
     //
     /////////////////////////////////////////////////
-    public TaskFrag(taskInfo taskInfo, userInfo uInfo, int taskIndex, taskClass myTaskClass) {
+    public TaskFrag(Context mContext, taskInfo taskInfo, userInfo uInfo, int taskIndex, taskClass myTaskClass) {
+        this.mContext = mContext;
         this.tInfo = taskInfo;
         this.uInfo = uInfo;
         this.taskIndex = taskIndex;
@@ -120,6 +124,31 @@ public class TaskFrag extends Fragment {
         if(tInfo.status.equals(statusMap.COMPLETED)) {
             completeTaskButton.setText("Completed");
         }
+        else if(tInfo.status.equals(statusMap.REASSIGNMENT_APPROVAL)) {
+            completeTaskButton.setText("Approve");
+            completeTaskButton.setOnClickListener(v -> {
+                display.createTwoBtnAlert(mContext, "Approve Task", "Do you want to accept this task?", "Yes", "No",
+                    (result, err) -> {
+                        if(result) {
+                            display.showToastMessage(mContext, "Approving Task...", display.LONG);
+                        }
+                        else {
+                            display.showToastMessage(mContext, "Declining Task...", display.LONG);
+                        }
+                        myTaskClass.approveTask(tInfo, uInfo, result, taskIndex, success -> {
+                            if(success){
+                                completeTaskButton.setText("Complete");
+                                ((TaskActivity)getActivity()).updateTasks();
+                            }
+                            else {
+
+                            }
+                        });
+                });
+
+
+            });
+        }
         else {
             completeTaskButton.setOnClickListener(v -> {
                 display.showToastMessage(getActivity().getApplicationContext(), "Completing Task...", display.LONG);
@@ -149,6 +178,9 @@ public class TaskFrag extends Fragment {
 
         return view;
     }
+
+
+
 
 
     /////////////////////////////////////////////////

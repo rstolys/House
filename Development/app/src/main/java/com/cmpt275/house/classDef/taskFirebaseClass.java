@@ -329,7 +329,7 @@ public class taskFirebaseClass implements TaskBE {
 
                 //If every assignee approves of the task assignment change the status
                 if(allAssigneesApprove) {
-                    tInfo.status = statusMap.mapIntToString(1);       //Set task to not completed from awaiting approval
+                    tInfo.status = statusMap.NOT_COMPLETE;       //Set task to not completed from awaiting approval
                 }
 
                 //ensure the task_id is true
@@ -389,27 +389,47 @@ public class taskFirebaseClass implements TaskBE {
 
                     boolean finalNewAssignee = newAssignee;
 
-                    //Update the task document
-                    db.collection("tasks").document(tInfo.id).update("assignedTo", updatedTask.getAssignedTo())
-                        .addOnSuccessListener(documentReference -> {
-                            Log.d(TAG, "Task Document successfully updated!");
+                    WriteBatch batch  = db.batch();
 
-                            if(finalNewAssignee) {
-                                //Add a new task to the user who created the task -- will only be one user in this loop
-                                for(String taskAssignee_id : updatedTask.getAssignedTo().keySet()) {
-                                    db.collection("users").document(taskAssignee_id).update("tasks." + tInfo.id, new nameObj(updatedTask.getDisplayName(), true));
-                                }
-                            }
+                    //Remove task from user
+                    Map<String,Object> oldUserUpdates = new HashMap<>();
+                    oldUserUpdates.put("tasks." + tInfo.id, FieldValue.delete());
+
+                    DocumentReference oldUserDoc = db.collection("users").document(user_id);
+                    batch.update(oldUserDoc, oldUserUpdates);
+
+                    if(finalNewAssignee) {
+                        //Add task to other user
+                        Map<String,Object> newUserUpdates = new HashMap<>();
+                        newUserUpdates.put("tasks." + tInfo.id, new nameObj(updatedTask.getDisplayName(), true));
+
+                        DocumentReference newUserDoc = db.collection("users").document(tInfo.createdBy_id);
+                        batch.update(newUserDoc, newUserUpdates);
+                    }
+
+
+                    //Update the task
+                    Map<String,Object> taskUpdates = new HashMap<>();
+                    taskUpdates.put("assignedTo", updatedTask.getAssignedTo());
+
+                    DocumentReference taskToUpdate = db.collection("tasks").document(tInfo.id);
+                    batch.update(taskToUpdate, taskUpdates);
+
+
+                    //Commit the batch to update database
+                    batch.commit().addOnCompleteListener(task ->{
+                        if(task.isSuccessful()) {
+                            Log.d(TAG, "Task Document successfully updated!");
 
                             //tInfo updated successfully so we can simply return it
                             callback.onReturn(tInfo, true, NO_ERROR);
-                        })
-                        .addOnFailureListener(e -> {
-                            Log.w(TAG, "Error updating task", e);
+                        }
+                        else {
+                            Log.d(TAG, "Error with task acceptance for task: " + tInfo.id);
 
-                            //IndicateError
                             callback.onReturn(null, false, DATABASE_ERROR_MESSAGE);
-                        });
+                        }
+                    });
                 }
             }
         }

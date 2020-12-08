@@ -110,7 +110,23 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
 
         Button saveButton = findViewById(R.id.edit_task_save_button);
         saveButton.setOnClickListener(this::createNewTask);
+
+        Button backButton = findViewById(R.id.returnToTaskPage);
+        backButton.setOnClickListener(this::returnToTaskPage);
     }
+
+
+    /////////////////////////////////////////////////
+    //
+    // Will go back to task landing page
+    //
+    /////////////////////////////////////////////////
+    private void returnToTaskPage(View view) {
+        newIntent = new Intent(NewTaskActivity.this, TaskActivity.class);
+        newIntent.putExtra("userInfo", getSerializedUserInfo());
+        startActivity( newIntent );
+    }
+
 
     /////////////////////////////////////////////////
     //
@@ -228,7 +244,6 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
                             startActivity( newIntent );
                             break;
                         case R.id.navBar_tasks:
-                            // Do we really want to go back to tasks page here?
                             newIntent = new Intent(NewTaskActivity.this, TaskActivity.class);
                             newIntent.putExtra("userInfo", serializedUserInfo);
                             startActivity( newIntent );
@@ -275,10 +290,16 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
         newTaskInfo.description = taskDescription.getText().toString();
 
         EditText penalty = findViewById(R.id.edit_task_penalty);
-        newTaskInfo.difficultyScore = Integer.parseInt(penalty.getText().toString());
+        if(penalty.getText().toString().equals(""))
+            newTaskInfo.difficultyScore = 0;
+        else
+            newTaskInfo.difficultyScore = Integer.parseInt(penalty.getText().toString());
 
         EditText cost = findViewById(R.id.edit_task_associated_cost);
-        newTaskInfo.costAssociated = Double.parseDouble(cost.getText().toString());
+        if(cost.getText().toString().equals(""))
+            newTaskInfo.costAssociated = 0;
+        else
+            newTaskInfo.costAssociated = Double.parseDouble(cost.getText().toString());
 
         Date dueDate =  new GregorianCalendar(datePicker.getYear(), datePicker.getMonth(),
                 datePicker.getDayOfMonth(), timePicker.getCurrentHour(),timePicker.getCurrentMinute()).getTime();

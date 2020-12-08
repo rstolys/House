@@ -246,7 +246,7 @@ public class TaskActivity extends AppCompatActivity implements Observer {
         Date dueMonth= calendar.getTime();
 
         for(int i = 0; i < myTaskClass.tInfos.length; i++ ){
-            TaskFrag taskFrag = new TaskFrag(myTaskClass.tInfos[i], myTaskClass.uInfo, i, myTaskClass);
+            TaskFrag taskFrag = new TaskFrag(this, myTaskClass.tInfos[i], myTaskClass.uInfo, i, myTaskClass);
 
             //sorting tasks
 

@@ -5,10 +5,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 
 import com.cmpt275.house.classDef.infoClass.taskInfo;
 import com.cmpt275.house.classDef.infoClass.userInfo;
@@ -25,10 +28,21 @@ public class FieldFrag extends Fragment {
 
     /////////////////////////////////////////////////
     //
-    // constructor
+    // required empty constructor
     //
     /////////////////////////////////////////////////
     public FieldFrag() {}
+
+
+    /////////////////////////////////////////////////
+    //
+    // set value constructor
+    //
+    /////////////////////////////////////////////////
+    public FieldFrag(String defaultVal) {
+        if(defaultVal != null)
+            itemVar = defaultVal;
+    }
 
 
 
@@ -44,8 +58,21 @@ public class FieldFrag extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.task_list_field, container, false);
 
+        if(itemVar != null) {
+            EditText setDefault = view.findViewById(R.id.new_list_item);
+            setDefault.setText(itemVar);
+        }
+
+        //Setup removal button
+        ImageButton removeItem = view.findViewById(R.id.removeElement);
+        removeItem.setOnClickListener(v -> {
+            getChildFragmentManager().beginTransaction().remove(FieldFrag.this).commit();
+        });
+
+
        return view;
     }
+
 
 
     ////////////////////////////////////////////////////////////

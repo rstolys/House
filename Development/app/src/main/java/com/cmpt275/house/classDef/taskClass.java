@@ -34,7 +34,7 @@ public class taskClass extends Observable implements task {
 
     private final displayMessage display = new displayMessage();
     private final statusMapping statusMap = new statusMapping();
-
+    private final notifications notify = new notifications();
 
     //
     // Class Functions
@@ -80,45 +80,12 @@ public class taskClass extends Observable implements task {
     }
 
 
-    public void viewTask(String task_id) {
-
-        userInfo myUInfo = new userInfo();
-        houseInfo myHInfo = new houseInfo();
-
-        myUInfo.id = "NO_ID";
-        myHInfo.id = "NO_IDs_HAVE_BEEN_SET";
-
-        firebaseTask.getCurrentTasks(myUInfo, (tInfos, success, errorMessage) -> {
-            Log.d("getCurrentTasks:", "Returned with success " + success);
-            //Do stuff here...
-
-            if( success ) {
-
-            }
-
-            //
-
-        });
-    }
-
-    public void disputeTask(taskInfo tInfo) {
-
-        String task_id = "6PBXbr63dg8XaMK9w3gV";
-
-        firebaseTask.getTaskInfo(task_id, (tInfoRet, success, errorMessage) -> {
-            Log.d("getTaskInfo:", "Returned with success " + success);
-
-            if(success) {
-                firebaseTask.disputeTask(tInfoRet, (tInfoRet2, success2, errorMessage2) -> {
-                    Log.d("disputeTask:", "Returned with success " + success);
-                    //Do stuff here...
-                });
-            }
-        });
-    }
-
-    public void requestExtension(taskInfo tInfo,
-                                 updateCallback callback) {
+    //////////////////////////////////////////////////////////////
+    //
+    // Will create a vote for a 1 week extension
+    //
+    //////////////////////////////////////////////////////////////
+    public void requestExtension(taskInfo tInfo, updateCallback callback) {
 
         if(tInfo.id != null) {
             firebaseTask.requestExtension(tInfo, (tInfoRet, success, errorMessage) -> {
@@ -143,12 +110,22 @@ public class taskClass extends Observable implements task {
 
     }
 
+
+    //////////////////////////////////////////////////////////////
+    //
+    // Will create a task and setup the notification for the user
+    //
+    //////////////////////////////////////////////////////////////
     public void createTask(taskInfo tInfo, updateCallback callback) {
 
         if(tInfo == null) {
             display.showToastMessage(mContext, "Something went wrong, try reloading the page", display.LONG);
         }
         else {
+            //Setup the notification for the task
+            if(tInfo.notificationTime != null)
+                notify.generateNotification(mContext, "Task Time!", "It is time to comlplete your task: " + tInfo.displayName, tInfo.notificationTime);
+
             firebaseTask.createTask(tInfo, (tInfoRet, success, errorMessage) -> {
                 Log.d("createTask:", "Returned with success " + success);
 
@@ -168,7 +145,15 @@ public class taskClass extends Observable implements task {
 
     }
 
-    public void assignTask(taskInfo tInfo) {}
+
+    ///////////////////////////////////////////////////////////////
+    //
+    // Will assign the task to a specific user
+    //
+    ///////////////////////////////////////////////////////////////
+    public void assignTask(taskInfo tInfo, updateCallback callback) {
+
+    }
 
 
     ///////////////////////////////////////////////////////////////
@@ -222,6 +207,10 @@ public class taskClass extends Observable implements task {
             callback.onReturn(null, false, "");
         }
         else {
+            //Setup new notification
+            if(tInfo.notificationTime != null)
+                notify.generateNotification(mContext, "Task Time!", "It is time to comlplete your task: " + tInfo.displayName, tInfo.notificationTime);
+
             firebaseTask.setTaskInfo(tInfo, reassigned, oldAssignee_id, (tInfoRet, success, errorMessage) -> {
                 Log.d("setTaskInfo:", "Returned with success " + success);
 
@@ -239,11 +228,12 @@ public class taskClass extends Observable implements task {
         }
     }
 
-    /////////////////////////////////////////////////
+
+    //////////////////////////////////////////////////////////////
     //
     // Will delete the task from the user's DB
     //
-    /////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////
     public void deleteTask(taskInfo tInfo, updateCallback callback) {
 
         if(tInfo == null) {
@@ -269,77 +259,65 @@ public class taskClass extends Observable implements task {
 
     }
 
-    public void displayTask(String task_id) {
 
-        //Get the task to display
-        firebaseTask.getTaskInfo(task_id, (tInfo, success, errorMessage) -> {
-            Log.d("getTaskInfo:", "Returned with success " + success);
-            //Do Stuff here...
-        });
-    }
+    //////////////////////////////////////////////////////////////
+    //
+    // Will approve the task assigned to the user
+    //
+    //////////////////////////////////////////////////////////////
+    public void approveTask(taskInfo tInfo, userInfo uInfo, boolean approval, int taskIndex, updateCallback callback) {
 
-    public void approveTask(String task_id, userInfo uInfo) {
+        if(tInfo == null || tInfo.id == null || uInfo.id == null) {
+            display.showToastMessage(mContext, "Something went wrong. Try reloading the page", display.LONG);
 
-        taskInfo myTInfo = new taskInfo();
-
-        myTInfo.id = "4W9wvRhStX55SKEFYSqJ";
-        myTInfo.displayName = "Emulator Test Task";
-        myTInfo.description = "I really hope this works";
-        myTInfo.createdBy = "Ryan Stolys";
-        myTInfo.createdBy_id = "NO_IDs_HAVE_BEEN_SET";
-
-        //Set status value
-        mapping statusMap = new statusMapping();
-        myTInfo.status = statusMap.mapIntToString(3);
-
-        myTInfo.assignedTo.put("NO_ID", new taskAssignObj("Ryan Stolys", true, false));
-        myTInfo.houseName = "DevHouse";
-        myTInfo.house_id = "NO_IDs_HAVE_BEEN_SET";
-        myTInfo.costAssociated = 0;
-        myTInfo.difficultyScore = 5;
-        myTInfo.dueDate = new Date();
-        myTInfo.itemList.add("Test1");
-        myTInfo.itemList.add("Test2");
-        myTInfo.itemList.add("Test3");
-        myTInfo.notificationTime = new Date();
-        myTInfo.tag.add("Garbage");
-        myTInfo.tag.add("Kitchen");
-        myTInfo.tag.add("Cleaning");
-
-        firebaseTask.approveTaskAssignment(myTInfo, "NO_ID", false, (tInfo, success, errorMessage) -> {
-            Log.d("approveTaskAssignment:", "Returned with success " + success);
-            //Do stuff here ...
-        });
-    }
-
-
-    public void getTaskVotes(String task_id) {
-
-        task_id = "6PBXbr63dg8XaMK9w3gV_fail";
-
-        //Get the task to display
-        firebaseTask.getTaskVotes(task_id, (vInfos, success, errorMessage) -> {
-            Log.d("getTaskVotes:", "Returned with success " + success);
-
-            if(success) {
-                Log.d("getTaskVotes:", "Returned " + vInfos.length + " voting classes");
-                //Do Stuff here...
-            }
-        });
-    }
-
-    public void sortTasks(int sortType) {}
-
-    private int getTaskIndex(String user_id) {
-        int index = 0;
-        /*
-        for( ; index < tInfos.size(); index++) {
-            if(tInfos.at(index).id.equals(user_id))
-                break;
+            callback.onReturn(false);
         }
-        */
-        return index;
+        else {
+            firebaseTask.approveTaskAssignment(tInfo, uInfo.id, approval, (tInfoRet, success, errorMessage) -> {
+                Log.d("approveTaskAssignment:", "Returned with success " + success);
+
+                if(success) {
+                    String msg = "Task " + (approval ? "Approved!" : "Declined");
+                    display.showToastMessage(mContext, msg, display.LONG);
+
+                    if(approval) {
+                        this.tInfos[taskIndex] = tInfoRet;
+                    }
+                    else {
+                        removeTaskFromArray(taskIndex);
+                    }
+
+                    callback.onReturn(true);
+                }
+                else {
+                    display.showToastMessage(mContext, errorMessage, display.LONG);
+
+                    //Show update task info but it will be refreshed
+                    callback.onReturn(false);
+                }
+            });
+        }
     }
 
 
+    //////////////////////////////////////////////////////////////
+    //
+    // Will remove the task from the list to allow proper update
+    //
+    //////////////////////////////////////////////////////////////
+    private void removeTaskFromArray(int index) {
+        taskInfo [] tempList = new taskInfo[tInfos.length -1];
+
+        for(int i = 0, j = 0; i < tInfos.length; i++, j++) {
+            if(i != index) {
+                tempList[j] = tInfos[i];
+            }
+            else {
+                j--;        //don't want to get ahead
+            }
+        }
+
+        //Set tInfos to new array
+        tInfos = tempList;
+    }
 }
