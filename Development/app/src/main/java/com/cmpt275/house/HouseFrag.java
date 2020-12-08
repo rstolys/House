@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.cmpt275.house.classDef.houseClass;
@@ -65,6 +66,43 @@ public class HouseFrag extends Fragment implements Observer {
             membersListString.append(", ");
             membersListString.append(hMemberObj.name);
         }
+
+        // Get task info positions
+        TextView TaskName1 = view.findViewById(R.id.house1_task1_name);
+        TextView TaskName2 = view.findViewById(R.id.house1_task2_name);
+        TextView TaskName3 = view.findViewById(R.id.house1_task3_name);
+
+        TableRow tr5 = view.findViewById(R.id.house_row5);
+        tr5.setVisibility(View.GONE);
+        TableRow tr6 = view.findViewById(R.id.house_row6);
+        tr6.setVisibility(View.GONE);
+
+        // Get all tasks for the user
+        // For all users tasks, compare Id's
+        int i = 1;
+        for( String houseTaskKey : this.hInfo.tasks.keySet() ){
+            for( String userTaskKey : uInfo.tasks.keySet() ){
+                if(userTaskKey == houseTaskKey){
+                    if(i == 1){
+                        TaskName1.setText(" " + this.hInfo.tasks.get(houseTaskKey));
+                    } else if (i==2){
+                        TaskName2.setText(" " + this.hInfo.tasks.get(houseTaskKey));
+                        tr5.setVisibility(View.VISIBLE);
+                    } else if (i==3) {
+                        TaskName3.setText(" " + this.hInfo.tasks.get(houseTaskKey));
+                        tr6.setVisibility(View.VISIBLE);
+                    }
+                    i++;
+                }
+            }
+        }
+
+        // If no tasks in the house, display that
+        if(i==1){
+            TaskName1.setText(" You have no tasks in this house right now!");
+            TaskName1.setGravity(View.TEXT_ALIGNMENT_CENTER);
+        }
+
         TextView membersList = view.findViewById(R.id.house1_members_list);
         membersList.setText(membersListString.toString());
 
