@@ -2,8 +2,10 @@ package com.cmpt275.house;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -109,6 +111,8 @@ public class TaskEditFrag extends DialogFragment implements Observer {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
+        super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_task_edit, container, false);
 
         //Assign global elements values
@@ -134,6 +138,7 @@ public class TaskEditFrag extends DialogFragment implements Observer {
     // Setup all the input options for creating a new task
     //
     /////////////////////////////////////////////////
+   // @RequiresApi(api = Build.VERSION_CODES.M)
     private void setupEditTaskPage(View view) {
 
         //Observe the instance of the houseClass
@@ -141,7 +146,10 @@ public class TaskEditFrag extends DialogFragment implements Observer {
 
 
         dueDate = (DatePicker) view.findViewById(R.id.datePicker1);
+        dueDate.init(2011,7,17, null);
         dueTime = (TimePicker) view.findViewById(R.id.timePicker1);
+        //dueTime.setHour(7);
+        //dueTime.setMinute(15);
 
         //get the spinner from the xml.
         houseDropdown = view.findViewById(R.id.houses_spinner);
@@ -292,7 +300,7 @@ public class TaskEditFrag extends DialogFragment implements Observer {
         penalty.setText(Integer.toString(tInfo.difficultyScore));
 
         //Set the itemList
-        //setField(view);
+        setField(this.getView());
     }
 
 
