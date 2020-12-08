@@ -151,13 +151,18 @@ public class TaskViewActivity extends AppCompatActivity {
 
         //Add edit button
         Button editTaskButton = (Button) findViewById(R.id.editTask);
-        editTaskButton.setOnClickListener(v -> {
-            FragmentManager fm = getSupportFragmentManager();
+        if(tInfo.status.equals(statusMap.REASSIGNMENT_APPROVAL) && tInfo.assignedTo.containsKey(uInfo.id)) {
+            editTaskButton.setEnabled(false);
+        }
+        else {
+            editTaskButton.setOnClickListener(v -> {
+                FragmentManager fm = getSupportFragmentManager();
 
-            //newInstance(Context mContext, taskInfo tInfo, userInfo uInfo, taskClass taskAction)
-            editTaskFragment = TaskEditFrag.newInstance(this, tInfo, uInfo, myTaskClass);
-            editTaskFragment.show(fm, "fragment_edit_task");
-        });
+                //newInstance(Context mContext, taskInfo tInfo, userInfo uInfo, taskClass taskAction)
+                editTaskFragment = TaskEditFrag.newInstance(this, tInfo, uInfo, myTaskClass);
+                editTaskFragment.show(fm, "fragment_edit_task");
+            });
+        }
 
 
         //Setup Complete task and extend task buttons
