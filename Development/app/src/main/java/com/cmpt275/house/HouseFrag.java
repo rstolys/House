@@ -18,9 +18,11 @@ import com.cmpt275.house.classDef.infoClass.houseInfo;
 import com.cmpt275.house.classDef.databaseObjects.houseMemberObj;
 import com.cmpt275.house.classDef.infoClass.houseMemberInfoObj;
 import com.cmpt275.house.classDef.infoClass.userInfo;
+import com.cmpt275.house.classDef.mappingClass.roleMapping;
 import com.google.android.gms.common.data.DataBufferObserver;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -34,10 +36,14 @@ public class HouseFrag extends Fragment implements Observer {
     private houseClass hClass; // No context here to pass, this could end up being a bug
     private userInfo uInfo;
 
+    private roleMapping roleMap;
+
     public HouseFrag(houseInfo hInfo, houseClass houseClass, userInfo uInfo) {
         this.hInfo = hInfo;
         this.hClass = houseClass;
         this.uInfo = uInfo;
+
+        roleMap = new roleMapping();
 
         hClass.addObserver(this);
     }
@@ -49,7 +55,11 @@ public class HouseFrag extends Fragment implements Observer {
         View view = inflater.inflate(R.layout.fragment_house, container, false);
 
         TextView title = view.findViewById(R.id.house1_name);
-        title.setText(hInfo.displayName);
+        if(Objects.requireNonNull(hInfo.members.get(uInfo.id)).role.equals(roleMap.REQUEST))
+            title.setText(hInfo.displayName + " (Requesting)");
+        else
+            title.setText(hInfo.displayName);
+
 
         TextView description = view.findViewById(R.id.house1_description);
         description.setText(hInfo.description);
@@ -83,7 +93,7 @@ public class HouseFrag extends Fragment implements Observer {
         int i = 1;
         for( String houseTaskKey : this.hInfo.tasks.keySet() ){
             for( String userTaskKey : uInfo.tasks.keySet() ){
-                if(userTaskKey == houseTaskKey){
+                if(userTaskKey.equals(houseTaskKey)){
                     if(i == 1){
                         TaskName1.setText(" " + this.hInfo.tasks.get(houseTaskKey));
                     } else if (i==2){
@@ -99,7 +109,7 @@ public class HouseFrag extends Fragment implements Observer {
         }
 
         // If no tasks in the house, display that
-        if(i==1){
+        if(i == 1){
             TaskName1.setText("You have no tasks in this house right now!");
             TaskName1.setGravity(View.TEXT_ALIGNMENT_CENTER);
             view.findViewById(R.id.house1_task1_title).setVisibility(View.GONE);
@@ -109,9 +119,15 @@ public class HouseFrag extends Fragment implements Observer {
         membersList.setText(membersListString.toString());
 
         Button viewHouseButton = view.findViewById(R.id.view_house_button);
-        viewHouseButton.setOnClickListener(v -> {
-            hClass.viewHouse(this.hInfo.id);
-        });
+        if(Objects.requireNonNull(hInfo.members.get(uInfo.id)).role.equals(roleMap.REQUEST)) {
+            viewHouseButton.setEnabled(false);
+        }
+        else {
+            viewHouseButton.setOnClickListener(v -> {
+                hClass.viewHouse(this.hInfo.id);
+            });
+        }
+
 
         Button leaveHouseButton = view.findViewById(R.id.house1_leave_house_button);
         leaveHouseButton.setOnClickListener(v -> {
