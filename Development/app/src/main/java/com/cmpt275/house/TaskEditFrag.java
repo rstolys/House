@@ -123,6 +123,8 @@ public class TaskEditFrag extends DialogFragment implements Observer {
             //Close the dialog
             this.dismiss();
         });
+
+        //Setup save button
         
         return view;
     }
@@ -161,7 +163,6 @@ public class TaskEditFrag extends DialogFragment implements Observer {
             addField();
         });
          */
-
 
 
 
