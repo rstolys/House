@@ -160,7 +160,7 @@ public class TaskEditFrag extends DialogFragment implements Observer {
             }
 
 
-            taskAction.editTask(newInfo, reassigned, oldAssignee, (tInfoRet, success, err) -> {
+            taskAction.editTask(newInfo, uInfo, reassigned, oldAssignee, (tInfoRet, success, err) -> {
                 if (success) {
                     ((TaskViewActivity) getActivity()).showTaskInfo(tInfoRet);
 

@@ -381,6 +381,7 @@ public class taskFirebaseClass implements TaskBE {
                     //
                     //Update the task in the database
                     //
+                    tInfo.status = statusMap.NOT_COMPLETE;      //Set the status of the task
 
                     //Create a custom class updatedTask to modify the document with
                     firebaseTaskDocument updatedTask = new firebaseTaskDocument(tInfo);
@@ -409,6 +410,7 @@ public class taskFirebaseClass implements TaskBE {
                     //Update the task
                     Map<String,Object> taskUpdates = new HashMap<>();
                     taskUpdates.put("assignedTo", updatedTask.getAssignedTo());
+                    taskUpdates.put("status", updatedTask.getStatus());
 
                     DocumentReference taskToUpdate = db.collection("tasks").document(tInfo.id);
                     batch.update(taskToUpdate, taskUpdates);

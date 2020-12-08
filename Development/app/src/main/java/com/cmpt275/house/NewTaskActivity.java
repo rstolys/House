@@ -380,7 +380,7 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
 
             display.showToastMessage(this, "Creating Task...", display.SHORT);
 
-            theTaskClass.createTask(newTaskInfo, result -> {
+            theTaskClass.createTask(newTaskInfo, uInfo, result -> {
                 if(result) {
                     // Prepare the userInfo to pass to next activity
                     String serializedUserInfo = getSerializedUserInfo();

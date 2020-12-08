@@ -47,7 +47,7 @@
 
     <!-- Strings related to Houses Page -->
     <string name="my_houses_title">My Houses</string>
-
+    <string name="all_tasks">All Tasks</string>
     <string name="house1_name"> House 1 Name</string>
     <string name="house1_description">House 1 Description. What happens if I write a long description does it hold?</string>
     <string name="house1_members_list">Bob, George, Ralph, Alpha, Beta, Gamma, Zeta, Do, Re, Mi</string>

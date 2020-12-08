@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.cmpt275.house.classDef.houseClass;
 import com.cmpt275.house.classDef.infoClass.houseInfo;
 import com.cmpt275.house.classDef.infoClass.taskInfo;
+import com.cmpt275.house.classDef.mappingClass.statusMapping;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -29,6 +30,8 @@ public class HouseViewTaskFrag extends Fragment implements Observer {
     private Button actionButton;
     private TextView title;
     private taskInfo tInfo;
+
+    private statusMapping statusMap = new statusMapping();
 
     public HouseViewTaskFrag() {
         // Required empty public constructor
@@ -62,17 +65,33 @@ public class HouseViewTaskFrag extends Fragment implements Observer {
 
         // Show appropriate action based on who is assigned the class
         this.actionButton = view.findViewById(R.id.view_house_view_task_action_button);
-        if(!tInfo.assignedTo.containsKey(viewingMemberId)){
+        if(!tInfo.assignedTo.containsKey(viewingMemberId)) {
             actionButton.setText("Dispute");
-            actionButton.setOnClickListener(v->{
-                hClass.disputeTask(tInfo);
-            });
-        } else{
-            actionButton.setText("Ask for Extension");
-            actionButton.setOnClickListener(v->{
-                hClass.requestExtension(tInfo);
-            });
+            if(tInfo.status.equals(statusMap.COMPLETED)) {
+                actionButton.setEnabled(true);
+                actionButton.setOnClickListener(v->{
+                    hClass.disputeTask(tInfo);
+                });
+            }
+            else {
+                actionButton.setEnabled(false);
+            }
         }
+        else {
+            if(tInfo.status.equals(statusMap.COMPLETED)) {
+                actionButton.setText("Complete");
+                actionButton.setEnabled(false);
+            }
+            else {
+                actionButton.setText("Extend");
+                actionButton.setEnabled(true);
+                actionButton.setOnClickListener(v->{
+                    hClass.requestExtension(tInfo);
+                });
+            }
+        }
+
+
         return view;
     }
 

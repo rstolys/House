@@ -124,6 +124,9 @@ public class HouseViewActivity extends AppCompatActivity implements Observer {
         BottomNavigationView navView = findViewById(R.id.nav_view);
         navView.setSelectedItemId(R.id.navBar_houses);
         navView.setOnNavigationItemSelectedListener(navListener); //so we can implement it outside onCreate
+
+        //Start with keyboard hidden
+        hideKeyboard(findViewById(android.R.id.content).getRootView());
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =

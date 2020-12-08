@@ -116,14 +116,14 @@ public class taskClass extends Observable implements task {
     // Will create a task and setup the notification for the user
     //
     //////////////////////////////////////////////////////////////
-    public void createTask(taskInfo tInfo, updateCallback callback) {
+    public void createTask(taskInfo tInfo, userInfo uInfo, updateCallback callback) {
 
         if(tInfo == null) {
             display.showToastMessage(mContext, "Something went wrong, try reloading the page", display.LONG);
         }
         else {
             //Setup the notification for the task
-            if(tInfo.notificationTime != null)
+            if(tInfo.notificationTime != null && uInfo.notificationsAllowed)
                 notify.generateNotification(mContext, "Task Time!", "It is time to comlplete your task: " + tInfo.displayName, tInfo.notificationTime);
 
             firebaseTask.createTask(tInfo, (tInfoRet, success, errorMessage) -> {
@@ -199,7 +199,7 @@ public class taskClass extends Observable implements task {
     // Will edit the task contents
     //
     ///////////////////////////////////////////////////////////////
-    public void editTask(taskInfo tInfo, boolean reassigned, String oldAssignee_id, tInfoCallback callback) {
+    public void editTask(taskInfo tInfo, userInfo uInfo, boolean reassigned, String oldAssignee_id, tInfoCallback callback) {
 
         if(tInfo == null) {
             display.showToastMessage(mContext, "Looks like something went wrong. Try reloading the page", display.LONG);
@@ -208,7 +208,7 @@ public class taskClass extends Observable implements task {
         }
         else {
             //Setup new notification
-            if(tInfo.notificationTime != null)
+            if(tInfo.notificationTime != null && uInfo.notificationsAllowed)
                 notify.generateNotification(mContext, "Task Time!", "It is time to comlplete your task: " + tInfo.displayName, tInfo.notificationTime);
 
             firebaseTask.setTaskInfo(tInfo, reassigned, oldAssignee_id, (tInfoRet, success, errorMessage) -> {
