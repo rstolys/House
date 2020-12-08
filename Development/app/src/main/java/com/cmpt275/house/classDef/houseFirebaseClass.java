@@ -282,25 +282,23 @@ public class houseFirebaseClass implements HouseBE {
             if(hInfo.id != null && user_id != null){
                 Log.d(TAG, "deleteHouse called for house: " + hInfo.id);
 
-                //Make sure the user trying to delete the task is an admin
-                if(!Objects.requireNonNull(hInfo.members.get(user_id)).role.equals(roleMap.ADMIN)) {
-                    Log.d(TAG, "deleteHouse cannot be done by a non-admin member");
-
-                    callback.onReturn(false, INVALID_PERMISSIONS_MESSAGE);
-                }
-                else {
+                {
                     WriteBatch batch = db.batch();
 
                     //Add all tasks to delete to the batch
-                    for(String task_id : hInfo.tasks.keySet()) {
-                        DocumentReference deleteTask = db.collection("tasks").document(task_id);
-                        batch.delete(deleteTask);
+                    if(hInfo.tasks != null){
+                        for(String task_id : hInfo.tasks.keySet()) {
+                            DocumentReference deleteTask = db.collection("tasks").document(task_id);
+                            batch.delete(deleteTask);
+                        }
                     }
 
                     //Add all the votes to delete to the batch
-                    for(int i = 0; i < hInfo.voting_ids.size(); i++) {
-                        DocumentReference deleteVote = db.collection("voting").document(hInfo.voting_ids.get(i));
-                        batch.delete(deleteVote);
+                    if(hInfo.voting_ids != null){
+                        for(int i = 0; i < hInfo.voting_ids.size(); i++) {
+                            DocumentReference deleteVote = db.collection("voting").document(hInfo.voting_ids.get(i));
+                            batch.delete(deleteVote);
+                        }
                     }
 
                     //Add all the users to remove this house from their account
@@ -315,7 +313,6 @@ public class houseFirebaseClass implements HouseBE {
                     //Add the house to the batch to delete
                     DocumentReference deleteHouse = db.collection("houses").document(hInfo.id);
                     batch.delete(deleteHouse);
-
 
                     //Commit all the writes and await completion
                     batch.commit().addOnCompleteListener(task -> {
@@ -456,20 +453,36 @@ public class houseFirebaseClass implements HouseBE {
                     //Convert info class to document
                     firebaseHouseDocument houseData = new firebaseHouseDocument(hInfo);
 
-                    //Update this information in the house document
-                    db.collection("houses").document(hInfo.id).update("members", houseData.getMembers())
-                        .addOnSuccessListener(documentReference -> {
+                    WriteBatch batch = db.batch();
+
+                    //Add user to house
+                    Map<String,Object> updateHouse = new HashMap<>();
+                    updateHouse.put("members", houseData.getMembers());
+
+                    DocumentReference houseRef = db.collection("houses").document(hInfo.id);
+                    batch.update(houseRef, updateHouse);
+
+                    //Add house to user
+                    Map<String,Object> updateUser = new HashMap<>();
+                    updateUser.put("houses." + hInfo.id, new nameObj(hInfo.displayName, true));
+
+                    DocumentReference userRef = db.collection("users").document(user_id);
+                    batch.update(userRef, updateUser);
+
+                    batch.commit().addOnCompleteListener(task -> {
+                        if(task.isSuccessful()) {
                             Log.d(TAG, "User successfully added to house: " + hInfo.id);
 
                             //hInfo updated successfully, return updated hInfo
                             callback.onReturn(hInfo, true, NO_ERROR);
-                        })
-                        .addOnFailureListener(e -> {
-                            Log.w(TAG, "Error updating document", e);
+                        }
+                        else {
+                            Log.w(TAG, "Error updating document");
 
                             //IndicateError
                             callback.onReturn(null, false, DATABASE_ERROR_MESSAGE);
-                        });
+                        }
+                    });
                 }
             }
         }
@@ -479,6 +492,7 @@ public class houseFirebaseClass implements HouseBE {
         }
     }
 
+    
     ////////////////////////////////////////////////////////////
     //
     // Will remove a house from the

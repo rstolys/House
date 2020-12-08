@@ -62,6 +62,12 @@ public class HouseActivity extends AppCompatActivity implements Observer {
             }
         }
 
+        myHouseClass.updateUserInfo(uInfo.id, (success)->{
+            if(success){
+                Log.d("HOUSE", "UserInfo updated");
+            }
+        });
+
         // Observe the instance of the houseClass
         myHouseClass.addObserver(this);
 
@@ -94,7 +100,7 @@ public class HouseActivity extends AppCompatActivity implements Observer {
 
             // Put back all old houses
             for(int i = 0; i < myHouseClass.hInfos.size(); i++ ){
-                HouseFrag houseFrag = new HouseFrag(myHouseClass.hInfos.get(i), myHouseClass);
+                HouseFrag houseFrag = new HouseFrag(myHouseClass.hInfos.get(i), myHouseClass, uInfo);
                 fragmentTransaction.add(R.id.my_houses_list, houseFrag);
                 fragmentTransaction.addToBackStack(null);
             }
@@ -233,7 +239,7 @@ public class HouseActivity extends AppCompatActivity implements Observer {
         for(int i = 0; i < myHouseClass.hInfos.size(); i++ ){
             // User must be a member or an admin to see the house details
             if(! myHouseClass.hInfos.get(i).members.get(uInfo.id).role.equals("Request To Join")){
-                HouseFrag houseFrag = new HouseFrag(myHouseClass.hInfos.get(i), myHouseClass);
+                HouseFrag houseFrag = new HouseFrag(myHouseClass.hInfos.get(i), myHouseClass, uInfo);
                 fragmentTransaction.add(R.id.my_houses_list, houseFrag);
                 fragmentTransaction.addToBackStack(null);
             }
