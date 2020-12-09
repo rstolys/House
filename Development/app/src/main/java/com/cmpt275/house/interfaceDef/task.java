@@ -9,7 +9,6 @@ public interface task {
     void getTasks(String user_id, updateCallback callback);
     void completeTask(taskInfo tInfo, int taskIndex, updateCallback callback);
     void createTask(taskInfo tInfo, userInfo uInfo, updateCallback callback);
-    void assignTask(taskInfo tInfo, updateCallback callback);
     void editTask(taskInfo tInfo, userInfo uInfo, boolean reassigned, String oldAssignee_id, tInfoCallback callback);
     void deleteTask(taskInfo tInfo, updateCallback callback);
     void approveTask(taskInfo tInfo, userInfo uInfo, boolean approval, int taskIndex, updateCallback callback);

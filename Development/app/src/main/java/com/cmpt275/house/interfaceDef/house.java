@@ -15,7 +15,7 @@ public interface house {
     void viewHouse(String house_id);
     void addMember(userInfo uInfo, houseInfo hInfo, String role);
     void inviteMember(houseInfo hInfo, String newMemberEmail, String adminID, updateCallback callback);
-    void removeMember(houseInfo hInfo, String removedMemberID, String authorizorID);
+    void removeMember(houseInfo hInfo, String removedMemberID, String authorizerID);
     void setMemberRole(String user_id, houseInfo hInfo, String role);
     void getVotes(String house_id);
     void submitVote(votingInfo vInfo, userInfo uInfo, boolean yesVote, int voteIndex, vInfoCallback callback);

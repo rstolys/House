@@ -59,44 +59,6 @@ public class settingsClass implements settings {
 
     /////////////////////////////////////////////////
     //
-    // Will get the legal messages to display for the user
-    //
-    /////////////////////////////////////////////////
-    public void viewLegal() {
-        Log.d("viewLegal:", "Called. Will set the legal information to be viewed.");
-    }
-
-
-    /////////////////////////////////////////////////
-    //
-    // Will load the user information to display the settings
-    //
-    /////////////////////////////////////////////////
-    public void viewSettings(String user_id) {
-
-        if(user_id == null) {          //Make sure  the user_id is valid
-                display.showToastMessage(mContext, "Oops. Looks like something went wrong", display.LONG);
-                //This should not occur, we should probably logout the user if this happens
-        }
-        else {
-            firebaseUserTask.getUserInfo(user_id, (uInfo, success, errorMessage) -> {
-                Log.d("getUserInfo:", "Returned with success " + success);
-
-                if(success) {
-                    this.uInfo = uInfo;
-                    //Do stuff here...
-                }
-                else {
-                    Log.d("getUserInfo:", "Error Message: " + errorMessage);
-                    display.showToastMessage(mContext, errorMessage, display.LONG);
-                }
-            });
-        }
-    }
-
-
-    /////////////////////////////////////////////////
-    //
     // Will change the users display name
     //
     /////////////////////////////////////////////////

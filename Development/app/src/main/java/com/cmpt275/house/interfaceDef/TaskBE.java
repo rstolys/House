@@ -8,7 +8,6 @@ import com.cmpt275.house.interfaceDef.Callbacks.tInfoArrayCallback;
 import com.cmpt275.house.interfaceDef.Callbacks.tInfoCallback;
 import com.cmpt275.house.interfaceDef.Callbacks.vInfoArrayCallback;
 
-//TODO: Update documentation to match new interface
 public interface TaskBE {
     void getCurrentTasks(userInfo uInfo, tInfoArrayCallback callback);
     void getCurrentTasks(houseInfo hInfo, tInfoArrayCallback callback);

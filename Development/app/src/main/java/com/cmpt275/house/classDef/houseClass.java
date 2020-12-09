@@ -1,21 +1,17 @@
 package com.cmpt275.house.classDef;
 
-import android.app.role.RoleManager;
 import android.content.Context;
 import android.util.Log;
-import android.view.Display;
 import android.widget.Toast;
 
 import com.cmpt275.house.HouseActivity;
 import com.cmpt275.house.classDef.infoClass.houseInfo;
-import com.cmpt275.house.classDef.infoClass.houseMemberInfoObj;
 import com.cmpt275.house.classDef.infoClass.taskInfo;
 import com.cmpt275.house.classDef.infoClass.userInfo;
 import com.cmpt275.house.classDef.infoClass.votingInfo;
 import com.cmpt275.house.classDef.mappingClass.notificationMapping;
 import com.cmpt275.house.classDef.mappingClass.roleMapping;
 import com.cmpt275.house.classDef.mappingClass.voteTypeMapping;
-import com.cmpt275.house.interfaceDef.Callbacks.booleanCallback;
 import com.cmpt275.house.interfaceDef.Callbacks.updateCallback;
 import com.cmpt275.house.interfaceDef.Callbacks.vInfoCallback;
 import com.cmpt275.house.interfaceDef.house;
@@ -24,7 +20,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Observable;
-import java.util.Set;
 
 public class houseClass extends Observable implements house {
 
@@ -34,19 +29,16 @@ public class houseClass extends Observable implements house {
     public ArrayList<houseInfo> hInfos; // Store data for hInfos pertaining to specific uInfo
     public ArrayList<houseInfo> hInfosAll; // Store data for all hInfos in db
     public houseInfo hInfo; // Store data to specific hInfo needed at that time
-    private userInfo uInfo;
+    public userInfo uInfo;
     public votingInfo[] vInfos;
 
     // Implement observer list
-    private List<HouseActivity> hActivityObs = new ArrayList<>();
-
-    private final houseFirebaseClass firebaseTask;
+    private final houseFirebaseClass houseFirebaseClass;
     private final userFirebaseClass firebaseUserTask;
     private final taskFirebaseClass taskFirebaseTask;
     private final Context mContext;
     private final roleMapping roleMap;
     private final notificationMapping notificationMap;
-    private final voteTypeMapping voteMap;
     private final displayMessage display;
     public ArrayList<taskInfo> tInfos;
 
@@ -59,11 +51,10 @@ public class houseClass extends Observable implements house {
     //
     ////////////////////////////////////////////////////////////
     public houseClass(Context mContext) {
-        firebaseTask = new houseFirebaseClass();
+        houseFirebaseClass = new houseFirebaseClass();
         this.mContext = mContext;
         roleMap = new roleMapping();
         notificationMap = new notificationMapping();
-        voteMap = new voteTypeMapping();
         display = new displayMessage();
         firebaseUserTask = new userFirebaseClass();
         taskFirebaseTask = new taskFirebaseClass();
@@ -82,7 +73,7 @@ public class houseClass extends Observable implements house {
         hInfo.tasks = null;
         hInfo.maxMembers = 4;
 
-        firebaseTask.createNewHouse(hInfo, (hInfoReturned, success, errorMessage) -> {
+        houseFirebaseClass.createNewHouse(hInfo, (hInfoReturned, success, errorMessage) -> {
             Log.d("createNewHouse:", "Returned with success: " + success);
             // If successful, the new house is created and displayed to screen with the rest of the houes
             if( success ){
@@ -119,7 +110,7 @@ public class houseClass extends Observable implements house {
             callback.onReturn(false);
         }
         else {
-            firebaseTask.inviteUserToHouse(newMemberEmail, hInfo, adminID, (hInfoRet, success, errorMessage) -> {
+            houseFirebaseClass.inviteUserToHouse(newMemberEmail, hInfo, adminID, (hInfoRet, success, errorMessage) -> {
                 if(success) {
                     display.showToastMessage(mContext, "Member Successfully Invited", display.LONG);
 
@@ -164,7 +155,7 @@ public class houseClass extends Observable implements house {
     public void viewYourHouses(userInfo uInfo) {
         Log.d("viewCurrentHouses:", "In viewYourHouses");
 
-        firebaseTask.getCurrentHouses(uInfo, (hInfos, success, errorMessage) -> {
+        houseFirebaseClass.getCurrentHouses(uInfo, (hInfos, success, errorMessage) -> {
             Log.d("getCurrentHouses:", "Returned with success: " + success);
 
             if(success) {
@@ -192,7 +183,7 @@ public class houseClass extends Observable implements house {
     ////////////////////////////////////////////////////////////
     public void viewHouse(String house_id) {
 
-        firebaseTask.getHouseInfo(house_id, (hInfo, success, errorMessage) -> {
+        houseFirebaseClass.getHouseInfo(house_id, (hInfo, success, errorMessage) -> {
             Log.d("getHouseInfo:", "Returned with success: " + success);
 
             if(success) {
@@ -215,7 +206,7 @@ public class houseClass extends Observable implements house {
     //
     ////////////////////////////////////////////////////////////
     public void viewAllHouses(){
-        firebaseTask.getAllHouses( (hInfos, success, errorMessage) -> {
+        houseFirebaseClass.getAllHouses( (hInfos, success, errorMessage) -> {
             if(success){
                 // Convert hInfos list into an hInfo array
                 ArrayList<houseInfo> houseInfoList = new ArrayList<>();
@@ -239,7 +230,7 @@ public class houseClass extends Observable implements house {
     //
     ////////////////////////////////////////////////////////////
     public void addMember(userInfo uInfo, houseInfo hInfo, String role) {
-        firebaseTask.addMember(hInfo, uInfo.id, role, uInfo.displayName, (hInfoReturned, success, errorMessage) -> {
+        houseFirebaseClass.addMember(hInfo, uInfo.id, role, uInfo.displayName, (hInfoReturned, success, errorMessage) -> {
             Log.d("addMember:", "Returned with success: " + success);
             if(success) {
                 if (role.equals(roleMap.REQUEST)) {
@@ -264,7 +255,7 @@ public class houseClass extends Observable implements house {
         if(hInfo.members.size() == 1){
             this.deleteHouse(hInfo, authorizorID);
         } else {
-            firebaseTask.removeMember(hInfo, authorizorID, removedMemberID, ( success, errorMessage) ->{
+            houseFirebaseClass.removeMember(hInfo, authorizorID, removedMemberID, (success, errorMessage) ->{
                 Log.d("removeMember:", "Returned with success: " + success);
 
                 if(success){
@@ -287,7 +278,7 @@ public class houseClass extends Observable implements house {
     ////////////////////////////////////////////////////////////
     public void setMemberRole(String user_id, houseInfo hInfo, String role) {
         //Set user_id in hInfo to the given role
-        firebaseTask.setUserRole(hInfo, user_id, role, (hInfoReturned, success, errorMessage) -> {
+        houseFirebaseClass.setUserRole(hInfo, user_id, role, (hInfoReturned, success, errorMessage) -> {
             Log.d("setUserRole:", "Returned with success: " + success);
             if(success) {
                 this.hInfo = hInfoReturned;
@@ -309,7 +300,7 @@ public class houseClass extends Observable implements house {
     ////////////////////////////////////////////////////////////
     public void getVotes(String house_id) {
 
-        firebaseTask.getHouseVotes(house_id, (vInfos, success, errorMessage) -> {
+        houseFirebaseClass.getHouseVotes(house_id, (vInfos, success, errorMessage) -> {
             Log.d("getHouseVotes:", "Returned with success: " + success);
 
             this.vInfos = vInfos;
@@ -356,7 +347,7 @@ public class houseClass extends Observable implements house {
             display.showToastMessage(mContext, "Oops, Looks like something went wrong there sorry!", display.LONG);
         }
         else {
-            firebaseTask.submitVote(vInfo, uInfo.displayName, uInfo.id, yesVote, (vInfoRet, success, errorMessage) -> {
+            houseFirebaseClass.submitVote(vInfo, uInfo.displayName, uInfo.id, yesVote, (vInfoRet, success, errorMessage) -> {
                 Log.d("submitVote:", "Returned with success: " + success);
 
                 if(success) {
@@ -394,7 +385,7 @@ public class houseClass extends Observable implements house {
     public void editSettings(houseInfo hInfoNew, boolean displayNameChanged) {
         // Update the settings information for this house
 
-        firebaseTask.editSettings(hInfoNew, displayNameChanged, (hInfo1, success, errorMessage) -> {
+        houseFirebaseClass.editSettings(hInfoNew, displayNameChanged, (hInfo1, success, errorMessage) -> {
             Log.d("editSettings:", "Returned with success: " + success);
 
             if(success){
@@ -418,7 +409,7 @@ public class houseClass extends Observable implements house {
     //
     ////////////////////////////////////////////////////////////
     public void deleteHouse(houseInfo hInfo, String uInfoID) {
-        firebaseTask.deleteHouse(hInfo, uInfoID, (success, errorMessage)->{
+        houseFirebaseClass.deleteHouse(hInfo, uInfoID, (success, errorMessage)->{
             Log.d("deleteHouse:", "Returned with success: " + success);
 
             if (success){
