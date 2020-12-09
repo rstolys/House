@@ -198,22 +198,26 @@ public class NewTaskActivity extends AppCompatActivity implements Observer {
                 //create a list of items for the spinner.
                 ArrayList<String> memOptions = new ArrayList<String>();
 
-                Log.d("UPDATE MEMBER DROPDOWN", "I am putting members in dropdown");
+                int counter = 0;
+                int memberSelection = 0;
 
-                StringBuilder membersListString = new StringBuilder(" ");
                 for (Map.Entry<String, houseMemberInfoObj> entry : myHouseClass.hInfos.get(position).members.entrySet()){
                     houseMemberInfoObj hMemberObj = entry.getValue();
 
-                    membersListString.append(", ");
-                    membersListString.append(hMemberObj.name);
                     memOptions.add(hMemberObj.getName());
+
+                    if(entry.getKey().equals(uInfo.id)){
+                        memberSelection = counter;
+                    }
+
+                    counter++;
                 }
 
                 ArrayAdapter<String> adapter1 = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, memOptions);
                 //set the spinners adapter to the previously created one.
                 memberDropdown.setAdapter(adapter1);
-                if(myHouseClass.hInfos.get(position).members.size()>0)
-                    memberDropdown.setSelection(0);
+                if(myHouseClass.hInfos.get(position).members.size() > 0)
+                    memberDropdown.setSelection(memberSelection);
             }
 
             @Override

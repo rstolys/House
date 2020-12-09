@@ -104,7 +104,7 @@ public class NewHouseFrag extends Fragment {
 
                 theHouseClass.createHouse(newHouseInfo);
             } else {
-                display.showToastMessage(getActivity(), "ERROR: Please enter data for all house attributes", display.LONG);
+                display.showToastMessage(getActivity(), "Oops. Looks like you are missing some data. Enter that before submitting", display.LONG);
             }
 
         });

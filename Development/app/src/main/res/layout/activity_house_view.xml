@@ -55,26 +55,25 @@
 
     <ScrollView
         android:id="@+id/view_house_details"
-        android:layout_width="377dp"
-        android:layout_height="574dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="100dp"
-        android:layout_marginEnd="32dp"
+        android:layout_width="393dp"
+        android:layout_height="504dp"
+        android:layout_marginTop="40dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.533"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/view_house_house_name">
 
         <LinearLayout
             android:id="@+id/view_house_details_sections"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
             android:orientation="vertical">
 
             <TableRow
                 android:id="@+id/view_house_row1"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="51dp">
 
                 <TextView
                     android:id="@+id/view_house_members_title"
@@ -93,13 +92,6 @@
                     android:textColor="#673AB7"
                     android:textSize="18sp" />
 
-                <EditText
-                    android:id="@+id/view_house_spacer"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:inputType="textPersonName" />
-
             </TableRow>
 
             <TableRow
@@ -111,18 +103,18 @@
                     android:id="@+id/view_house_members"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical"></LinearLayout>
+                    android:orientation="vertical" />
             </TableRow>
 
             <TableRow
                 android:id="@+id/view_house_inviteMember"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="48dp">
 
                 <EditText
                     android:id="@+id/view_house_inviteEmail"
-                    android:layout_width="282dp"
-                    android:layout_height="match_parent"
+                    android:layout_width="268dp"
+                    android:layout_height="wrap_content"
                     android:ems="10"
                     android:hint="@string/inviteMember_hint"
                     android:inputType="textEmailAddress" />
@@ -131,7 +123,7 @@
                     android:id="@+id/view_house_inviteBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
                     android:text="@string/inviteMember_button" />
@@ -146,51 +138,51 @@
                     android:id="@+id/view_house_votes_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:text="@string/voting"
                     android:textColor="#673AB7"
                     android:textSize="18sp" />
 
-                <EditText
-                    android:id="@+id/view_house_spacer2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:inputType="textPersonName" />
             </TableRow>
 
-            <LinearLayout
-                android:id="@+id/view_house_votes"
+            <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"></LinearLayout>
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/view_house_votes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
+            </TableRow>
 
             <TableRow
                 android:id="@+id/view_house_row4"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp">
 
                 <TextView
                     android:id="@+id/view_house_my_tasks_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:text="@string/all_tasks"
                     android:textColor="#673AB7"
                     android:textSize="18sp" />
 
-                <EditText
-                    android:id="@+id/view_house_spacer3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:inputType="textPersonName" />
-
             </TableRow>
 
-            <LinearLayout
-                android:id="@+id/view_house_tasks"
+            <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"></LinearLayout>
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/view_house_tasks"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"></LinearLayout>
+            </TableRow>
 
             <TableRow
                 android:id="@+id/view_house_row5"
@@ -201,16 +193,10 @@
                     android:id="@+id/view_house_description_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:text="@string/house_description"
                     android:textColor="#673AB7"
                     android:textSize="18sp" />
-
-                <EditText
-                    android:id="@+id/view_house_spacer4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:inputType="textPersonName" />
 
             </TableRow>
 
