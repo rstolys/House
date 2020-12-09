@@ -115,6 +115,29 @@
             </TableRow>
 
             <TableRow
+                android:id="@+id/view_house_inviteMember"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/view_house_inviteEmail"
+                    android:layout_width="282dp"
+                    android:layout_height="match_parent"
+                    android:ems="10"
+                    android:hint="@string/inviteMember_hint"
+                    android:inputType="textEmailAddress" />
+
+                <Button
+                    android:id="@+id/view_house_inviteBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:text="@string/inviteMember_button" />
+            </TableRow>
+
+            <TableRow
                 android:id="@+id/view_house_row3"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">

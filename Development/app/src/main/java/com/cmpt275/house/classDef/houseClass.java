@@ -40,7 +40,6 @@ public class houseClass extends Observable implements house {
     // Implement observer list
     private List<HouseActivity> hActivityObs = new ArrayList<>();
 
-    //TODO: Add member attributes to documentation
     private final houseFirebaseClass firebaseTask;
     private final userFirebaseClass firebaseUserTask;
     private final taskFirebaseClass taskFirebaseTask;
@@ -97,10 +96,71 @@ public class houseClass extends Observable implements house {
         });
     }
 
+
+    ////////////////////////////////////////////////////////////
+    //
+    // Add user to house
+    //
+    ////////////////////////////////////////////////////////////
     public void joinHouse(houseInfo hInfo, userInfo uInfo) {
         this.addMember(uInfo, hInfo, roleMap.REQUEST);
     }
 
+
+    ////////////////////////////////////////////////////////////
+    //
+    // Invite user to house based on email
+    //
+    ////////////////////////////////////////////////////////////
+    public void inviteMember(houseInfo hInfo, String newMemberEmail, String adminID, updateCallback callback) {
+        if(hInfo == null || newMemberEmail == null || adminID == null) {
+            display.showToastMessage(mContext, "Looks like something went wrong. Try reloading the page", display.LONG);
+
+            callback.onReturn(false);
+        }
+        else {
+            firebaseTask.inviteUserToHouse(newMemberEmail, hInfo, adminID, (hInfoRet, success, errorMessage) -> {
+                if(success) {
+                    display.showToastMessage(mContext, "Member Successfully Invited", display.LONG);
+
+                    //Update hInfo in list
+                    updateHInfo(hInfoRet);
+
+                    callback.onReturn(true);
+                }
+                else {
+                    display.showToastMessage(mContext, errorMessage, display.LONG);
+
+                    callback.onReturn(false);
+                }
+            });
+        }
+
+    }
+
+
+    ////////////////////////////////////////////////////////////
+    //
+    // Will add the updated hInfo to the list
+    //
+    ////////////////////////////////////////////////////////////
+    private void updateHInfo(houseInfo hInfo) {
+        if(hInfosAll != null) {
+            for(int i = 0; i < hInfosAll.size(); i++) {
+                if(hInfosAll.get(i).id.equals(hInfo.id)) {
+                    hInfosAll.set(i, hInfo);
+                }
+            }
+        }
+    }
+
+
+
+    ////////////////////////////////////////////////////////////
+    //
+    // Get list of houses based on a user_id
+    //
+    ////////////////////////////////////////////////////////////
     public void viewYourHouses(userInfo uInfo) {
         Log.d("viewCurrentHouses:", "In viewYourHouses");
 
@@ -124,6 +184,12 @@ public class houseClass extends Observable implements house {
         });
     }
 
+
+    ////////////////////////////////////////////////////////////
+    //
+    // Get house information specific to a house id
+    //
+    ////////////////////////////////////////////////////////////
     public void viewHouse(String house_id) {
 
         firebaseTask.getHouseInfo(house_id, (hInfo, success, errorMessage) -> {
@@ -142,6 +208,12 @@ public class houseClass extends Observable implements house {
         });
     }
 
+
+    ////////////////////////////////////////////////////////////
+    //
+    // Get all of the houses available on the system
+    //
+    ////////////////////////////////////////////////////////////
     public void viewAllHouses(){
         firebaseTask.getAllHouses( (hInfos, success, errorMessage) -> {
             if(success){
@@ -160,6 +232,12 @@ public class houseClass extends Observable implements house {
         });
     }
 
+
+    ////////////////////////////////////////////////////////////
+    //
+    // Add a member to the house
+    //
+    ////////////////////////////////////////////////////////////
     public void addMember(userInfo uInfo, houseInfo hInfo, String role) {
         firebaseTask.addMember(hInfo, uInfo.id, role, uInfo.displayName, (hInfoReturned, success, errorMessage) -> {
             Log.d("addMember:", "Returned with success: " + success);
@@ -175,6 +253,12 @@ public class houseClass extends Observable implements house {
         });
     }
 
+
+    ////////////////////////////////////////////////////////////
+    //
+    // Remove a member from the house
+    //
+    ////////////////////////////////////////////////////////////
     public void removeMember(houseInfo hInfo, String removedMemberID, String authorizorID) {
 
         if(hInfo.members.size() == 1){
@@ -195,6 +279,12 @@ public class houseClass extends Observable implements house {
         }
     }
 
+
+    ////////////////////////////////////////////////////////////
+    //
+    // Set the role of a member
+    //
+    ////////////////////////////////////////////////////////////
     public void setMemberRole(String user_id, houseInfo hInfo, String role) {
         //Set user_id in hInfo to the given role
         firebaseTask.setUserRole(hInfo, user_id, role, (hInfoReturned, success, errorMessage) -> {
@@ -211,6 +301,12 @@ public class houseClass extends Observable implements house {
         });
     }
 
+
+    ////////////////////////////////////////////////////////////
+    //
+    // Get the votes associated with a specific house
+    //
+    ////////////////////////////////////////////////////////////
     public void getVotes(String house_id) {
 
         firebaseTask.getHouseVotes(house_id, (vInfos, success, errorMessage) -> {
@@ -223,6 +319,12 @@ public class houseClass extends Observable implements house {
         });
     }
 
+
+    ////////////////////////////////////////////////////////////
+    //
+    // Get all the tasks related to a house
+    //
+    ////////////////////////////////////////////////////////////
     public void getTasks(houseInfo hInfo){
         taskFirebaseTask.getCurrentTasks(hInfo, (tInfos, success, errorMessage)->{
 
@@ -283,6 +385,12 @@ public class houseClass extends Observable implements house {
         }
     }
 
+
+    ////////////////////////////////////////////////////////////
+    //
+    // Edit the settings of a house
+    //
+    ////////////////////////////////////////////////////////////
     public void editSettings(houseInfo hInfoNew, boolean displayNameChanged) {
         // Update the settings information for this house
 
@@ -303,6 +411,12 @@ public class houseClass extends Observable implements house {
         });
     }
 
+
+    ////////////////////////////////////////////////////////////
+    //
+    // Delete a house from the system
+    //
+    ////////////////////////////////////////////////////////////
     public void deleteHouse(houseInfo hInfo, String uInfoID) {
         firebaseTask.deleteHouse(hInfo, uInfoID, (success, errorMessage)->{
             Log.d("deleteHouse:", "Returned with success: " + success);
@@ -319,6 +433,12 @@ public class houseClass extends Observable implements house {
         });
     }
 
+
+    ////////////////////////////////////////////////////////////
+    //
+    // Dispute a task
+    //
+    ////////////////////////////////////////////////////////////
     public void disputeTask(taskInfo tInfo) {
         taskFirebaseTask.disputeTask(tInfo, (tInfoRet, success, errorMessage) -> {
             Log.d("disputeTask:", "Returned with success " + success);
@@ -332,6 +452,12 @@ public class houseClass extends Observable implements house {
         });
     }
 
+
+    ////////////////////////////////////////////////////////////
+    //
+    // Request an extension for a task
+    //
+    ////////////////////////////////////////////////////////////
     public void requestExtension(taskInfo tInfo) {
         taskFirebaseTask.requestExtension(tInfo, (tInfoRet, success, errorMessage) -> {
             Log.d("requestExtension:", "Returned with success " + success);
@@ -345,6 +471,12 @@ public class houseClass extends Observable implements house {
         });
     }
 
+
+    ////////////////////////////////////////////////////////////
+    //
+    // Update user information
+    //
+    ////////////////////////////////////////////////////////////
     public void updateUserInfo(String user_id, updateCallback callback) {
 
         if (!user_id.equals(null)) {

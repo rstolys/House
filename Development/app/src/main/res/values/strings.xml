@@ -47,7 +47,7 @@
 
     <!-- Strings related to Houses Page -->
     <string name="my_houses_title">My Houses</string>
-    <string name="all_tasks">All Tasks</string>
+
     <string name="house1_name"> House 1 Name</string>
     <string name="house1_description">House 1 Description. What happens if I write a long description does it hold?</string>
     <string name="house1_members_list">Bob, George, Ralph, Alpha, Beta, Gamma, Zeta, Do, Re, Mi</string>
@@ -156,10 +156,12 @@
     <string name="toggle_notification_button">OFF</string>
 
     <!-- Strings related to Displaying House Members -->
+    <string name="all_tasks">All Tasks</string>
+    <string name="inviteMember_hint">Member Email</string>
+    <string name="inviteMember_button">Invite</string>
+
     <string name="name1">Name1</string>
     <string name="view_house_member_amount_owed">Amount Owed</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="edit_house_name">Name</string>
     <string name="edit_house_admin_status_title">Admin Status</string>
     <string name="view_house_max_members_in_house">Max Members in house:</string>

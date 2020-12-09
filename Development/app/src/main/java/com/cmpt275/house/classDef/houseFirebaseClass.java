@@ -767,11 +767,11 @@ public class houseFirebaseClass implements HouseBE {
     // Invite user to join house
     //
     ////////////////////////////////////////////////////////////
-    public void inviteUserToHouse(String newUserEmail, houseInfo hInfo, String calleID, hInfoCallback callback) {
+    public void inviteUserToHouse(String newUserEmail, houseInfo hInfo, String callerID, hInfoCallback callback) {
 
         try {
             //Check that the user making the call is an admin user
-            if(!Objects.requireNonNull(hInfo.members.get(calleID)).role.equals(roleMap.ADMIN)) {
+            if(!Objects.requireNonNull(hInfo.members.get(callerID)).role.equals(roleMap.ADMIN)) {
                 Log.d(TAG, "inviteUserToHouse: user is not admin. Can't invite user");
 
                 callback.onReturn(null, false, INVALID_PERMISSIONS_MESSAGE);

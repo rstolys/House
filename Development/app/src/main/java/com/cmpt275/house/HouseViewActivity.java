@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -22,6 +23,8 @@ import com.cmpt275.house.classDef.infoClass.houseMemberInfoObj;
 import com.cmpt275.house.classDef.infoClass.taskInfo;
 import com.cmpt275.house.classDef.infoClass.userInfo;
 import com.cmpt275.house.classDef.infoClass.votingInfo;
+import com.cmpt275.house.classDef.mappingClass.roleMapping;
+import com.cmpt275.house.classDef.mappingClass.statusMapping;
 import com.cmpt275.house.classDef.userFirebaseClass;
 import com.cmpt275.house.interfaceDef.Callbacks.updateCallback;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -43,7 +46,9 @@ public class HouseViewActivity extends AppCompatActivity implements Observer {
     votingInfo[] vInfos;
 
     private userFirebaseClass firebaseUserTask;
-    public displayMessage display;
+    public displayMessage display = new displayMessage();
+    private roleMapping roleMap = new roleMapping();
+    private statusMapping statusMap = new statusMapping();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,13 +60,13 @@ public class HouseViewActivity extends AppCompatActivity implements Observer {
         String serializedObject = lastIntent.getStringExtra("userInfo");
         String houseId = lastIntent.getStringExtra("houseId");
 
-        if(serializedObject == ""){
+        if(serializedObject.equals("")){
             // If the serialized object is empty, error!
             Log.e("OnCreate Task View", "userInfo not passed from last activity");
         } else {
             try {
                 // Decode the userInfo string into a byte array
-                byte b[] = Base64.decode( serializedObject, Base64.DEFAULT );
+                byte[] b = Base64.decode( serializedObject, Base64.DEFAULT );
 
                 // Convert byte array into userInfo object
                 ByteArrayInputStream bi = new ByteArrayInputStream(b);
@@ -74,7 +79,7 @@ public class HouseViewActivity extends AppCompatActivity implements Observer {
             }
         }
 
-        // Start asyncronous call to get the entire hInfo
+        // Start asynchronous call to get the entire hInfo
         hClass = new houseClass( this );
         hClass.addObserver(this);
         hClass.viewHouse(houseId);
@@ -121,12 +126,11 @@ public class HouseViewActivity extends AppCompatActivity implements Observer {
             startActivity( newIntent );
         });
 
+
+
         BottomNavigationView navView = findViewById(R.id.nav_view);
         navView.setSelectedItemId(R.id.navBar_houses);
         navView.setOnNavigationItemSelectedListener(navListener); //so we can implement it outside onCreate
-
-        //Start with keyboard hidden
-        hideKeyboard(findViewById(android.R.id.content).getRootView());
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
@@ -175,13 +179,46 @@ public class HouseViewActivity extends AppCompatActivity implements Observer {
                 }
             };
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        //Our activity is no longer visible to the user
-        //Next callback will be onRestart() or onDestroy()
+
+    /////////////////////////////////////////////////
+    //
+    // Defined behaviour for inviting member to a house
+    //
+    /////////////////////////////////////////////////
+    private void setupInviteMember() {
+        //Setup invite member button
+        Button inviteMember = findViewById(R.id.view_house_inviteBtn);
+        if(hInfo.members.get(uInfo.id).role.equals(roleMap.ADMIN)) {
+            inviteMember.setOnClickListener(v -> {
+                //Get the value from the text input
+                EditText inviteEmail_val = findViewById(R.id.view_house_inviteEmail);
+                String inviteEmail = inviteEmail_val.getText().toString();
+
+                //Confirm with user that they want to try to invite this user
+                display.createTwoBtnAlert(this, "Invite Member", "Are you sure you want to invite " + inviteEmail, "Yes", "No",
+                    (result, errorMessage) -> {
+                        if(result) {
+                            display.showToastMessage(this, "Inviting Member...", display.SHORT);
+                            hClass.inviteMember(hInfo, inviteEmail, uInfo.id, success -> {
+                                if(success) {
+                                    inviteEmail_val.setText("");
+                                }
+                            });
+                        }
+                    });
+            });
+        }
+        else {
+            inviteMember.setEnabled(false);
+        }
     }
 
+
+    /////////////////////////////////////////////////
+    //
+    // Update call to listen to house class updates
+    //
+    /////////////////////////////////////////////////
     @Override
     public void update(Observable o, Object obj) {
         // Called on displaying a users house information to the screen
@@ -202,6 +239,9 @@ public class HouseViewActivity extends AppCompatActivity implements Observer {
         else if(String.valueOf(obj).equals("viewHouse")){
             // Load house data that is not on a callback (title, members, description)
             this.hInfo = this.hClass.hInfo;
+
+            setupInviteMember();
+
             TextView houseTitle = findViewById(R.id.view_house_house_name);
             houseTitle.setText(this.hInfo.displayName);
 
@@ -220,18 +260,22 @@ public class HouseViewActivity extends AppCompatActivity implements Observer {
 
             TextView houseDescription = findViewById(R.id.view_house_description);
             houseDescription.setText(this.hInfo.description);
-        } else if(obj == "getTasks"){
+        }
+        else if(obj == "getTasks"){
 
             // Go through each task and populate a fragment with its parameters
-            for(taskInfo tInfo : hClass.tInfos){
-                HouseViewTaskFrag hvtf = new HouseViewTaskFrag( tInfo, uInfo.id );
-                ft.add(R.id.view_house_tasks, hvtf);
+            for(taskInfo tInfo : hClass.tInfos) {
+                if(!tInfo.status.equals(statusMap.DISPUTE)) {
+                    HouseViewTaskFrag hvtf = new HouseViewTaskFrag( tInfo, uInfo.id );
+                    ft.add(R.id.view_house_tasks, hvtf);
+                }
             }
 
         }
 
         ft.commit();
     }
+
 
     /////////////////////////////////////////////////
     //
