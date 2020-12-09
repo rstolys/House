@@ -23,9 +23,9 @@
     <!-- Strings related to Home Page -->
     <string name="welcome_home">Welcome Home!</string>
     <string name="my_tasks">My Tasks</string>
-    <string name="view_tasks">View Tasks</string>
+    <string name="view_tasks"><u>View</u></string>
     <string name="my_houses">My Houses</string>
-    <string name="view_houses">View Houses</string>
+    <string name="view_houses"><u>View</u></string>
     <string name="settings_button">Settings</string>
     <string name="logout_button">Logout</string>
     <string name="newAccountPrompt">Are you new here?</string>
@@ -111,7 +111,7 @@
     <string name="new_task_title">New Task</string>
     <string name="toApprove_title">To Approve</string>
     <string name="overdue_title">Overdue</string>
-    <string name="due_today_title">Due today</string>
+    <string name="due_today_title">Due in next 24 hours</string>
     <string name="due_this_week_title">Due this week</string>
     <string name="due_this_month_title">Due this month</string>
     <string name="due_later_title">Due later</string>

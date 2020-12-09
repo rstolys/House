@@ -234,7 +234,7 @@ public class TaskActivity extends AppCompatActivity implements Observer {
         //constants for sorting tasks in screen
         calendar.setTime(now);
         calendar.add(Calendar.DAY_OF_YEAR, 1);
-        Date dueToday = new Date();
+        Date dueToday = calendar.getTime();
 
 
         calendar.setTime(now);

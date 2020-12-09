@@ -6,26 +6,29 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <EditText
-        android:id="@+id/new_list_item"
-        android:layout_width="295dp"
-        android:layout_height="44dp"
-        android:ems="10"
-        android:hint="Item"
-        android:importantForAutofill="no"
-        android:inputType="textPersonName"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
 
-    <ImageButton
-        android:id="@+id/removeElement"
-        android:layout_width="54dp"
-        android:layout_height="42dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/new_list_item"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_delete"
-        android:contentDescription="Remove" />
+        <EditText
+            android:id="@+id/new_list_item"
+            android:layout_width="295dp"
+            android:layout_height="44dp"
+            android:ems="10"
+            android:hint="Item"
+            android:importantForAutofill="no"
+            android:inputType="textPersonName" />
+
+        <ImageButton
+            android:id="@+id/removeElement"
+            android:layout_width="54dp"
+            android:layout_height="42dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:contentDescription="Remove"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/new_list_item"
+            app:srcCompat="@android:drawable/ic_delete" />
+    </TableRow>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
