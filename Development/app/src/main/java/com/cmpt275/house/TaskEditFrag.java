@@ -385,7 +385,7 @@ public class TaskEditFrag extends DialogFragment implements Observer {
         FieldFrag field = new FieldFrag();
         fields.add(field);
 
-        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+        FragmentTransaction ft = getChildFragmentManager().beginTransaction();
         ft.add(R.id.editTask_list, field);
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         ft.commit();

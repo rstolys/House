@@ -29,6 +29,8 @@ import java.util.Observer;
  * create an instance of this fragment.
  */
 public class HouseJoinHouseFrag extends DialogFragment implements Observer {
+
+    private Context mContext;
     private houseClass hClass;
     private userInfo uInfo;
     ArrayList<houseInfo> housesNotIn = new ArrayList<>();
@@ -36,15 +38,16 @@ public class HouseJoinHouseFrag extends DialogFragment implements Observer {
 
     public Spinner houseSelectionSpinner;
 
-    public HouseJoinHouseFrag(userInfo uInfo) {
-        hClass = new houseClass(null);
+    public HouseJoinHouseFrag(Context mContext, userInfo uInfo) {
+        this.mContext = mContext;
+        hClass = new houseClass(mContext);
         hClass.addObserver(this);
         this.uInfo = uInfo;
         display = new displayMessage();
     }
 
     public static HouseJoinHouseFrag newInstance(Context mContext, userInfo uInfo) {
-        HouseJoinHouseFrag fragment = new HouseJoinHouseFrag(uInfo);
+        HouseJoinHouseFrag fragment = new HouseJoinHouseFrag(mContext, uInfo);
 
         return fragment;
     }
@@ -63,7 +66,10 @@ public class HouseJoinHouseFrag extends DialogFragment implements Observer {
         Button joinHouseButton = view.findViewById(R.id.join_house_confirmation);
         joinHouseButton.setOnClickListener(v->{
             int indexChosen = houseSelectionSpinner.getSelectedItemPosition();
-            hClass.joinHouse(this.housesNotIn.get(indexChosen), uInfo);
+            if(housesNotIn.size() > 0)
+                hClass.joinHouse(this.housesNotIn.get(indexChosen), uInfo);
+            else
+                display.showToastMessage(mContext, "There are no houses for you to join", display.LONG);
         });
 
         // Get all the houses

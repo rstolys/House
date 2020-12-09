@@ -24,6 +24,7 @@ import java.text.SimpleDateFormat;
 public class FieldFrag extends Fragment {
 
     public String itemVar;
+    EditText itemField;
 
 
     /////////////////////////////////////////////////
@@ -58,9 +59,10 @@ public class FieldFrag extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.task_list_field, container, false);
 
+        //Set the item to access
+        itemField = view.findViewById(R.id.new_list_item);
         if(itemVar != null) {
-            EditText setDefault = view.findViewById(R.id.new_list_item);
-            setDefault.setText(itemVar);
+            itemField.setText(itemVar);
         }
 
         //Setup removal button
@@ -80,10 +82,8 @@ public class FieldFrag extends Fragment {
     // Will access the item from the text field
     //
     ////////////////////////////////////////////////////////////
-    public String getItem(){
-        EditText item = getView().findViewById(R.id.new_list_item);
-        itemVar = item.getText().toString();
-        return itemVar;
+    public String getItem() {
+        return itemField.getText().toString();
     }
 
     ////////////////////////////////////////////////////////////
