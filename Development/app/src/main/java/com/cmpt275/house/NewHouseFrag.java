@@ -8,8 +8,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.cmpt275.house.classDef.displayMessage;
@@ -19,6 +21,8 @@ import com.cmpt275.house.classDef.infoClass.houseMemberInfoObj;
 import com.cmpt275.house.classDef.infoClass.userInfo;
 import com.cmpt275.house.classDef.mappingClass.notificationMapping;
 import com.cmpt275.house.classDef.mappingClass.roleMapping;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -50,6 +54,18 @@ public class NewHouseFrag extends Fragment {
         TextView membersList =  view.findViewById(R.id.new_house_members_list);
         membersList.setText(" " + houseCreatorName);
 
+        Spinner notifSchedInput = view.findViewById((R.id.new_house_notification_sched));
+
+        ArrayList<String> notifOptions = new ArrayList<String>();
+        notifOptions.add("None");
+        notifOptions.add("Weekly");
+        notifOptions.add("Monthly");
+
+        ArrayAdapter adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, notifOptions);
+        // Set the spinner's options
+        notifSchedInput.setAdapter(adapter);
+        notifSchedInput.setSelection(0);
+
         Button saveButton = view.findViewById(R.id.new_house_save_button);
         saveButton.setOnClickListener(v -> {
             boolean goodData = true;
@@ -62,6 +78,7 @@ public class NewHouseFrag extends Fragment {
                 goodData = false;
             }
 
+            // Get the house description
             EditText houseDescription = view.findViewById(R.id.new_house_description);
             if(houseDescription.getText().toString() != ""){
                 newHouseInfo.description = String.valueOf(houseDescription.getText());
@@ -72,6 +89,7 @@ public class NewHouseFrag extends Fragment {
             final roleMapping roleMap = new roleMapping();
             newHouseInfo.members.put(uInfo.id, new houseMemberInfoObj(uInfo.displayName, roleMap.ADMIN));
 
+            // Get the punishment multiplier for the house
             EditText punishMult;
             punishMult = view.findViewById(R.id.new_house_punish_mult);
             if(!punishMult.getText().toString().equals("")){
@@ -81,21 +99,19 @@ public class NewHouseFrag extends Fragment {
                 goodData = false;
             }
 
-            EditText notifSchedInput = view.findViewById((R.id.new_house_notification_sched));
+            // Get notification selection
             final notificationMapping notificationMap = new notificationMapping();
-            if(notifSchedInput.getText().toString() != "") {
-                String notifSched = String.valueOf(notifSchedInput);
-                if (notifSched.equals("Weekly") || notifSched.equals("weekly")) {
-                    newHouseInfo.houseNotifications = notificationMap.WEEKLY;
-                } else if (notifSched.equals("Monthly") || notifSched.equals("monthly")) {
-                    newHouseInfo.houseNotifications = notificationMap.MONTHLY;
-                } else {
-                    newHouseInfo.houseNotifications = notificationMap.NONE;
-                }
+            String notifSched = notifSchedInput.getSelectedItem().toString();
+
+            if (notifSched.equals("Weekly") || notifSched.equals("weekly")) {
+                newHouseInfo.houseNotifications = notificationMap.WEEKLY;
+            } else if (notifSched.equals("Monthly") || notifSched.equals("monthly")) {
+                newHouseInfo.houseNotifications = notificationMap.MONTHLY;
             } else {
-                goodData = false;
+                newHouseInfo.houseNotifications = notificationMap.NONE;
             }
 
+            // Check that the inputs were correct by the user
             if(goodData) {
                 saveButton.setText("Creating House");
 

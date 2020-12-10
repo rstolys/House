@@ -108,15 +108,11 @@
                 android:text="@string/new_house_notification_schedule_title"
                 android:textColor="@color/black" />
 
-            <EditText
+            <Spinner
                 android:id="@+id/new_house_notification_sched"
-                android:layout_width="272dp"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:text="@string/new_house_notification_sched"
-                android:textColor="@color/black"
-                android:textSize="14sp" />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
         </TableRow>
 
         <TableRow
