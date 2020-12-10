@@ -8,8 +8,10 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,6 +24,7 @@ import com.cmpt275.house.classDef.infoClass.houseInfo;
 import com.cmpt275.house.classDef.infoClass.houseMemberInfoObj;
 import com.cmpt275.house.classDef.infoClass.userInfo;
 import com.cmpt275.house.classDef.infoClass.votingInfo;
+import com.cmpt275.house.classDef.mappingClass.notificationMapping;
 import com.cmpt275.house.classDef.mappingClass.roleMapping;
 import com.cmpt275.house.classDef.userFirebaseClass;
 import com.cmpt275.house.interfaceDef.Callbacks.updateCallback;
@@ -32,6 +35,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Observable;
@@ -115,7 +119,7 @@ public class HouseEditActivity extends AppCompatActivity implements Observer {
         // Get references to where the data is
         EditText houseTitle = findViewById(R.id.edit_house_house_name);
         EditText houseMaxMembers = findViewById(R.id.edit_house_max_members_int);
-        EditText notificationSched = findViewById(R.id.edit_house_notification_schedule);
+        Spinner notificationSched = findViewById(R.id.edit_house_notification_schedule);
         EditText punishMult = findViewById(R.id.edit_houes_punishment_mult);
         EditText houseDescrp = findViewById(R.id.edit_house_description);
 
@@ -136,9 +140,9 @@ public class HouseEditActivity extends AppCompatActivity implements Observer {
                 }
                 this.hInfo.maxMembers = maxMems;
             }
-            if( !notificationSched.getText().toString().equals("") ){
-                this.hInfo.houseNotifications = notificationSched.getText().toString();
-            }
+            // Notifications checker
+            this.hInfo.houseNotifications = notificationSched.getSelectedItem().toString();
+
             if( !punishMult.getText().toString().equals("") ){
                 this.hInfo.punishmentMultiplier = parseInt(punishMult.getText().toString());
             }
@@ -241,10 +245,27 @@ public class HouseEditActivity extends AppCompatActivity implements Observer {
             houseMaxMembers.setText(null);
             houseMaxMembers.setHint(String.valueOf(hInfo.maxMembers));
 
-            EditText notificationSched = findViewById(R.id.edit_house_notification_schedule);
-            notificationSched.setText(null);
-            notificationSched.setHint(hInfo.houseNotifications);
+            // Create drop down menu for notification options
+            Spinner notificationSched = findViewById(R.id.edit_house_notification_schedule);
 
+            notificationMapping notifMap = new notificationMapping();
+            ArrayList<String> notifOptions = new ArrayList<String>();
+            notifOptions.add(notifMap.NONE);
+            notifOptions.add(notifMap.WEEKLY);
+            notifOptions.add(notifMap.MONTHLY);
+
+            ArrayAdapter adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, notifOptions);
+
+            // Set the spinner's options
+            notificationSched.setAdapter(adapter);
+            if(this.hInfo.houseNotifications == notifMap.NONE)
+                notificationSched.setSelection(0);
+            else if( this.hInfo.houseNotifications == notifMap.WEEKLY )
+                notificationSched.setSelection(1);
+            else
+                notificationSched.setSelection(2);
+
+            // Set current punishment option to screen
             EditText punishMult = findViewById(R.id.edit_houes_punishment_mult);
             punishMult.setText(null);
             punishMult.setHint(String.valueOf(hInfo.punishmentMultiplier));

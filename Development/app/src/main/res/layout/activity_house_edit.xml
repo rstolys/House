@@ -127,24 +127,22 @@
             <TableRow
                 android:id="@+id/edit_house_row3"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="43dp">
 
                 <TextView
                     android:id="@+id/edit_house_notifications_title"
                     android:layout_width="195dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="fill|center_vertical"
                     android:text="@string/new_house_notification_schedule_title"
                     android:textColor="#2B6BA5"
                     android:textSize="18sp" />
 
-                <EditText
+                <Spinner
                     android:id="@+id/edit_house_notification_schedule"
-                    android:layout_width="186dp"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:importantForAutofill="no"
-                    android:inputType="textPersonName"
-                    android:text="@string/new_house_notification_sched" />
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
             </TableRow>
 
             <TableRow
