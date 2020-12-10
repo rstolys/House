@@ -33,6 +33,7 @@
         android:layout_marginTop="80dp"
         android:layout_marginEnd="16dp"
         android:text="@string/my_tasks"
+        android:textColor="@color/black"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/viewTask_container"
         app:layout_constraintEnd_toEndOf="parent"
@@ -89,7 +90,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="35dp"
                     android:background="#97CC0000"
-                    android:text="@string/overdue_title" />
+                    android:text="@string/overdue_title"
+                    android:textColor="@color/black" />
 
                 <LinearLayout
                     android:id="@+id/overdue_tasks_list"
@@ -110,7 +112,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="35dp"
                     android:background="#D8FFBB33"
-                    android:text="@string/due_today_title" />
+                    android:text="@string/due_today_title"
+                    android:textColor="@color/black" />
 
                 <LinearLayout
                     android:id="@+id/due_today_tasks_list"
@@ -129,7 +132,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="35dp"
                     android:background="#C8FFFF00"
-                    android:text="@string/due_this_week_title" />
+                    android:text="@string/due_this_week_title"
+                    android:textColor="@color/black" />
                 <LinearLayout
                     android:id="@+id/due_this_week_tasks_list"
                     android:layout_width="match_parent"
@@ -147,7 +151,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="35dp"
                     android:background="@color/teal_200"
-                    android:text="@string/due_this_month_title" />
+                    android:text="@string/due_this_month_title"
+                    android:textColor="@color/black" />
                 <LinearLayout
                     android:id="@+id/due_this_month_tasks_list"
                     android:layout_width="match_parent"
@@ -165,7 +170,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="35dp"
                     android:background="#BC03A9F4"
-                    android:text="@string/due_later_title" />
+                    android:text="@string/due_later_title"
+                    android:textColor="@color/black" />
                 <LinearLayout
                     android:id="@+id/due_later_tasks_list"
                     android:layout_width="match_parent"
@@ -183,7 +189,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="35dp"
                     android:background="#C199CC00"
-                    android:text="@string/completed_title" />
+                    android:text="@string/completed_title"
+                    android:textColor="@color/black" />
                 <LinearLayout
                     android:id="@+id/completed_tasks_list"
                     android:layout_width="match_parent"

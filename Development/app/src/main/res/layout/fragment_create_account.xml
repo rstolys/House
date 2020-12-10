@@ -42,7 +42,7 @@
         android:layout_marginStart="50dp"
         android:layout_marginTop="90dp"
         android:text="@string/createAccount_name"
-        android:textColor="@android:color/holo_green_dark"
+        android:textColor="@color/light"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/createAccountTitle" />
@@ -68,7 +68,7 @@
         android:layout_marginStart="50dp"
         android:layout_marginTop="72dp"
         android:text="@string/createAccount_email"
-        android:textColor="@android:color/holo_green_dark"
+        android:textColor="@color/light"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/DisplayName_createAccount" />
@@ -94,7 +94,7 @@
         android:layout_marginStart="50dp"
         android:layout_marginTop="72dp"
         android:text="@string/createAccount_password"
-        android:textColor="@android:color/holo_green_dark"
+        android:textColor="@color/light"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView10" />

@@ -8,7 +8,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/teal_200"
+        android:background="@color/medium"
         android:orientation="vertical">
 
         <TextView
@@ -20,91 +20,93 @@
         <TableRow
             android:id="@+id/new_house_row1"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/light_blue">
+            android:layout_height="wrap_content">
 
             <EditText
                 android:id="@+id/new_house_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
+                android:hint="New House Name"
                 android:importantForAutofill="no"
                 android:inputType="textPersonName"
-                android:textSize="18sp"
-                android:hint="New House Name"/>
+                android:textColor="@color/black"
+                android:textSize="18sp" />
 
         </TableRow>
 
         <TableRow
             android:id="@+id/new_house_row2"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/light_blue">
+            android:layout_height="wrap_content">
 
             <EditText
                 android:id="@+id/new_house_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
+                android:hint="@string/new_house_description"
                 android:importantForAutofill="no"
                 android:inputType="textPersonName"
-                android:hint="@string/new_house_description"
+                android:textColor="@color/black"
                 android:textSize="14sp" />
         </TableRow>
 
         <TableRow
             android:id="@+id/new_house_row3"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/light_blue">
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/new_house_members_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/house1_members_title" />
+                android:text="@string/house1_members_title"
+                android:textColor="@color/black" />
 
             <TextView
                 android:id="@+id/new_house_members_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/newHouse_members" />
+                android:hint="@string/newHouse_members"
+                android:textColor="@color/black" />
         </TableRow>
 
         <TableRow
             android:id="@+id/new_house_row4"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/light_blue">
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/new_house_punish_mult_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/new_house_punish_mult_title" />
+                android:text="@string/new_house_punish_mult_title"
+                android:textColor="@color/black" />
 
             <EditText
                 android:id="@+id/new_house_punish_mult"
                 android:layout_width="231dp"
                 android:layout_height="wrap_content"
                 android:ems="10"
+                android:hint="@string/new_house_punish_mult"
                 android:importantForAutofill="no"
                 android:inputType="number"
-                android:hint="@string/new_house_punish_mult"
+                android:textColor="@color/black"
                 android:textSize="14sp" />
         </TableRow>
 
         <TableRow
             android:id="@+id/new_house_row5"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/light_blue">
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/new_house_notification_sched_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/new_house_notification_schedule_title" />
+                android:text="@string/new_house_notification_schedule_title"
+                android:textColor="@color/black" />
 
             <EditText
                 android:id="@+id/new_house_notification_sched"
@@ -113,14 +115,14 @@
                 android:ems="10"
                 android:inputType="textPersonName"
                 android:text="@string/new_house_notification_sched"
+                android:textColor="@color/black"
                 android:textSize="14sp" />
         </TableRow>
 
         <TableRow
             android:id="@+id/new_house_row7"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/light_blue">
+            android:layout_height="wrap_content">
 
             <Button
                 android:id="@+id/new_house_save_button"

@@ -1,91 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/light">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/purple_200"
         android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/spacer_in_tasks"
+            android:layout_width="match_parent"
+            android:layout_height="6dp"
+            android:background="@color/white"
+            android:text="     " />
 
         <TableRow
             android:id="@+id/task_row1"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/purple_200">
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/task_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:textSize="24sp"
                 android:gravity="center"
-                android:text="Task Title" />
+                android:text="Task Title"
+                android:textColor="@color/black"
+                android:textSize="24sp" />
 
         </TableRow>
 
         <TableRow
             android:id="@+id/task_row2"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/purple_200">
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/edit_task_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:text="@string/new_task_description" />
+                android:text="@string/new_task_description"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
         </TableRow>
 
 
         <TableRow
             android:id="@+id/task_row3"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/purple_200">
+            android:layout_height="wrap_content">
 
             <TextView
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
+                android:text="@string/new_task_due_date"
                 android:textColor="@color/black"
-                android:textSize="18sp"
-                android:text="@string/new_task_due_date" />
+                android:textSize="18sp" />
+
             <TextView
                 android:id="@+id/new_task_due_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:text="@string/new_task_due_date" />
+                android:text="@string/new_task_due_date"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
 
         </TableRow>
 
         <TableRow
             android:id="@+id/task_row4"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/purple_200">
+            android:layout_height="wrap_content">
 
             <TextView
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
+                android:text="@string/house_name"
                 android:textColor="@color/black"
-                android:textSize="18sp"
-                android:text="@string/house_name" />
+                android:textSize="18sp" />
+
             <TextView
                 android:id="@+id/house_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:text="@string/house_name" />
+                android:text="@string/house_name"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
 
         </TableRow>
-
 
 
         <TableRow
@@ -107,16 +113,18 @@
                 style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="View"
-                android:layout_marginEnd="15dp"/>
+                android:layout_marginEnd="15dp"
+                android:text="View" />
 
         </TableRow>
+
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="5dp"
+            android:layout_height="wrap_content"
             android:background="@color/white" />
 
     </LinearLayout>
 
-\</androidx.constraintlayout.widget.ConstraintLayout>
+    \
+</androidx.constraintlayout.widget.ConstraintLayout>
 

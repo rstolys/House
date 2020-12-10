@@ -36,7 +36,7 @@
         android:layout_marginTop="44dp"
         android:gravity="center_horizontal|center_vertical"
         android:text="@string/house_name"
-        android:textColor="#673AB7"
+        android:textColor="#2B6BA5"
         android:textSize="18sp"
         app:layout_constraintEnd_toStartOf="@+id/view_house_edit_button"
         app:layout_constraintHorizontal_bias="0.382"
@@ -81,7 +81,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="100dp"
                     android:text="@string/members"
-                    android:textColor="#673AB7"
+                    android:textColor="#2B6BA5"
                     android:textSize="18sp" />
 
                 <TextView
@@ -89,7 +89,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/balance_outstanding"
-                    android:textColor="#673AB7"
+                    android:textColor="#2B6BA5"
                     android:textSize="18sp" />
 
             </TableRow>
@@ -140,7 +140,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="@string/voting"
-                    android:textColor="#673AB7"
+                    android:textColor="#2B6BA5"
                     android:textSize="18sp" />
 
             </TableRow>
@@ -168,7 +168,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="@string/all_tasks"
-                    android:textColor="#673AB7"
+                    android:textColor="#2B6BA5"
                     android:textSize="18sp" />
 
             </TableRow>
@@ -195,7 +195,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="@string/house_description"
-                    android:textColor="#673AB7"
+                    android:textColor="#2B6BA5"
                     android:textSize="18sp" />
 
             </TableRow>

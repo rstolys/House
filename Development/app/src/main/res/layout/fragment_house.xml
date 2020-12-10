@@ -3,13 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@color/light_blue"
     tools:context=".House">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/light_blue"
+        android:background="@color/medium"
         android:orientation="vertical">
 
         <TableRow
@@ -23,7 +22,7 @@
                 android:layout_height="35dp"
                 android:gravity="center_vertical|center|center_horizontal"
                 android:text="@string/house1_name"
-                android:textColor="#673AB7"
+                android:textColor="@color/black"
                 android:textIsSelectable="false"
                 android:textSize="18sp" />
         </TableRow>
@@ -54,28 +53,28 @@
                 android:layout_width="74dp"
                 android:layout_height="wrap_content"
                 android:text="@string/house1_members_title"
-                android:textColor="#673AB7" />
+                android:textColor="@color/black" />
 
             <TextView
                 android:id="@+id/house1_members_list"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/house1_members_list" />
+                android:text="@string/house1_members_list"
+                android:textColor="@color/black" />
 
         </TableRow>
 
         <TableRow
             android:id="@+id/house_row4"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/light_blue">
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/house1_task1_title"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="@string/house1_task1_title"
-                android:textColor="#673AB7" />
+                android:textColor="@color/black" />
 
             <TextView
                 android:id="@+id/house1_task1_name"
@@ -83,22 +82,22 @@
                 android:layout_height="match_parent"
                 android:lines="1"
                 android:maxLines="1"
-                android:text="@string/house1_task1_name" />
+                android:text="@string/house1_task1_name"
+                android:textColor="@color/black" />
 
         </TableRow>
 
         <TableRow
             android:id="@+id/house_row5"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/light_blue">
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/house1_task2_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/house1_task2_title"
-                android:textColor="#673AB7" />
+                android:textColor="@color/black" />
 
             <TextView
                 android:id="@+id/house1_task2_name"
@@ -106,22 +105,22 @@
                 android:layout_height="match_parent"
                 android:lines="1"
                 android:maxLines="1"
-                android:text="@string/house1_task2_name" />
+                android:text="@string/house1_task2_name"
+                android:textColor="@color/black" />
 
         </TableRow>
 
         <TableRow
             android:id="@+id/house_row6"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/light_blue">
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/house1_task3_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/house1_task3_title"
-                android:textColor="#673AB7" />
+                android:textColor="@color/black" />
 
             <TextView
                 android:id="@+id/house1_task3_name"
@@ -129,7 +128,8 @@
                 android:layout_height="match_parent"
                 android:lines="1"
                 android:maxLines="1"
-                android:text="@string/house1_task3_name" />
+                android:text="@string/house1_task3_name"
+                android:textColor="@color/black" />
 
         </TableRow>
 
@@ -140,12 +140,12 @@
 
             <Button
                 android:id="@+id/view_house_button"
-                android:onClick="viewHouseButtonClick"
                 style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
                 android:layout_marginEnd="100dp"
+                android:onClick="viewHouseButtonClick"
                 android:text="@string/view_house_button" />
 
             <Button
@@ -153,8 +153,8 @@
                 style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="@string/leave_house"
-                android:layout_marginEnd="15dp"/>
+                android:layout_marginEnd="15dp"
+                android:text="@string/leave_house" />
 
         </TableRow>
 

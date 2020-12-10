@@ -83,7 +83,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="110dp"
                     android:text="@string/members"
-                    android:textColor="#673AB7"
+                    android:textColor="#2B6BA5"
                     android:textSize="18sp" />
 
                 <TextView
@@ -91,7 +91,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Role"
-                    android:textColor="#673AB7"
+                    android:textColor="#2B6BA5"
                     android:textSize="18sp" />
 
             </TableRow>
@@ -112,7 +112,7 @@
                     android:layout_width="195dp"
                     android:layout_height="wrap_content"
                     android:text="@string/view_house_max_members_in_house"
-                    android:textColor="#673AB7"
+                    android:textColor="#2B6BA5"
                     android:textSize="18sp" />
 
                 <EditText
@@ -134,7 +134,7 @@
                     android:layout_width="195dp"
                     android:layout_height="wrap_content"
                     android:text="@string/new_house_notification_schedule_title"
-                    android:textColor="#673AB7"
+                    android:textColor="#2B6BA5"
                     android:textSize="18sp" />
 
                 <EditText
@@ -157,7 +157,7 @@
                     android:layout_width="195dp"
                     android:layout_height="wrap_content"
                     android:text="@string/edit_house_punishment_multiplier"
-                    android:textColor="#673AB7"
+                    android:textColor="#2B6BA5"
                     android:textSize="18sp" />
 
                 <EditText
@@ -180,7 +180,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Description:"
-                    android:textColor="#673AB7"
+                    android:textColor="#2B6BA5"
                     android:textSize="18sp" />
 
                 <EditText
