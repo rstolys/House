@@ -526,11 +526,9 @@ public class houseFirebaseClass implements HouseBE {
                         DocumentReference userRef = db.collection("users").document(user_id);
                         batch.update(userRef, updateUser);
 
-
                         //remove the member from the house
                         Map<String,Object> updateHouse = new HashMap<>();
                         updateHouse.put("members." + user_id, FieldValue.delete());
-
 
                         DocumentReference houseRef = db.collection("houses").document(hInfo.id);
                         batch.update(houseRef, updateHouse);
@@ -711,12 +709,14 @@ public class houseFirebaseClass implements HouseBE {
                     }
 
                     //Add all the tasks to update the display name
-                    for(String task_id : hInfo.tasks.keySet()) {
-                        Map<String,Object> updates = new HashMap<>();
-                        updates.put("houseName", hInfo.displayName);
+                    if(hInfo.tasks != null){
+                        for(String task_id : hInfo.tasks.keySet()) {
+                            Map<String,Object> updates = new HashMap<>();
+                            updates.put("houseName", hInfo.displayName);
 
-                        DocumentReference taskToUpdate = db.collection("tasks").document(task_id);
-                        batch.update(taskToUpdate, updates);
+                            DocumentReference taskToUpdate = db.collection("tasks").document(task_id);
+                            batch.update(taskToUpdate, updates);
+                        }
                     }
 
                     //Add all the votes to update the display name

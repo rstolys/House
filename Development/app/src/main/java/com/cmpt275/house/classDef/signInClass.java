@@ -45,9 +45,9 @@ public class signInClass implements signIn {
     ////////////////////////////////////////////////////////////
     public void signInUser(String email, String password, updateCallback callback) {
 
-        //Can remove these in production
-        email = email; //"rstolys@sfu.ca"
-        password = password; //"066923384"
+        // Get input email and password
+        email = email;
+        password = password;
 
         if(email == null || email.length() < 1) {
             display.showToastMessage(mContext, "You email input is empty.", display.LONG);
@@ -82,7 +82,7 @@ public class signInClass implements signIn {
     ////////////////////////////////////////////////////////////
     public void createAccount(String displayName, String email, String password) {
 
-        //make sure all the required fields are valid
+        // Make sure all the required fields are valid
         if(displayName == null || displayName.length() < 1) {
             display.showToastMessage(mContext, "You display name must be at least 1 character long", display.LONG);
         }
@@ -90,11 +90,11 @@ public class signInClass implements signIn {
             display.showToastMessage(mContext, "You email name must be at least 1 character long", display.LONG);
         }
         else if(password == null || password.length() <= 5) {
-            //Firebase has minimum on password length. Will avoid error later if the password is short than 6 characters
+            // Firebase has minimum on password length. Will avoid error later if the password is short than 6 characters
             display.showToastMessage(mContext, "You password name must be at least 6 characters long", display.LONG);
         }
         else {
-            //All values are valid -- Create a new account
+            // All values are valid -- Create a new account
             firebaseUserTask.createAccount(displayName, email, password, (uInfo, success, errorMessage) -> {
                 Log.d("createAccount:", "Returned with success: " + success);
 
@@ -103,8 +103,6 @@ public class signInClass implements signIn {
                     display.showToastMessage(mContext, "You account  was successfully created! You can now login", display.LONG);
 
                     this.uInfo = uInfo;
-
-                    //Maybe we can automatically log the user in
                 }
                 else {
                     Log.d("createAccount:", "Error Message " + errorMessage);

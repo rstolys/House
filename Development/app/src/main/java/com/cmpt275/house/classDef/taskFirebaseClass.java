@@ -773,8 +773,7 @@ public class taskFirebaseClass implements TaskBE {
 
                 //Update the task information
                 DocumentReference taskToUpdate = db.collection("tasks").document(tInfo.id);
-                batch.set(taskToUpdate, updateField);
-
+                batch.update(taskToUpdate, updateField);
 
                 //Update the documents
                 batch.commit().addOnCompleteListener(task -> {

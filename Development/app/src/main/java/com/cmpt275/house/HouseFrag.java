@@ -91,19 +91,21 @@ public class HouseFrag extends Fragment implements Observer {
         // Get all tasks for the user
         // For all users tasks, compare Id's, show the user their first three tasks
         int i = 1;
-        for( String houseTaskKey : this.hInfo.tasks.keySet() ){
-            for( String userTaskKey : uInfo.tasks.keySet() ){
-                if(userTaskKey.equals(houseTaskKey)){
-                    if(i == 1){
-                        TaskName1.setText(" " + this.hInfo.tasks.get(houseTaskKey));
-                    } else if (i==2){
-                        TaskName2.setText(" " + this.hInfo.tasks.get(houseTaskKey));
-                        tr5.setVisibility(View.VISIBLE);
-                    } else if (i==3) {
-                        TaskName3.setText(" " + this.hInfo.tasks.get(houseTaskKey));
-                        tr6.setVisibility(View.VISIBLE);
+        if( this.hInfo.tasks != null){
+            for( String houseTaskKey : this.hInfo.tasks.keySet() ){
+                for( String userTaskKey : uInfo.tasks.keySet() ){
+                    if(userTaskKey.equals(houseTaskKey)){
+                        if(i == 1){
+                            TaskName1.setText(" " + this.hInfo.tasks.get(houseTaskKey));
+                        } else if (i==2){
+                            TaskName2.setText(" " + this.hInfo.tasks.get(houseTaskKey));
+                            tr5.setVisibility(View.VISIBLE);
+                        } else if (i==3) {
+                            TaskName3.setText(" " + this.hInfo.tasks.get(houseTaskKey));
+                            tr6.setVisibility(View.VISIBLE);
+                        }
+                        i++;
                     }
-                    i++;
                 }
             }
         }
