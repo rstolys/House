@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2020-12-11T14:28:49.392Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36" etag="9B6kmuTEQGE1bWoBTUyE" version="14.0.1" type="github">
+<mxfile host="app.diagrams.net" modified="2020-12-11T14:51:02.021Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36" etag="Ue3kxFgzWppt7bUURT4e" version="14.0.1" type="github">
   <diagram id="9KJV3JgS46LV1WVfjNgz" name="Page-1">
-    <mxGraphModel dx="348" dy="238" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="600" dy="410" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -15,7 +15,7 @@
             <mxPoint x="19.5" y="-13.1" as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="kEbex4pXJdQll9HOUuLb-3" value="hActivity : houseActivity" style="shape=umlLifeline;perimeter=lifelinePerimeter;container=1;collapsible=0;recursiveResize=0;rounded=0;shadow=0;strokeWidth=1;size=40;" vertex="1" parent="1">
+        <mxCell id="kEbex4pXJdQll9HOUuLb-3" value="nhf : newHouseFrag" style="shape=umlLifeline;perimeter=lifelinePerimeter;container=1;collapsible=0;recursiveResize=0;rounded=0;shadow=0;strokeWidth=1;size=40;" vertex="1" parent="1">
           <mxGeometry x="260" y="80" width="140" height="300" as="geometry" />
         </mxCell>
         <mxCell id="kEbex4pXJdQll9HOUuLb-4" value="" style="points=[];perimeter=orthogonalPerimeter;rounded=0;shadow=0;strokeWidth=1;" vertex="1" parent="kEbex4pXJdQll9HOUuLb-3">
@@ -34,7 +34,7 @@
             <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="kEbex4pXJdQll9HOUuLb-7" value="createHouse(houseInfo hInfo)" style="verticalAlign=bottom;endArrow=block;entryX=0;entryY=-0.012;shadow=0;strokeWidth=1;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="kEbex4pXJdQll9HOUuLb-4" target="kEbex4pXJdQll9HOUuLb-10">
+        <mxCell id="kEbex4pXJdQll9HOUuLb-7" value="saveButton.onClickListener()" style="verticalAlign=bottom;endArrow=block;entryX=0;entryY=-0.012;shadow=0;strokeWidth=1;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="kEbex4pXJdQll9HOUuLb-4" target="kEbex4pXJdQll9HOUuLb-10">
           <mxGeometry x="-0.0452" relative="1" as="geometry">
             <mxPoint x="240" y="200" as="sourcePoint" />
             <mxPoint as="offset" />
@@ -47,9 +47,9 @@
             <mxPoint x="-105" y="-76" as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="kEbex4pXJdQll9HOUuLb-20" value="houseClass.callback(hInfo, success, errorMessage)" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="kEbex4pXJdQll9HOUuLb-8">
+        <mxCell id="kEbex4pXJdQll9HOUuLb-20" value="houseClass.callback(houseInfo, success, errorMessage)" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="kEbex4pXJdQll9HOUuLb-8">
           <mxGeometry x="0.1911" relative="1" as="geometry">
-            <mxPoint x="32.260000000000005" y="-14.389999999999999" as="offset" />
+            <mxPoint x="31.060000000000006" y="-14.77" as="offset" />
           </mxGeometry>
         </mxCell>
         <mxCell id="kEbex4pXJdQll9HOUuLb-9" value="hClass : houseClass" style="shape=umlLifeline;perimeter=lifelinePerimeter;container=1;collapsible=0;recursiveResize=0;rounded=0;shadow=0;strokeWidth=1;" vertex="1" parent="1">
@@ -82,7 +82,7 @@
             <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="kEbex4pXJdQll9HOUuLb-16" value="Database" style="shape=umlLifeline;perimeter=lifelinePerimeter;container=1;collapsible=0;recursiveResize=0;rounded=0;shadow=0;strokeWidth=1;" vertex="1" parent="1">
+        <mxCell id="kEbex4pXJdQll9HOUuLb-16" value="db : Database" style="shape=umlLifeline;perimeter=lifelinePerimeter;container=1;collapsible=0;recursiveResize=0;rounded=0;shadow=0;strokeWidth=1;" vertex="1" parent="1">
           <mxGeometry x="990" y="80" width="190" height="300" as="geometry" />
         </mxCell>
         <mxCell id="kEbex4pXJdQll9HOUuLb-17" value="" style="points=[];perimeter=orthogonalPerimeter;rounded=0;shadow=0;strokeWidth=1;" vertex="1" parent="kEbex4pXJdQll9HOUuLb-16">
