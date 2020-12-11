@@ -1,1 +1,120 @@
-<mxfile host="app.diagrams.net" modified="2020-12-11T01:04:06.724Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36" version="14.0.1" etag="h2dSYU_wTuhLo0LiV3rs" type="github"><diagram id="jef9aY0UlCzuba3nynsM">UzV2zq1wL0osyPDNT0nNUTV2VTV2LsrPL4GwciucU3NyVI0MMlNUjV1UjYwMgFjVyA2HrCFY1qAgsSg1rwSLBiADYTaQg2Y1AA==</diagram></mxfile>
+<mxfile host="app.diagrams.net" modified="2020-12-11T14:50:58.188Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36" etag="ZiWZ2PiaStUGDiZ62uJx" version="14.0.1" type="github">
+  <diagram id="jef9aY0UlCzuba3nynsM" name="Page-1">
+    <mxGraphModel dx="925" dy="496" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="LZoK1QuluvLf8tCH12DZ-25" value="&lt;span style=&quot;text-align: center&quot;&gt;joinHouse(houseInfo, userInfo)&lt;/span&gt;" style="edgeStyle=orthogonalEdgeStyle;html=1;align=left;spacingLeft=2;endArrow=block;rounded=0;entryX=1;entryY=0;" edge="1" parent="1">
+          <mxGeometry x="-0.6923" y="10" relative="1" as="geometry">
+            <mxPoint x="620" y="190" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="645" y="190" />
+            </Array>
+            <mxPoint x="625" y="210" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="LZoK1QuluvLf8tCH12DZ-1" value="" style="endArrow=open;html=1;entryX=0.474;entryY=0.507;entryDx=0;entryDy=0;entryPerimeter=0;endFill=0;" edge="1" parent="1" source="LZoK1QuluvLf8tCH12DZ-12" target="LZoK1QuluvLf8tCH12DZ-17">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="870" y="420" as="sourcePoint" />
+            <mxPoint x="920" y="370" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="LZoK1QuluvLf8tCH12DZ-2" value="addMember( houseInfo, userInfo)" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="LZoK1QuluvLf8tCH12DZ-1">
+          <mxGeometry x="-0.1326" y="-1" relative="1" as="geometry">
+            <mxPoint x="19.5" y="-13.1" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="LZoK1QuluvLf8tCH12DZ-3" value="jhf : joinHouseFrag" style="shape=umlLifeline;perimeter=lifelinePerimeter;container=1;collapsible=0;recursiveResize=0;rounded=0;shadow=0;strokeWidth=1;size=40;" vertex="1" parent="1">
+          <mxGeometry x="260" y="80" width="140" height="300" as="geometry" />
+        </mxCell>
+        <mxCell id="LZoK1QuluvLf8tCH12DZ-4" value="" style="points=[];perimeter=orthogonalPerimeter;rounded=0;shadow=0;strokeWidth=1;" vertex="1" parent="LZoK1QuluvLf8tCH12DZ-3">
+          <mxGeometry x="65" y="85" width="10" height="185" as="geometry" />
+        </mxCell>
+        <mxCell id="LZoK1QuluvLf8tCH12DZ-5" value="" style="verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;exitX=-0.064;exitY=0.998;shadow=0;strokeWidth=1;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="LZoK1QuluvLf8tCH12DZ-4">
+          <mxGeometry x="0.04" relative="1" as="geometry">
+            <mxPoint x="130" y="350" as="targetPoint" />
+            <mxPoint x="325" y="319.9999999999998" as="sourcePoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="LZoK1QuluvLf8tCH12DZ-20" value="display.showToasMessage(message)" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="LZoK1QuluvLf8tCH12DZ-5">
+          <mxGeometry x="0.1405" y="-1" relative="1" as="geometry">
+            <mxPoint x="16.11" y="-9" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="LZoK1QuluvLf8tCH12DZ-6" value="" style="verticalAlign=bottom;endArrow=block;entryX=0;entryY=0;shadow=0;strokeWidth=1;startArrow=oval;startFill=1;" edge="1" parent="1" target="LZoK1QuluvLf8tCH12DZ-4">
+          <mxGeometry x="-0.04" relative="1" as="geometry">
+            <mxPoint x="130" y="165" as="sourcePoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="LZoK1QuluvLf8tCH12DZ-8" value="" style="verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;exitX=-0.161;exitY=1.002;shadow=0;strokeWidth=1;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1.172;entryY=0.839;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="LZoK1QuluvLf8tCH12DZ-11" target="LZoK1QuluvLf8tCH12DZ-4">
+          <mxGeometry x="1" y="111" relative="1" as="geometry">
+            <mxPoint x="340" y="285" as="targetPoint" />
+            <mxPoint x="544" y="285" as="sourcePoint" />
+            <mxPoint x="-105" y="-76" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="LZoK1QuluvLf8tCH12DZ-10" value="hClass : houseClass" style="shape=umlLifeline;perimeter=lifelinePerimeter;container=1;collapsible=0;recursiveResize=0;rounded=0;shadow=0;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="530" y="80" width="180" height="300" as="geometry" />
+        </mxCell>
+        <mxCell id="LZoK1QuluvLf8tCH12DZ-11" value="" style="points=[];perimeter=orthogonalPerimeter;rounded=0;shadow=0;strokeWidth=1;" vertex="1" parent="LZoK1QuluvLf8tCH12DZ-10">
+          <mxGeometry x="85" y="100" width="10" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="LZoK1QuluvLf8tCH12DZ-12" value="firebaseTask : houseFirebaseClass" style="shape=umlLifeline;perimeter=lifelinePerimeter;container=1;collapsible=0;recursiveResize=0;rounded=0;shadow=0;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="750" y="80" width="190" height="300" as="geometry" />
+        </mxCell>
+        <mxCell id="LZoK1QuluvLf8tCH12DZ-13" value="" style="points=[];perimeter=orthogonalPerimeter;rounded=0;shadow=0;strokeWidth=1;" vertex="1" parent="LZoK1QuluvLf8tCH12DZ-12">
+          <mxGeometry x="90" y="140" width="10" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="LZoK1QuluvLf8tCH12DZ-14" value="" style="verticalAlign=bottom;endArrow=block;shadow=0;strokeWidth=1;entryX=0.037;entryY=0.026;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" target="LZoK1QuluvLf8tCH12DZ-13">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="626" y="222" as="sourcePoint" />
+            <mxPoint x="830" y="220" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="LZoK1QuluvLf8tCH12DZ-15" value="addMember(houseInfo, userInfo)" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="LZoK1QuluvLf8tCH12DZ-14">
+          <mxGeometry x="0.1486" y="4" relative="1" as="geometry">
+            <mxPoint x="-16" y="-6" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="LZoK1QuluvLf8tCH12DZ-16" value="callback.onReturn(success, errorMessage)" style="verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;shadow=0;strokeWidth=1;exitX=-0.089;exitY=0.983;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="LZoK1QuluvLf8tCH12DZ-13">
+          <mxGeometry x="-0.0183" relative="1" as="geometry">
+            <mxPoint x="625" y="299" as="targetPoint" />
+            <mxPoint x="830" y="268" as="sourcePoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="LZoK1QuluvLf8tCH12DZ-17" value="db : Database" style="shape=umlLifeline;perimeter=lifelinePerimeter;container=1;collapsible=0;recursiveResize=0;rounded=0;shadow=0;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="990" y="80" width="190" height="300" as="geometry" />
+        </mxCell>
+        <mxCell id="LZoK1QuluvLf8tCH12DZ-18" value="" style="points=[];perimeter=orthogonalPerimeter;rounded=0;shadow=0;strokeWidth=1;" vertex="1" parent="LZoK1QuluvLf8tCH12DZ-17">
+          <mxGeometry x="90" y="150" width="10" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="LZoK1QuluvLf8tCH12DZ-19" value="success" style="endArrow=open;html=1;exitX=-0.032;exitY=0.985;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.542;entryY=0.6;entryDx=0;entryDy=0;entryPerimeter=0;dashed=1;endFill=0;" edge="1" parent="1" source="LZoK1QuluvLf8tCH12DZ-18" target="LZoK1QuluvLf8tCH12DZ-12">
+          <mxGeometry x="-0.0309" y="-11" width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="870" y="420" as="sourcePoint" />
+            <mxPoint x="870" y="270" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="LZoK1QuluvLf8tCH12DZ-26" value="" style="endArrow=classic;html=1;entryX=-0.022;entryY=-0.003;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" target="LZoK1QuluvLf8tCH12DZ-11">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="335" y="180" as="sourcePoint" />
+            <mxPoint x="610" y="180" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="520" y="180" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="LZoK1QuluvLf8tCH12DZ-27" value="houseClass.callback(success, errorMessage)" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
+          <mxGeometry x="350" y="300" width="260" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="LZoK1QuluvLf8tCH12DZ-28" value="joinHouseButton.onClickListener()" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="370" y="160" width="220" height="20" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
