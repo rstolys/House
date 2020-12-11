@@ -672,14 +672,12 @@ public class taskFirebaseClass implements TaskBE {
                     batch.update(userToUpdate2, userUpdate2);
                 }
 
-
                 //Add the house to update the display name
                 Map<String,Object> houseUpdates = new HashMap<>();
                 houseUpdates.put("tasks." + tInfo.id + ".name", updatedTask.getDisplayName());
 
                 DocumentReference houseToUpdate = db.collection("houses").document(updatedTask.getHouse_id());
                 batch.update(houseToUpdate, houseUpdates);
-
 
                 //Add all the tasks to update the display name
                 for(String user_id : tInfo.assignedTo.keySet()) {
@@ -690,11 +688,9 @@ public class taskFirebaseClass implements TaskBE {
                     batch.update(userToUpdate, updates);
                 }
 
-
                 //Update the task information
                 DocumentReference taskToUpdate = db.collection("tasks").document(tInfo.id);
                 batch.set(taskToUpdate, updatedTask);
-
 
                 //Commit updates
                 batch.commit().addOnCompleteListener(task -> {

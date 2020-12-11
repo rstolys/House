@@ -38,7 +38,8 @@ public class HouseViewMemberFrag extends Fragment {
             changeMemberRoleButton.setVisibility(View.GONE);
 
             TextView bonusInfo = view.findViewById(R.id.view_house_member_amount_owed);
-            // TODO: Get user $$$ amount added to houseMemberInfoObj
+
+            // Get user $$$ amount added to houseMemberInfoObj
             bonusInfo.setText("0");
         } else if(this.context == "editHouse"){
             TextView name = view.findViewById(R.id.view_house_voteType);

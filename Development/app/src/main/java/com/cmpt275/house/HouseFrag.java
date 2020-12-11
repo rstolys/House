@@ -91,7 +91,7 @@ public class HouseFrag extends Fragment implements Observer {
         // Get all tasks for the user
         // For all users tasks, compare Id's, show the user their first three tasks
         int i = 1;
-        if(this.hInfo.tasks != null){
+        if(this.hInfo.tasks != null && uInfo.tasks != null){
             for( String houseTaskKey : this.hInfo.tasks.keySet() ){
                 for( String userTaskKey : uInfo.tasks.keySet() ){
                     if(userTaskKey.equals(houseTaskKey)){

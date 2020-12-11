@@ -198,7 +198,7 @@ public class taskFirebaseClassTest {
         tInfo.tag.add(tagMap.COOKING);
 
         //Test normal operation
-        firebaseTaskAction.setTaskInfo(tInfo,  (tInfoRet, success, errorMessage) -> {
+        firebaseTaskAction.setTaskInfo(tInfo, false, "", (tInfoRet, success, errorMessage) -> {
             Log.d("setTaskInfo", "Normal error message: " + errorMessage);
 
             assertTrue(success);
@@ -208,7 +208,7 @@ public class taskFirebaseClassTest {
 
 
         //Test boundary operation -- null taskInfo
-        firebaseTaskAction.setTaskInfo(null,  (tInfoRet, success, errorMessage) -> {
+        firebaseTaskAction.setTaskInfo(null, false, "", (tInfoRet, success, errorMessage) -> {
             Log.d("setTaskInfo", "Expected error message: " + errorMessage);
 
             assertFalse(success);
