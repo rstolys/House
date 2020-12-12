@@ -1,32 +1,23 @@
 package com.cmpt275.house;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 
-import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
-import com.cmpt275.house.classDef.displayMessage;
 import com.cmpt275.house.classDef.signInClass;
 import com.cmpt275.house.interfaceDef.signIn;
-
 
 public class createAccountDialogFrag extends DialogFragment {
 
     private static signIn auth;
-
 
     /////////////////////////////////////////////////
     //
@@ -58,7 +49,7 @@ public class createAccountDialogFrag extends DialogFragment {
     /////////////////////////////////////////////////
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        //Show the layout for the defined fragment in the xml file
+        // Show the layout for the defined fragment in the xml file
         return inflater.inflate(R.layout.fragment_create_account, container);
     }
 
@@ -69,7 +60,7 @@ public class createAccountDialogFrag extends DialogFragment {
     /////////////////////////////////////////////////
     public void createAccount(View view) {
 
-        //get input values
+        // Get input values
         try {
             EditText displayName_Val = getView().findViewById(R.id.create_displayName);
             EditText email_Val = getView().findViewById(R.id.create_email);
@@ -82,15 +73,15 @@ public class createAccountDialogFrag extends DialogFragment {
             Log.d("createAccount:", "Creating an account for: " + displayName);
             Log.d("createAccount:", "Parameters -- Email: " + email + " Password: " + password);
 
-            //Create account
+            // Create account
             auth.createAccount(displayName, email, password);
-            //User notified from create account
+            // User notified from create account
         }
         catch(Exception e) {
             Log.d("createAccount:", "ERROR OCCURRED:  " + e.getMessage());
         }
 
-        //Close the dialog
+        // Close the dialog
         this.dismiss();
     }
 

@@ -16,7 +16,6 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.cmpt275.house.classDef.houseClass;
 import com.cmpt275.house.classDef.infoClass.userInfo;
-import com.cmpt275.house.classDef.mappingClass.roleMapping;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.ByteArrayInputStream;
@@ -78,7 +77,7 @@ public class HouseActivity extends AppCompatActivity implements Observer {
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
         navView.setSelectedItemId(R.id.navBar_houses);
-        navView.setOnNavigationItemSelectedListener(navListener); //so we can implement it outside onCreate
+        navView.setOnNavigationItemSelectedListener(navListener); // So we can implement it outside onCreate
 
         Button newHouseButton = findViewById(R.id.new_house_button);
         newHouseButton.setOnClickListener(v -> {

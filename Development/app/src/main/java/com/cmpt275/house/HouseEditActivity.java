@@ -152,7 +152,7 @@ public class HouseEditActivity extends AppCompatActivity implements Observer {
 
             // Check if members have status change. Do those first and call edit settings in callback
             for(String key : hInfo.members.keySet()){
-                if(hInfo.members.get(key).role ==  membersRoleCopy.get(key) ){
+                if(hInfo.members.get(key).role == membersRoleCopy.get(key) ){
                     // No change to this users status when editing.
                 } else {
                     ++hInfoMemberStatusChange;
@@ -173,6 +173,7 @@ public class HouseEditActivity extends AppCompatActivity implements Observer {
                 hClass.editSettings(this.hInfo, displayNameChanged);
                 displayNameChanged = false;
             }
+            Log.d("House Edit Activity", "Display name changed: " + displayNameChanged);
         });
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
